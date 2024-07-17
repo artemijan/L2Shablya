@@ -28,9 +28,13 @@ pub trait PacketHandler {
 
     fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>>;
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
-    fn get_timeout(&self) -> Option<u64>;
+    fn get_timeout(&self) -> Option<u64> {
+        None
+    }
 
-    async fn send_packet(&mut self, packet: Box<dyn SendablePacket>) -> Result<(), Error>;
+    async fn send_packet(&mut self, packet: Box<dyn SendablePacket>) -> Result<(), Error> {
+        self.send_bytes(packet.get_bytes()).await
+    }
     async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error>;
     async fn on_receive_bytes(
         &mut self,

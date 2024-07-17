@@ -6,7 +6,6 @@ use crate::crypt::login::LoginEncryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::login_server::controller::{LoginController};
 use crate::login_server::PacketHandler;
-use crate::packet::common::SendablePacket;
 use crate::packet::to_client::Init;
 use crate::packet::ls_factory::build_client_packet;
 use anyhow::{Context, Error};
@@ -120,11 +119,6 @@ impl PacketHandler for ClientHandler {
 
     fn get_timeout(&self) -> Option<u64> {
         Some(self.timeout as u64)
-    }
-
-    async fn send_packet(&mut self, packet: Box<dyn SendablePacket>) -> Result<(), Error> {
-        let bytes = packet.get_bytes();
-        self.send_bytes(bytes).await
     }
 
     async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error> {

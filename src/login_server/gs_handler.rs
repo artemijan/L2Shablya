@@ -84,7 +84,6 @@ impl GSHandler {
         let (rx, mut tx) = mpsc::channel::<Message>(100);
         self.lc.connect_gs(self.server_id.unwrap(), rx);
         let mut messages = self.unhandled_messages.clone();
-        //todo: we need to make GSHandler cloneable, so we can reuse the logic in different tasks;
         let mut gs_handler = self.clone();
         tokio::spawn(async move {
             loop {
@@ -129,7 +128,7 @@ impl GSHandler {
 #[async_trait]
 impl PacketHandler for GSHandler {
     fn get_handler_name() -> String {
-        "Game server handler".to_string()
+        String::from("Game server handler")
     }
 
     fn get_lc(&self) -> &Arc<LoginController> {
@@ -149,17 +148,11 @@ impl PacketHandler for GSHandler {
     fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>> {
         &self.tcp_reader
     }
+
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
         &self.tcp_writer
     }
 
-    fn get_timeout(&self) -> Option<u64> {
-        None
-    }
-
-    async fn send_packet(&mut self, packet: Box<dyn SendablePacket>) -> Result<(), Error> {
-        self.send_bytes(packet.get_bytes()).await
-    }
     async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error> {
         let mut packet_buffer = SendablePacketBuffer::from_bytes(&bytes);
         packet_buffer.write_i32(0).unwrap();
@@ -179,7 +172,6 @@ impl PacketHandler for GSHandler {
             .await
             .write_all(&data_vec)
             .await?;
-        // self.tcp_writer.lock().unwrap().write_all(&data_vec).await?;
         Ok(())
     }
 
