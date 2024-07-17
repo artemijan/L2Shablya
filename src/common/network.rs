@@ -19,7 +19,7 @@ pub fn create_handle<F, Fut>(
     tokio::spawn(async move { handler(cfg, lc, client_pool).await })
 }
 
-pub async fn bind_addr(config: &Listener) -> anyhow::Result<TcpListener> {
+pub fn bind_addr(config: &Listener) -> anyhow::Result<TcpListener> {
     let addr = format!("{}:{}", &config.ip, &config.port)
         .to_socket_addrs()
         .context(format!("Failed to resolve address {}:{}", config.ip, config.port))?

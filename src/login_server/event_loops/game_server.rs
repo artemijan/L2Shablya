@@ -7,7 +7,7 @@ use crate::login_server::gs_handler::GSHandler;
 use crate::login_server::PacketHandler;
 
 pub async fn start(config: Arc<ServerConfig>, lc: Arc<LoginController>, pool: AnyPool) {
-    let listener = network::bind_addr(&config.server.listeners.game_servers).await
+    let listener = network::bind_addr(&config.server.listeners.game_servers)
         .unwrap_or_else(
             |_| panic!("Can not bind socket on {:?}", &config.server.listeners.game_servers)
         );
