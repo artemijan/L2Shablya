@@ -3,6 +3,7 @@ use crate::packet::common::{GSHandle};
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::error::PacketRunError;
 use async_trait::async_trait;
+use futures::future::err;
 use crate::login_server::gs_handler::GSHandler;
 use crate::login_server::PacketHandler;
 use crate::packet::login_fail::LoginFail;
@@ -93,20 +94,22 @@ impl GSHandle for GSStatusUpdate {
         gs: &mut GSHandler,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRunError> {
         let lc = gs.get_lc();
+
         if let Some(server_id) = gs.server_id {
-            let mut gs_info = lc.get_game_server(server_id).unwrap();
+            let error_response = || PacketRunError {
+                msg: Some(format!("Server was not found, GS id {}", server_id)),
+                response: Some(Box::new(LoginFail::new(
+                    LoginFailReasons::ReasonAccessFailed,
+                ))),
+            };
+            let mut gs_info = lc.get_game_server(server_id).ok_or_else(error_response)?;
             gs_info.max_players = self.max_players;
             gs_info.age_limit = self.server_age;
             gs_info.show_brackets = self.use_square_brackets;
             gs_info.server_type = self.server_type;
             gs_info.status = self.status.clone() as i32;
             if lc.update_gs_status(server_id, gs_info).is_err() {
-                return Err(PacketRunError {
-                    msg: Some(format!("Server was not found, GS id {}", server_id)),
-                    response: Some(Box::new(LoginFail::new(
-                        LoginFailReasons::ReasonAccessFailed,
-                    ))),
-                });
+                return Err(error_response());
             } else {
                 //connect game server thread to login controller, so we can send messages later
                 gs.start_channel();

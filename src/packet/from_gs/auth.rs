@@ -63,9 +63,9 @@ impl GSHandle for GSAuth {
             server_type: 0,
             age_limit: 0,
             show_brackets: false,
-            max_players: 0,
-            hex_id: vec![],
-            hosts: vec![],
+            max_players: self.max_players,
+            hex_id: self.hex_id.clone(),
+            hosts: self.hosts.clone(),
         };
         match gs.get_lc().register_gs(gsi) {
             Ok(_) => {
