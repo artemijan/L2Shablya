@@ -6,6 +6,7 @@ use crate::packet::{
     common::write::SendablePacketBuffer, common::SendablePacket, error::PacketRunError,
     to_gs::InitLS, login_fail::LoginFail, gs_factory::build_gs_packet, LoginFailReasons,
 };
+
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use openssl::error::ErrorStack;
@@ -25,6 +26,7 @@ pub struct GSHandler {
     db_pool: AnyPool,
     key_pair: ScrambledRSAKeyPair,
     blowfish: NewCrypt,
+    timeout: usize,
     pub connection_state: GSConnectionState,
     pub server_id: Option<u8>,
     unhandled_messages: Arc<RwLock<HashMap<String, Message>>>,
@@ -63,7 +65,7 @@ impl GSConnectionState {
 
 impl GSHandler {
     const STATIC_KEY: &'static str = "_;v.]05-31!|+-%xT!^[$\0";
-    pub fn new(mut stream: TcpStream, db_pool: AnyPool, lc: Arc<LoginController>) -> Self {
+    pub fn new(mut stream: TcpStream, db_pool: AnyPool, lc: Arc<LoginController>, timeout: usize) -> Self {
         let (tcp_reader, tcp_writer) = stream.into_split();
         let writer = Arc::new(Mutex::new(tcp_writer));
         let reader = Arc::new(Mutex::new(tcp_reader));
@@ -77,6 +79,7 @@ impl GSHandler {
             lc,
             unhandled_messages: Arc::new(RwLock::new(HashMap::new())),
             server_id: None,
+            timeout,
         }
     }
 
@@ -149,8 +152,12 @@ impl PacketHandler for GSHandler {
         &self.tcp_reader
     }
 
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
+    fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
         &self.tcp_writer
+    }
+
+    fn get_timeout(&self) -> Option<u64> {
+        Some(self.timeout as u64)
     }
 
     async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error> {
@@ -167,7 +174,6 @@ impl PacketHandler for GSHandler {
         NewCrypt::append_checksum(&mut data_vec, 2, size);
         self.blowfish.crypt(&mut data_vec, 2, size);
         self.get_stream_writer_mut()
-            .await
             .lock()
             .await
             .write_all(&data_vec)

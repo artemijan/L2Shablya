@@ -29,7 +29,7 @@ pub struct ClientHandler {
     session_id: i32,
     pub lc: Arc<LoginController>,
     encryption: LoginEncryption,
-    timeout: u8,
+    timeout: usize,
     session_key: SessionKey,
     connection_start_time: SystemTime,
     rsa_key_pair: ScrambledRSAKeyPair,
@@ -50,7 +50,7 @@ pub struct ClientHandler {
 /// 7. Respond with ServerList::new()
 ///
 impl ClientHandler {
-    pub fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<LoginController>, timeout: u8) -> Self {
+    pub fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<LoginController>, timeout: usize) -> Self {
         let mut rng = rand::thread_rng();
         let blowfish_key = generate_blowfish_key();
         let encryption = LoginEncryption::new(&blowfish_key.clone());
@@ -113,7 +113,7 @@ impl PacketHandler for ClientHandler {
         &self.tcp_reader
     }
 
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
+    fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
         &self.tcp_writer
     }
 

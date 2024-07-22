@@ -27,7 +27,7 @@ pub trait PacketHandler {
     async fn on_connect(&mut self) -> Result<(), PacketErrors>;
 
     fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>>;
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
+    fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
     fn get_timeout(&self) -> Option<u64> {
         None
     }
@@ -40,27 +40,19 @@ pub trait PacketHandler {
         &mut self,
         packet_size: usize,
         bytes: &mut [u8],
-    ) -> Result<(), anyhow::Error>;
+    ) -> Result<(), Error>;
 
     async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
         let mut size_buf = [0; PACKET_SIZE_BYTES];
         let mut socket = self.get_stream_reader_mut().lock().await;
-        println!(
-            "{}: Trying to read {} bytes",
-            Self::get_handler_name(),
-            PACKET_SIZE_BYTES
-        );
-
-        if socket.read_exact(&mut size_buf).await.is_err() {
-            // at this stage, client wanted to disconnect
-            return Ok((0, vec![]));
-        }
+        socket.read_exact(&mut size_buf).await?;
         let size = (u16::from_le_bytes(size_buf) as usize) - PACKET_SIZE_BYTES;
         // Read the body of the packet based on the size
         let mut body = vec![0; size];
         socket.read_exact(&mut body).await?;
         Ok((size, body))
     }
+    
     async fn handle_result(
         &mut self,
         resp: Result<Option<Box<dyn SendablePacket>>, PacketRunError>,
@@ -74,7 +66,6 @@ pub trait PacketHandler {
             Err(e) => {
                 if let Some(packet) = e.response {
                     self.get_stream_writer_mut()
-                        .await
                         .lock()
                         .await
                         .write_all(packet.get_bytes().as_slice())
@@ -86,6 +77,7 @@ pub trait PacketHandler {
         }
         Ok(())
     }
+    
     async fn handle_client(&mut self) {
         let client_addr = self
             .get_stream_reader_mut()

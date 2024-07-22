@@ -47,9 +47,10 @@ pub struct Server {
 pub struct Listener {
     pub ip: String,
     pub port: u16,
+    pub packet_read_timeout: usize,
     pub reuse_addr: bool,
     pub reuse_port: bool,
-    pub no_delay: bool
+    pub no_delay: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]

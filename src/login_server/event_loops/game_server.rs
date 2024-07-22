@@ -18,7 +18,10 @@ pub async fn start(config: Arc<ServerConfig>, lc: Arc<LoginController>, pool: An
     loop {
         match listener.accept().await {
             Ok((stream, _)) => {
-                let mut handler = GSHandler::new(stream, pool.clone(), lc.clone());
+                let mut handler = GSHandler::new(
+                    stream, pool.clone(), lc.clone(),
+                    config.server.listeners.game_servers.packet_read_timeout,
+                );
                 tokio::spawn(async move { handler.handle_client().await });
             }
             Err(e) => {
