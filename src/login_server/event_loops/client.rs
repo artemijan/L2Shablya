@@ -17,7 +17,7 @@ pub async fn start(config: Arc<ServerConfig>, lc: Arc<LoginController>, pool: An
                     stream,
                     pool.clone(),
                     lc.clone(),
-                    config.server.listeners.clients.packet_read_timeout,
+                    config.clone(),
                 );
                 tokio::spawn(async move { handler.handle_client().await });
             }

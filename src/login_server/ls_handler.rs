@@ -15,10 +15,12 @@ use sqlx::AnyPool;
 use std::sync::Arc;
 
 use std::time::SystemTime;
+use base64::engine::Config;
 use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
+use crate::common::dto::config::ServerConfig;
 
 pub struct ClientHandler {
     blowfish_key: Vec<u8>,
@@ -29,7 +31,7 @@ pub struct ClientHandler {
     session_id: i32,
     pub lc: Arc<LoginController>,
     encryption: LoginEncryption,
-    timeout: usize,
+    config: Arc<ServerConfig>,
     session_key: SessionKey,
     connection_start_time: SystemTime,
     rsa_key_pair: ScrambledRSAKeyPair,
@@ -50,7 +52,7 @@ pub struct ClientHandler {
 /// 7. Respond with ServerList::new()
 ///
 impl ClientHandler {
-    pub fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<LoginController>, timeout: usize) -> Self {
+    pub fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<LoginController>, cfg: Arc<ServerConfig>) -> Self {
         let mut rng = rand::thread_rng();
         let blowfish_key = generate_blowfish_key();
         let encryption = LoginEncryption::new(&blowfish_key.clone());
@@ -68,7 +70,7 @@ impl ClientHandler {
             connection_start_time,
             rsa_key_pair: lc.get_random_rsa_key_pair(),
             blowfish_key: blowfish_key.to_vec(),
-            timeout,
+            config: cfg,
             lc,
         }
     }
@@ -118,7 +120,7 @@ impl PacketHandler for ClientHandler {
     }
 
     fn get_timeout(&self) -> Option<u64> {
-        Some(self.timeout as u64)
+        Some(self.config.server.listeners.clients.packet_read_timeout as u64)
     }
 
     async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error> {

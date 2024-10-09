@@ -17,6 +17,7 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{mpsc, Mutex, RwLock};
+use crate::common::dto::config::ServerConfig;
 
 #[derive(Debug, Clone)]
 pub struct GSHandler {
@@ -26,7 +27,7 @@ pub struct GSHandler {
     db_pool: AnyPool,
     key_pair: ScrambledRSAKeyPair,
     blowfish: NewCrypt,
-    timeout: usize,
+    config: Arc<ServerConfig>,
     pub connection_state: GSConnectionState,
     pub server_id: Option<u8>,
     unhandled_messages: Arc<RwLock<HashMap<String, Message>>>,
@@ -64,8 +65,7 @@ impl GSConnectionState {
 }
 
 impl GSHandler {
-    const STATIC_KEY: &'static str = "_;v.]05-31!|+-%xT!^[$\0";
-    pub fn new(mut stream: TcpStream, db_pool: AnyPool, lc: Arc<LoginController>, timeout: usize) -> Self {
+    pub fn new(mut stream: TcpStream, db_pool: AnyPool, lc: Arc<LoginController>, cfg: Arc<ServerConfig>) -> Self {
         let (tcp_reader, tcp_writer) = stream.into_split();
         let writer = Arc::new(Mutex::new(tcp_writer));
         let reader = Arc::new(Mutex::new(tcp_reader));
@@ -74,12 +74,12 @@ impl GSHandler {
             tcp_writer: writer,
             db_pool,
             key_pair: lc.get_random_rsa_key_pair(),
-            blowfish: NewCrypt::from_u8_key(Self::STATIC_KEY.as_bytes()),
+            blowfish: NewCrypt::from_u8_key(cfg.server.blowfish_key.as_bytes()),
             connection_state: GSConnectionState::Initial,
             lc,
             unhandled_messages: Arc::new(RwLock::new(HashMap::new())),
             server_id: None,
-            timeout,
+            config: cfg,
         }
     }
 
@@ -157,7 +157,7 @@ impl PacketHandler for GSHandler {
     }
 
     fn get_timeout(&self) -> Option<u64> {
-        Some(self.timeout as u64)
+        Some(self.config.server.listeners.game_servers.packet_read_timeout as u64)
     }
 
     async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error> {
