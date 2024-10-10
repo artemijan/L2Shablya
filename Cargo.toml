@@ -14,7 +14,7 @@ path = "src/login.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lints.rust]
 unsafe_code = "forbid"
-unused = "allow"
+unused = { level = "allow", priority = -1 }
 
 [dependencies]
 encoding = "0.2.33"
