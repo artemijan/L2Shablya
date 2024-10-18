@@ -1,11 +1,11 @@
-use crate::packet::common::read::ReadablePacketBuffer;
-use crate::packet::common::{GSHandle};
-use crate::packet::common::{ReadablePacket, SendablePacket};
-use crate::packet::error::PacketRunError;
-use async_trait::async_trait;
 use crate::common::session::SessionKey;
 use crate::login_server::gs_handler::GSHandler;
+use crate::packet::common::read::ReadablePacketBuffer;
+use crate::packet::common::GSHandle;
+use crate::packet::common::{ReadablePacket, SendablePacket};
+use crate::packet::error::PacketRun;
 use crate::packet::to_gs::PlayerAuthResponse;
+use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
 pub struct PlayerAuthRequest {
@@ -25,10 +25,10 @@ impl ReadablePacket for PlayerAuthRequest {
         Some(PlayerAuthRequest {
             account_name,
             session: SessionKey {
-                login_ok1,
-                login_ok2,
                 play_ok1,
                 play_ok2,
+                login_ok1,
+                login_ok2,
             },
         })
     }
@@ -36,10 +36,7 @@ impl ReadablePacket for PlayerAuthRequest {
 
 #[async_trait]
 impl GSHandle for PlayerAuthRequest {
-    async fn handle(
-        &self,
-        _: &mut GSHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRunError> {
+    async fn handle(&self, _: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         Ok(Some(Box::new(PlayerAuthResponse::new(&self.account_name, true))))
     }
 }

@@ -1,11 +1,11 @@
-use crate::packet::error::PacketRunError;
+use crate::login_server::gs_handler::GSHandler;
+use crate::login_server::ls_handler::ClientHandler;
+use crate::packet::error::PacketRun;
+use crate::packet::from_gs::ReplyChars;
 use async_trait::async_trait;
 use std::fmt::Debug;
 use std::net::Ipv4Addr;
 use std::ops::Deref;
-use crate::login_server::gs_handler::GSHandler;
-use crate::login_server::ls_handler::ClientHandler;
-use crate::packet::from_gs::ReplyChars;
 
 pub mod read;
 pub mod write;
@@ -15,16 +15,15 @@ pub trait SendablePacket: Debug + Send + Sync {
 }
 
 #[derive(Debug)]
-pub enum PacketType{
-    ReplyChars(ReplyChars)
+pub enum PacketType {
+    ReplyChars(ReplyChars),
 }
 
 pub trait ReadablePacket: Debug + Send + Sync {
     fn read(data: &[u8]) -> Option<Self>
-        where
-            Self: Sized + ReadablePacket;
+    where
+        Self: Sized + ReadablePacket;
 }
-
 
 #[allow(unused)]
 #[derive(Debug, Clone)]
@@ -73,16 +72,10 @@ pub enum ServerType {
 
 #[async_trait]
 pub trait ClientHandle: Debug + Send {
-    async fn handle(
-        &self,
-        ch: &mut ClientHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRunError>;
+    async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun>;
 }
 
 #[async_trait]
 pub trait GSHandle: Debug + Send {
-    async fn handle(
-        &self,
-        gs: &mut GSHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRunError>;
+    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun>;
 }

@@ -1,9 +1,9 @@
-use crate::packet::common::read::ReadablePacketBuffer;
-use crate::packet::common::{GSHandle};
-use crate::packet::common::{ReadablePacket, SendablePacket};
-use crate::packet::error::PacketRunError;
-use async_trait::async_trait;
 use crate::login_server::gs_handler::GSHandler;
+use crate::packet::common::read::ReadablePacketBuffer;
+use crate::packet::common::GSHandle;
+use crate::packet::common::{ReadablePacket, SendablePacket};
+use crate::packet::error::PacketRun;
+use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
 pub struct ReplyChars {
@@ -23,24 +23,20 @@ impl ReadablePacket for ReplyChars {
         let chars_to_delete = buffer.read_byte();
         let mut char_list: Vec<i64> = vec![];
         for _ in 0..chars_to_delete {
-            char_list.push(buffer.read_i64())
+            char_list.push(buffer.read_i64());
         }
         Some(ReplyChars {
             account_name,
-            char_list,
             chars,
             chars_to_delete,
+            char_list,
         })
     }
 }
 
 #[async_trait]
 impl GSHandle for ReplyChars {
-    async fn handle(
-        &self,
-        _: &mut GSHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRunError> {
+    async fn handle(&self, _: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         Ok(None)
     }
 }
-

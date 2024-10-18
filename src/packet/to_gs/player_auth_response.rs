@@ -21,7 +21,7 @@ impl PlayerAuthResponse {
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write_u8(0x03)?;
         self.buffer.write_string(Some(&self.account))?;
-        self.buffer.write_u8(self.is_ok as u8)?;
+        self.buffer.write_u8(u8::from(self.is_ok))?;
         Ok(())
     }
 }

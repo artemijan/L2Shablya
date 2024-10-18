@@ -1,13 +1,13 @@
 use crate::login_server::ls_handler::ClientHandler;
 use crate::login_server::PacketHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
-use crate::packet::common::{ClientHandle};
+use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
-use crate::packet::error::PacketRunError;
+use crate::packet::error::PacketRun;
+use crate::packet::login_fail::PlayerLogin;
 use crate::packet::to_client::PlayOk;
 use crate::packet::to_gs::RequestChars;
-use crate::packet::login_fail::LoginFail;
-use crate::packet::LoginFailReasons;
+use crate::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
@@ -28,25 +28,18 @@ impl ReadablePacket for RequestGSLogin {
     }
 }
 
-
 #[async_trait]
 impl ClientHandle for RequestGSLogin {
-    async fn handle(
-        &self,
-        ch: &mut ClientHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRunError> {
+    async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let acc_name = ch.account_name.clone().unwrap();
         let lc = ch.get_lc();
         let message = Box::new(RequestChars::new(&acc_name));
-        if let Ok(response) = lc
-            .send_message_to_gs(self.server_id, message, &acc_name)
-            .await
-        {
+        if let Ok(response) = lc.send_message_to_gs(self.server_id, message, &acc_name).await {
             Ok(Some(Box::new(PlayOk::new(ch.get_session_key()))))
         } else {
-            Err(PacketRunError {
+            Err(PacketRun {
                 msg: Some(format!("Login Fail, tried user: {}", &acc_name)),
-                response: Some(Box::new(LoginFail::new(LoginFailReasons::ReasonNotAuthed))),
+                response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonNotAuthed))),
             })
         }
     }
