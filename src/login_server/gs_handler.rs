@@ -3,7 +3,7 @@ use crate::common::message::Message;
 use crate::crypt::{new::Crypt, rsa::ScrambledRSAKeyPair};
 use crate::login_server::{controller::Login, PacketHandler};
 use crate::packet::{
-    common::write::SendablePacketBuffer, common::SendablePacket, error::PacketRun, gs_factory::build_gs_packet, login_fail::PlayerLogin,
+    common::write::SendablePacketBuffer, common::SendablePacket, error, gs_factory::build_gs_packet, login_fail::PlayerLogin,
     to_gs::InitLS, PlayerLoginFailReasons,
 };
 use anyhow::{bail, Error};
@@ -40,13 +40,13 @@ pub enum GSConnectionState {
 }
 
 impl GSConnectionState {
-    pub fn transition_to(&mut self, desired_state: &GSConnectionState) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    pub fn transition_to(&mut self, desired_state: &GSConnectionState) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
         match (&self, desired_state) {
             (Self::Initial, Self::Connected) => *self = Self::Connected,
             (Self::Connected, Self::BfConnected) => *self = Self::BfConnected,
             (Self::BfConnected, Self::Authed) => *self = Self::Authed,
             _ => {
-                return Err(PacketRun {
+                return Err(error::PacketRun {
                     msg: Some(format!(
                         "Can not upgrade connection state for game server from {self}, to {desired_state}"
                     )),
@@ -59,17 +59,17 @@ impl GSConnectionState {
 }
 
 impl GSHandler {
-    const STATIC_KEY: &'static str = "_;v.]05-31!|+-%xT!^[$\0"; //null terminated string like in C-lang
     pub fn new(mut stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
         let (tcp_reader, tcp_writer) = stream.into_split();
         let writer = Arc::new(Mutex::new(tcp_writer));
         let reader = Arc::new(Mutex::new(tcp_reader));
+        let cfg = lc.get_config();
         GSHandler {
             tcp_reader: reader,
             tcp_writer: writer,
             db_pool,
             key_pair: lc.get_random_rsa_key_pair(),
-            blowfish: Crypt::from_u8_key(Self::STATIC_KEY.as_bytes()),
+            blowfish: Crypt::from_u8_key(cfg.blowfish_key.as_bytes()),
             connection_state: GSConnectionState::Initial,
             lc,
             unhandled_messages: Arc::new(RwLock::new(HashMap::new())),

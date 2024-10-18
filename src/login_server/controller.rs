@@ -32,6 +32,9 @@ impl Login {
             gs_channels: Arc::new(RwLock::new(HashMap::new())),
         }
     }
+    pub fn get_config(&self) -> &config::Server {
+        &self.config
+    }
     pub fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
         self.game_servers.read().unwrap().get(&gs_id).cloned()
     }
@@ -61,7 +64,9 @@ impl Login {
         } else {
             Err(PacketRun {
                 msg: Some(format!("GS already registered with id: {:}", gs_info.id)),
-                response: Some(Box::new(GSLogin::new(GSLoginFailReasons::AlreadyRegistered))),
+                response: Some(Box::new(GSLogin::new(
+                    GSLoginFailReasons::AlreadyRegistered,
+                ))),
             })
         }
     }
@@ -90,7 +95,11 @@ impl Login {
     }
 
     pub fn connect_gs(&self, server_id: u8, gs_channel: Sender<Message>) {
-        self.gs_channels.write().unwrap().entry(server_id).or_insert(gs_channel);
+        self.gs_channels
+            .write()
+            .unwrap()
+            .entry(server_id)
+            .or_insert(gs_channel);
     }
 
     pub async fn send_message_to_gs(
