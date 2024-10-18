@@ -1,12 +1,12 @@
-use crate::common::str::StrTrim;
+use crate::common::str::Trim;
 use crate::database::user::User;
 use crate::login_server::ls_handler::ClientHandler;
 use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
-use crate::packet::error::PacketRunError;
+use crate::packet::error::PacketRun;
+use crate::packet::login_fail::PlayerLogin;
 use crate::packet::to_client::LoginOk;
-use crate::packet::login_fail::LoginFail;
-use crate::packet::LoginFailReasons;
+use crate::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
@@ -29,10 +29,7 @@ impl ReadablePacket for RequestAuthLogin {
 
 #[async_trait]
 impl ClientHandle for RequestAuthLogin {
-    async fn handle(
-        &self,
-        ch: &mut ClientHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRunError> {
+    async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let pool = ch.get_db_pool_mut();
         if let Some(user) = User::fetch_by_username(pool, &self.username).await.unwrap() {
             if user.verify_password(&self.password).await {
@@ -40,9 +37,9 @@ impl ClientHandle for RequestAuthLogin {
                 return Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))));
             }
         }
-        Err(PacketRunError {
+        Err(PacketRun {
             msg: Some(format!("Login Fail, tried user: {}", self.username)),
-            response: Some(Box::new(LoginFail::new(LoginFailReasons::ReasonNotAuthed))),
+            response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonNotAuthed))),
         })
     }
 }

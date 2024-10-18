@@ -1,13 +1,14 @@
-use crate::common::errors::PacketErrors;
-use crate::common::errors::PacketErrors::{ClientPacketNotFound, UnableToSendInitPacket};
+use crate::common::errors::Packet;
+use crate::common::errors::Packet::{ClientPacketNotFound, UnableToSendInit};
 use crate::common::session::SessionKey;
 use crate::crypt::blowfish_engine::generate_blowfish_key;
-use crate::crypt::login::LoginEncryption;
+use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
-use crate::login_server::controller::LoginController;
+use crate::login_server::controller::Login;
 use crate::login_server::PacketHandler;
-use crate::packet::to_client::Init;
+use crate::packet::common::SendablePacket;
 use crate::packet::ls_factory::build_client_packet;
+use crate::packet::to_client::Init;
 use anyhow::{Context, Error};
 use async_trait::async_trait;
 use rand::Rng;
@@ -15,12 +16,10 @@ use sqlx::AnyPool;
 use std::sync::Arc;
 
 use std::time::SystemTime;
-use base64::engine::Config;
 use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
-use crate::common::dto::config::ServerConfig;
 
 pub struct ClientHandler {
     blowfish_key: Vec<u8>,
@@ -29,9 +28,9 @@ pub struct ClientHandler {
     pub account_name: Option<String>,
     db_pool: AnyPool,
     session_id: i32,
-    pub lc: Arc<LoginController>,
-    encryption: LoginEncryption,
-    config: Arc<ServerConfig>,
+    pub lc: Arc<Login>,
+    encryption: Encryption,
+    timeout: u8,
     session_key: SessionKey,
     connection_start_time: SystemTime,
     rsa_key_pair: ScrambledRSAKeyPair,
@@ -39,23 +38,23 @@ pub struct ClientHandler {
 
 /// # This function called each time when there is a new connection.
 /// ## Arguments
-/// - stream - TcpStream to send/receive packets
-/// - lc - LoginClient object is needed to store some client related data
+/// - stream - `TcpStream` to send/receive packets
+/// - lc - `LoginClient` object is needed to store some client related data
 ///
 /// # The whole login process looks like the following:
 /// 1. send init ()
-/// 2. wait request AuthGG
-/// 3. AuthGG::new(session_id); // sen AuthGG OK
+/// 2. wait request `AuthGG`
+/// 3. `AuthGG::new(session_id);` // send `AuthGG` OK
 /// 4. wait request auth login
-/// 5. LoginOk::new(session_key); //send Auth ok
-/// 6. wait for RequestServerList
-/// 7. Respond with ServerList::new()
+/// 5. `LoginOk::new(session_key);` //send `AuthOk`
+/// 6. wait for `RequestServerList`
+/// 7. Respond with `ServerList::new()`
 ///
 impl ClientHandler {
-    pub fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<LoginController>, cfg: Arc<ServerConfig>) -> Self {
+    pub fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>, timeout: u8) -> Self {
         let mut rng = rand::thread_rng();
         let blowfish_key = generate_blowfish_key();
-        let encryption = LoginEncryption::new(&blowfish_key.clone());
+        let encryption = Encryption::new(&blowfish_key.clone());
         let session_id = rng.gen();
         let connection_start_time = SystemTime::now();
         let (tcp_reader, tcp_writer) = stream.into_split();
@@ -70,7 +69,7 @@ impl ClientHandler {
             connection_start_time,
             rsa_key_pair: lc.get_random_rsa_key_pair(),
             blowfish_key: blowfish_key.to_vec(),
-            config: cfg,
+            timeout,
             lc,
         }
     }
@@ -91,11 +90,16 @@ impl PacketHandler for ClientHandler {
         "Login client handler".to_string()
     }
 
-    fn get_lc(&self) -> &Arc<LoginController> {
+    fn get_lc(&self) -> &Arc<Login> {
         &self.lc
     }
 
-    async fn on_connect(&mut self) -> Result<(), PacketErrors> {
+    fn on_disconnect(&mut self) {
+        //todo: think of how we cna handle client disconnection
+        println!("Player disconnected: {:?}", self.session_id);
+    }
+
+    async fn on_connect(&mut self) -> Result<(), Packet> {
         let addr = self.tcp_reader.lock().await.peer_addr().unwrap();
         println!("Client connected: {:?}", addr);
         let init = Init::new(
@@ -108,19 +112,24 @@ impl PacketHandler for ClientHandler {
             .await
             .write_all(&init.buffer.get_data())
             .await
-            .map_err(|_| UnableToSendInitPacket)?;
+            .map_err(|_| UnableToSendInit)?;
         Ok(())
     }
     fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>> {
         &self.tcp_reader
     }
 
-    fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
+    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
         &self.tcp_writer
     }
 
     fn get_timeout(&self) -> Option<u64> {
-        Some(self.config.server.listeners.clients.packet_read_timeout as u64)
+        Some(u64::from(self.timeout))
+    }
+
+    async fn send_packet(&mut self, packet: Box<dyn SendablePacket>) -> Result<(), Error> {
+        let bytes = packet.get_bytes();
+        self.send_bytes(bytes).await
     }
 
     async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error> {
@@ -134,10 +143,7 @@ impl PacketHandler for ClientHandler {
 
     async fn on_receive_bytes(&mut self, packet_size: usize, data: &mut [u8]) -> Result<(), Error> {
         self.encryption.crypt.decrypt(data, 0, packet_size)?;
-        let handler =
-            build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| ClientPacketNotFound {
-                opcode: data[0] as usize,
-            })?;
+        let handler = build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| ClientPacketNotFound { opcode: data[0] as usize })?;
         let resp = handler.handle(self).await;
         self.handle_result(resp).await
     }

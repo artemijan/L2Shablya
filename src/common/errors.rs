@@ -3,11 +3,11 @@ use thiserror::Error;
 
 #[non_exhaustive]
 #[derive(Error, Debug)]
-pub enum PacketErrors {
+pub enum Packet {
     #[error("Failed to encrypt message")]
     Encryption(#[from] anyhow::Error),
     #[error("Failed to write data to packet {max_size:?}")]
-    PacketWrite { max_size: usize },
+    Write { max_size: usize },
     #[error("Unable to encode string in format {0}")]
     #[allow(unused)]
     Encode(String),
@@ -19,14 +19,14 @@ pub enum PacketErrors {
     #[error("Client packet not found, opcode is: {opcode:?}")]
     ClientPacketNotFound { opcode: usize },
     #[error("Unable to send init packet to the client")]
-    UnableToSendInitPacket,
+    UnableToSendInit,
     #[error("Unable to handle client packet: {msg:?}")]
-    UnableToHandleClientPacket { msg: String },
+    UnableToHandleClient { msg: String },
 }
 
 #[non_exhaustive]
 #[derive(Error, Debug)]
-pub enum RsaErrors {
+pub enum Rsa {
     #[error("Unable to read pem key")]
     ErrorReadingPem,
 }

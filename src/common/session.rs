@@ -1,6 +1,7 @@
 use rand::Rng;
 
 #[derive(Clone, Debug)]
+#[allow(clippy::module_name_repetitions)]
 pub struct SessionKey {
     pub play_ok1: i32,
     pub play_ok2: i32,

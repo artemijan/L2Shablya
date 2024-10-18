@@ -26,11 +26,11 @@ impl LoginOk {
         self.buffer.write_i32(self.login_ok2)?;
         self.buffer.write_i32(0x00)?;
         self.buffer.write_i32(0x00)?;
-        self.buffer.write_i32(0x000003ea)?;
+        self.buffer.write_i32(0x0000_03ea)?;
         self.buffer.write_i32(0x00)?;
         self.buffer.write_i32(0x00)?;
         self.buffer.write_i32(0x00)?;
-        self.buffer.write_bytes(vec![0; 16])?;
+        self.buffer.write_bytes(vec![0; 16].as_slice())?;
         Ok(())
     }
 }

@@ -2,7 +2,7 @@ pub trait StringTrim {
     fn trim_all(self) -> String;
 }
 
-pub trait StrTrim {
+pub trait Trim {
     fn trim_all(&self) -> &str;
 }
 
@@ -20,7 +20,7 @@ impl StringTrim for String {
     }
 }
 
-impl StrTrim for str {
+impl Trim for str {
     ///this function is needed to trim also null bytes from a str slice
     /// # Example
     /// ```

@@ -16,6 +16,7 @@ impl ReadablePacketBuffer {
         self.read_byte() != 0
     }
 
+    #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
     pub fn read_string(&mut self) -> String {
         let mut result = String::new();
         loop {
@@ -37,6 +38,7 @@ impl ReadablePacketBuffer {
         hosts
     }
 
+    #[allow(clippy::cast_sign_loss)]
     pub fn read_sized_string(&mut self) -> String {
         let length = self.read_i16();
         let bytes = self.read_bytes(length as usize * 2);
@@ -85,11 +87,11 @@ impl ReadablePacketBuffer {
         self.position += 8;
         long
     }
-
+    #[allow(clippy::cast_sign_loss)]
     pub fn read_float(&mut self) -> f32 {
         f32::from_bits(self.read_i32() as u32)
     }
-
+    #[allow(clippy::cast_sign_loss)]
     pub fn read_double(&mut self) -> f64 {
         f64::from_bits(self.read_i64() as u64)
     }
@@ -105,23 +107,23 @@ impl ReadablePacketBuffer {
 
 #[cfg(test)]
 mod test {
+    use super::*;
+    use crate::common::errors::Packet;
     use encoding::all::UTF_16LE;
     use encoding::{EncoderTrap, Encoding};
-    use crate::common::errors::PacketErrors;
-    use super::*;
 
     #[test]
     fn test_read_bool_false() {
         let mut buff = ReadablePacketBuffer::new(vec![0]);
         let value = buff.read_boolean();
-        assert!(!value, "Should be false")
+        assert!(!value, "Should be false");
     }
 
     #[test]
     fn test_read_bool_true() {
         let mut buff = ReadablePacketBuffer::new(vec![1]);
         let value = buff.read_boolean();
-        assert!(value, "Should be true")
+        assert!(value, "Should be true");
     }
 
     #[test]
@@ -129,7 +131,7 @@ mod test {
         let bytes = encode_str("test me");
         let mut buff = ReadablePacketBuffer::new(bytes);
         let value = buff.read_string();
-        assert_eq!(value, "test me")
+        assert_eq!(value, "test me");
     }
 
     #[test]
@@ -137,12 +139,12 @@ mod test {
         let expected_data = vec!["test", " ", "me", " ", "please"];
         let data_len = expected_data.len();
         let mut bytes = vec![];
-        for v in expected_data.iter() {
-            bytes.extend(encode_str(v))
+        for v in &expected_data {
+            bytes.extend(encode_str(v));
         }
         let mut buff = ReadablePacketBuffer::new(bytes);
         let value = buff.read_n_strings(data_len);
-        assert_eq!(value, expected_data)
+        assert_eq!(value, expected_data);
     }
 
     #[test]
@@ -151,7 +153,7 @@ mod test {
         bytes.extend(encode_str("test me"));
         let mut buff = ReadablePacketBuffer::new(bytes);
         let value = buff.read_sized_string();
-        assert_eq!(value, "test me")
+        assert_eq!(value, "test me");
     }
 
     #[test]
@@ -159,7 +161,7 @@ mod test {
         let bytes: Vec<u8> = vec![7, 0, 89, 76, 65, 78, 98];
         let mut buff = ReadablePacketBuffer::new(bytes);
         let value = buff.read_bytes(3);
-        assert_eq!(value, vec![7, 0, 89])
+        assert_eq!(value, vec![7, 0, 89]);
     }
 
     #[test]
@@ -167,38 +169,39 @@ mod test {
         let bytes: Vec<u8> = vec![9, 0, 89, 76];
         let mut buff = ReadablePacketBuffer::new(bytes);
         let value = buff.read_byte();
-        assert_eq!(value, 9)
+        assert_eq!(value, 9);
     }
     #[test]
     fn test_read_i16() {
         let bytes: Vec<u8> = vec![11, 0, 89, 76];
         let mut buff = ReadablePacketBuffer::new(bytes);
         let value = buff.read_i16();
-        assert_eq!(value, 11)
+        assert_eq!(value, 11);
     }
 
     #[test]
     fn test_read_i32() {
-        let val:i32 = 789876;
+        let val: i32 = 789_876;
         let bytes = val.to_le_bytes();
         let mut buff = ReadablePacketBuffer::new(bytes.to_vec());
         let value = buff.read_i32();
-        assert_eq!(value, val)
+        assert_eq!(value, val);
     }
-    
+
     #[test]
     fn test_read_i64() {
-        let val:i64 = 78987678;
+        let val: i64 = 78_987_678;
         let bytes = val.to_le_bytes();
         let mut buff = ReadablePacketBuffer::new(bytes.to_vec());
         let value = buff.read_i64();
-        assert_eq!(value, val)
+        assert_eq!(value, val);
     }
 
     fn encode_str(s: &str) -> Vec<u8> {
         let mut bytes = UTF_16LE
             .encode(s, EncoderTrap::Strict)
-            .map_err(|_| PacketErrors::Encode("UTF_16LE".to_owned())).unwrap();
+            .map_err(|_| Packet::Encode("UTF_16LE".to_owned()))
+            .unwrap();
         bytes.extend(vec![0, 0]);
         bytes
     }

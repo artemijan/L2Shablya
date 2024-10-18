@@ -1,11 +1,11 @@
+use crate::login_server::ls_handler::ClientHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket, ServerData, ServerStatus, ServerType};
-use crate::packet::error::PacketRunError;
+use crate::packet::error::PacketRun;
 use crate::packet::to_client::ServerList;
 use async_trait::async_trait;
 use std::net::Ipv4Addr;
-use crate::login_server::ls_handler::ClientHandler;
 
 #[derive(Clone, Debug)]
 pub struct RequestServerList {
@@ -25,10 +25,7 @@ impl ReadablePacket for RequestServerList {
 
 #[async_trait]
 impl ClientHandle for RequestServerList {
-    async fn handle(
-        &self,
-        _: &mut ClientHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRunError> {
+    async fn handle(&self, _: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let servers = vec![ServerData {
             ip: Ipv4Addr::from([192, 168, 20, 102]),
             port: 7777,

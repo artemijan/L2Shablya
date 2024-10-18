@@ -1,17 +1,17 @@
-use crate::packet::common::read::ReadablePacketBuffer;
-use crate::packet::common::{GSHandle};
-use crate::packet::common::{ReadablePacket, SendablePacket};
-use crate::packet::error::PacketRunError;
-use async_trait::async_trait;
-use crate::common::dto::game_server::GameServerInfo;
+use crate::common::dto::game_server::GSInfo;
 use crate::login_server::gs_handler::{GSConnectionState, GSHandler};
 use crate::login_server::PacketHandler;
-use crate::packet::login_fail::LoginFail;
+use crate::packet::common::read::ReadablePacketBuffer;
+use crate::packet::common::GSHandle;
+use crate::packet::common::{ReadablePacket, SendablePacket};
+use crate::packet::error::PacketRun;
+use crate::packet::login_fail::PlayerLogin;
 use crate::packet::to_gs::AuthGS;
-use crate::packet::LoginFailReasons;
+use crate::packet::PlayerLoginFailReasons;
+use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
-pub struct GSAuth {
+pub struct GS {
     desired_id: u8,
     accept_alternative_id: bool,
     host_reserved: bool,
@@ -20,8 +20,8 @@ pub struct GSAuth {
     hex_id: Vec<u8>,
     hosts: Vec<String>,
 }
-
-impl ReadablePacket for GSAuth {
+#[allow(clippy::cast_sign_loss)]
+impl ReadablePacket for GS {
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
@@ -34,25 +34,22 @@ impl ReadablePacket for GSAuth {
         let hex_id = buffer.read_bytes(size as usize);
         size = buffer.read_i32() * 2;
         let hosts = buffer.read_n_strings(size as usize);
-        Some(GSAuth {
+        Some(GS {
             desired_id,
             accept_alternative_id,
             host_reserved,
             port,
             max_players,
-            hex_id: hex_id.to_vec(),
+            hex_id,
             hosts,
         })
     }
 }
 
 #[async_trait]
-impl GSHandle for GSAuth {
-    async fn handle(
-        &self,
-        gs: &mut GSHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRunError> {
-        let gsi = GameServerInfo {
+impl GSHandle for GS {
+    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+        let gsi = GSInfo {
             id: self.desired_id,
             accept_alternative_id: self.accept_alternative_id,
             host_reserved: self.host_reserved,
@@ -68,19 +65,12 @@ impl GSHandle for GSAuth {
             hosts: self.hosts.clone(),
         };
         match gs.get_lc().register_gs(gsi) {
-            Ok(_) => {
+            Ok(()) => {
                 gs.connection_state.transition_to(&GSConnectionState::Authed)?;
                 gs.server_id = Some(self.desired_id);
                 Ok(Some(Box::new(AuthGS::new(self.desired_id))))
             }
-            Err(e) => {
-                Err(PacketRunError {
-                    msg: Some(e.to_string()),
-                    response: Some(
-                        Box::new(LoginFail::new(LoginFailReasons::ReasonAccountInUse))
-                    ),
-                })
-            }
+            Err(e) => Err(e),
         }
     }
 }

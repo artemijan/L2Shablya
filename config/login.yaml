@@ -1,27 +1,30 @@
-server:
-  name: Login server
-  blowfish_key: _;v.]05-31!|+-%xT!^[$\0
-  client:
-    enable_cmdline_login: true
-    show_licence: true
-    show_pi_agreement: true
-    auto_create_accounts: false
-  listeners:
-    game_servers:
-      packet_read_timeout: 5
+name: Login server
+blowfish_key: _;v.]05-31!|+-%xT!^[$\0
+client:
+  timeout: 200
+  enable_cmdline_login: true
+  show_licence: true
+  show_pi_agreement: true
+  auto_create_accounts: false
+allowed_gs:
+  -2ad66b3f483c22be097019f55c8abdf0:
+    server_id: 1
+listeners:
+  game_servers:
+    connection:
       ip: 0.0.0.0
       port: 9014
       reuse_port: true
       reuse_addr: true
       no_delay: false
-    clients:
-      packet_read_timeout: 5
+  clients:
+    connection:
       ip: 0.0.0.0
       port: 2106
       reuse_port: true
       reuse_addr: true
       no_delay: true
-  database:
-    url: sqlite://local.sqlite?mode=rwc
-    max_connections: 10
-    min_connections: 5
+database:
+  url: sqlite://local.sqlite?mode=rwc
+  max_connections: 10
+  min_connections: 5

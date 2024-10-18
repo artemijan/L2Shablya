@@ -1,12 +1,12 @@
-pub mod from_client;
 pub mod common;
 pub mod error;
-pub mod ls_factory;
+pub mod from_client;
 pub mod from_gs;
 pub mod gs_factory;
-pub mod to_gs;
-pub mod to_client;
 pub mod login_fail;
+pub mod ls_factory;
+pub mod to_client;
+pub mod to_gs;
 
 #[repr(u8)]
 #[allow(unused)]
@@ -28,7 +28,7 @@ pub enum LoginServerOpcodes {
 #[repr(u8)]
 #[allow(unused)]
 #[derive(Debug, Clone)]
-pub enum LoginFailReasons {
+pub enum PlayerLoginFailReasons {
     ReasonNoMessage = 0x00,
     ReasonSystemErrorLoginLater = 0x01,
     /// this will close client, so user has to restart game
@@ -71,4 +71,18 @@ pub enum LoginFailReasons {
     ReasonCertificationFailed3TimesGameplayBlocked30Min = 0x36,
     ReasonCertificationDailyUseExceeded = 0x37,
     ReasonCertificationUnderwayTryAgainLater = 0x38,
+}
+
+#[repr(u8)]
+#[allow(unused)]
+#[derive(Debug, Clone)]
+pub enum GSLoginFailReasons {
+    None = 0x00,
+    IpBanned = 0x01,
+    IpRreserved = 0x02,
+    WrongHexId = 0x03,
+    IdReserved = 0x04,
+    NoFreeID = 0x05,
+    NotAuthed = 0x06,
+    AlreadyRegistered = 0x07,
 }

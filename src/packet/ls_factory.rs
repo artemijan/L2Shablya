@@ -1,12 +1,9 @@
 use crate::crypt::rsa::ScrambledRSAKeyPair;
-use crate::packet::from_client::{RequestAuthGG, RequestGSLogin, RequestAuthLogin, RequestServerList};
-use crate::packet::common::ReadablePacket;
 use crate::packet::common::ClientHandle;
+use crate::packet::common::ReadablePacket;
+use crate::packet::from_client::{RequestAuthGG, RequestAuthLogin, RequestGSLogin, RequestServerList};
 
-pub fn build_client_packet(
-    data: &[u8],
-    key_pair: &ScrambledRSAKeyPair,
-) -> Option<Box<dyn ClientHandle>> {
+pub fn build_client_packet(data: &[u8], key_pair: &ScrambledRSAKeyPair) -> Option<Box<dyn ClientHandle>> {
     if data.len() <= 1 {
         return None;
     }

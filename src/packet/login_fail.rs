@@ -1,16 +1,23 @@
+use super::GSLoginFailReasons;
 use crate::packet::common::write::SendablePacketBuffer;
 use crate::packet::common::SendablePacket;
-use crate::packet::{LoginFailReasons, LoginServerOpcodes};
+use crate::packet::{LoginServerOpcodes, PlayerLoginFailReasons};
 
 #[derive(Debug)]
-pub struct LoginFail {
+pub struct PlayerLogin {
     pub buffer: SendablePacketBuffer,
-    pub reason: LoginFailReasons,
+    pub reason: PlayerLoginFailReasons,
 }
 
-impl LoginFail {
-    pub fn new(reason: LoginFailReasons) -> LoginFail {
-        let mut login_ok = LoginFail {
+#[derive(Debug)]
+pub struct GSLogin {
+    pub buffer: SendablePacketBuffer,
+    pub reason: GSLoginFailReasons,
+}
+
+impl GSLogin {
+    pub fn new(reason: GSLoginFailReasons) -> GSLogin {
+        let mut login_ok = GSLogin {
             buffer: SendablePacketBuffer::new(),
             reason,
         };
@@ -24,7 +31,28 @@ impl LoginFail {
     }
 }
 
-impl SendablePacket for LoginFail {
+impl PlayerLogin {
+    pub fn new(reason: PlayerLoginFailReasons) -> PlayerLogin {
+        let mut login_ok = PlayerLogin {
+            buffer: SendablePacketBuffer::new(),
+            reason,
+        };
+        login_ok.write_all().unwrap();
+        login_ok
+    }
+    fn write_all(&mut self) -> Result<(), anyhow::Error> {
+        self.buffer.write(LoginServerOpcodes::LoginFail as u8)?;
+        self.buffer.write(self.reason.clone() as u8)?;
+        Ok(())
+    }
+}
+
+impl SendablePacket for PlayerLogin {
+    fn get_bytes(&self) -> Vec<u8> {
+        self.buffer.get_data()
+    }
+}
+impl SendablePacket for GSLogin {
     fn get_bytes(&self) -> Vec<u8> {
         self.buffer.get_data()
     }

@@ -24,14 +24,15 @@ impl Init {
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write_i8(LoginServerOpcodes::Init as i8)?;
         self.buffer.write_i32(self.session_id)?; // session id
-        self.buffer.write_i32(0x0000c621)?; // protocol revision
-        self.buffer.write_bytes(self.public_key.clone())?; // RSA Public Key
-                                                           // unk GG related?
-        self.buffer.write_i32(0x29DD954E)?;
-        self.buffer.write_i32(0x77C39CFC)?;
-        self.buffer.write_i32(0x97ADB620u32 as i32)?; // 0x97ADB620 this overflows i32
-        self.buffer.write_i32(0x07BDE0F7)?;
-        self.buffer.write_bytes(self.blowfish_key.clone())?; // BlowFish key
+        self.buffer.write_i32(0x0000_c621)?; // protocol revision
+        self.buffer.write_bytes(self.public_key.as_slice())?; // RSA Public Key
+                                                              // unk GG related?
+        self.buffer.write_i32(0x29DD_954E)?;
+        self.buffer.write_i32(0x77C3_9CFC)?;
+        #[allow(clippy::cast_possible_wrap)]
+        self.buffer.write_i32(0x97AD_B620_u32 as i32)?; // 0x97ADB620 this overflows i32
+        self.buffer.write_i32(0x07BD_E0F7)?;
+        self.buffer.write_bytes(self.blowfish_key.as_slice())?; // BlowFish key
         self.buffer.write(0)?; // null termination ;)
         Ok(())
     }

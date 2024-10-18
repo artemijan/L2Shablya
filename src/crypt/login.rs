@@ -1,18 +1,18 @@
 use crate::crypt::blowfish_engine::STATIC_BLOWFISH_KEY;
-use crate::crypt::new_crypt::NewCrypt;
+use crate::crypt::new::Crypt;
 
 #[allow(unused)]
 #[derive(Debug, Clone)]
-pub struct LoginEncryption {
-    pub crypt: NewCrypt,
-    pub static_crypt: NewCrypt,
+pub struct Encryption {
+    pub crypt: Crypt,
+    pub static_crypt: Crypt,
 }
 
-impl LoginEncryption {
+impl Encryption {
     pub fn new(key: &[u8]) -> Self {
-        LoginEncryption {
-            crypt: NewCrypt::from_u8_key(key),
-            static_crypt: NewCrypt::from_u8_key(&STATIC_BLOWFISH_KEY.clone()),
+        Encryption {
+            crypt: Crypt::from_u8_key(key),
+            static_crypt: Crypt::from_u8_key(&STATIC_BLOWFISH_KEY.clone()),
         }
     }
 }

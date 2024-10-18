@@ -1,39 +1,41 @@
+use crate::common::dto::config;
+use crate::common::dto::game_server::GSInfo;
 use crate::common::message::Message;
 use crate::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
 use crate::packet::common::{PacketType, ReadablePacket, SendablePacket};
+use crate::packet::error::PacketRun;
+use crate::packet::login_fail::{GSLogin, PlayerLogin};
+use crate::packet::{GSLoginFailReasons, PlayerLoginFailReasons};
 use anyhow::bail;
 use rand::Rng;
-use std::collections::HashMap;
+use std::collections::{hash_map::Entry, HashMap};
 use std::io::Read;
 use std::sync::{Arc, RwLock};
 use tokio::sync::mpsc::Sender;
 use tokio::sync::oneshot;
-use crate::common::dto::game_server::GameServerInfo;
 
 #[derive(Clone, Debug)]
-pub struct LoginController {
+pub struct Login {
     key_pairs: Vec<ScrambledRSAKeyPair>,
-    game_servers: Arc<RwLock<HashMap<u8, GameServerInfo>>>,
+    config: Arc<config::Server>,
+    game_servers: Arc<RwLock<HashMap<u8, GSInfo>>>,
     gs_channels: Arc<RwLock<HashMap<u8, Sender<Message>>>>,
 }
 
-impl LoginController {
-    pub fn new() -> LoginController {
+impl Login {
+    pub fn new(config: Arc<config::Server>) -> Login {
         println!("Loading LoginController...");
-        LoginController {
-            key_pairs: LoginController::generate_rsa_key_pairs(10),
+        Login {
+            key_pairs: Login::generate_rsa_key_pairs(10),
+            config,
             game_servers: Arc::new(RwLock::new(HashMap::new())),
             gs_channels: Arc::new(RwLock::new(HashMap::new())),
         }
     }
-    pub fn get_game_server(&self, gs_id: u8) -> Option<GameServerInfo> {
+    pub fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
         self.game_servers.read().unwrap().get(&gs_id).cloned()
     }
-    pub fn update_gs_status(
-        &self,
-        gs_id: u8,
-        gs_info: GameServerInfo,
-    ) -> Result<(), anyhow::Error> {
+    pub fn update_gs_status(&self, gs_id: u8, gs_info: GSInfo) -> Result<(), anyhow::Error> {
         let mut servers = self.game_servers.write().unwrap();
         if servers.contains_key(&gs_id) {
             servers.insert(gs_info.id, gs_info);
@@ -43,14 +45,30 @@ impl LoginController {
         }
     }
 
-    #[allow(clippy::map_entry)]
-    pub fn register_gs(&self, gs_info: GameServerInfo) -> Result<(), anyhow::Error> {
+    pub fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<(), PacketRun> {
         let mut servers = self.game_servers.write().unwrap();
-        if !servers.contains_key(&gs_info.id) {
+        if let Some(allowed_gs) = &self.config.allowed_gs {
+            if !allowed_gs.contains_key(&gs_info.hex()) {
+                return Err(PacketRun {
+                    msg: Some(format!("GS wrong hex: {:}", gs_info.hex())),
+                    response: Some(Box::new(GSLogin::new(GSLoginFailReasons::WrongHexId))),
+                });
+            }
+        }
+        if let Entry::Vacant(e) = servers.entry(gs_info.id) {
             servers.insert(gs_info.id, gs_info);
             Ok(())
         } else {
-            bail!("Game server already registered on login server.")
+            Err(PacketRun {
+                msg: Some(format!("GS already registered with id: {:}", gs_info.id)),
+                response: Some(Box::new(GSLogin::new(GSLoginFailReasons::AlreadyRegistered))),
+            })
+        }
+    }
+
+    pub fn remove_gs(&self, server_id: u8) {
+        if let Ok(mut server_list) = self.game_servers.write() {
+            server_list.remove(&server_id);
         }
     }
 
@@ -67,16 +85,12 @@ impl LoginController {
             let scrumbled = ScrambledRSAKeyPair::new(rsa_pair);
             key_pairs.push(scrumbled);
         }
-        println!("Generated {} RSA key pairs", count);
+        println!("Generated {count} RSA key pairs");
         key_pairs
     }
 
     pub fn connect_gs(&self, server_id: u8, gs_channel: Sender<Message>) {
-        self.gs_channels
-            .write()
-            .unwrap()
-            .entry(server_id)
-            .or_insert(gs_channel);
+        self.gs_channels.write().unwrap().entry(server_id).or_insert(gs_channel);
     }
 
     pub async fn send_message_to_gs(

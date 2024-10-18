@@ -1,12 +1,12 @@
-mod blowfish;
 mod auth;
+mod blowfish;
 mod gs_status;
 mod player_auth_request;
-mod reply_chars;
 mod player_in_game;
 mod player_logout;
+mod reply_chars;
 
 pub use self::{
-    auth::GSAuth, blowfish::BlowFish, gs_status::GSStatusUpdate, player_logout::PlayerLogout,
-    player_auth_request::PlayerAuthRequest, reply_chars::ReplyChars, player_in_game::PlayerInGame,
+    auth::GS, blowfish::BlowFish, gs_status::GSStatusUpdate, player_auth_request::PlayerAuthRequest, player_in_game::PlayerInGame,
+    player_logout::PlayerLogout, reply_chars::ReplyChars,
 };
