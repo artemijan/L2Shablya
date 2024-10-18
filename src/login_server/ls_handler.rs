@@ -4,7 +4,7 @@ use crate::common::session::SessionKey;
 use crate::crypt::blowfish_engine::generate_blowfish_key;
 use crate::crypt::login::LoginEncryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
-use crate::login_server::controller::{LoginController};
+use crate::login_server::controller::LoginController;
 use crate::login_server::PacketHandler;
 use crate::packet::to_client::Init;
 use crate::packet::ls_factory::build_client_packet;

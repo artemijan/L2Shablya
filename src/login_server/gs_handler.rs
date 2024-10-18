@@ -6,7 +6,6 @@ use crate::packet::{
     common::write::SendablePacketBuffer, common::SendablePacket, error::PacketRunError,
     to_gs::InitLS, login_fail::LoginFail, gs_factory::build_gs_packet, LoginFailReasons,
 };
-
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use openssl::error::ErrorStack;
