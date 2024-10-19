@@ -15,7 +15,10 @@ pub struct User {
 
 #[allow(unused)]
 impl User {
-    pub async fn fetch_by_username(db_pool: &AnyPool, username: &str) -> Result<Option<Self>, Error> {
+    pub async fn fetch_by_username(
+        db_pool: &AnyPool,
+        username: &str,
+    ) -> Result<Option<Self>, Error> {
         let user = sqlx::query_as("select id,username,password from user where username=$1")
             .bind(username)
             .fetch_optional(db_pool)
@@ -31,7 +34,10 @@ impl User {
             let argon2 = Argon2::default();
             // code here to hash the password
             // might take a second of CPU time
-            argon2.hash_password(pwd.as_bytes(), &salt).unwrap().to_string()
+            argon2
+                .hash_password(pwd.as_bytes(), &salt)
+                .unwrap()
+                .to_string()
         })
         .await
         .unwrap()
@@ -42,9 +48,26 @@ impl User {
         let pwd_hash = self.password.clone();
         spawn_blocking(move || {
             let parsed_hash = PasswordHash::new(&pwd_hash).unwrap();
-            Argon2::default().verify_password(pwd.as_bytes(), &parsed_hash).is_ok()
+            Argon2::default()
+                .verify_password(pwd.as_bytes(), &parsed_hash)
+                .is_ok()
         })
         .await
         .unwrap()
+    }
+    pub async fn new(db_pool: &AnyPool, username: &str, password: &str) -> anyhow::Result<User> {
+        let password_hash = Self::hash_password(password).await;
+        let user = sqlx::query_as(
+            "
+            INSERT INTO user (username, password) 
+            VALUES ($1, $2)
+            RETURNING id, username, password
+            ",
+        )
+        .bind(username)
+        .bind(password_hash)
+        .fetch_one(db_pool)
+        .await?;
+        Ok(user)
     }
 }

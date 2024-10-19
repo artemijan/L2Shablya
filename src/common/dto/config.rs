@@ -9,6 +9,7 @@ use std::io::BufReader;
 pub struct Server {
     pub name: String,
     pub blowfish_key: String,
+    pub auto_registration: bool,
     #[serde(deserialize_with = "validate_allowed_gs_keys")]
     pub allowed_gs: Option<HashMap<String, AllowedGS>>,
     pub listeners: Listeners,
@@ -18,10 +19,12 @@ pub struct Server {
 
 impl Server {
     pub fn load(file_name: &str) -> Self {
-        let file = File::open(file_name).unwrap_or_else(|e| panic!("Failed to open config file: {file_name}. Error: {e}"));
+        let file = File::open(file_name)
+            .unwrap_or_else(|e| panic!("Failed to open config file: {file_name}. Error: {e}"));
         let reader = BufReader::new(file);
-        let config: Server =
-            serde_yaml::from_reader(reader).unwrap_or_else(|e| panic!("Unable to parse {file_name}, the format is incorrect, {e}"));
+        let config: Server = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
+            panic!("Unable to parse {file_name}, the format is incorrect, {e}")
+        });
         println!("Configuration ok, starting application: {}", config.name);
         config
     }
@@ -36,7 +39,9 @@ pub struct Database {
 }
 
 // Custom deserialization function to validate that all keys in the HashMap are valid hex strings
-fn validate_allowed_gs_keys<'de, D>(deserializer: D) -> Result<Option<HashMap<String, AllowedGS>>, D::Error>
+fn validate_allowed_gs_keys<'de, D>(
+    deserializer: D,
+) -> Result<Option<HashMap<String, AllowedGS>>, D::Error>
 where
     D: Deserializer<'de>,
 {

@@ -120,7 +120,9 @@ impl Login {
             id: message_id.to_string(),
         };
         sender.send(message).await?;
-        let k = resp_rx.blocking_recv()?;
+        let k = resp_rx
+            .await
+            .expect("Can not send the message to game server");
         Ok(k)
     }
 }
