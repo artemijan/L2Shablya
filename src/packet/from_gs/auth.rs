@@ -64,7 +64,7 @@ impl GSHandle for GS {
             hex_id: self.hex_id.clone(),
             hosts: self.hosts.clone(),
         };
-        match gs.get_lc().register_gs(gsi) {
+        match gs.get_lc().register_gs(gsi).await {
             Ok(()) => {
                 gs.connection_state.transition_to(&GSConnectionState::Authed)?;
                 gs.server_id = Some(self.desired_id);

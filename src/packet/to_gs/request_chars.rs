@@ -1,7 +1,7 @@
 use crate::packet::common::write::SendablePacketBuffer;
 use crate::packet::common::SendablePacket;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RequestChars {
     pub buffer: SendablePacketBuffer,
     account_name: String,

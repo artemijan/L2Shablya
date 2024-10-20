@@ -14,11 +14,6 @@ pub trait SendablePacket: Debug + Send + Sync {
     fn get_bytes(&self) -> Vec<u8>;
 }
 
-#[derive(Debug)]
-pub enum PacketType {
-    ReplyChars(ReplyChars),
-}
-
 pub trait ReadablePacket: Debug + Send + Sync {
     fn read(data: &[u8]) -> Option<Self>
     where

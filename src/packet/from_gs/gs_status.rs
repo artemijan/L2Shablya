@@ -94,20 +94,18 @@ impl GSHandle for GSStatusUpdate {
     async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let lc = gs.get_lc();
         if let Some(server_id) = gs.server_id {
-            let mut gs_info = lc.get_game_server(server_id).unwrap();
+            let mut gs_info = lc.get_game_server(server_id).await.unwrap();
             gs_info.max_players = self.max_players;
             gs_info.age_limit = self.server_age;
             gs_info.show_brackets = self.use_square_brackets;
             gs_info.server_type = self.server_type;
             gs_info.status = self.status.clone() as i32;
-            if lc.update_gs_status(server_id, gs_info).is_err() {
+            if lc.update_gs_status(server_id, gs_info).await.is_err() {
                 return Err(PacketRun {
                     msg: Some(format!("Server was not found, GS id {server_id}")),
                     response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonAccessFailed))),
                 });
             }
-            //connect game server thread to login controller, so we can send messages later
-            gs.start_channel();
         }
         Ok(None)
     }

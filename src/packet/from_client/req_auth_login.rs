@@ -1,3 +1,4 @@
+use crate::common::dto::player;
 use crate::common::str::Trim;
 use crate::database::user::User;
 use crate::login_server::ls_handler::ClientHandler;
@@ -37,26 +38,30 @@ impl ClientHandle for RequestAuthLogin {
     ) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
         let auto_registration = ch.get_lc().get_config().auto_registration;
         let pool = ch.get_db_pool_mut();
-        if let Some(user) = User::fetch_by_username(pool, &self.username).await.unwrap() {
-            if user.verify_password(&self.password).await {
-                ch.account_name = Some(self.username.to_string());
-                return Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))));
+        let mut user_option = User::fetch_by_username(pool, &self.username)
+            .await
+            .expect("Can not connect to the DB");
+        if let Some(user) = user_option {
+            if !user.verify_password(&self.password).await {
+                return Err(error::PacketRun {
+                    msg: Some(format!("Login Fail, tried user: {}", self.username)),
+                    response: Some(Box::new(PlayerLogin::new(
+                        PlayerLoginFailReasons::ReasonUserOrPassWrong,
+                    ))),
+                });
             }
-        } else if auto_registration {
-            if User::new(pool, &self.username, &self.password)
-                .await
-                .is_ok()
-            {
-                ch.account_name = Some(self.username.to_string());
-                return Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))));
-            }
-            panic!("Can not create a user {}", self.username);
+        } else if auto_registration{
+            user_option = User::new(pool, &self.username, &self.password).await.ok();
+            assert!(user_option.is_some(), "Can not create a user {}", self.username);
         }
-        Err(error::PacketRun {
-            msg: Some(format!("Login Fail, tried user: {}", self.username)),
-            response: Some(Box::new(PlayerLogin::new(
-                PlayerLoginFailReasons::ReasonUserOrPassWrong,
-            ))),
-        })
+        ch.account_name = Some(self.username.to_string());
+        let player_info = player::Info {
+            is_authed: true,
+            account_name: Some(self.username.clone()),
+            ..Default::default()
+        };
+        let lc =ch.get_lc().clone(); 
+        lc.on_player_login(player_info).await;
+        return Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))));
     }
 }

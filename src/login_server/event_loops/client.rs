@@ -13,7 +13,7 @@ pub async fn start(config: Arc<config::Server>, lc: Arc<Login>, pool: AnyPool) {
     loop {
         match listener.accept().await {
             Ok((stream, _)) => {
-                let mut handler = ClientHandler::new(stream, pool.clone(), lc.clone(), config.client.timeout);
+                let mut handler = ClientHandler::new(stream, pool.clone(), lc.clone());
                 tokio::spawn(async move { handler.handle_client().await });
             }
             Err(e) => {

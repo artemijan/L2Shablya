@@ -51,12 +51,13 @@ pub struct ClientHandler {
 /// 7. Respond with `ServerList::new()`
 ///
 impl ClientHandler {
-    pub fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>, timeout: u8) -> Self {
+    pub fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
         let mut rng = rand::thread_rng();
         let blowfish_key = generate_blowfish_key();
         let encryption = Encryption::new(&blowfish_key.clone());
         let session_id = rng.gen();
         let connection_start_time = SystemTime::now();
+        let timeout = lc.get_config().client.timeout;
         let (tcp_reader, tcp_writer) = stream.into_split();
         ClientHandler {
             tcp_reader: Arc::new(Mutex::new(tcp_reader)),

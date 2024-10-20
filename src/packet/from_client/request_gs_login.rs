@@ -30,17 +30,13 @@ impl ReadablePacket for RequestGSLogin {
 
 #[async_trait]
 impl ClientHandle for RequestGSLogin {
-    async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(
+        &self,
+        ch: &mut ClientHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let acc_name = ch.account_name.clone().unwrap();
         let lc = ch.get_lc();
         let message = Box::new(RequestChars::new(&acc_name));
-        if let Ok(response) = lc.send_message_to_gs(self.server_id, message, &acc_name).await {
-            Ok(Some(Box::new(PlayOk::new(ch.get_session_key()))))
-        } else {
-            Err(PacketRun {
-                msg: Some(format!("Login Fail, tried user: {}", &acc_name)),
-                response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonNotAuthed))),
-            })
-        }
+        Ok(Some(Box::new(PlayOk::new(ch.get_session_key()))))
     }
 }
