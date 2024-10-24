@@ -1,4 +1,4 @@
-use crate::login_server::gs_handler::{GSConnectionState, GSHandler};
+use crate::login_server::gs_thread::GSHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
@@ -6,6 +6,7 @@ use crate::packet::error::PacketRun;
 use crate::packet::login_fail::PlayerLogin;
 use crate::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
+use crate::login_server::connection_state;
 
 #[derive(Clone, Debug)]
 pub struct BlowFish {
@@ -33,7 +34,7 @@ impl GSHandle for BlowFish {
             if let Some(index) = decrypted.iter().position(|&x| x != 0) {
                 decrypted.drain(..index);
             }
-            gs.connection_state.transition_to(&GSConnectionState::BfConnected)?;
+            gs.set_connection_state(&connection_state::GS::BfConnected)?;
             gs.set_blowfish_key(&decrypted);
         } else {
             return Err(PacketRun {

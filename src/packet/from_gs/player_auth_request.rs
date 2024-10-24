@@ -1,5 +1,5 @@
 use crate::common::session::SessionKey;
-use crate::login_server::gs_handler::GSHandler;
+use crate::login_server::gs_thread::GSHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};

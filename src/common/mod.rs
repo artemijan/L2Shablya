@@ -4,3 +4,4 @@ pub mod errors;
 pub mod network;
 pub mod session;
 pub mod str;
+pub mod message;

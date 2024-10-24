@@ -1,15 +1,14 @@
 use crate::common::dto::player;
 use crate::common::str::Trim;
 use crate::database::user::User;
-use crate::login_server::ls_handler::ClientHandler;
-use crate::login_server::PacketHandler;
-use crate::packet::common::ClientHandle;
+use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::traits::PacketHandler;
+use crate::packet::common::{ClientHandle, PacketResult};
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::error;
 use crate::packet::login_fail::PlayerLogin;
 use crate::packet::to_client::LoginOk;
 use crate::packet::PlayerLoginFailReasons;
-use anyhow::bail;
 use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
@@ -35,7 +34,7 @@ impl ClientHandle for RequestAuthLogin {
     async fn handle(
         &self,
         ch: &mut ClientHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
+    ) -> PacketResult {
         let auto_registration = ch.get_lc().get_config().auto_registration;
         let pool = ch.get_db_pool_mut();
         let mut user_option = User::fetch_by_username(pool, &self.username)
@@ -57,11 +56,11 @@ impl ClientHandle for RequestAuthLogin {
         ch.account_name = Some(self.username.to_string());
         let player_info = player::Info {
             is_authed: true,
-            account_name: Some(self.username.clone()),
+            account_name: self.username.clone(),
             ..Default::default()
         };
-        let lc =ch.get_lc().clone(); 
-        lc.on_player_login(player_info).await;
-        return Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))));
+        let lc =ch.get_lc(); 
+        lc.on_player_login(player_info).await.expect("TODO: panic message");
+        Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))))
     }
 }

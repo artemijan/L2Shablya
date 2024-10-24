@@ -1,5 +1,4 @@
-use crate::login_server::gs_handler::GSHandler;
-use crate::login_server::PacketHandler;
+use crate::login_server::gs_thread::GSHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
@@ -7,7 +6,7 @@ use crate::packet::error::PacketRun;
 use crate::packet::login_fail::PlayerLogin;
 use crate::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
-use encoding::all;
+use crate::login_server::traits::PacketHandler;
 
 #[repr(i32)]
 #[derive(Clone, Debug, Default)]
@@ -91,7 +90,10 @@ impl ReadablePacket for GSStatusUpdate {
 
 #[async_trait]
 impl GSHandle for GSStatusUpdate {
-    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(
+        &self,
+        gs: &mut GSHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let lc = gs.get_lc();
         if let Some(server_id) = gs.server_id {
             let mut gs_info = lc.get_game_server(server_id).await.unwrap();
@@ -103,9 +105,12 @@ impl GSHandle for GSStatusUpdate {
             if lc.update_gs_status(server_id, gs_info).await.is_err() {
                 return Err(PacketRun {
                     msg: Some(format!("Server was not found, GS id {server_id}")),
-                    response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonAccessFailed))),
+                    response: Some(Box::new(PlayerLogin::new(
+                        PlayerLoginFailReasons::ReasonAccessFailed,
+                    ))),
                 });
             }
+            gs.start_channel().await;
         }
         Ok(None)
     }

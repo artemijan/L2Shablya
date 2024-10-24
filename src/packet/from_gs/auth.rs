@@ -1,14 +1,13 @@
 use crate::common::dto::game_server::GSInfo;
-use crate::login_server::gs_handler::{GSConnectionState, GSHandler};
-use crate::login_server::PacketHandler;
+use crate::login_server::gs_thread::GSHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::error::PacketRun;
-use crate::packet::login_fail::PlayerLogin;
 use crate::packet::to_gs::AuthGS;
-use crate::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
+use crate::login_server::connection_state;
+use crate::login_server::traits::PacketHandler;
 
 #[derive(Clone, Debug)]
 pub struct GS {
@@ -64,9 +63,10 @@ impl GSHandle for GS {
             hex_id: self.hex_id.clone(),
             hosts: self.hosts.clone(),
         };
+
         match gs.get_lc().register_gs(gsi).await {
             Ok(()) => {
-                gs.connection_state.transition_to(&GSConnectionState::Authed)?;
+                gs.set_connection_state(&connection_state::GS::Authed)?;
                 gs.server_id = Some(self.desired_id);
                 Ok(Some(Box::new(AuthGS::new(self.desired_id))))
             }

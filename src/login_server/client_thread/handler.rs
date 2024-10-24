@@ -1,3 +1,14 @@
+use std::sync::Arc;
+use tokio::sync::{Mutex, Notify};
+use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
+use sqlx::AnyPool;
+use std::time::SystemTime;
+use async_trait::async_trait;
+use tokio::net::TcpStream;
+use anyhow::{Context, Error};
+use rand::Rng;
+use tokio::io::AsyncWriteExt;
+use crate::common::dto::config::{Connection, Server};
 use crate::common::errors::Packet;
 use crate::common::errors::Packet::{ClientPacketNotFound, UnableToSendInit};
 use crate::common::session::SessionKey;
@@ -5,22 +16,12 @@ use crate::crypt::blowfish_engine::generate_blowfish_key;
 use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::login_server::controller::Login;
-use crate::login_server::PacketHandler;
-use crate::packet::common::SendablePacket;
+use crate::login_server::traits::{PacketHandler, Shutdown};
+use crate::packet::common::{ClientHandle, SendablePacket};
 use crate::packet::ls_factory::build_client_packet;
 use crate::packet::to_client::Init;
-use anyhow::{Context, Error};
-use async_trait::async_trait;
-use rand::Rng;
-use sqlx::AnyPool;
-use std::sync::Arc;
 
-use std::time::SystemTime;
-use tokio::io::AsyncWriteExt;
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
-use tokio::net::TcpStream;
-use tokio::sync::Mutex;
-
+#[derive(Clone, Debug)]
 pub struct ClientHandler {
     blowfish_key: Vec<u8>,
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
@@ -28,6 +29,7 @@ pub struct ClientHandler {
     pub account_name: Option<String>,
     db_pool: AnyPool,
     session_id: i32,
+    shutdown_notifier: Arc<Notify>,
     pub lc: Arc<Login>,
     encryption: Encryption,
     timeout: u8,
@@ -51,29 +53,6 @@ pub struct ClientHandler {
 /// 7. Respond with `ServerList::new()`
 ///
 impl ClientHandler {
-    pub fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
-        let mut rng = rand::thread_rng();
-        let blowfish_key = generate_blowfish_key();
-        let encryption = Encryption::new(&blowfish_key.clone());
-        let session_id = rng.gen();
-        let connection_start_time = SystemTime::now();
-        let timeout = lc.get_config().client.timeout;
-        let (tcp_reader, tcp_writer) = stream.into_split();
-        ClientHandler {
-            tcp_reader: Arc::new(Mutex::new(tcp_reader)),
-            tcp_writer: Arc::new(Mutex::new(tcp_writer)),
-            db_pool,
-            encryption,
-            session_id,
-            session_key: SessionKey::new(),
-            account_name: None,
-            connection_start_time,
-            rsa_key_pair: lc.get_random_rsa_key_pair(),
-            blowfish_key: blowfish_key.to_vec(),
-            timeout,
-            lc,
-        }
-    }
     pub fn get_session_id(&self) -> i32 {
         self.session_id
     }
@@ -85,19 +64,51 @@ impl ClientHandler {
     }
 }
 
+impl Shutdown for ClientHandler {
+    fn get_shutdown_listener(&self) -> Arc<Notify> {
+        self.shutdown_notifier.clone()
+    }
+
+    fn shutdown(&self) {
+        self.shutdown_notifier.notify_one();
+    }
+}
+
 #[async_trait]
 impl PacketHandler for ClientHandler {
     fn get_handler_name() -> String {
         "Login client handler".to_string()
     }
-
+    fn get_connection_config(cfg: &Server) -> &Connection {
+        &cfg.listeners.clients.connection
+    }
     fn get_lc(&self) -> &Arc<Login> {
         &self.lc
     }
-
-    fn on_disconnect(&mut self) {
-        //todo: think of how we cna handle client disconnection
-        println!("Player disconnected: {:?}", self.session_id);
+    
+    fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
+        let mut rng = rand::thread_rng();
+        let blowfish_key = generate_blowfish_key();
+        let encryption = Encryption::new(&blowfish_key.clone());
+        let session_id = rng.gen();
+        let connection_start_time = SystemTime::now();
+        let timeout = lc.get_config().client.timeout;
+        let (tcp_reader, tcp_writer) = stream.into_split();
+        ClientHandler {
+            tcp_reader: Arc::new(Mutex::new(tcp_reader)),
+            tcp_writer: Arc::new(Mutex::new(tcp_writer)),
+            db_pool,
+            shutdown_notifier: Arc::new(Notify::new()),
+            encryption,
+            session_id,
+            session_key: SessionKey::new(),
+            account_name: None,
+            connection_start_time,
+            rsa_key_pair: lc.get_random_rsa_key_pair(),
+            blowfish_key: blowfish_key.to_vec(),
+            timeout,
+            lc,
+        }
     }
 
     async fn on_connect(&mut self) -> Result<(), Packet> {
@@ -115,6 +126,11 @@ impl PacketHandler for ClientHandler {
             .await
             .map_err(|_| UnableToSendInit)?;
         Ok(())
+    }
+
+    async fn on_disconnect(&mut self) {
+        //todo: think of how we cna handle client disconnection
+        println!("Player disconnected: {:?}", self.session_id);
     }
     fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>> {
         &self.tcp_reader
@@ -144,7 +160,10 @@ impl PacketHandler for ClientHandler {
 
     async fn on_receive_bytes(&mut self, packet_size: usize, data: &mut [u8]) -> Result<(), Error> {
         self.encryption.crypt.decrypt(data, 0, packet_size)?;
-        let handler = build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| ClientPacketNotFound { opcode: data[0] as usize })?;
+        let handler =
+            build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| ClientPacketNotFound {
+                opcode: data[0] as usize,
+            })?;
         let resp = handler.handle(self).await;
         self.handle_result(resp).await
     }
