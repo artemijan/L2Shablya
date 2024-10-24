@@ -1,49 +1,46 @@
+use blowfish::{BlowfishLE};
+use blowfish::cipher::{BlockDecrypt, BlockDecryptMut, BlockEncrypt, KeyInit};
 use crate::common::errors::Packet;
-use crate::crypt::blowfish_engine::BlowfishEngine;
 
 #[derive(Debug, Clone)]
 pub struct Crypt {
-    cipher: BlowfishEngine,
+    cipher: BlowfishLE,
 }
 
 impl Crypt {
     pub fn from_u8_key(key: &[u8]) -> Self {
-        let cipher = BlowfishEngine::new(key);
+        let cipher = BlowfishLE::new_from_slice(key).unwrap();
         Crypt { cipher }
     }
 
-    fn calculate_checksum_block(raw: &[u8], offset: usize, size: usize) -> (u32, u32) {
+    fn calculate_checksum_block(raw: &[u8]) -> (u32, u32) {
         let mut chksum: u32 = 0;
-        let count = size - 4;
+        let count = raw.len() - 4;
         let mut check: u32;
-        let mut i = offset;
+        let mut offset = 0;
 
-        while i < count {
-            check = u32::from(raw[i]) & 0xff;
-            check |= (u32::from(raw[i + 1]) << 8) & 0xff00;
-            check |= (u32::from(raw[i + 2]) << 0x10) & 0x00ff_0000;
-            check |= (u32::from(raw[i + 3]) << 0x18) & 0xff00_0000;
+        while offset < count {
+            check = u32::from(raw[offset]) & 0xff;
+            check |= (u32::from(raw[offset + 1]) << 8) & 0xff00;
+            check |= (u32::from(raw[offset + 2]) << 0x10) & 0x00ff_0000;
+            check |= (u32::from(raw[offset + 3]) << 0x18) & 0xff00_0000;
             chksum ^= check;
-            i += 4;
+            offset += 4;
         }
-        check = u32::from(raw[i]) & 0xff;
-        check |= (u32::from(raw[i + 1]) << 8) & 0xff00;
-        check |= (u32::from(raw[i + 2]) << 0x10) & 0xff0_000;
-        check |= (u32::from(raw[i + 3]) << 0x18) & 0xff00_0000;
+        check = u32::from(raw[offset]) & 0xff;
+        check |= (u32::from(raw[offset + 1]) << 8) & 0xff00;
+        check |= (u32::from(raw[offset + 2]) << 0x10) & 0xff0_000;
+        check |= (u32::from(raw[offset + 3]) << 0x18) & 0xff00_0000;
         (check, chksum)
     }
-    pub fn verify_checksum(raw: &[u8], offset: usize, size: usize) -> bool {
-        // check if size is multiple of 4 and if there is more then only the checksum
-        if size & 3 != 0 || size <= 4 {
-            return false;
-        }
-        let (check, chksum) = Self::calculate_checksum_block(raw, offset, size);
+    pub fn verify_checksum(raw: &[u8]) -> bool {
+        let (check, chksum) = Self::calculate_checksum_block(raw);
         check == chksum
     }
 
-    pub fn append_checksum(raw: &mut [u8], offset: usize, size: usize) {
-        let (_, chksum) = Self::calculate_checksum_block(raw, offset, size);
-        let last = offset + size - 4; //modify last 4 bytes, starting from offset
+    pub fn append_checksum(raw: &mut [u8]) {
+        let (_, chksum) = Self::calculate_checksum_block(raw);
+        let last = raw.len() - 4; //modify last 4 bytes, starting from offset
         raw[last] = (chksum & 0xff) as u8;
         raw[last + 1] = ((chksum >> 0x08) & 0xff) as u8;
         raw[last + 2] = ((chksum >> 0x10) & 0xff) as u8;
@@ -78,18 +75,15 @@ impl Crypt {
         raw[pos + 3] = ((ecx >> 24) & 0xFF) as u8;
     }
 
-    pub fn decrypt(&self, raw: &mut [u8], offset: usize, size: usize) -> Result<(), Packet> {
-        if size % 8 > 0 || offset + size > raw.len() {
-            return Err(Packet::DecryptBlowfishError);
-        }
-        for i in (offset..size).step_by(8) {
-            self.cipher.decrypt_block(raw, i);
+    pub fn decrypt(&self, raw: &mut [u8]) -> Result<(), Packet> {
+        for chunk in raw.chunks_mut(8) {
+            self.cipher.decrypt_block(chunk.into())
         }
         Ok(())
     }
-    pub fn crypt(&self, raw: &mut [u8], offset: usize, size: usize) {
-        for i in (offset..offset + size).step_by(8) {
-            self.cipher.encrypt_block(raw, i);
+    pub fn crypt(&self, raw: &mut [u8]) {
+        for chunk in raw.chunks_mut(8) {
+            self.cipher.encrypt_block(chunk.into())
         }
     }
 }
@@ -111,7 +105,7 @@ mod test {
         ];
         let decryptor = Crypt::from_u8_key(&key);
         let data_len = data.len();
-        let res = decryptor.decrypt(&mut data, 0, data_len);
+        let res = decryptor.decrypt(&mut data);
         assert!(res.is_ok(), "Result must be ok");
         assert_eq!(data, decrypted, "Auth gg packet should be decrypted correctly");
     }
@@ -129,7 +123,7 @@ mod test {
         let key = [12, 84, 204, 79, 78, 136, 249, 67, 63, 70, 44, 61, 28, 224, 9, 31];
         let decryptor = Crypt::from_u8_key(&key);
         let data_len = data.len();
-        let res = decryptor.decrypt(&mut data, 0, data_len);
+        let res = decryptor.decrypt(&mut data);
         assert!(res.is_ok(), "Result must be ok");
         assert_eq!(data, decrypted, "Auth gg packet should be decrypted correctly");
     }
@@ -152,8 +146,8 @@ mod test {
             27, 152, 96, 66, 111, 110, 238, 133, 142, 127, 76, 38, 85, 38, 27, 252, 58, 165, 51, 164, 88, 87, 93, 205, 91, 240, 249, 0, 0,
             189, 153, 155, 43,
         ];
-        let size = data.len() - 2;
-        Crypt::append_checksum(&mut data, 2, size);
+        let size = data.len();
+        Crypt::append_checksum(&mut data[2..size]);
         assert_eq!(data, data_expected, "Append checksum must work");
     }
 
@@ -167,7 +161,7 @@ mod test {
             27, 152, 96, 66, 111, 110, 238, 133, 142, 127, 76, 38, 85, 38, 27, 252, 58, 165, 51, 164, 88, 87, 93, 205, 91, 240, 249, 0, 0,
             189, 153, 155, 43,
         ];
-        let result = Crypt::verify_checksum(&data, 2, data.len() - 2);
+        let result = Crypt::verify_checksum(&data[2..data.len()]);
         assert!(result, "Verify checksum must work");
     }
 
@@ -184,7 +178,7 @@ mod test {
             0, 46, 0, 48, 0, 46, 0, 48, 0, 47, 0, 48, 0, 0, 0, 56, 0, 57, 0, 46, 0, 50, 0, 51, 0, 52, 0, 46, 0, 50, 0, 52, 0, 53, 0, 46, 0,
             49, 0, 54, 0, 0, 0, 0, 0, 0, 0, 133, 132, 217, 23,
         ];
-        let result = Crypt::verify_checksum(&data, 0, data.len());
+        let result = Crypt::verify_checksum(&data);
         assert!(result, "Verify checksum must work");
     }
 
@@ -221,7 +215,7 @@ mod test {
         ];
         let decryptor = Crypt::from_u8_key(&key);
         let data_len = data.len();
-        let res = decryptor.decrypt(&mut data, 0, data_len);
+        let res = decryptor.decrypt(&mut data);
         assert!(res.is_ok(), "Result must be ok");
         assert_eq!(data, decrypted, "Auth gg packet should be decrypted correctly");
     }

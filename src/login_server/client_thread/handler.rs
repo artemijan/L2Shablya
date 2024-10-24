@@ -12,7 +12,7 @@ use crate::common::dto::config::{Connection, Server};
 use crate::common::errors::Packet;
 use crate::common::errors::Packet::{ClientPacketNotFound, UnableToSendInit};
 use crate::common::session::SessionKey;
-use crate::crypt::blowfish_engine::generate_blowfish_key;
+use crate::crypt::generate_blowfish_key;
 use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::login_server::controller::Login;
@@ -158,8 +158,8 @@ impl PacketHandler for ClientHandler {
             .with_context(|| "Failed to flush packet to socket")
     }
 
-    async fn on_receive_bytes(&mut self, packet_size: usize, data: &mut [u8]) -> Result<(), Error> {
-        self.encryption.crypt.decrypt(data, 0, packet_size)?;
+    async fn on_receive_bytes(&mut self, _: usize, data: &mut [u8]) -> Result<(), Error> {
+        self.encryption.crypt.decrypt(data)?;
         let handler =
             build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| ClientPacketNotFound {
                 opcode: data[0] as usize,

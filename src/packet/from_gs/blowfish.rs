@@ -6,7 +6,7 @@ use crate::packet::error::PacketRun;
 use crate::packet::login_fail::PlayerLogin;
 use crate::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
-use crate::login_server::connection_state;
+use crate::login_server::gs_thread::connection_state;
 
 #[derive(Clone, Debug)]
 pub struct BlowFish {

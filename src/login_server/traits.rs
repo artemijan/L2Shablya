@@ -14,6 +14,8 @@ use tokio::io::{AsyncReadExt};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::sync::{Mutex, Notify};
 use tokio::time::{sleep};
+
+
 pub trait Shutdown{
     fn get_shutdown_listener(&self) -> Arc<Notify>;
     fn shutdown(&self);
@@ -41,7 +43,7 @@ pub trait PacketHandler: Shutdown {
         &mut self,
         packet_size: usize,
         bytes: &mut [u8],
-    ) -> Result<(), anyhow::Error>;
+    ) -> Result<(), Error>;
 
     async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
         let mut size_buf = [0; PACKET_SIZE_BYTES];
@@ -59,7 +61,7 @@ pub trait PacketHandler: Shutdown {
     async fn handle_result(
         &mut self,
         resp: Result<Option<Box<dyn SendablePacket>>, PacketRun>,
-    ) -> Result<(), anyhow::Error> {
+    ) -> Result<(), Error> {
         match resp {
             Ok(result) => {
                 if let Some(packet) = result {

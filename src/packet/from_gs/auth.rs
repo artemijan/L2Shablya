@@ -6,7 +6,7 @@ use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::error::PacketRun;
 use crate::packet::to_gs::AuthGS;
 use async_trait::async_trait;
-use crate::login_server::connection_state;
+use crate::login_server::gs_thread::connection_state;
 use crate::login_server::traits::PacketHandler;
 
 #[derive(Clone, Debug)]

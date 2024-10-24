@@ -13,7 +13,7 @@ use crate::common::errors::Packet;
 use crate::common::message::Request;
 use crate::crypt::new::Crypt;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
-use crate::login_server::connection_state::GS;
+use crate::login_server::gs_thread::connection_state::GS;
 use crate::login_server::controller::Login;
 use crate::login_server::traits::{PacketHandler, Shutdown};
 use crate::packet::common::{GSHandle, PacketResult, SendablePacket};
@@ -69,7 +69,7 @@ impl GSHandler {
         self.connection_state.transition_to(state)
     }
     pub fn decrypt(&self, data: &mut [u8]) -> Result<(), Packet> {
-        self.blowfish.decrypt(data, 0, data.len())
+        self.blowfish.decrypt(data)
     }
 
     pub fn decrypt_rsa(&self, data: &mut [u8]) -> Result<Vec<u8>, ErrorStack> {
@@ -151,34 +151,33 @@ impl PacketHandler for GSHandler {
         None
     }
 
-    async fn send_packet(&mut self, packet: Box<dyn SendablePacket>) -> Result<(), Error> {
-        self.send_bytes(packet.get_bytes()).await
-    }
-    async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error> {
-        let mut packet_buffer = SendablePacketBuffer::from_bytes(&bytes);
-        packet_buffer.write_i32(0)?;
-        let padding = (packet_buffer.get_size() - 2) % 8;
+    async fn send_packet(&mut self, mut packet: Box<dyn SendablePacket>) -> Result<(), Error> {
+        let mut buffer = packet.get_buffer_mut();
+        buffer.write_i32(0)?;
+        let padding = (buffer.get_size() - 2) % 8;
         if padding != 0 {
             for _ in padding..8 {
-                packet_buffer.write_u8(0)?;
+                buffer.write_u8(0)?;
             }
         }
-        let mut data_vec = packet_buffer.get_data();
-        let size = data_vec.len() - 2;
-        Crypt::append_checksum(&mut data_vec, 2, size);
-        self.blowfish.crypt(&mut data_vec, 2, size);
+        self.send_bytes(packet.get_bytes()).await
+    }
+    async fn send_bytes(&self, mut bytes: Vec<u8>) -> Result<(), Error> {
+        let size = bytes.len();
+        Crypt::append_checksum(&mut bytes[2..size]);
+        self.blowfish.crypt(&mut bytes[2..size]);
         self.get_stream_writer_mut()
             .await
             .lock()
             .await
-            .write_all(&data_vec)
+            .write_all(&bytes)
             .await?;
         Ok(())
     }
 
-    async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8]) -> Result<(), Error> {
-        self.blowfish.decrypt(bytes, 0, packet_size)?;
-        if !Crypt::verify_checksum(bytes, 0, packet_size) {
+    async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
+        self.blowfish.decrypt(bytes)?;
+        if !Crypt::verify_checksum(bytes) {
             bail!("Can not verify check sum.")
         }
         let handler = build_gs_packet(bytes).ok_or_else(|| Packet::ClientPacketNotFound {

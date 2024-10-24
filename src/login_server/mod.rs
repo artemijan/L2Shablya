@@ -7,7 +7,6 @@ use crate::login_server::traits::PacketHandler;
 
 pub mod controller;
 pub mod traits;
-pub mod connection_state;
 pub mod gs_thread;
 pub mod client_thread;
 

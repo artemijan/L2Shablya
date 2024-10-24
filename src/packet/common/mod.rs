@@ -6,6 +6,7 @@ use async_trait::async_trait;
 use std::fmt::Debug;
 use std::net::Ipv4Addr;
 use std::ops::Deref;
+use crate::packet::common::write::SendablePacketBuffer;
 
 pub mod read;
 pub mod write;
@@ -14,6 +15,7 @@ pub type PacketResult = Result<Option<Box<dyn SendablePacket>>, PacketRun>;
 
 pub trait SendablePacket: Debug + Send + Sync {
     fn get_bytes(&self) -> Vec<u8>;
+    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer;
 }
 
 pub trait ReadablePacket: Debug + Send + Sync {

@@ -27,4 +27,8 @@ impl SendablePacket for RequestChars {
     fn get_bytes(&self) -> Vec<u8> {
         self.buffer.get_data()
     }
+
+    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
+        &mut self.buffer
+    }
 }

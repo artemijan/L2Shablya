@@ -1,4 +1,4 @@
-use crate::crypt::blowfish_engine::STATIC_BLOWFISH_KEY;
+use crate::crypt::STATIC_BLOWFISH_KEY;
 use crate::crypt::new::Crypt;
 
 #[allow(unused)]
