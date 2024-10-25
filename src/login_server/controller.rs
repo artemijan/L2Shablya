@@ -14,6 +14,8 @@ use rand::Rng;
 use std::collections::{hash_map::Entry, HashMap};
 use std::io::Read;
 use std::sync::Arc;
+use std::time::{Duration, SystemTime};
+use sqlx::__rt::timeout;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::oneshot;
 use tokio::sync::RwLock;
@@ -82,23 +84,28 @@ impl Login {
         &self,
         mut player_info: Info,
     ) -> anyhow::Result<(), PacketRun> {
-        let servers = self.game_servers.read().await;
         let account_name = player_info.account_name.clone();
         let packet = Box::new(RequestChars::new(&account_name));
         let mut tasks = vec![];
+        let timeout_duration = Duration::from_secs(
+            u64::from(self.config.listeners.game_servers.messages.timeout)
+        );
         for gsi in self.game_servers.read().await.values() {
-            let task = self.send_message_to_gs(gsi.id, packet.clone());
-            tasks.push(task);
+            let task = self.send_message_to_gs(
+                gsi.id, &account_name, packet.clone(),
+            );
+            tasks.push(timeout(timeout_duration, task));
         }
         let mut task_results = join_all(tasks).await.into_iter();
         while let Some(Ok(resp)) = task_results.next() {
-            if let Some(PacketType::ReplyChars(p)) = resp {
+            if let Ok(Some(PacketType::ReplyChars(p))) = resp {
                 player_info.servers.push(GSCharsInfo {
                     char_list: p.char_list,
                     chars_to_delete: p.chars_to_delete,
                     chars: p.chars,
                 });
             }
+            // ignore all of the tasks that are timed out
         }
         let mut players_lock = self.players.write().await;
         players_lock.insert(account_name, player_info); // if player exists it will drop
@@ -108,6 +115,7 @@ impl Login {
     pub async fn send_message_to_gs(
         &self,
         gs_id: u8,
+        message_id: &str,
         packet: Box<dyn SendablePacket>,
     ) -> anyhow::Result<Option<PacketType>> {
         let sender: Sender<Request>;
@@ -119,7 +127,8 @@ impl Login {
         let message = Request {
             response: resp_tx,
             body: packet,
-            id: Uuid::new_v4().to_string(),
+            sent_at: SystemTime::now(),
+            id: message_id.to_string(),
         };
         sender.send(message).await?;
         let k = resp_rx

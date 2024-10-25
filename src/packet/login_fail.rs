@@ -48,18 +48,11 @@ impl PlayerLogin {
 }
 
 impl SendablePacket for PlayerLogin {
-    fn get_bytes(&self) -> Vec<u8> {
-        self.buffer.get_data()
-    }
-
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
     }
 }
 impl SendablePacket for GSLogin {
-    fn get_bytes(&self) -> Vec<u8> {
-        self.buffer.get_data()
-    }
 
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer

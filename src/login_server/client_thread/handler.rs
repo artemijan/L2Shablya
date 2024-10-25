@@ -114,7 +114,7 @@ impl PacketHandler for ClientHandler {
     async fn on_connect(&mut self) -> Result<(), Packet> {
         let addr = self.tcp_reader.lock().await.peer_addr().unwrap();
         println!("Client connected: {:?}", addr);
-        let init = Init::new(
+        let mut init = Init::new(
             self.session_id,
             self.rsa_key_pair.get_scrambled_modulus(),
             self.blowfish_key.clone(),
@@ -122,7 +122,7 @@ impl PacketHandler for ClientHandler {
         self.tcp_writer
             .lock()
             .await
-            .write_all(&init.buffer.get_data())
+            .write_all(&init.buffer.get_data_mut())
             .await
             .map_err(|_| UnableToSendInit)?;
         Ok(())
@@ -144,16 +144,16 @@ impl PacketHandler for ClientHandler {
         Some(u64::from(self.timeout))
     }
 
-    async fn send_packet(&mut self, packet: Box<dyn SendablePacket>) -> Result<(), Error> {
-        let bytes = packet.get_bytes();
-        self.send_bytes(bytes).await
+    async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<Box<dyn SendablePacket>, Error> {
+        self.send_bytes(packet.get_bytes_mut()).await?;
+        Ok(packet)
     }
 
-    async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error> {
+    async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
         self.tcp_writer
             .lock()
             .await
-            .write_all(bytes.as_slice())
+            .write_all(bytes)
             .await
             .with_context(|| "Failed to flush packet to socket")
     }

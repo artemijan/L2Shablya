@@ -33,7 +33,12 @@ impl Crypt {
         check |= (u32::from(raw[offset + 3]) << 0x18) & 0xff00_0000;
         (check, chksum)
     }
+    
     pub fn verify_checksum(raw: &[u8]) -> bool {
+        let size = raw.len();
+        if size & 3 != 0 || size <= 4 {
+            return false;
+        }
         let (check, chksum) = Self::calculate_checksum_block(raw);
         check == chksum
     }
@@ -76,12 +81,17 @@ impl Crypt {
     }
 
     pub fn decrypt(&self, raw: &mut [u8]) -> Result<(), Packet> {
+        let size = raw.len();
+        let offset = 0;
+        if size % 8 > 0 || offset + size > raw.len() {
+            return Err(Packet::DecryptBlowfishError);
+        }
         for chunk in raw.chunks_mut(8) {
             self.cipher.decrypt_block(chunk.into())
         }
         Ok(())
     }
-    pub fn crypt(&self, raw: &mut [u8]) {
+    pub fn encrypt(&self, raw: &mut [u8]) {
         for chunk in raw.chunks_mut(8) {
             self.cipher.encrypt_block(chunk.into())
         }

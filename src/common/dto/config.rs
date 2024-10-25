@@ -69,9 +69,16 @@ pub struct Connection {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+pub struct GSMessages {
+    pub timeout: u8,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct GSListener {
     pub connection: Connection,
+    pub messages: GSMessages,
 }
+
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ClientListener {

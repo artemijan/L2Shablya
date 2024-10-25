@@ -4,10 +4,12 @@ use tokio::net::TcpStream;
 use sqlx::AnyPool;
 use tokio::sync::{mpsc, Mutex, Notify, RwLock};
 use std::collections::HashMap;
+use std::time::{Duration, SystemTime};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use anyhow::{bail, Error};
 use openssl::error::ErrorStack;
 use tokio::io::AsyncWriteExt;
+use tokio::time::sleep;
 use crate::common::dto::config::{Connection, Server};
 use crate::common::errors::Packet;
 use crate::common::message::Request;
@@ -16,7 +18,7 @@ use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::login_server::gs_thread::connection_state::GS;
 use crate::login_server::controller::Login;
 use crate::login_server::traits::{PacketHandler, Shutdown};
-use crate::packet::common::{GSHandle, PacketResult, SendablePacket};
+use crate::packet::common::{GSHandle, PacketResult, PacketType, ReadablePacket, SendablePacket};
 use crate::packet::common::write::SendablePacketBuffer;
 use crate::packet::error;
 use crate::packet::gs_factory::build_gs_packet;
@@ -34,7 +36,7 @@ pub struct GSHandler {
     blowfish: Crypt,
     connection_state: GS,
     pub server_id: Option<u8>,
-    unhandled_messages: Arc<RwLock<HashMap<String, Request>>>,
+    income_messages: Arc<RwLock<HashMap<String, Request>>>,
 }
 
 impl GSHandler {
@@ -44,26 +46,47 @@ impl GSHandler {
     pub async fn start_channel(&self) {
         let (rx, mut tx) = mpsc::channel::<Request>(100);
         self.lc.connect_gs(self.server_id.unwrap(), rx).await;
-        let gs_handler_clone = Arc::new(self.clone());
+        let inbox = self.income_messages.clone();
+        let cloned_self = self.clone();
+        let threshold = Duration::from_secs(
+            u64::from(self.lc.get_config().listeners.game_servers.messages.timeout)
+        );
         tokio::spawn(async move {
             loop {
-                if let Some(request) = tx.recv().await {
-                    let mut income_messages = gs_handler_clone.unhandled_messages.write().await;
+                if let Some(mut request) = tx.recv().await {
+                    let mut income_messages = inbox.write().await;
                     //the message has been sent already, there is no sense to do it twice
-                    if income_messages.contains_key(&request.id) {
-                        let _ = request.response.send(None);
+                    let existing_msg = income_messages.remove(&request.id);
+                    if let Some(existing_msg) = existing_msg {
+                        let _ = existing_msg.response.send(None); // ignore error, we don't care if pipe is broken
+                    }
+                    //do a cleanup, if we have old messages, remove them
+                    let now = SystemTime::now();
+
+                    income_messages.retain(|_, req| {
+                        now.duration_since(req.sent_at).map_or(false, |elapsed| elapsed <= threshold)
+                    });
+                    // send packet later, now we only remember it
+                    let req_body = request.body;
+                    // we are safe to send bytes firs and then update messages, there is a lock.
+                    if let Ok(packet_back) = cloned_self.send_packet(req_body).await {
+                        request.body = packet_back;
+                        income_messages.insert(request.id.clone(), request);
                     } else {
-                        // send packet later, now we only remember it
-                        let req_bytes = request.body.get_bytes();
-                        if gs_handler_clone.send_bytes(req_bytes).await.is_ok() {
-                            income_messages.insert(request.id.clone(), request);
-                        } else {
-                            let _ = request.response.send(None);
-                        }
+                        //if it wasn't successful then just send back NoResponse without storing it
+                        let _ = request.response.send(None);
                     }
                 }
             }
         });
+    }
+    pub async fn respond_to_message(&self, message_id: &str, message: PacketType) {
+        let mut msg_box = self.income_messages.write().await;
+        let msg = msg_box.remove(message_id);
+        if let Some(request) = msg {
+            request.response.send(Some(message)).unwrap();
+        }
+        //if message is missing then we just ignore it
     }
     pub fn set_connection_state(&mut self, state: &GS) -> PacketResult {
         self.connection_state.transition_to(state)
@@ -114,7 +137,7 @@ impl PacketHandler for GSHandler {
             connection_state: GS::Initial,
             lc,
             server_id: None,
-            unhandled_messages: Arc::new(RwLock::new(HashMap::new())),
+            income_messages: Arc::new(RwLock::new(HashMap::new())),
         }
     }
 
@@ -151,7 +174,7 @@ impl PacketHandler for GSHandler {
         None
     }
 
-    async fn send_packet(&mut self, mut packet: Box<dyn SendablePacket>) -> Result<(), Error> {
+    async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<Box<dyn SendablePacket>, Error> {
         let mut buffer = packet.get_buffer_mut();
         buffer.write_i32(0)?;
         let padding = (buffer.get_size() - 2) % 8;
@@ -160,12 +183,15 @@ impl PacketHandler for GSHandler {
                 buffer.write_u8(0)?;
             }
         }
-        self.send_bytes(packet.get_bytes()).await
+
+        let bytes = packet.get_bytes_mut();
+        self.send_bytes(bytes).await?;
+        Ok(packet)
     }
-    async fn send_bytes(&self, mut bytes: Vec<u8>) -> Result<(), Error> {
+    async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
         let size = bytes.len();
         Crypt::append_checksum(&mut bytes[2..size]);
-        self.blowfish.crypt(&mut bytes[2..size]);
+        self.blowfish.encrypt(&mut bytes[2..size]);
         self.get_stream_writer_mut()
             .await
             .lock()

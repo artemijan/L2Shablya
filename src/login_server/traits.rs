@@ -37,8 +37,9 @@ pub trait PacketHandler: Shutdown {
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
     fn get_timeout(&self) -> Option<u64>;
 
-    async fn send_packet(&mut self, packet: Box<dyn SendablePacket>) -> Result<(), Error>;
-    async fn send_bytes(&self, bytes: Vec<u8>) -> Result<(), Error>;
+    async fn send_packet(&self, packet: Box<dyn SendablePacket>) -> Result<Box<dyn SendablePacket>, Error>;
+    
+    async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error>;
     async fn on_receive_bytes(
         &mut self,
         packet_size: usize,

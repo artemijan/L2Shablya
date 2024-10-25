@@ -12,6 +12,8 @@ allowed_gs:
     server_id: 1
 listeners:
   game_servers:
+    messages:
+      timeout: 3 # the timeout for messages sent from client thread to GS thread, we can't wait forever.
     connection:
       ip: 0.0.0.0
       port: 9014

@@ -130,16 +130,31 @@ impl SendablePacketBuffer {
         self.position
     }
     pub fn get_size(&self) -> usize {
-        self.data.len()
+        self.position
     }
 
     #[allow(clippy::cast_possible_truncation)]
-    pub fn get_data(&self) -> Vec<u8> {
-        let mut data = self.data[0..self.position].to_vec();
+    pub fn get_data_mut(&mut self) -> &mut [u8] {
         // Add size info at start (unsigned short - max size 65535).
-        data[0] = (self.position & 0xff) as u8;
-        data[1] = ((self.position >> 8) & 0xffff) as u8;
-        data
+        self.write_packet_size();
+        &mut self.data[0..self.position]
+    }
+
+    pub fn write_packet_size(&mut self) {
+        self.data[0] = (self.position & 0xff) as u8;
+        self.data[1] = ((self.position >> 8) & 0xffff) as u8;
+    }
+
+    pub fn write_padding(&mut self) -> Res<(), Packet> {
+        self.write_i32(0)?;
+        let padding = (self.get_size() - 2) % 8;
+        if padding != 0 {
+            for _ in padding..8 {
+                self.write_u8(0)?;
+            }
+        }
+        self.write_packet_size();
+        Ok(())
     }
 
     pub fn resize_buffer(&mut self, size: usize) {
