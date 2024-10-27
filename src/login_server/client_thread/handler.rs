@@ -1,13 +1,15 @@
+use std::net::{IpAddr, Ipv4Addr};
 use std::sync::Arc;
 use tokio::sync::{Mutex, Notify};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use sqlx::AnyPool;
 use std::time::SystemTime;
 use async_trait::async_trait;
-use tokio::net::TcpStream;
+use tokio::net::{TcpSocket, TcpStream};
 use anyhow::{Context, Error};
 use rand::Rng;
 use tokio::io::AsyncWriteExt;
+use tokio::net::unix::SocketAddr;
 use crate::common::dto::config::{Connection, Server};
 use crate::common::errors::Packet;
 use crate::common::errors::Packet::{ClientPacketNotFound, UnableToSendInit};
@@ -24,6 +26,7 @@ use crate::packet::to_client::Init;
 #[derive(Clone, Debug)]
 pub struct ClientHandler {
     blowfish_key: Vec<u8>,
+    pub ip: Ipv4Addr,
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
     pub account_name: Option<String>,
@@ -62,6 +65,18 @@ impl ClientHandler {
     pub fn get_session_key(&self) -> &SessionKey {
         &self.session_key
     }
+    fn get_ipv4_from_socket(socket: &TcpStream) -> Ipv4Addr {
+        let default = Ipv4Addr::new(127, 0, 0, 1);
+        match socket.peer_addr() {
+            Ok(addr) => {
+                match addr.ip() {
+                    IpAddr::V4(ipv4) => ipv4,
+                    _ => default,
+                }
+            }
+            _ => default,
+        }
+    }
 }
 
 impl Shutdown for ClientHandler {
@@ -85,7 +100,7 @@ impl PacketHandler for ClientHandler {
     fn get_lc(&self) -> &Arc<Login> {
         &self.lc
     }
-    
+
     fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
         let mut rng = rand::thread_rng();
         let blowfish_key = generate_blowfish_key();
@@ -93,11 +108,13 @@ impl PacketHandler for ClientHandler {
         let session_id = rng.gen();
         let connection_start_time = SystemTime::now();
         let timeout = lc.get_config().client.timeout;
+        let ip = Self::get_ipv4_from_socket(&stream);
         let (tcp_reader, tcp_writer) = stream.into_split();
         ClientHandler {
             tcp_reader: Arc::new(Mutex::new(tcp_reader)),
             tcp_writer: Arc::new(Mutex::new(tcp_writer)),
             db_pool,
+            ip,
             shutdown_notifier: Arc::new(Notify::new()),
             encryption,
             session_id,

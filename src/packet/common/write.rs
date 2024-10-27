@@ -140,6 +140,13 @@ impl SendablePacketBuffer {
         &mut self.data[0..self.position]
     }
 
+    #[allow(clippy::cast_possible_truncation)]
+    pub fn get_data(&mut self) -> Vec<u8> {
+        // Add size info at start (unsigned short - max size 65535).
+        self.write_packet_size();
+        self.data[0..self.position].to_vec()
+    }
+
     pub fn write_packet_size(&mut self) {
         self.data[0] = (self.position & 0xff) as u8;
         self.data[1] = ((self.position >> 8) & 0xffff) as u8;

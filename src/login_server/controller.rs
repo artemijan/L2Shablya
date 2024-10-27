@@ -1,9 +1,9 @@
 use crate::common::dto::game_server::GSInfo;
-use crate::common::dto::player::{GSCharsInfo, Info};
+use crate::common::dto::player::GSCharsInfo;
 use crate::common::dto::{config, player};
 use crate::common::message::Request;
 use crate::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
-use crate::packet::common::{PacketType, ReadablePacket, SendablePacket};
+use crate::packet::common::{PacketType, ReadablePacket, SendablePacket, ServerData, ServerStatus, ServerType};
 use crate::packet::error::PacketRun;
 use crate::packet::login_fail::GSLogin;
 use crate::packet::to_gs::RequestChars;
@@ -13,13 +13,14 @@ use futures::future::join_all;
 use rand::Rng;
 use std::collections::{hash_map::Entry, HashMap};
 use std::io::Read;
+use std::net::Ipv4Addr;
+use std::str::FromStr;
 use std::sync::Arc;
 use std::time::{Duration, SystemTime};
 use sqlx::__rt::timeout;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::oneshot;
 use tokio::sync::RwLock;
-use uuid::Uuid;
 
 #[derive(Clone, Debug)]
 pub struct Login {
@@ -27,7 +28,7 @@ pub struct Login {
     config: Arc<config::Server>,
     game_servers: Arc<RwLock<HashMap<u8, GSInfo>>>,
     players: Arc<RwLock<HashMap<String, player::Info>>>,
-    gs_channels: Arc<RwLock<HashMap<u8, Sender<Request>>>>,
+    gs_channels: Arc<RwLock<HashMap<u8, Sender<(u8, Request)>>>>,
 }
 
 impl Login {
@@ -47,10 +48,32 @@ impl Login {
     pub async fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
         self.game_servers.read().await.get(&gs_id).cloned()
     }
+    pub async fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
+        let mut servers = Vec::new();
+        let collection_lock = self.game_servers.read().await;
+        for s in collection_lock.values() {
+            servers.push(
+                ServerData {
+                    ip: s.get_host_ip(client_ip),
+                    port: i32::from(s.get_port()),
+                    age_limit: i32::from(s.get_age_limit()),
+                    pvp: s.is_pvp(),
+                    current_players: 0, //todo: implement me
+                    max_players: s.get_max_players(), //allow wrapping
+                    brackets: s.show_brackets(),
+                    clock: false, //todo: implement me
+                    status: ServerStatus::try_from(s.get_status()).ok(),
+                    server_id: s.get_id() as i32,
+                    server_type: s.get_server_type(),
+                }
+            )
+        }
+        servers
+    }
     pub async fn update_gs_status(&self, gs_id: u8, gs_info: GSInfo) -> Result<(), anyhow::Error> {
         let mut servers = self.game_servers.write().await;
         if servers.contains_key(&gs_id) {
-            servers.insert(gs_info.id, gs_info);
+            servers.insert(gs_info.get_id(), gs_info);
             Ok(())
         } else {
             bail!("Game server is not registered on login server.")
@@ -67,12 +90,12 @@ impl Login {
                 });
             }
         }
-        if let Entry::Vacant(e) = servers.entry(gs_info.id) {
-            servers.insert(gs_info.id, gs_info);
+        if let Entry::Vacant(e) = servers.entry(gs_info.get_id()) {
+            servers.insert(gs_info.get_id(), gs_info);
             Ok(())
         } else {
             Err(PacketRun {
-                msg: Some(format!("GS already registered with id: {:}", gs_info.id)),
+                msg: Some(format!("GS already registered with id: {:}", gs_info.get_id())),
                 response: Some(Box::new(GSLogin::new(
                     GSLoginFailReasons::AlreadyRegistered,
                 ))),
@@ -82,7 +105,7 @@ impl Login {
 
     pub async fn on_player_login(
         &self,
-        mut player_info: Info,
+        mut player_info: player::Info,
     ) -> anyhow::Result<(), PacketRun> {
         let account_name = player_info.account_name.clone();
         let packet = Box::new(RequestChars::new(&account_name));
@@ -92,14 +115,14 @@ impl Login {
         );
         for gsi in self.game_servers.read().await.values() {
             let task = self.send_message_to_gs(
-                gsi.id, &account_name, packet.clone(),
+                gsi.get_id(), &account_name, packet.clone(),
             );
             tasks.push(timeout(timeout_duration, task));
         }
         let mut task_results = join_all(tasks).await.into_iter();
         while let Some(Ok(resp)) = task_results.next() {
-            if let Ok(Some(PacketType::ReplyChars(p))) = resp {
-                player_info.servers.push(GSCharsInfo {
+            if let Ok(Some((gs_id, PacketType::ReplyChars(p)))) = resp {
+                player_info.chars_on_servers.insert(gs_id, GSCharsInfo {
                     char_list: p.char_list,
                     chars_to_delete: p.chars_to_delete,
                     chars: p.chars,
@@ -111,14 +134,16 @@ impl Login {
         players_lock.insert(account_name, player_info); // if player exists it will drop
         Ok(())
     }
-
+    pub async fn get_player(&self, account_name: &str) -> Option<player::Info> {
+        self.players.read().await.get(account_name).cloned()
+    }
     pub async fn send_message_to_gs(
         &self,
         gs_id: u8,
         message_id: &str,
         packet: Box<dyn SendablePacket>,
-    ) -> anyhow::Result<Option<PacketType>> {
-        let sender: Sender<Request>;
+    ) -> anyhow::Result<Option<(u8, PacketType)>> {
+        let sender: Sender<(u8, Request)>;
         let (resp_tx, resp_rx) = oneshot::channel();
         {
             let channels = self.gs_channels.read().await;
@@ -130,7 +155,7 @@ impl Login {
             sent_at: SystemTime::now(),
             id: message_id.to_string(),
         };
-        sender.send(message).await?;
+        sender.send((gs_id, message)).await?;
         let k = resp_rx
             .await
             .expect("Can not send the message to game server");
@@ -147,7 +172,7 @@ impl Login {
         let random_number: usize = rng.gen_range(0..=9);
         self.key_pairs.get(random_number).unwrap().clone()
     }
-    pub async fn connect_gs(&self, server_id: u8, gs_channel: Sender<Request>) {
+    pub async fn connect_gs(&self, server_id: u8, gs_channel: Sender<(u8, Request)>) {
         self.gs_channels
             .write()
             .await

@@ -60,7 +60,7 @@ impl ClientHandle for RequestAuthLogin {
             ..Default::default()
         };
         let lc =ch.get_lc(); 
-        lc.on_player_login(player_info).await.expect("TODO: panic message");
+        lc.on_player_login(player_info).await.expect("TODO: handle panic message");
         Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))))
     }
 }

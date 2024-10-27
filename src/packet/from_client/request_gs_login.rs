@@ -4,7 +4,6 @@ use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::error::PacketRun;
 use crate::packet::to_client::PlayOk;
-use crate::packet::to_gs::RequestChars;
 use async_trait::async_trait;
 use crate::login_server::traits::PacketHandler;
 
@@ -32,9 +31,6 @@ impl ClientHandle for RequestGSLogin {
         &self,
         ch: &mut ClientHandler,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
-        let acc_name = ch.account_name.clone().unwrap();
-        let lc = ch.get_lc();
-        let message = Box::new(RequestChars::new(&acc_name));
         Ok(Some(Box::new(PlayOk::new(ch.get_session_key()))))
     }
 }

@@ -3,7 +3,7 @@ use crate::login_server::gs_thread::GSHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
-use crate::packet::error::PacketRun;
+use crate::packet::{error, login_fail, GSLoginFailReasons};
 use crate::packet::to_gs::AuthGS;
 use async_trait::async_trait;
 use crate::login_server::gs_thread::connection_state;
@@ -47,22 +47,25 @@ impl ReadablePacket for GS {
 
 #[async_trait]
 impl GSHandle for GS {
-    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
-        let gsi = GSInfo {
-            id: self.desired_id,
-            accept_alternative_id: self.accept_alternative_id,
-            host_reserved: self.host_reserved,
-            port: self.port,
-            is_authed: true,
-            status: 0,
-            is_pvp: true,
-            server_type: 0,
-            age_limit: 0,
-            show_brackets: false,
-            max_players: self.max_players,
-            hex_id: self.hex_id.clone(),
-            hosts: self.hosts.clone(),
-        };
+    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
+        let gsi = GSInfo::new(
+            self.desired_id,
+            self.accept_alternative_id,
+            self.host_reserved,
+            self.port,
+            true,
+            0,
+            true,
+            0,
+            0,
+            false,
+            self.max_players,
+            self.hex_id.clone(),
+            self.hosts.clone(),
+        ).map_err(|e| error::PacketRun {
+            msg: Some(e.to_string()),
+            response: Some(Box::new(login_fail::GSLogin::new(GSLoginFailReasons::None))),
+        })?;
 
         match gs.get_lc().register_gs(gsi).await {
             Ok(()) => {

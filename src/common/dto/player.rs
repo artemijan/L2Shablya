@@ -1,5 +1,7 @@
+use std::collections::HashMap;
 use std::net::IpAddr;
 use crate::common::session::SessionKey;
+use crate::packet::common::ServerData;
 
 #[derive(Debug, Clone, Default)]
 pub struct GSCharsInfo {
@@ -14,12 +16,12 @@ pub struct Info {
     pub login_time: Option<bool>,
     pub is_authed: bool,
     pub ip_address: Option<IpAddr>,
-    pub servers: Vec<GSCharsInfo>,
+    pub chars_on_servers: HashMap<u8, GSCharsInfo>,
 }
 
 impl Info {
-    pub fn new()->Self{
-        Info{
+    pub fn new() -> Self {
+        Info {
             is_authed: false,
             ..Info::default()
         }

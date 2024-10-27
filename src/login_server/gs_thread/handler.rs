@@ -44,7 +44,7 @@ impl GSHandler {
         self.blowfish = Crypt::from_u8_key(new_bf_key);
     }
     pub async fn start_channel(&self) {
-        let (rx, mut tx) = mpsc::channel::<Request>(100);
+        let (rx, mut tx) = mpsc::channel::<(u8, Request)>(100);
         self.lc.connect_gs(self.server_id.unwrap(), rx).await;
         let inbox = self.income_messages.clone();
         let cloned_self = self.clone();
@@ -53,7 +53,7 @@ impl GSHandler {
         );
         tokio::spawn(async move {
             loop {
-                if let Some(mut request) = tx.recv().await {
+                if let Some((_, mut request)) = tx.recv().await {
                     let mut income_messages = inbox.write().await;
                     //the message has been sent already, there is no sense to do it twice
                     let existing_msg = income_messages.remove(&request.id);
@@ -84,7 +84,9 @@ impl GSHandler {
         let mut msg_box = self.income_messages.write().await;
         let msg = msg_box.remove(message_id);
         if let Some(request) = msg {
-            request.response.send(Some(message)).unwrap();
+            if let Some(server_id) = self.server_id {
+                request.response.send(Some((server_id, message))).unwrap();
+            }
         }
         //if message is missing then we just ignore it
     }

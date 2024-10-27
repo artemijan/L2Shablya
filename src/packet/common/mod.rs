@@ -6,16 +6,19 @@ use async_trait::async_trait;
 use std::fmt::Debug;
 use std::net::Ipv4Addr;
 use std::ops::Deref;
+use num::Integer;
+use num_enum::TryFromPrimitive;
+use num_traits::{Num, ToPrimitive};
 use crate::common::errors::Packet;
 use crate::packet::common::write::SendablePacketBuffer;
 
 pub mod read;
 pub mod write;
 
-pub type PacketResult = Result<Option<Box<dyn SendablePacket>>, PacketRun>; 
+pub type PacketResult = Result<Option<Box<dyn SendablePacket>>, PacketRun>;
 
 pub trait SendablePacket: Debug + Send + Sync {
-    fn get_bytes_mut(&mut self) -> &mut [u8]{
+    fn get_bytes_mut(&mut self) -> &mut [u8] {
         let buff = self.get_buffer_mut();
         buff.get_data_mut()
     }
@@ -29,7 +32,8 @@ pub trait ReadablePacket: Debug + Send + Sync {
 }
 
 #[allow(unused)]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,Copy, TryFromPrimitive)]
+#[repr(u8)]
 pub enum ServerStatus {
     Auto = 0x00,
     Good = 0x01,
@@ -49,9 +53,9 @@ pub struct ServerData {
     pub max_players: i32,
     pub brackets: bool,
     pub clock: bool,
-    pub status: ServerStatus,
+    pub status: Option<ServerStatus>,
     pub server_id: i32,
-    pub server_type: ServerType,
+    pub server_type: Option<ServerType>,
 }
 
 impl ServerData {
@@ -60,9 +64,9 @@ impl ServerData {
     }
 }
 
-#[repr(i32)]
 #[allow(unused)]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, TryFromPrimitive)]
+#[repr(i32)]
 pub enum ServerType {
     Normal = 0x01,
     Relax = 0x02,
