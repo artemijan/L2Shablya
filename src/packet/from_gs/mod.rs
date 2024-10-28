@@ -5,8 +5,9 @@ mod player_auth_request;
 mod player_in_game;
 mod player_logout;
 mod reply_chars;
+mod player_tracert;
 
 pub use self::{
     auth::GS, blowfish::BlowFish, gs_status::GSStatusUpdate, player_auth_request::PlayerAuthRequest, player_in_game::PlayerInGame,
-    player_logout::PlayerLogout, reply_chars::ReplyChars,
+    player_logout::PlayerLogout, reply_chars::ReplyChars, player_tracert::PlayerTracert,
 };

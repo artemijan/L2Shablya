@@ -29,14 +29,22 @@ pub struct GSInfo {
     hosts: Vec<ServerHost>,
 }
 
-
 impl GSInfo {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
-        id: u8, accept_alternative_id: bool, host_reserved: bool,
-        port: u16, is_authed: bool, status: i32,
-        is_pvp: bool, server_type: i32, age_limit: u8,
-        show_brackets: bool, max_players: u32,
-        hex_id: Vec<u8>, hosts: Vec<String>,
+        id: u8,
+        accept_alternative_id: bool,
+        host_reserved: bool,
+        port: u16,
+        is_authed: bool,
+        status: i32,
+        is_pvp: bool,
+        server_type: i32,
+        age_limit: u8,
+        show_brackets: bool,
+        max_players: u32,
+        hex_id: Vec<u8>,
+        hosts: Vec<String>,
     ) -> anyhow::Result<Self> {
         let validated_hosts = Self::validate_server_hosts(hosts)?;
         Ok(GSInfo {
@@ -60,7 +68,7 @@ impl GSInfo {
     pub fn get_host_ip(&self, client_ip: Ipv4Addr) -> Ipv4Addr {
         for s in &self.hosts {
             if s.subnet.contains(&client_ip) {
-                return s.ip.clone();
+                return s.ip;
             }
         }
         Ipv4Addr::new(127, 0, 0, 1)
@@ -126,13 +134,12 @@ impl GSInfo {
 
     fn validate_server_hosts(hosts: Vec<String>) -> anyhow::Result<Vec<ServerHost>> {
         let mut validated_hosts = Vec::new();
-        for host in hosts {
-            let parts: Vec<&str> = host.split('/').collect();
-            if parts.len() != 2 {
-                bail!("Incorrect host sent by game server {host}.");
+        for host in hosts.chunks(2) {
+            if host.len() != 2 {
+                bail!("Incorrect host sent by game server {:?}.", host);
             }
-            let ip = Ipv4Addr::from_str(parts[0])?;
-            let subnet = Ipv4Net::from_str(parts[1])?;
+            let subnet = Ipv4Net::from_str(&host[0])?;
+            let ip = Ipv4Addr::from_str(&host[1])?;
             validated_hosts.push(ServerHost { ip, subnet });
         }
         // sort from narrow to wide
