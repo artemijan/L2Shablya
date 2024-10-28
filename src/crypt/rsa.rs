@@ -67,7 +67,7 @@ impl ScrambledRSAKeyPair {
     }
     pub fn decrypt_data(&self, encrypted_data: &[u8]) -> Result<Vec<u8>, ErrorStack> {
         let mut decrypted_data = vec![0; self.pair.0.size()];
-        let pkey = self.pair.0.rsa().unwrap();
+        let pkey = self.pair.0.rsa()?;
         let decrypted_len = pkey.private_decrypt(encrypted_data, &mut decrypted_data, Padding::NONE)?;
         decrypted_data.truncate(decrypted_len);
         Ok(decrypted_data)
@@ -76,8 +76,7 @@ impl ScrambledRSAKeyPair {
     #[allow(unused)]
     pub fn from_pem(private_key_pem: &str) -> Result<PKey<openssl::pkey::Private>, errors::Rsa> {
         let private_key = Rsa::private_key_from_pem(private_key_pem.as_bytes())
-            .map_err(|_| errors::Rsa::ErrorReadingPem)
-            .unwrap();
+            .map_err(|_| errors::Rsa::ErrorReadingPem)?;
         PKey::from_rsa(private_key).map_err(|_| errors::Rsa::ErrorReadingPem)
     }
 }
