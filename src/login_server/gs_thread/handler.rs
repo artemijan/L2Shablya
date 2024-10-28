@@ -9,18 +9,15 @@ use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use anyhow::{bail, Error};
 use openssl::error::ErrorStack;
 use tokio::io::AsyncWriteExt;
-use tokio::time::sleep;
 use crate::common::dto::config::{Connection, Server};
 use crate::common::errors::Packet;
 use crate::common::message::Request;
-use crate::crypt::new::Crypt;
+use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::login_server::gs_thread::connection_state::GS;
 use crate::login_server::controller::Login;
 use crate::login_server::traits::{PacketHandler, Shutdown};
-use crate::packet::common::{GSHandle, PacketResult, PacketType, ReadablePacket, SendablePacket};
-use crate::packet::common::write::SendablePacketBuffer;
-use crate::packet::error;
+use crate::packet::common::{GSHandle, PacketResult, PacketType, SendablePacket};
 use crate::packet::gs_factory::build_gs_packet;
 use crate::packet::to_gs::InitLS;
 
@@ -33,7 +30,7 @@ pub struct GSHandler {
     lc: Arc<Login>,
     db_pool: AnyPool,
     key_pair: ScrambledRSAKeyPair,
-    blowfish: Crypt,
+    blowfish: Encryption,
     connection_state: GS,
     pub server_id: Option<u8>,
     income_messages: Arc<RwLock<HashMap<String, Request>>>,
@@ -41,7 +38,7 @@ pub struct GSHandler {
 
 impl GSHandler {
     pub fn set_blowfish_key(&mut self, new_bf_key: &[u8]) {
-        self.blowfish = Crypt::from_u8_key(new_bf_key);
+        self.blowfish = Encryption::from_u8_key(new_bf_key);
     }
     pub async fn start_channel(&self) {
         let (rx, mut tx) = mpsc::channel::<(u8, Request)>(100);
@@ -135,7 +132,7 @@ impl PacketHandler for GSHandler {
             db_pool,
             shutdown_listener: Arc::new(Notify::new()),
             key_pair: lc.get_random_rsa_key_pair(),
-            blowfish: Crypt::from_u8_key(cfg.blowfish_key.as_bytes()),
+            blowfish: Encryption::from_u8_key(cfg.blowfish_key.as_bytes()),
             connection_state: GS::Initial,
             lc,
             server_id: None,
@@ -192,7 +189,7 @@ impl PacketHandler for GSHandler {
     }
     async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
         let size = bytes.len();
-        Crypt::append_checksum(&mut bytes[2..size]);
+        Encryption::append_checksum(&mut bytes[2..size]);
         self.blowfish.encrypt(&mut bytes[2..size]);
         self.get_stream_writer_mut()
             .await
@@ -205,7 +202,7 @@ impl PacketHandler for GSHandler {
 
     async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
         self.blowfish.decrypt(bytes)?;
-        if !Crypt::verify_checksum(bytes) {
+        if !Encryption::verify_checksum(bytes) {
             bail!("Can not verify check sum.")
         }
         let handler = build_gs_packet(bytes).ok_or_else(|| Packet::ClientPacketNotFound {

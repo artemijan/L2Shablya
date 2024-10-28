@@ -1,5 +1,4 @@
 pub mod login;
-pub mod new;
 pub mod rsa;
 pub static STATIC_BLOWFISH_KEY: [u8; 16] = [154, 125, 7, 25, 132, 212, 137, 240, 220, 37, 6, 180, 21, 131, 47, 197];
 

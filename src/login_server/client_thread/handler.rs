@@ -176,7 +176,7 @@ impl PacketHandler for ClientHandler {
     }
 
     async fn on_receive_bytes(&mut self, _: usize, data: &mut [u8]) -> Result<(), Error> {
-        self.encryption.crypt.decrypt(data)?;
+        self.encryption.decrypt(data)?;
         let handler =
             build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| ClientPacketNotFound {
                 opcode: data[0] as usize,
