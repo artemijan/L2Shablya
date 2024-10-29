@@ -1,4 +1,4 @@
-use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::client_thread::Client;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
@@ -29,7 +29,7 @@ impl ReadablePacket for RequestGSLogin {
 impl ClientHandle for RequestGSLogin {
     async fn handle(
         &self,
-        ch: &mut ClientHandler,
+        ch: &mut Client,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         Ok(Some(Box::new(PlayOk::new(ch.get_session_key()))))
     }

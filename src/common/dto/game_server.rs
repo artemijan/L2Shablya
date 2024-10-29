@@ -1,9 +1,9 @@
-use std::net::Ipv4Addr;
-use std::str::FromStr;
+use crate::packet::common::ServerType;
 use anyhow::bail;
 use ipnet::Ipv4Net;
-use num::{BigInt};
-use crate::packet::common::ServerType;
+use num::BigInt;
+use std::net::Ipv4Addr;
+use std::str::FromStr;
 
 #[derive(Debug, Clone)]
 pub struct ServerHost {
@@ -28,9 +28,13 @@ pub struct GSInfo {
     hex_id: Vec<u8>,
     hosts: Vec<ServerHost>,
 }
-
+#[allow(
+    clippy::cast_sign_loss,
+    clippy::cast_possible_wrap,
+    clippy::cast_possible_truncation
+)]
 impl GSInfo {
-    #[allow(clippy::too_many_arguments)]
+    #[allow(clippy::too_many_arguments, clippy::fn_params_excessive_bools)]
     pub fn new(
         id: u8,
         accept_alternative_id: bool,
@@ -44,7 +48,7 @@ impl GSInfo {
         show_brackets: bool,
         max_players: u32,
         hex_id: Vec<u8>,
-        hosts: Vec<String>,
+        hosts: &[String],
     ) -> anyhow::Result<Self> {
         let validated_hosts = Self::validate_server_hosts(hosts)?;
         Ok(GSInfo {
@@ -63,7 +67,6 @@ impl GSInfo {
             hosts: validated_hosts,
         })
     }
-
 
     pub fn get_host_ip(&self, client_ip: Ipv4Addr) -> Ipv4Addr {
         for s in &self.hosts {
@@ -132,7 +135,7 @@ impl GSInfo {
         self.hosts.clone()
     }
 
-    fn validate_server_hosts(hosts: Vec<String>) -> anyhow::Result<Vec<ServerHost>> {
+    fn validate_server_hosts(hosts: &[String]) -> anyhow::Result<Vec<ServerHost>> {
         let mut validated_hosts = Vec::new();
         for host in hosts.chunks(2) {
             if host.len() != 2 {
@@ -143,9 +146,7 @@ impl GSInfo {
             validated_hosts.push(ServerHost { ip, subnet });
         }
         // sort from narrow to wide
-        validated_hosts.sort_by(
-            |a, b| b.subnet.prefix_len().cmp(&a.subnet.prefix_len())
-        );
+        validated_hosts.sort_by(|a, b| b.subnet.prefix_len().cmp(&a.subnet.prefix_len()));
         Ok(validated_hosts)
     }
 }

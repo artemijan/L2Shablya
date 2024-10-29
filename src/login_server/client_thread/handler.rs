@@ -24,7 +24,7 @@ use crate::packet::ls_factory::build_client_packet;
 use crate::packet::to_client::Init;
 
 #[derive(Clone, Debug)]
-pub struct ClientHandler {
+pub struct Client {
     blowfish_key: Vec<u8>,
     pub ip: Ipv4Addr,
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
@@ -55,7 +55,7 @@ pub struct ClientHandler {
 /// 6. wait for `RequestServerList`
 /// 7. Respond with `ServerList::new()`
 ///
-impl ClientHandler {
+impl Client {
     pub fn get_session_id(&self) -> i32 {
         self.session_id
     }
@@ -71,7 +71,7 @@ impl ClientHandler {
             Ok(addr) => {
                 match addr.ip() {
                     IpAddr::V4(ipv4) => ipv4,
-                    _ => default,
+                    IpAddr::V6(_) => default,
                 }
             }
             _ => default,
@@ -79,7 +79,7 @@ impl ClientHandler {
     }
 }
 
-impl Shutdown for ClientHandler {
+impl Shutdown for Client {
     fn get_shutdown_listener(&self) -> Arc<Notify> {
         self.shutdown_notifier.clone()
     }
@@ -90,7 +90,7 @@ impl Shutdown for ClientHandler {
 }
 
 #[async_trait]
-impl PacketHandler for ClientHandler {
+impl PacketHandler for Client {
     fn get_handler_name() -> String {
         "Login client handler".to_string()
     }
@@ -110,7 +110,7 @@ impl PacketHandler for ClientHandler {
         let timeout = lc.get_config().client.timeout;
         let ip = Self::get_ipv4_from_socket(&stream);
         let (tcp_reader, tcp_writer) = stream.into_split();
-        ClientHandler {
+        Client {
             tcp_reader: Arc::new(Mutex::new(tcp_reader)),
             tcp_writer: Arc::new(Mutex::new(tcp_writer)),
             db_pool,
@@ -139,7 +139,7 @@ impl PacketHandler for ClientHandler {
         self.tcp_writer
             .lock()
             .await
-            .write_all(&init.buffer.get_data_mut())
+            .write_all(init.buffer.get_data_mut())
             .await
             .map_err(|_| UnableToSendInit)?;
         Ok(())

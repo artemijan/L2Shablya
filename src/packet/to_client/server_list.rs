@@ -1,8 +1,8 @@
-use std::collections::HashMap;
 use crate::common::dto::player::GSCharsInfo;
 use crate::packet::common::write::SendablePacketBuffer;
 use crate::packet::common::{SendablePacket, ServerData, ServerStatus};
 use crate::packet::LoginServerOpcodes;
+use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct ServerList {
@@ -13,7 +13,11 @@ pub struct ServerList {
 }
 
 impl ServerList {
-    pub fn new(servers: Vec<ServerData>, last_server: i32, chars_on_server: Option<HashMap<u8, GSCharsInfo>>) -> ServerList {
+    pub fn new(
+        servers: Vec<ServerData>,
+        last_server: i32,
+        chars_on_server: Option<HashMap<u8, GSCharsInfo>>,
+    ) -> ServerList {
         let mut sl = ServerList {
             buffer: SendablePacketBuffer::new(),
             servers,
@@ -23,15 +27,15 @@ impl ServerList {
         sl.write_all().unwrap();
         sl
     }
+
+    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
-        #[allow(clippy::cast_possible_truncation)]
         {
             self.buffer.write(LoginServerOpcodes::ServerList as u8)?;
             self.buffer.write(self.servers.len() as u8)?;
             self.buffer.write(self.last_server as u8)?;
         }
         for server in &self.servers {
-            #[allow(clippy::cast_possible_truncation)]
             self.buffer.write(server.server_id as u8)?;
             let ip_octets = server.get_ip_octets();
             #[allow(clippy::cast_possible_wrap)]
@@ -43,19 +47,17 @@ impl ServerList {
             }
 
             self.buffer.write_i32(server.port)?;
-            #[allow(clippy::cast_possible_truncation)]
             self.buffer.write(server.age_limit as u8)?; // Age Limit 0, 15, 18
             if server.pvp {
                 self.buffer.write(0x01)?;
             } else {
                 self.buffer.write(0x00)?;
             }
-            #[allow(clippy::cast_possible_truncation)]
             self.buffer.write_i16(server.current_players as i16)?;
-            #[allow(clippy::cast_possible_truncation)]
             self.buffer.write_i16(server.max_players as i16)?;
             if let Some(status) = server.status {
-                self.buffer.write_i8_from_bool(!matches!(status, ServerStatus::Down))?;
+                self.buffer
+                    .write_i8_from_bool(!matches!(status, ServerStatus::Down))?;
             } else {
                 self.buffer.write_i8_from_bool(false)?;
             }
@@ -65,10 +67,8 @@ impl ServerList {
         self.buffer.write_i16(0xA4)?; //unknown
         if let Some(ref servers) = self.chars_on_server {
             for (server_id, info) in servers {
-                #[allow(clippy::cast_possible_truncation)]
                 self.buffer.write(*server_id)?;
                 // todo: here should be real count of chars on server
-                #[allow(clippy::cast_possible_truncation)]
                 self.buffer.write(info.chars)?;
             }
         }

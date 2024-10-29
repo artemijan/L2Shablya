@@ -1,3 +1,3 @@
 mod handler;
 
-pub use handler::ClientHandler;
+pub use handler::Client;

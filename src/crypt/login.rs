@@ -1,4 +1,4 @@
-use blowfish::{BlowfishLE};
+use blowfish::BlowfishLE;
 use blowfish::cipher::{BlockDecrypt, BlockDecryptMut, BlockEncrypt, KeyInit};
 use crate::common::errors::Packet;
 
@@ -87,13 +87,13 @@ impl Encryption {
             return Err(Packet::DecryptBlowfishError);
         }
         for chunk in raw.chunks_mut(8) {
-            self.cipher.decrypt_block(chunk.into())
+            self.cipher.decrypt_block(chunk.into());
         }
         Ok(())
     }
     pub fn encrypt(&self, raw: &mut [u8]) {
         for chunk in raw.chunks_mut(8) {
-            self.cipher.encrypt_block(chunk.into())
+            self.cipher.encrypt_block(chunk.into());
         }
     }
 }

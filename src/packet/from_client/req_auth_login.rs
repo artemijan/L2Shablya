@@ -1,7 +1,7 @@
 use crate::common::dto::player;
 use crate::common::str::Trim;
 use crate::database::user::User;
-use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::client_thread::Client;
 use crate::login_server::traits::PacketHandler;
 use crate::packet::common::{ClientHandle, PacketResult};
 use crate::packet::common::{ReadablePacket, SendablePacket};
@@ -33,7 +33,7 @@ impl ReadablePacket for RequestAuthLogin {
 impl ClientHandle for RequestAuthLogin {
     async fn handle(
         &self,
-        ch: &mut ClientHandler,
+        ch: &mut Client,
     ) -> PacketResult {
         let auto_registration = ch.get_lc().get_config().auto_registration;
         let pool = ch.get_db_pool_mut();

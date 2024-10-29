@@ -1,5 +1,5 @@
 use strum::Display;
-use crate::packet::common::{PacketResult};
+use crate::packet::common::PacketResult;
 use crate::packet::{error, PlayerLoginFailReasons};
 use crate::packet::login_fail::PlayerLogin;
 

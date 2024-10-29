@@ -21,7 +21,7 @@ use crate::packet::common::{GSHandle, PacketResult, PacketType, SendablePacket};
 use crate::packet::gs_factory::build_gs_packet;
 use crate::packet::to_gs::InitLS;
 
-
+#[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
 pub struct GSHandler {
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
@@ -195,7 +195,7 @@ impl PacketHandler for GSHandler {
             .await
             .lock()
             .await
-            .write_all(&bytes)
+            .write_all(bytes)
             .await?;
         Ok(())
     }

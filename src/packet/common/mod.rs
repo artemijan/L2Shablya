@@ -1,5 +1,5 @@
 use crate::login_server::gs_thread::GSHandler;
-use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::client_thread::Client;
 use crate::packet::error::PacketRun;
 use crate::packet::from_gs::ReplyChars;
 use async_trait::async_trait;
@@ -81,7 +81,7 @@ pub enum ServerType {
 pub trait ClientHandle: Debug + Send {
     async fn handle(
         &self,
-        ch: &mut ClientHandler,
+        ch: &mut Client,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun>;
 }
 

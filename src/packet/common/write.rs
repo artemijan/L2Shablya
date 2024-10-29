@@ -9,7 +9,7 @@ pub struct SendablePacketBuffer {
     position: usize,
 }
 
-#[allow(unused)]
+#[allow(unused, clippy::cast_possible_truncation)]
 impl SendablePacketBuffer {
     pub fn new() -> Self {
         SendablePacketBuffer {
@@ -133,14 +133,12 @@ impl SendablePacketBuffer {
         self.position
     }
 
-    #[allow(clippy::cast_possible_truncation)]
     pub fn get_data_mut(&mut self) -> &mut [u8] {
         // Add size info at start (unsigned short - max size 65535).
         self.write_packet_size();
         &mut self.data[0..self.position]
     }
 
-    #[allow(clippy::cast_possible_truncation)]
     pub fn get_data(&mut self) -> Vec<u8> {
         // Add size info at start (unsigned short - max size 65535).
         self.write_packet_size();

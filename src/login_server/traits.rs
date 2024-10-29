@@ -10,10 +10,10 @@ use sqlx::AnyPool;
 use tokio::net::TcpStream;
 use std::sync::Arc;
 use std::time::Duration;
-use tokio::io::{AsyncReadExt};
+use tokio::io::AsyncReadExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::sync::{Mutex, Notify};
-use tokio::time::{sleep};
+use tokio::time::sleep;
 
 
 pub trait Shutdown{

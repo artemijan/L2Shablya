@@ -61,7 +61,7 @@ impl GSHandle for GS {
             false,
             self.max_players,
             self.hex_id.clone(),
-            self.hosts.clone(),
+            &self.hosts,
         ).map_err(|e| error::PacketRun {
             msg: Some(e.to_string()),
             response: Some(Box::new(login_fail::GSLogin::new(GSLoginFailReasons::None))),
