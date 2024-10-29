@@ -40,9 +40,9 @@ impl GSHandler {
     pub fn set_blowfish_key(&mut self, new_bf_key: &[u8]) {
         self.blowfish = Encryption::from_u8_key(new_bf_key);
     }
-    pub async fn start_channel(&self) {
+    pub fn start_channel(&self) {
         let (rx, mut tx) = mpsc::channel::<(u8, Request)>(100);
-        self.lc.connect_gs(self.server_id.unwrap(), rx).await;
+        self.lc.connect_gs(self.server_id.unwrap(), rx);
         let inbox = self.income_messages.clone();
         let cloned_self = self.clone();
         let threshold = Duration::from_secs(
@@ -158,7 +158,7 @@ impl PacketHandler for GSHandler {
         );
         if let Some(server_id) = self.server_id {
             let lc = self.get_lc();
-            lc.remove_gs(server_id).await;
+            lc.remove_gs(server_id);
         }
     }
 

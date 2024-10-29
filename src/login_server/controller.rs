@@ -4,37 +4,31 @@ use crate::common::dto::{config, player};
 use crate::common::message::Request;
 use crate::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
 use crate::packet::common::{
-    PacketType, ReadablePacket, SendablePacket, ServerData, ServerStatus, ServerType,
+    PacketType, SendablePacket, ServerData, ServerStatus,
 };
 use crate::packet::error::PacketRun;
 use crate::packet::login_fail::GSLogin;
 use crate::packet::to_gs::RequestChars;
 use crate::packet::GSLoginFailReasons;
 use anyhow::bail;
+use dashmap::{DashMap, Entry};
 use futures::future::join_all;
 use rand::Rng;
 use sqlx::__rt::timeout;
-use std::collections::{hash_map::Entry, HashMap};
-use std::io::Read;
 use std::net::Ipv4Addr;
 use std::str::FromStr;
 use std::sync::Arc;
 use std::time::{Duration, SystemTime};
 use tokio::sync::mpsc::Sender;
 use tokio::sync::oneshot;
-use tokio::sync::RwLock;
-
-///
-/// This is A hashmap where the key is GS id and the values is a Sender object to respond with oneshot.
-type GsPipe = Arc<RwLock<HashMap<u8, Sender<(u8, Request)>>>>;
 
 #[derive(Clone, Debug)]
 pub struct Login {
     key_pairs: Vec<ScrambledRSAKeyPair>,
     config: Arc<config::Server>,
-    game_servers: Arc<RwLock<HashMap<u8, GSInfo>>>,
-    players: Arc<RwLock<HashMap<String, player::Info>>>,
-    gs_channels: GsPipe,
+    game_servers: Arc<DashMap<u8, GSInfo>>,
+    players: Arc<DashMap<String, player::Info>>,
+    gs_channels: Arc<DashMap<u8, Sender<(u8, Request)>>>,
 }
 
 impl Login {
@@ -43,21 +37,20 @@ impl Login {
         Login {
             key_pairs: Login::generate_rsa_key_pairs(10),
             config,
-            players: Arc::new(RwLock::new(HashMap::new())),
-            game_servers: Arc::new(RwLock::new(HashMap::new())),
-            gs_channels: Arc::new(RwLock::new(HashMap::new())),
+            players: Arc::new(DashMap::new()),
+            game_servers: Arc::new(DashMap::new()),
+            gs_channels: Arc::new(DashMap::new()),
         }
     }
     pub fn get_config(&self) -> &config::Server {
         &self.config
     }
-    pub async fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
-        self.game_servers.read().await.get(&gs_id).cloned()
+    pub fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
+        self.game_servers.get(&gs_id).map(|gs_info| gs_info.clone())
     }
-    pub async fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
+    pub fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
         let mut servers = Vec::new();
-        let collection_lock = self.game_servers.read().await;
-        for s in collection_lock.values() {
+        for s in self.game_servers.iter() {
             servers.push(ServerData {
                 ip: s.get_host_ip(client_ip),
                 port: i32::from(s.get_port()),
@@ -74,18 +67,16 @@ impl Login {
         }
         servers
     }
-    pub async fn update_gs_status(&self, gs_id: u8, gs_info: GSInfo) -> Result<(), anyhow::Error> {
-        let mut servers = self.game_servers.write().await;
-        if servers.contains_key(&gs_id) {
-            servers.insert(gs_info.get_id(), gs_info);
+    pub fn update_gs_status(&self, gs_id: u8, gs_info: GSInfo) -> Result<(), anyhow::Error> {
+        if self.game_servers.contains_key(&gs_id) {
+            self.game_servers.insert(gs_info.get_id(), gs_info);
             Ok(())
         } else {
             bail!("Game server is not registered on login server.")
         }
     }
 
-    pub async fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<(), PacketRun> {
-        let mut servers = self.game_servers.write().await;
+    pub fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<(), PacketRun> {
         if let Some(allowed_gs) = &self.config.allowed_gs {
             if !allowed_gs.contains_key(&gs_info.hex()) {
                 return Err(PacketRun {
@@ -94,8 +85,8 @@ impl Login {
                 });
             }
         }
-        if let Entry::Vacant(e) = servers.entry(gs_info.get_id()) {
-            servers.insert(gs_info.get_id(), gs_info);
+        if let Entry::Vacant(e) = self.game_servers.entry(gs_info.get_id()) {
+            self.game_servers.insert(gs_info.get_id(), gs_info);
             Ok(())
         } else {
             Err(PacketRun {
@@ -120,7 +111,7 @@ impl Login {
         let timeout_duration = Duration::from_secs(u64::from(
             self.config.listeners.game_servers.messages.timeout,
         ));
-        for gsi in self.game_servers.read().await.values() {
+        for gsi in self.game_servers.iter() {
             let task = self.send_message_to_gs(gsi.get_id(), &account_name, packet.clone());
             tasks.push(timeout(timeout_duration, task));
         }
@@ -138,12 +129,11 @@ impl Login {
             }
             // ignore all of the tasks that are timed out
         }
-        let mut players_lock = self.players.write().await;
-        players_lock.insert(account_name, player_info); // if player exists it will drop
+        self.players.insert(account_name, player_info); // if player exists it will drop
         Ok(())
     }
-    pub async fn get_player(&self, account_name: &str) -> Option<player::Info> {
-        self.players.read().await.get(account_name).cloned()
+    pub fn get_player(&self, account_name: &str) -> Option<player::Info> {
+        self.players.get(account_name).map(|v| v.clone())
     }
     pub async fn send_message_to_gs(
         &self,
@@ -153,10 +143,7 @@ impl Login {
     ) -> anyhow::Result<Option<(u8, PacketType)>> {
         let sender: Sender<(u8, Request)>;
         let (resp_tx, resp_rx) = oneshot::channel();
-        {
-            let channels = self.gs_channels.read().await;
-            sender = channels.get(&gs_id).unwrap().clone(); //we can make as many sender copies as we want
-        }
+        let sender = self.gs_channels.get(&gs_id).unwrap();
         let message = Request {
             response: resp_tx,
             body: packet,
@@ -170,9 +157,8 @@ impl Login {
         Ok(k)
     }
 
-    pub async fn remove_gs(&self, server_id: u8) {
-        let mut server_list = self.game_servers.write().await;
-        server_list.remove(&server_id);
+    pub fn remove_gs(&self, server_id: u8) {
+         self.game_servers.remove(&server_id);
     }
 
     pub fn get_random_rsa_key_pair(&self) -> ScrambledRSAKeyPair {
@@ -180,12 +166,8 @@ impl Login {
         let random_number: usize = rng.gen_range(0..=9);
         self.key_pairs.get(random_number).unwrap().clone()
     }
-    pub async fn connect_gs(&self, server_id: u8, gs_channel: Sender<(u8, Request)>) {
-        self.gs_channels
-            .write()
-            .await
-            .entry(server_id)
-            .or_insert(gs_channel);
+    pub fn connect_gs(&self, server_id: u8, gs_channel: Sender<(u8, Request)>) {
+        self.gs_channels.entry(server_id).or_insert(gs_channel);
     }
     fn generate_rsa_key_pairs(count: u8) -> Vec<ScrambledRSAKeyPair> {
         let mut key_pairs: Vec<ScrambledRSAKeyPair> = vec![];

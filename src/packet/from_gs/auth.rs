@@ -67,7 +67,7 @@ impl GSHandle for GS {
             response: Some(Box::new(login_fail::GSLogin::new(GSLoginFailReasons::None))),
         })?;
 
-        match gs.get_lc().register_gs(gsi).await {
+        match gs.get_lc().register_gs(gsi) {
             Ok(()) => {
                 gs.set_connection_state(&connection_state::GS::Authed)?;
                 gs.server_id = Some(self.desired_id);

@@ -28,9 +28,9 @@ impl ReadablePacket for RequestServerList {
 impl ClientHandle for RequestServerList {
     async fn handle(&self, ch: &mut Client) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
         let lc = ch.get_lc();
-        let servers = lc.get_server_list(ch.ip).await;
+        let servers = lc.get_server_list(ch.ip);
         if let Some(ref acc_name) = ch.account_name {
-            let mut player_option = lc.get_player(acc_name).await;
+            let mut player_option = lc.get_player(acc_name);
             let mut chars_on_servers = None;
             if let Some(player) = player_option {
                 chars_on_servers = Some(player.chars_on_servers);
