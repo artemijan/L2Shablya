@@ -110,7 +110,7 @@ impl GSHandle for GSStatusUpdate {
                     ))),
                 });
             }
-            gs.start_channel();
+            gs.start_channel().await;
         }
         Ok(None)
     }

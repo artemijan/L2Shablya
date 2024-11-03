@@ -45,7 +45,7 @@ impl Login {
     }
 
     pub async fn get_player(&self, account_name: &str) -> Option<player::Info> {
-        self.players.read().await.get(account_name).map(|v| v.clone())
+        self.players.read().await.get(account_name).cloned()
     }
     pub async fn with_player<F,R>(&self, account_name: &str, f:F) -> bool
     where

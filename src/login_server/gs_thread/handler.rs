@@ -40,9 +40,9 @@ impl GS {
     pub fn set_blowfish_key(&mut self, new_bf_key: &[u8]) {
         self.blowfish = Encryption::from_u8_key(new_bf_key);
     }
-    pub fn start_channel(&self) {
+    pub async fn start_channel(&self) {
         let (rx, mut tx) = mpsc::channel::<(u8, Request)>(100);
-        self.lc.connect_gs(self.server_id.unwrap(), rx);
+        self.lc.connect_gs(self.server_id.unwrap(), rx).await;
         let inbox = self.income_messages.clone();
         let cloned_self = self.clone();
         let threshold = Duration::from_secs(

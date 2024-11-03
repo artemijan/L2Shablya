@@ -10,6 +10,7 @@ use sqlx::any::install_default_drivers;
 use sqlx::Connection;
 use std::future::Future;
 use std::net::ToSocketAddrs;
+use std::num::NonZero;
 use std::sync::Arc;
 use std::thread;
 use crate::login_server::client_thread::ClientHandler;
@@ -29,12 +30,12 @@ mod packet;
 pub fn main() {
     let config = Arc::new(config::Server::load("config/login.yaml"));
     let mut worker_count = thread::available_parallelism()
-        .map(|n| n.get())
+        .map(NonZero::get)
         .unwrap_or(1);
     if let Some(wrk_cnt) = &config.runtime {
         worker_count = wrk_cnt.worker_threads;
     }
-    println!("Runtime: Worker count {}", worker_count);
+    println!("Runtime: Worker count {worker_count}");
     let rt = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .thread_name("login-worker")

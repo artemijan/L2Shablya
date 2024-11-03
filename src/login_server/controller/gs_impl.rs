@@ -79,7 +79,7 @@ impl Login {
         let timeout_duration = Duration::from_secs(u64::from(
             self.config.listeners.game_servers.messages.timeout,
         ));
-        for (_, gsi) in self.game_servers.read().await.iter() {
+        for gsi in self.game_servers.read().await.values() {
             let task = self.send_message_to_gs(gsi.get_id(), msg_id, packet_factory());
             tasks.push(timeout(timeout_duration, task));
         }
@@ -110,7 +110,8 @@ impl Login {
     ) -> anyhow::Result<Option<(u8, PacketType)>> {
         let (resp_tx, resp_rx) = oneshot::channel();
         let the_lock = self.gs_channels.read().await;
-        let sender = the_lock.get(&gs_id).unwrap();
+        let sender_option = the_lock.get(&gs_id);
+        let sender = sender_option.unwrap();
         let message = Request {
             response: Some(resp_tx),
             body: packet,

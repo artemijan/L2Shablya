@@ -8,13 +8,14 @@ use crate::common::dto::game_server::GSInfo;
 use crate::common::message::Request;
 use crate::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
 
+type ConcurrentRequestMap = Arc<RwLock<HashMap<u8, Sender<(u8, Request)>>>>;
 #[derive(Clone, Debug)]
 pub struct Login {
     key_pairs: Vec<ScrambledRSAKeyPair>,
     pub(super) config: Arc<config::Server>,
     pub(super) game_servers: Arc<RwLock<HashMap<u8, GSInfo>>>,
     pub(super) players: Arc<RwLock<HashMap<String, player::Info>>>,
-    pub(super) gs_channels: Arc<RwLock<HashMap<u8, Sender<(u8, Request)>>>>,
+    pub(super) gs_channels: ConcurrentRequestMap,
 }
 
 
@@ -33,7 +34,7 @@ impl Login {
         &self.config
     }
     pub async fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
-        self.game_servers.read().await.get(&gs_id).map(|gs_info| gs_info.clone())
+        self.game_servers.read().await.get(&gs_id).cloned()
     }
     pub fn get_random_rsa_key_pair(&self) -> ScrambledRSAKeyPair {
         let mut rng = rand::thread_rng();
