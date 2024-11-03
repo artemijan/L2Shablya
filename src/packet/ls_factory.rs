@@ -20,7 +20,7 @@ pub fn build_client_packet(data: &[u8], key_pair: &ScrambledRSAKeyPair) -> Optio
                 decrypted = [decrypted, decr_raw2].concat();
                 is_new_auth = true;
             }
-            decrypted.push(is_new_auth as u8);
+            decrypted.push(u8::from(is_new_auth));
             Some(Box::new(RequestAuthLogin::read(&decrypted).unwrap()))
         }
         0x07 => Some(Box::new(RequestAuthGG::read(packet_body).unwrap())),

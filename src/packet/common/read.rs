@@ -1,4 +1,6 @@
-use crate::common::arr::ToU16Array;
+use std::io::Read;
+use encoding::all::UTF_16LE;
+use encoding::{DecoderTrap, EncoderTrap, Encoding};
 
 #[derive(Debug, Clone)]
 pub struct ReadablePacketBuffer {
@@ -40,9 +42,10 @@ impl ReadablePacketBuffer {
 
     #[allow(clippy::cast_sign_loss)]
     pub fn read_sized_string(&mut self) -> String {
-        let length = self.read_i16();
-        let bytes = self.read_bytes(length as usize * 2);
-        String::from_utf16_lossy(&bytes.to_u16_array())
+        let length = self.read_i16() as usize;
+        let bytes = self.read_bytes(length * 2);
+        // safe to use unwrap, because decoder is "Replace", error here unreachable
+        UTF_16LE.decode(&bytes, DecoderTrap::Replace).unwrap()
     }
     pub fn read_bytes(&mut self, length: usize) -> Vec<u8> {
         let result = &self.bytes[self.position..self.position + length];

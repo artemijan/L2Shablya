@@ -145,7 +145,7 @@ impl PacketHandler for Client {
         if let Some(acc_name) = &self.account_name {
             //todo: maybe we need to keep it in the list of already logged in players instead, 
             // just to keep track of users which are in game?
-            self.lc.remove_player(acc_name)
+            self.lc.remove_player(acc_name);
         }
     }
     fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>> {

@@ -1,4 +1,3 @@
-pub mod arr;
 pub mod dto;
 pub mod errors;
 pub mod network;

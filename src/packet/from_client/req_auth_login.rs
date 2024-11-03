@@ -33,11 +33,7 @@ impl ReadablePacket for RequestAuthLogin {
             username = String::from_utf8_lossy(&body[0x5E..0x5E + 14]).to_string();
             password = String::from_utf8_lossy(&body[0x6C..0x6C + 16]).trim_all().to_string();
         }
-        Some(Self {
-            is_new_auth,
-            username,
-            password,
-        })
+        Some(Self { username, password, is_new_auth })
     }
 }
 
