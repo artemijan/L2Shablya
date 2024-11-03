@@ -1,7 +1,7 @@
-use std::collections::hash_map::Entry;
 use std::net::Ipv4Addr;
 use std::time::{Duration, SystemTime};
 use anyhow::{bail, Error};
+use dashmap::Entry;
 use futures::future::join_all;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::oneshot;
@@ -15,10 +15,9 @@ use crate::packet::login_fail::GSLogin;
 use super::data::Login;
 
 impl Login {
-    pub async fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
+    pub fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
         let mut servers = Vec::new();
-        let servers_lock = self.game_servers.read().await;
-        for s in servers_lock.values() {
+        for s in self.game_servers.iter() {
             servers.push(ServerData {
                 ip: s.get_host_ip(client_ip),
                 port: i32::from(s.get_port()),
@@ -35,10 +34,9 @@ impl Login {
         }
         servers
     }
-    pub async fn update_gs_status(&self, gs_id: u8, gs_info: GSInfo) -> Result<(), Error> {
-        let mut servers = self.game_servers.write().await;
-        if servers.contains_key(&gs_id) {
-            servers.insert(gs_info.get_id(), gs_info);
+    pub fn update_gs_status(&self, gs_id: u8, gs_info: GSInfo) -> Result<(), Error> {
+        if self.game_servers.contains_key(&gs_id) {
+            self.game_servers.insert(gs_info.get_id(), gs_info);
             Ok(())
         } else {
             bail!("Game server is not registered on login server.")
@@ -54,10 +52,8 @@ impl Login {
                 });
             }
         }
-        let mut servers = self.game_servers.write().await;
-
-        if let Entry::Vacant(e) = servers.entry(gs_info.get_id()) {
-            servers.insert(gs_info.get_id(), gs_info);
+        if !self.game_servers.contains_key(&gs_info.get_id()) {
+            self.game_servers.insert(gs_info.get_id(), gs_info);
             Ok(())
         } else {
             Err(error::PacketRun {
@@ -79,8 +75,8 @@ impl Login {
         let timeout_duration = Duration::from_secs(u64::from(
             self.config.listeners.game_servers.messages.timeout,
         ));
-        for gsi in self.game_servers.read().await.values() {
-            let task = self.send_message_to_gs(gsi.get_id(), msg_id, packet_factory());
+        for gs_id in self.game_servers.iter() {
+            let task = self.send_message_to_gs(gs_id.get_id(), msg_id, packet_factory());
             tasks.push(timeout(timeout_duration, task));
         }
         join_all(tasks).await.into_iter()
@@ -96,7 +92,7 @@ impl Login {
         F: Fn() -> Box<dyn SendablePacket>,
     {
         let mut tasks = vec![];
-        for (_, gsi) in self.game_servers.read().await.iter() {
+        for gsi in self.game_servers.iter() {
             let task = self.notify_gs(gsi.get_id(), packet_factory());
             tasks.push(task);
         }
@@ -142,7 +138,7 @@ impl Login {
     }
 
     pub async fn remove_gs(&self, server_id: u8) {
-        self.game_servers.write().await.remove(&server_id);
+        self.game_servers.remove(&server_id);
     }
 
 

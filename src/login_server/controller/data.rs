@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::sync::Arc;
+use dashmap::DashMap;
 use rand::Rng;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::RwLock;
@@ -13,7 +14,7 @@ type ConcurrentRequestMap = Arc<RwLock<HashMap<u8, Sender<(u8, Request)>>>>;
 pub struct Login {
     key_pairs: Vec<ScrambledRSAKeyPair>,
     pub(super) config: Arc<config::Server>,
-    pub(super) game_servers: Arc<RwLock<HashMap<u8, GSInfo>>>,
+    pub(super) game_servers: DashMap<u8, GSInfo>,
     pub(super) players: Arc<RwLock<HashMap<String, player::Info>>>,
     pub(super) gs_channels: ConcurrentRequestMap,
 }
@@ -26,15 +27,15 @@ impl Login {
             key_pairs: Login::generate_rsa_key_pairs(10),
             config,
             players: Arc::new(RwLock::new(HashMap::new())),
-            game_servers: Arc::new(RwLock::new(HashMap::new())),
+            game_servers: DashMap::new(),
             gs_channels: Arc::new(RwLock::new(HashMap::new())),
         }
     }
     pub fn get_config(&self) -> &config::Server {
         &self.config
     }
-    pub async fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
-        self.game_servers.read().await.get(&gs_id).cloned()
+    pub fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
+        self.game_servers.get(&gs_id).map(|gs| gs.clone())
     }
     pub fn get_random_rsa_key_pair(&self) -> ScrambledRSAKeyPair {
         let mut rng = rand::thread_rng();

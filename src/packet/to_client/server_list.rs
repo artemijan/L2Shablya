@@ -21,7 +21,7 @@ impl ServerList {
         ch: &ClientHandler, username: &str,
     ) -> ServerList {
         let lc = ch.get_lc();
-        let servers = lc.get_server_list(ch.ip).await;
+        let servers = lc.get_server_list(ch.ip);
         let mut player_option = lc.get_player(username).await;
         let mut chars_on_server = None;
         if let Some(player) = player_option {
