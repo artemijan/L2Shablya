@@ -9,13 +9,10 @@ use tokio::net::TcpStream;
 use anyhow::{Context, Error};
 use rand::Rng;
 use tokio::io::AsyncWriteExt;
-use crate::common::dto::config::{Connection, Server};
+use crate::common::dto::config;
 use crate::common::errors::Packet;
-use crate::common::errors::Packet::{ClientPacketNotFound, UnableToSendInit};
 use crate::common::session::SessionKey;
-use crate::crypt::generate_blowfish_key;
-use crate::crypt::login::Encryption;
-use crate::crypt::rsa::ScrambledRSAKeyPair;
+use crate::crypt::{generate_blowfish_key, login, rsa};
 use crate::login_server::controller::Login;
 use crate::login_server::traits::{PacketHandler, Shutdown};
 use crate::packet::common::{ClientHandle, SendablePacket};
@@ -32,12 +29,12 @@ pub struct Client {
     db_pool: AnyPool,
     session_id: i32,
     shutdown_notifier: Arc<Notify>,
-    pub lc: Arc<Login>,
-    encryption: Encryption,
+    pub lc: Arc<Login>, // login controller
+    encryption: login::Encryption,
     timeout: u8,
     session_key: SessionKey,
     connection_start_time: SystemTime,
-    rsa_key_pair: ScrambledRSAKeyPair,
+    rsa_key_pair: rsa::ScrambledRSAKeyPair,
 }
 
 /// # This function called each time when there is a new connection.
@@ -89,7 +86,7 @@ impl PacketHandler for Client {
     fn get_handler_name() -> String {
         "Login client handler".to_string()
     }
-    fn get_connection_config(cfg: &Server) -> &Connection {
+    fn get_connection_config(cfg: &config::Server) -> &config::Connection {
         &cfg.listeners.clients.connection
     }
     fn get_lc(&self) -> &Arc<Login> {
@@ -99,13 +96,13 @@ impl PacketHandler for Client {
     fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
         let mut rng = rand::thread_rng();
         let blowfish_key = generate_blowfish_key();
-        let encryption = Encryption::new(&blowfish_key.clone());
+        let encryption = login::Encryption::new(&blowfish_key.clone());
         let session_id = rng.gen();
         let connection_start_time = SystemTime::now();
         let timeout = lc.get_config().client.timeout;
         let ip = Self::get_ipv4_from_socket(&stream);
         let (tcp_reader, tcp_writer) = stream.into_split();
-        Client {
+        Self {
             tcp_reader: Arc::new(Mutex::new(tcp_reader)),
             tcp_writer: Arc::new(Mutex::new(tcp_writer)),
             db_pool,
@@ -136,7 +133,7 @@ impl PacketHandler for Client {
             .await
             .write_all(init.buffer.get_data_mut())
             .await
-            .map_err(|_| UnableToSendInit)?;
+            .map_err(|_| Packet::UnableToSendInit)?;
         Ok(())
     }
 
@@ -177,7 +174,7 @@ impl PacketHandler for Client {
     async fn on_receive_bytes(&mut self, _: usize, data: &mut [u8]) -> Result<(), Error> {
         self.encryption.decrypt(data)?;
         let handler =
-            build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| ClientPacketNotFound {
+            build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| Packet::ClientPacketNotFound {
                 opcode: data[0] as usize,
             })?;
         let resp = handler.handle(self).await;

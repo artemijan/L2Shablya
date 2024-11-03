@@ -39,9 +39,10 @@ impl ReadablePacket for PlayerAuthRequest {
 impl GSHandle for PlayerAuthRequest {
     async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let lc = gs.get_lc();
-        if let Some(mut player) = lc.get_player_mut(&self.account_name) {
-            player.game_server = gs.server_id;
-        } else {
+        let player_found = lc.with_player(&self.account_name, |pl| { 
+            pl.game_server = gs.server_id; 
+        }).await;
+        if !player_found {
             return Err(PacketRun {
                 msg: Some(format!("Can't find account on LS {:}", self.account_name)),
                 response: Some(Box::new(KickPlayer::new(&self.account_name))),

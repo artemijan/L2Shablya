@@ -13,13 +13,13 @@ impl AuthGS {
             buffer: SendablePacketBuffer::new(),
             server_id,
         };
-        gg.write_all().unwrap();
+        let _ = gg.write_all();
         gg
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write_u8(0x02)?;
         self.buffer.write_u8(self.server_id)?;
-        self.buffer.write_string(Some("Bartz"))?;
+        self.buffer.write_string(Some("Bartz"))?; //todo: implement mapping for server names
         Ok(())
     }
 }

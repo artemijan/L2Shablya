@@ -1,4 +1,3 @@
-use dashmap::mapref::one::RefMut;
 use crate::common::dto::player;
 use crate::common::dto::player::GSCharsInfo;
 use super::data::Login;
@@ -13,14 +12,14 @@ impl Login {
         mut player_info: player::Info,
     ) -> anyhow::Result<(), error::PacketRun> {
         let account_name = player_info.account_name.clone();
-        if let Some(player_in_game) = self.players.remove(&account_name) {
-            if let Some(gs) = player_in_game.1.game_server {
+        if let Some(player_in_game) = self.players.write().await.remove(&account_name) {
+            if let Some(gs) = player_in_game.game_server {
                 let _ = self.notify_gs(gs, Box::new(KickPlayer::new(&account_name))).await;
             } else {
                 let _ = self.notify_all_gs(|| Box::new(KickPlayer::new(&account_name))).await;
             }
             return Err(error::PacketRun {
-                msg: Some(format!("Account in use: {account_name}, IP {:?}", player_in_game.1.ip_address)),
+                msg: Some(format!("Account in use: {account_name}, IP {:?}", player_in_game.ip_address)),
                 response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonAccountInUse))),
             });
         }
@@ -41,17 +40,26 @@ impl Login {
             }
             // ignore all the tasks that are timed out
         }
-        self.players.insert(account_name, player_info); // if player exists it will drop
+        self.players.write().await.insert(account_name, player_info); // if player exists it will drop
         Ok(())
     }
 
-    pub fn get_player(&self, account_name: &str) -> Option<player::Info> {
-        self.players.get(account_name).map(|v| v.clone())
+    pub async fn get_player(&self, account_name: &str) -> Option<player::Info> {
+        self.players.read().await.get(account_name).map(|v| v.clone())
     }
-    pub fn get_player_mut(&self, account_name: &str) -> Option<RefMut<String, player::Info>> {
-        self.players.get_mut(account_name)
+    pub async fn with_player<F,R>(&self, account_name: &str, f:F) -> bool
+    where
+        F: FnOnce(&mut player::Info) -> R,
+    {
+        let mut lock = self.players.write().await;
+        if let Some(player) = lock.get_mut(account_name){
+            f(player);
+            true
+        }else{
+            false
+        }
     }
-    pub fn remove_player(&self, account_name: &str) {
-        self.players.remove(account_name);
+    pub async fn remove_player(&self, account_name: &str) {
+        self.players.write().await.remove(account_name);
     }
 }

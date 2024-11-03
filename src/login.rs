@@ -46,6 +46,7 @@ pub async fn main() {
         pool.clone(),
         main_loop::<GSHandler>,
     );
-    clients_handle.await.unwrap();
-    gs_handle.await.unwrap(); // actually this line is never reached, because in previous handle it's infinite loop
+    clients_handle.await.expect("Exiting: Client handler closed");
+    // actually this line is never reached, because in previous handle it's infinite loop
+    gs_handle.await.expect("Exiting: GS handler closed");
 }

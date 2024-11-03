@@ -1,7 +1,7 @@
+use std::collections::hash_map::Entry;
 use std::net::Ipv4Addr;
 use std::time::{Duration, SystemTime};
 use anyhow::{bail, Error};
-use dashmap::Entry;
 use futures::future::join_all;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::oneshot;
@@ -15,9 +15,10 @@ use crate::packet::login_fail::GSLogin;
 use super::data::Login;
 
 impl Login {
-    pub fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
+    pub async fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
         let mut servers = Vec::new();
-        for s in self.game_servers.iter() {
+        let servers_lock = self.game_servers.read().await;
+        for s in servers_lock.values() {
             servers.push(ServerData {
                 ip: s.get_host_ip(client_ip),
                 port: i32::from(s.get_port()),
@@ -34,16 +35,17 @@ impl Login {
         }
         servers
     }
-    pub fn update_gs_status(&self, gs_id: u8, gs_info: GSInfo) -> Result<(), Error> {
-        if self.game_servers.contains_key(&gs_id) {
-            self.game_servers.insert(gs_info.get_id(), gs_info);
+    pub async fn update_gs_status(&self, gs_id: u8, gs_info: GSInfo) -> Result<(), Error> {
+        let mut servers = self.game_servers.write().await;
+        if servers.contains_key(&gs_id) {
+            servers.insert(gs_info.get_id(), gs_info);
             Ok(())
         } else {
             bail!("Game server is not registered on login server.")
         }
     }
 
-    pub fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<(), error::PacketRun> {
+    pub async fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<(), error::PacketRun> {
         if let Some(allowed_gs) = &self.config.allowed_gs {
             if !allowed_gs.contains_key(&gs_info.hex()) {
                 return Err(error::PacketRun {
@@ -52,8 +54,10 @@ impl Login {
                 });
             }
         }
-        if let Entry::Vacant(e) = self.game_servers.entry(gs_info.get_id()) {
-            self.game_servers.insert(gs_info.get_id(), gs_info);
+        let mut servers = self.game_servers.write().await;
+
+        if let Entry::Vacant(e) = servers.entry(gs_info.get_id()) {
+            servers.insert(gs_info.get_id(), gs_info);
             Ok(())
         } else {
             Err(error::PacketRun {
@@ -75,7 +79,7 @@ impl Login {
         let timeout_duration = Duration::from_secs(u64::from(
             self.config.listeners.game_servers.messages.timeout,
         ));
-        for gsi in self.game_servers.iter() {
+        for (_, gsi) in self.game_servers.read().await.iter() {
             let task = self.send_message_to_gs(gsi.get_id(), msg_id, packet_factory());
             tasks.push(timeout(timeout_duration, task));
         }
@@ -92,7 +96,7 @@ impl Login {
         F: Fn() -> Box<dyn SendablePacket>,
     {
         let mut tasks = vec![];
-        for gsi in self.game_servers.iter() {
+        for (_, gsi) in self.game_servers.read().await.iter() {
             let task = self.notify_gs(gsi.get_id(), packet_factory());
             tasks.push(task);
         }
@@ -105,7 +109,8 @@ impl Login {
         packet: Box<dyn SendablePacket>,
     ) -> anyhow::Result<Option<(u8, PacketType)>> {
         let (resp_tx, resp_rx) = oneshot::channel();
-        let sender = self.gs_channels.get(&gs_id).unwrap();
+        let the_lock = self.gs_channels.read().await;
+        let sender = the_lock.get(&gs_id).unwrap();
         let message = Request {
             response: Some(resp_tx),
             body: packet,
@@ -123,7 +128,8 @@ impl Login {
         gs_id: u8,
         packet: Box<dyn SendablePacket>,
     ) -> anyhow::Result<()> {
-        let sender = self.gs_channels.get(&gs_id).unwrap();
+        let the_lock = self.gs_channels.read().await;
+        let sender = the_lock.get(&gs_id).unwrap();
         let message = Request {
             response: None,
             body: packet,
@@ -134,12 +140,12 @@ impl Login {
         Ok(())
     }
 
-    pub fn remove_gs(&self, server_id: u8) {
-        self.game_servers.remove(&server_id);
+    pub async fn remove_gs(&self, server_id: u8) {
+        self.game_servers.write().await.remove(&server_id);
     }
 
 
-    pub fn connect_gs(&self, server_id: u8, gs_channel: Sender<(u8, Request)>) {
-        self.gs_channels.entry(server_id).or_insert(gs_channel);
+    pub async fn connect_gs(&self, server_id: u8, gs_channel: Sender<(u8, Request)>) {
+        self.gs_channels.write().await.entry(server_id).or_insert(gs_channel);
     }
 }

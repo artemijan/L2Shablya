@@ -1,7 +1,9 @@
+use std::collections::HashMap;
 use std::sync::Arc;
 use dashmap::DashMap;
 use rand::Rng;
 use tokio::sync::mpsc::Sender;
+use tokio::sync::RwLock;
 use crate::common::dto::{config, player};
 use crate::common::dto::game_server::GSInfo;
 use crate::common::message::Request;
@@ -11,9 +13,9 @@ use crate::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
 pub struct Login {
     key_pairs: Vec<ScrambledRSAKeyPair>,
     pub(super) config: Arc<config::Server>,
-    pub(super) game_servers: Arc<DashMap<u8, GSInfo>>,
-    pub(super) players: Arc<DashMap<String, player::Info>>,
-    pub(super) gs_channels: Arc<DashMap<u8, Sender<(u8, Request)>>>,
+    pub(super) game_servers: Arc<RwLock<HashMap<u8, GSInfo>>>,
+    pub(super) players: Arc<RwLock<HashMap<String, player::Info>>>,
+    pub(super) gs_channels: Arc<RwLock<HashMap<u8, Sender<(u8, Request)>>>>,
 }
 
 
@@ -23,16 +25,16 @@ impl Login {
         Login {
             key_pairs: Login::generate_rsa_key_pairs(10),
             config,
-            players: Arc::new(DashMap::new()),
-            game_servers: Arc::new(DashMap::new()),
-            gs_channels: Arc::new(DashMap::new()),
+            players: Arc::new(RwLock::new(HashMap::new())),
+            game_servers: Arc::new(RwLock::new(HashMap::new())),
+            gs_channels: Arc::new(RwLock::new(HashMap::new())),
         }
     }
     pub fn get_config(&self) -> &config::Server {
         &self.config
     }
-    pub fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
-        self.game_servers.get(&gs_id).map(|gs_info| gs_info.clone())
+    pub async fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
+        self.game_servers.read().await.get(&gs_id).map(|gs_info| gs_info.clone())
     }
     pub fn get_random_rsa_key_pair(&self) -> ScrambledRSAKeyPair {
         let mut rng = rand::thread_rng();

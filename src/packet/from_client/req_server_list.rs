@@ -1,7 +1,7 @@
 use crate::login_server::client_thread::ClientHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::ClientHandle;
-use crate::packet::common::{ReadablePacket, SendablePacket, ServerData, ServerStatus, ServerType};
+use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::to_client::ServerList;
 use async_trait::async_trait;
 use crate::login_server::traits::PacketHandler;
@@ -26,21 +26,15 @@ impl ReadablePacket for RequestServerList {
 #[async_trait]
 impl ClientHandle for RequestServerList {
     async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
-        let lc = ch.get_lc();
-        let servers = lc.get_server_list(ch.ip);
         if let Some(ref acc_name) = ch.account_name {
-            let mut player_option = lc.get_player(acc_name);
-            let mut chars_on_servers = None;
-            if let Some(player) = player_option {
-                chars_on_servers = Some(player.chars_on_servers);
-            }
-            return Ok(Some(Box::new(ServerList::new(servers, 1, chars_on_servers))));
+            Ok(Some(Box::new(ServerList::new(ch, acc_name).await)))
+        } else {
+            Err(error::PacketRun {
+                msg: Some(format!("Login Fail, tried user: {:?}", ch.account_name)),
+                response: Some(Box::new(login_fail::PlayerLogin::new(
+                    PlayerLoginFailReasons::ReasonUserOrPassWrong,
+                ))),
+            })
         }
-        Err(error::PacketRun {
-            msg: Some(format!("Login Fail, tried user: {:?}", ch.account_name)),
-            response: Some(Box::new(login_fail::PlayerLogin::new(
-                PlayerLoginFailReasons::ReasonUserOrPassWrong,
-            ))),
-        })
     }
 }

@@ -1,4 +1,3 @@
-use crate::common::errors::Packet;
 use crate::packet::common::write::SendablePacketBuffer;
 use crate::packet::common::SendablePacket;
 use crate::packet::LoginServerOpcodes;
@@ -15,7 +14,7 @@ impl AuthGG {
             buffer: SendablePacketBuffer::new(),
             session_id,
         };
-        gg.write_all().unwrap();
+        let _ = gg.write_all();
         gg
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {

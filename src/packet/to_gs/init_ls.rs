@@ -15,7 +15,7 @@ impl InitLS {
             buffer: SendablePacketBuffer::new(),
             public_key,
         };
-        init_ls.write_all().unwrap();
+        let _ = init_ls.write_all();
         init_ls
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {

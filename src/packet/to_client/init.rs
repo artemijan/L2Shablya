@@ -18,7 +18,7 @@ impl Init {
             public_key,
             blowfish_key,
         };
-        init.write_all().unwrap();
+        let _ = init.write_all();
         init
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {

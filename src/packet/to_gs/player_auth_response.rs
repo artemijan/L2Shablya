@@ -15,7 +15,7 @@ impl PlayerAuthResponse {
             account: account.to_string(),
             is_ok,
         };
-        gg.write_all().unwrap();
+        let _ = gg.write_all();
         gg
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
@@ -27,7 +27,6 @@ impl PlayerAuthResponse {
 }
 
 impl SendablePacket for PlayerAuthResponse {
-
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
     }

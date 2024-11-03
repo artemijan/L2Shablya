@@ -99,5 +99,6 @@ pub struct Listeners {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Client {
     pub timeout: u8,
+    pub show_licence: bool,
     pub enable_cmdline_login: bool,
 }

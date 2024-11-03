@@ -20,11 +20,12 @@ where
     loop {
         match listener.accept().await {
             Ok((stream, _)) => {
+                println!("Incoming connection from {:?} ({:})", stream.peer_addr(), T::get_handler_name());
                 let mut handler = T::new(stream, pool.clone(), lc.clone());
                 tokio::spawn(async move { handler.handle_client().await });
             }
             Err(e) => {
-                eprintln!("Failed to accept connection: {e}");
+                println!("Failed to accept connection: {e}");
             }
         }
     }

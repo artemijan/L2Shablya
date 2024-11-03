@@ -17,7 +17,7 @@ impl PlayOk {
             play_ok1: session_key.play_ok1,
             play_ok2: session_key.play_ok2,
         };
-        login_ok.write_all().unwrap();
+        let _ = login_ok.write_all();
         login_ok
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {

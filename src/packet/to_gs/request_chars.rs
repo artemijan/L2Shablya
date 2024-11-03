@@ -1,4 +1,3 @@
-use crate::common::errors::Packet;
 use crate::packet::common::write::SendablePacketBuffer;
 use crate::packet::common::SendablePacket;
 
@@ -14,7 +13,7 @@ impl RequestChars {
             buffer: SendablePacketBuffer::new(),
             account_name: account_name.to_string(),
         };
-        gg.write_all().unwrap();
+        let _ = gg.write_all(); // safe to ignore
         gg
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
@@ -25,7 +24,6 @@ impl RequestChars {
 }
 
 impl SendablePacket for RequestChars {
-
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
     }

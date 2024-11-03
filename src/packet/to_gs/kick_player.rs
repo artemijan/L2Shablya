@@ -13,7 +13,7 @@ impl KickPlayer {
             buffer: SendablePacketBuffer::new(),
             account_name: account_name.to_string(),
         };
-        pack.write_all().unwrap();
+        let _ = pack.write_all();
         pack
     }
 

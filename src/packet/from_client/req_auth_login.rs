@@ -5,8 +5,9 @@ use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::traits::PacketHandler;
 use crate::packet::common::{ClientHandle, PacketResult, ReadablePacket};
 use crate::packet::error;
-use crate::packet::{login_fail, to_client, PlayerLoginFailReasons};
+use crate::packet::{login_fail, to_client::LoginOk, PlayerLoginFailReasons};
 use async_trait::async_trait;
+use crate::packet::to_client::ServerList;
 
 #[derive(Clone, Debug)]
 pub struct RequestAuthLogin {
@@ -44,6 +45,7 @@ impl ClientHandle for RequestAuthLogin {
         ch: &mut ClientHandler,
     ) -> PacketResult {
         let auto_registration = ch.get_lc().get_config().auto_registration;
+        let show_license = ch.get_lc().get_config().client.show_licence;
         let pool = ch.get_db_pool_mut();
         let mut user_option = User::fetch_by_username(pool, &self.username)
             .await
@@ -61,14 +63,19 @@ impl ClientHandle for RequestAuthLogin {
             user_option = User::new(pool, &self.username, &self.password).await.ok();
             assert!(user_option.is_some(), "Can not create a user {}", self.username);
         }
-        ch.account_name = Some(self.username.to_string());
+        ch.account_name = Some(self.username.clone());
         let player_info = player::Info {
             is_authed: true,
             account_name: self.username.clone(),
             ..Default::default()
         };
         let lc = ch.get_lc();
-        lc.on_player_login(player_info).await.expect("TODO: handle panic message");
-        Ok(Some(Box::new(to_client::LoginOk::new(ch.get_session_key()))))
+        lc.on_player_login(player_info).await?;
+        if show_license {
+            Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))))
+        } else {
+            let s_list = ServerList::new(ch, &self.username).await;
+            Ok(Some(Box::new(s_list)))
+        }
     }
 }

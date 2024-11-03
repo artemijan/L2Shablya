@@ -12,12 +12,13 @@ pub struct LoginOk {
 
 impl LoginOk {
     pub fn new(session_key: &SessionKey) -> LoginOk {
-        let mut login_ok = LoginOk {
+        let mut login_ok = Self {
             buffer: SendablePacketBuffer::new(),
             login_ok1: session_key.login_ok1,
             login_ok2: session_key.login_ok2,
         };
-        login_ok.write_all().unwrap();
+        // it is safe to unwrap result, as we know hoe many bytes are written
+        let _ = login_ok.write_all();
         login_ok
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
@@ -36,7 +37,6 @@ impl LoginOk {
 }
 
 impl SendablePacket for LoginOk {
-
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
     }

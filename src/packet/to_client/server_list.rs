@@ -3,6 +3,10 @@ use crate::packet::common::write::SendablePacketBuffer;
 use crate::packet::common::{SendablePacket, ServerData, ServerStatus};
 use crate::packet::LoginServerOpcodes;
 use std::collections::HashMap;
+use std::sync::Arc;
+use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::controller::Login;
+use crate::login_server::traits::PacketHandler;
 
 #[derive(Debug, Clone)]
 pub struct ServerList {
@@ -13,18 +17,23 @@ pub struct ServerList {
 }
 
 impl ServerList {
-    pub fn new(
-        servers: Vec<ServerData>,
-        last_server: i32,
-        chars_on_server: Option<HashMap<u8, GSCharsInfo>>,
+    pub async fn new(
+        ch: &ClientHandler, username: &str,
     ) -> ServerList {
-        let mut sl = ServerList {
+        let lc = ch.get_lc();
+        let servers = lc.get_server_list(ch.ip).await;
+        let mut player_option = lc.get_player(username).await;
+        let mut chars_on_server = None;
+        if let Some(player) = player_option {
+            chars_on_server = Some(player.chars_on_servers);
+        }
+        let mut sl = Self {
             buffer: SendablePacketBuffer::new(),
             servers,
-            last_server,
+            last_server: 0, //todo: implement me
             chars_on_server,
         };
-        sl.write_all().unwrap();
+        let _ = sl.write_all();
         sl
     }
 
