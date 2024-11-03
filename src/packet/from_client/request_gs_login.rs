@@ -1,4 +1,4 @@
-use crate::login_server::client_thread::Client;
+use crate::login_server::client_thread::ClientHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
@@ -17,7 +17,7 @@ pub struct RequestGSLogin {
 impl ReadablePacket for RequestGSLogin {
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
-        Some(RequestGSLogin {
+        Some(Self {
             s_key_1: buffer.read_i32(),
             s_key_2: buffer.read_i32(),
             server_id: buffer.read_byte(),
@@ -29,7 +29,7 @@ impl ReadablePacket for RequestGSLogin {
 impl ClientHandle for RequestGSLogin {
     async fn handle(
         &self,
-        ch: &mut Client,
+        ch: &mut ClientHandler,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         Ok(Some(Box::new(PlayOk::new(ch.get_session_key()))))
     }

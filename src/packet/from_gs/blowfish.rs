@@ -6,7 +6,7 @@ use crate::packet::error::PacketRun;
 use crate::packet::login_fail::PlayerLogin;
 use crate::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
-use crate::login_server::gs_thread::connection_state;
+use crate::login_server::gs_thread::enums;
 
 #[derive(Clone, Debug)]
 pub struct BlowFish {
@@ -19,7 +19,7 @@ impl ReadablePacket for BlowFish {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         let size = buffer.read_i32();
-        Some(BlowFish {
+        Some(Self {
             encrypted_key: buffer.read_bytes(size as usize),
         })
     }
@@ -34,7 +34,7 @@ impl GSHandle for BlowFish {
             if let Some(index) = decrypted.iter().position(|&x| x != 0) {
                 decrypted.drain(..index);
             }
-            gs.set_connection_state(&connection_state::GS::BfConnected)?;
+            gs.set_connection_state(&enums::GS::BfConnected)?;
             gs.set_blowfish_key(&decrypted);
         } else {
             return Err(PacketRun {

@@ -16,6 +16,7 @@ pub struct Info {
     pub is_authed: bool,
     pub ip_address: Option<IpAddr>,
     pub chars_on_servers: HashMap<u8, GSCharsInfo>,
+    pub game_server: Option<u8>
 }
 
 impl Info {

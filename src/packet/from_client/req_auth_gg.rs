@@ -1,4 +1,4 @@
-use crate::login_server::client_thread::Client;
+use crate::login_server::client_thread::ClientHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
@@ -27,7 +27,7 @@ impl ReadablePacket for RequestAuthGG {
             let data2 = buffer.read_i32();
             let data3 = buffer.read_i32();
             let data4 = buffer.read_i32();
-            return Some(RequestAuthGG {
+            return Some(Self {
                 session_id,
                 _data1: data1,
                 _data2: data2,
@@ -41,7 +41,7 @@ impl ReadablePacket for RequestAuthGG {
 
 #[async_trait]
 impl ClientHandle for RequestAuthGG {
-    async fn handle(&self, ch: &mut Client) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         if self.session_id != ch.get_session_id() {
             return Err(PacketRun {
                 msg: Some(format!("Wrong session id {}", self.session_id)),

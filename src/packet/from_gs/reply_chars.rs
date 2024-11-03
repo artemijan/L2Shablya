@@ -26,7 +26,7 @@ impl ReadablePacket for ReplyChars {
         for _ in 0..chars_to_delete {
             char_list.push(buffer.read_i64());
         }
-        Some(ReplyChars {
+        Some(Self {
             account_name,
             chars,
             chars_to_delete,

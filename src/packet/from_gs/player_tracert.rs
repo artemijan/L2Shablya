@@ -27,7 +27,7 @@ impl ReadablePacket for PlayerTracert {
         let hop2 = buffer.read_string();
         let hop3 = buffer.read_string();
         let hop4 = buffer.read_string();
-        Some(PlayerTracert {
+        Some(Self {
             account: account_name,
             pc_ip,
             hop1,

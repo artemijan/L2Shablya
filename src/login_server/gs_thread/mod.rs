@@ -1,4 +1,4 @@
 mod handler;
-pub mod connection_state;
+pub mod enums;
 
-pub use handler::GSHandler;
+pub use handler::GS as GSHandler;

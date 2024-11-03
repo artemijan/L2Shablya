@@ -58,7 +58,7 @@ impl ReadablePacket for GSStatusUpdate {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte(); //packet id
         let size = buffer.read_i32() as usize;
-        let mut instance = GSStatusUpdate::default();
+        let mut instance = Self::default();
         for _ in 0..size {
             let gs_type = buffer.read_i32();
             let value = buffer.read_i32();

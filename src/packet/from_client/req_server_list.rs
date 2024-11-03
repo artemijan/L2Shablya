@@ -1,10 +1,9 @@
-use crate::login_server::client_thread::Client;
+use crate::login_server::client_thread::ClientHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket, ServerData, ServerStatus, ServerType};
 use crate::packet::to_client::ServerList;
 use async_trait::async_trait;
-use std::net::Ipv4Addr;
 use crate::login_server::traits::PacketHandler;
 use crate::packet::{error, login_fail, PlayerLoginFailReasons};
 
@@ -17,7 +16,7 @@ pub struct RequestServerList {
 impl ReadablePacket for RequestServerList {
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
-        Some(RequestServerList {
+        Some(Self {
             login_ok_1: buffer.read_i32(),
             login_ok_2: buffer.read_i32(),
         })
@@ -26,7 +25,7 @@ impl ReadablePacket for RequestServerList {
 
 #[async_trait]
 impl ClientHandle for RequestServerList {
-    async fn handle(&self, ch: &mut Client) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
+    async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
         let lc = ch.get_lc();
         let servers = lc.get_server_list(ch.ip);
         if let Some(ref acc_name) = ch.account_name {

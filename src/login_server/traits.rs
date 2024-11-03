@@ -16,9 +16,11 @@ use tokio::sync::{Mutex, Notify};
 use tokio::time::sleep;
 
 
-pub trait Shutdown{
+pub trait Shutdown {
     fn get_shutdown_listener(&self) -> Arc<Notify>;
-    fn shutdown(&self);
+    fn shutdown(&self) {
+        self.get_shutdown_listener().notify_one();
+    }
 }
 
 
@@ -38,7 +40,7 @@ pub trait PacketHandler: Shutdown {
     fn get_timeout(&self) -> Option<u64>;
 
     async fn send_packet(&self, packet: Box<dyn SendablePacket>) -> Result<Box<dyn SendablePacket>, Error>;
-    
+
     async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error>;
     async fn on_receive_bytes(
         &mut self,

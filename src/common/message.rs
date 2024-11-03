@@ -1,10 +1,10 @@
 use std::time::SystemTime;
-use crate::packet::common::{PacketType, ReadablePacket, SendablePacket};
+use crate::packet::common::{PacketType, SendablePacket};
 use tokio::sync::oneshot::Sender;
 
 #[derive(Debug)]
 pub struct Request {
-    pub response: Sender<Option<(u8,PacketType)>>,
+    pub response: Option<Sender<Option<(u8,PacketType)>>>,
     pub body: Box<dyn SendablePacket>,
     pub sent_at: SystemTime,
     pub id: String,

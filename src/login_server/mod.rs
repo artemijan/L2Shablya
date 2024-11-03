@@ -4,11 +4,10 @@ use crate::common::dto::config;
 use crate::common::network;
 use crate::login_server::controller::Login;
 use crate::login_server::traits::PacketHandler;
-
-pub mod controller;
 pub mod traits;
 pub mod gs_thread;
 pub mod client_thread;
+pub mod controller;
 
 pub async fn main_loop<T>(config: Arc<config::Server>, lc: Arc<Login>, pool: AnyPool)
 where

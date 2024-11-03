@@ -6,13 +6,13 @@ use anyhow::Context;
 use common::network;
 use dotenvy::dotenv;
 use login_server::main_loop;
-use login_server::gs_thread::GSHandler;
-use login_server::client_thread::Client;
 use sqlx::any::install_default_drivers;
 use sqlx::Connection;
 use std::future::Future;
 use std::net::ToSocketAddrs;
 use std::sync::Arc;
+use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::gs_thread::GSHandler;
 
 mod common;
 mod crypt;
@@ -37,8 +37,9 @@ pub async fn main() {
         config.clone(),
         lc.clone(),
         pool.clone(),
-        main_loop::<Client>,
+        main_loop::<ClientHandler>,
     );
+
     let gs_handle = network::create_handle(
         config.clone(),
         lc.clone(),

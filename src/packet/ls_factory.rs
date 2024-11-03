@@ -11,10 +11,16 @@ pub fn build_client_packet(data: &[u8], key_pair: &ScrambledRSAKeyPair) -> Optio
     match opcode[0] {
         0x00 => {
             let (raw1, rest) = packet_body.split_at(128);
-            let (raw2, _) = rest.split_at(128);
             let decr_raw1 = key_pair.decrypt_data(raw1).ok()?;
-            let decr_raw2 = key_pair.decrypt_data(raw2).ok()?;
-            let decrypted = [decr_raw1, decr_raw2].concat();
+            let mut decrypted = decr_raw1;
+            let mut is_new_auth = false;
+            if packet_body.len() >= 256 {
+                let (raw2, _) = rest.split_at(128);
+                let decr_raw2 = key_pair.decrypt_data(raw2).ok()?;
+                decrypted = [decrypted, decr_raw2].concat();
+                is_new_auth = true;
+            }
+            decrypted.push(is_new_auth as u8);
             Some(Box::new(RequestAuthLogin::read(&decrypted).unwrap()))
         }
         0x07 => Some(Box::new(RequestAuthGG::read(packet_body).unwrap())),

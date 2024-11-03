@@ -1,12 +1,11 @@
 use crate::common::dto::game_server::GSInfo;
-use crate::login_server::gs_thread::GSHandler;
+use crate::login_server::gs_thread::{GSHandler, enums};
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::{error, login_fail, GSLoginFailReasons};
 use crate::packet::to_gs::AuthGS;
 use async_trait::async_trait;
-use crate::login_server::gs_thread::connection_state;
 use crate::login_server::traits::PacketHandler;
 
 #[derive(Clone, Debug)]
@@ -19,6 +18,7 @@ pub struct GS {
     hex_id: Vec<u8>,
     hosts: Vec<String>,
 }
+
 #[allow(clippy::cast_sign_loss)]
 impl ReadablePacket for GS {
     fn read(data: &[u8]) -> Option<Self> {
@@ -33,7 +33,7 @@ impl ReadablePacket for GS {
         let hex_id = buffer.read_bytes(size as usize);
         size = buffer.read_i32() * 2;
         let hosts = buffer.read_n_strings(size as usize);
-        Some(GS {
+        Some(Self {
             desired_id,
             accept_alternative_id,
             host_reserved,
@@ -69,7 +69,7 @@ impl GSHandle for GS {
 
         match gs.get_lc().register_gs(gsi) {
             Ok(()) => {
-                gs.set_connection_state(&connection_state::GS::Authed)?;
+                gs.set_connection_state(&enums::GS::Authed)?;
                 gs.server_id = Some(self.desired_id);
                 Ok(Some(Box::new(AuthGS::new(self.desired_id))))
             }

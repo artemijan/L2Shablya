@@ -14,7 +14,7 @@ use crate::common::errors::Packet;
 use crate::common::message::Request;
 use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
-use crate::login_server::gs_thread::connection_state::GS;
+use crate::login_server::gs_thread::enums;
 use crate::login_server::controller::Login;
 use crate::login_server::traits::{PacketHandler, Shutdown};
 use crate::packet::common::{GSHandle, PacketResult, PacketType, SendablePacket};
@@ -23,7 +23,7 @@ use crate::packet::to_gs::InitLS;
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
-pub struct GSHandler {
+pub struct GS {
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
     shutdown_listener: Arc<Notify>,
@@ -31,12 +31,12 @@ pub struct GSHandler {
     db_pool: AnyPool,
     key_pair: ScrambledRSAKeyPair,
     blowfish: Encryption,
-    connection_state: GS,
+    connection_state: enums::GS,
     pub server_id: Option<u8>,
     income_messages: Arc<RwLock<HashMap<String, Request>>>,
 }
 
-impl GSHandler {
+impl GS {
     pub fn set_blowfish_key(&mut self, new_bf_key: &[u8]) {
         self.blowfish = Encryption::from_u8_key(new_bf_key);
     }
@@ -55,7 +55,9 @@ impl GSHandler {
                     //the message has been sent already, there is no sense to do it twice
                     let existing_msg = income_messages.remove(&request.id);
                     if let Some(existing_msg) = existing_msg {
-                        let _ = existing_msg.response.send(None); // ignore error, we don't care if pipe is broken
+                        if let Some(resp) = existing_msg.response {
+                            let _ = resp.send(None); // ignore error, we don't care if pipe is broken
+                        }
                     }
                     //do a cleanup, if we have old messages, remove them
                     let now = SystemTime::now();
@@ -69,9 +71,9 @@ impl GSHandler {
                     if let Ok(packet_back) = cloned_self.send_packet(req_body).await {
                         request.body = packet_back;
                         income_messages.insert(request.id.clone(), request);
-                    } else {
+                    } else if let Some(resp) = request.response {
                         //if it wasn't successful then just send back NoResponse without storing it
-                        let _ = request.response.send(None);
+                        let _ = resp.send(None);
                     }
                 }
             }
@@ -80,14 +82,17 @@ impl GSHandler {
     pub async fn respond_to_message(&self, message_id: &str, message: PacketType) {
         let mut msg_box = self.income_messages.write().await;
         let msg = msg_box.remove(message_id);
+        // TODO: once combining if let will be stable, refactor it
         if let Some(request) = msg {
             if let Some(server_id) = self.server_id {
-                request.response.send(Some((server_id, message))).unwrap();
+                if let Some(resp) = request.response {
+                    resp.send(Some((server_id, message))).expect("Unable to send response");
+                }
             }
         }
         //if message is missing then we just ignore it
     }
-    pub fn set_connection_state(&mut self, state: &GS) -> PacketResult {
+    pub fn set_connection_state(&mut self, state: &enums::GS) -> PacketResult {
         self.connection_state.transition_to(state)
     }
     pub fn decrypt(&self, data: &mut [u8]) -> Result<(), Packet> {
@@ -99,18 +104,14 @@ impl GSHandler {
     }
 }
 
-impl Shutdown for GSHandler {
+impl Shutdown for GS {
     fn get_shutdown_listener(&self) -> Arc<Notify> {
         self.shutdown_listener.clone()
-    }
-
-    fn shutdown(&self) {
-        self.shutdown_listener.notify_one();
     }
 }
 
 #[async_trait]
-impl PacketHandler for GSHandler {
+impl PacketHandler for GS {
     fn get_handler_name() -> String {
         "Game server handler".to_string()
     }
@@ -126,14 +127,14 @@ impl PacketHandler for GSHandler {
         let writer = Arc::new(Mutex::new(tcp_writer));
         let reader = Arc::new(Mutex::new(tcp_reader));
         let cfg = lc.get_config();
-        GSHandler {
+        GS {
             tcp_reader: reader,
             tcp_writer: writer,
             db_pool,
             shutdown_listener: Arc::new(Notify::new()),
             key_pair: lc.get_random_rsa_key_pair(),
             blowfish: Encryption::from_u8_key(cfg.blowfish_key.as_bytes()),
-            connection_state: GS::Initial,
+            connection_state: enums::GS::Initial,
             lc,
             server_id: None,
             income_messages: Arc::new(RwLock::new(HashMap::new())),
@@ -145,7 +146,7 @@ impl PacketHandler for GSHandler {
             "Game server connected: {:?}",
             self.tcp_reader.lock().await.peer_addr().unwrap()
         );
-        self.connection_state = GS::Connected;
+        self.connection_state = enums::GS::Connected;
         let init_packet = Box::new(InitLS::new(self.key_pair.get_modulus()));
         self.send_packet(init_packet).await?;
         Ok(())

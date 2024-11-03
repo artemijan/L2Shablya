@@ -20,7 +20,7 @@ impl ReadablePacket for PlayerInGame {
             let st = buffer.read_string();
             accounts.push(st);
         }
-        Some(PlayerInGame { accounts })
+        Some(Self { accounts })
     }
 }
 

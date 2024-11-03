@@ -5,11 +5,10 @@ use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use sqlx::AnyPool;
 use std::time::SystemTime;
 use async_trait::async_trait;
-use tokio::net::{TcpSocket, TcpStream};
+use tokio::net::TcpStream;
 use anyhow::{Context, Error};
 use rand::Rng;
 use tokio::io::AsyncWriteExt;
-use tokio::net::unix::SocketAddr;
 use crate::common::dto::config::{Connection, Server};
 use crate::common::errors::Packet;
 use crate::common::errors::Packet::{ClientPacketNotFound, UnableToSendInit};
@@ -83,10 +82,6 @@ impl Shutdown for Client {
     fn get_shutdown_listener(&self) -> Arc<Notify> {
         self.shutdown_notifier.clone()
     }
-
-    fn shutdown(&self) {
-        self.shutdown_notifier.notify_one();
-    }
 }
 
 #[async_trait]
@@ -146,8 +141,12 @@ impl PacketHandler for Client {
     }
 
     async fn on_disconnect(&mut self) {
-        //todo: think of how we cna handle client disconnection
         println!("Player disconnected: {:?}", self.session_id);
+        if let Some(acc_name) = &self.account_name {
+            //todo: maybe we need to keep it in the list of already logged in players instead, 
+            // just to keep track of users which are in game?
+            self.lc.remove_player(acc_name)
+        }
     }
     fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>> {
         &self.tcp_reader
