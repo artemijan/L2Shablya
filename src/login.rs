@@ -11,6 +11,7 @@ use sqlx::Connection;
 use std::future::Future;
 use std::net::ToSocketAddrs;
 use std::sync::Arc;
+use std::thread;
 use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::gs_thread::GSHandler;
 
@@ -25,11 +26,28 @@ mod packet;
 ///
 /// - when Game server thread quits, and so login server can not accept new servers
 /// - when client listener thread quits so we can't accept new clients
-#[tokio::main]
-pub async fn main() {
+pub fn main() {
+    let config = Arc::new(config::Server::load("config/login.yaml"));
+    let mut worker_count = thread::available_parallelism()
+        .map(|n| n.get())
+        .unwrap_or(1);
+    if let Some(wrk_cnt) = &config.runtime {
+        worker_count = wrk_cnt.worker_threads;
+    }
+    println!("Runtime: Worker count {}", worker_count);
+    let rt = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .thread_name("login-worker")
+        .worker_threads(worker_count)
+        .build().expect("Failed to build tokio runtime.");
+    rt.block_on(async {
+        start(config).await;
+    });
+}
+
+async fn start(config: Arc<config::Server>) {
     install_default_drivers();
     dotenv().ok();
-    let config = Arc::new(config::Server::load("config/login.yaml"));
     let pool = new_db_pool(&config.database).await;
     let lc = Arc::new(Login::new(config.clone()));
     database::run_migrations(&pool).await;

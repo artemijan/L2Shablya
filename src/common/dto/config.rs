@@ -9,6 +9,7 @@ use std::io::BufReader;
 pub struct Server {
     pub name: String,
     pub blowfish_key: String,
+    pub runtime: Option<Runtime>,
     pub auto_registration: bool,
     #[serde(deserialize_with = "validate_allowed_gs_keys")]
     pub allowed_gs: Option<HashMap<String, AllowedGS>>,
@@ -36,6 +37,11 @@ pub struct Database {
     pub url: String,
     pub max_connections: u8,
     pub min_connections: u8,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Runtime {
+    pub worker_threads: usize,
 }
 
 // Custom deserialization function to validate that all keys in the HashMap are valid hex strings
