@@ -16,34 +16,34 @@ unused = { level = "allow", priority = -1 }
 debug = true
 
 [dependencies]
-encoding = "0.2.33"
-rand = "0.8.5"
-rand_core = "0.6.4"
-anyhow = "1.0.86"
-thiserror = "1.0.61"
-log = "0.4.22"
-serde = { version = "1.0.204", features = ["derive"] }
-num = "0.4.3"
-num-derive = "0.4.2"
-num-traits = "0.2.19"
-base64 = "0.22.1"
-openssl = "0.10.64"
-openssl-sys = "0.9.102"
-tokio = { version = "1.38.0", features = ["full"] }
-sqlx = { version = "0.8.2", features = [
+encoding = "^0.2.33"
+rand = "^0.8.5"
+rand_core = "^0.6.4"
+anyhow = "^1.0.92"
+thiserror = "^1.0.67"
+log = "^0.4.22"
+serde = { version = "^1.0.214", features = ["derive"] }
+num = "^0.4.3"
+num-derive = "^0.4.2"
+num-traits = "^0.2.19"
+base64 = "^0.22.1"
+openssl = "^0.10.68"
+openssl-sys = "^0.9.104"
+tokio = { version = "^1.41.0", features = ["full"] }
+sqlx = { version = "^0.8.2", features = [
     "postgres",
     "sqlite",
     "runtime-tokio-rustls",
     "sqlx-macros",
 ] }
-futures = "0.3.30"
-async-trait = "0.1.80"
-argon2 = "0.5.3"
-serde_yaml = "0.9.34"
-bytebuffer = "2.2.0"
-strum = { version = "0.26.3", features = ["derive"] }
-dotenvy = "0.15.7"
-blowfish = "0.9.1"
-num_enum = "0.7.3"
-ipnet = "2.10.1"
-uuid = { version = "1.11.0", features = ["v4"] }
+futures = "^0.3.31"
+async-trait = "^0.1.83"
+argon2 = "^0.5.3"
+serde_yaml = "^0.9.34"
+bytebuffer = "^2.3.0"
+strum = { version = "^0.26.3", features = ["derive"] }
+dotenvy = "^0.15.7"
+blowfish = "^0.9.1"
+num_enum = "^0.7.3"
+ipnet = "^2.10.1"
+uuid = { version = "^1.11.0", features = ["v4"] }
