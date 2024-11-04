@@ -1,7 +1,6 @@
 use std::net::Ipv4Addr;
 use std::time::{Duration, SystemTime};
 use anyhow::{bail, Error};
-use dashmap::Entry;
 use futures::future::join_all;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::oneshot;
@@ -34,16 +33,20 @@ impl Login {
         }
         servers
     }
-    pub fn update_gs_status(&self, gs_id: u8, gs_info: GSInfo) -> Result<(), Error> {
-        if self.game_servers.contains_key(&gs_id) {
-            self.game_servers.insert(gs_info.get_id(), gs_info);
-            Ok(())
+
+    pub fn with_gs<F>(&self, gs_id: &u8, f: F) -> bool
+    where
+        F: Fn(&mut GSInfo),
+    {
+        if let Some(mut gs) = self.game_servers.get_mut(gs_id) {
+            f(&mut gs);
+            true
         } else {
-            bail!("Game server is not registered on login server.")
+            false
         }
     }
 
-    pub async fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<(), error::PacketRun> {
+    pub fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<(), error::PacketRun> {
         if let Some(allowed_gs) = &self.config.allowed_gs {
             if !allowed_gs.contains_key(&gs_info.hex()) {
                 return Err(error::PacketRun {
@@ -105,8 +108,7 @@ impl Login {
         packet: Box<dyn SendablePacket>,
     ) -> anyhow::Result<Option<(u8, PacketType)>> {
         let (resp_tx, resp_rx) = oneshot::channel();
-        let the_lock = self.gs_channels.read().await;
-        let sender_option = the_lock.get(&gs_id);
+        let sender_option = self.gs_channels.get(&gs_id);
         let sender = sender_option.unwrap();
         let message = Request {
             response: Some(resp_tx),
@@ -125,8 +127,7 @@ impl Login {
         gs_id: u8,
         packet: Box<dyn SendablePacket>,
     ) -> anyhow::Result<()> {
-        let the_lock = self.gs_channels.read().await;
-        let sender = the_lock.get(&gs_id).unwrap();
+        let sender = self.gs_channels.get(&gs_id).unwrap();
         let message = Request {
             response: None,
             body: packet,
@@ -141,8 +142,7 @@ impl Login {
         self.game_servers.remove(&server_id);
     }
 
-
-    pub async fn connect_gs(&self, server_id: u8, gs_channel: Sender<(u8, Request)>) {
-        self.gs_channels.write().await.entry(server_id).or_insert(gs_channel);
+    pub fn connect_gs(&self, server_id: u8, gs_channel: Sender<(u8, Request)>) {
+        self.gs_channels.entry(server_id).or_insert(gs_channel);
     }
 }

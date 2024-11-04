@@ -41,7 +41,7 @@ impl GSHandle for PlayerAuthRequest {
         let lc = gs.get_lc();
         let player_found = lc.with_player(&self.account_name, |pl| { 
             pl.game_server = gs.server_id; 
-        }).await;
+        });
         if !player_found {
             return Err(PacketRun {
                 msg: Some(format!("Can't find account on LS {:}", self.account_name)),

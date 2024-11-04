@@ -1,22 +1,19 @@
-use std::collections::HashMap;
 use std::sync::Arc;
 use dashmap::DashMap;
 use rand::Rng;
 use tokio::sync::mpsc::Sender;
-use tokio::sync::RwLock;
 use crate::common::dto::{config, player};
 use crate::common::dto::game_server::GSInfo;
 use crate::common::message::Request;
 use crate::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
 
-type ConcurrentRequestMap = Arc<RwLock<HashMap<u8, Sender<(u8, Request)>>>>;
 #[derive(Clone, Debug)]
 pub struct Login {
     key_pairs: Vec<ScrambledRSAKeyPair>,
     pub(super) config: Arc<config::Server>,
     pub(super) game_servers: DashMap<u8, GSInfo>,
-    pub(super) players: Arc<RwLock<HashMap<String, player::Info>>>,
-    pub(super) gs_channels: ConcurrentRequestMap,
+    pub(super) players: DashMap<String, player::Info>,
+    pub(super) gs_channels: DashMap<u8, Sender<(u8, Request)>>,
 }
 
 
@@ -26,9 +23,9 @@ impl Login {
         Login {
             key_pairs: Login::generate_rsa_key_pairs(10),
             config,
-            players: Arc::new(RwLock::new(HashMap::new())),
+            players: DashMap::new(),
             game_servers: DashMap::new(),
-            gs_channels: Arc::new(RwLock::new(HashMap::new())),
+            gs_channels: DashMap::new(),
         }
     }
     pub fn get_config(&self) -> &config::Server {
