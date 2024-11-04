@@ -19,4 +19,12 @@ impl SessionKey {
             login_ok2: rng.gen(),
         }
     }
+    pub fn equals(&self, other: &SessionKey, show_license: bool) -> bool {
+        let is_play_ok = self.play_ok1 == other.play_ok1 && self.play_ok2 == other.play_ok2;
+        if show_license {
+            is_play_ok && self.login_ok1 == other.login_ok1 && self.login_ok2 == other.login_ok2
+        } else {
+            is_play_ok
+        }
+    }
 }

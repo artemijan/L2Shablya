@@ -66,6 +66,7 @@ impl ClientHandle for RequestAuthLogin {
         ch.account_name = Some(self.username.clone());
         let player_info = player::Info {
             is_authed: true,
+            session: Some(ch.get_session_key().clone()),
             account_name: self.username.clone(),
             ..Default::default()
         };

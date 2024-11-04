@@ -52,13 +52,12 @@ impl Login {
     pub async fn get_player(&self, account_name: &str) -> Option<player::Info> {
         self.players.get(account_name).map(|i| i.clone())
     }
-    pub fn with_player<F, R>(&self, account_name: &str, f: F) -> bool
+    pub fn with_player<F>(&self, account_name: &str, f: F) -> bool
     where
-        F: FnOnce(&mut player::Info) -> R,
+        F: FnOnce(&mut player::Info) -> bool,
     {
         if let Some(mut player) = self.players.get_mut(account_name) {
-            f(&mut player);
-            true
+            f(&mut player)
         } else {
             false
         }
