@@ -1,6 +1,7 @@
 mod data;
-mod gs_impl;
-mod player_impl;
+mod gs_management;
+mod player_management;
+mod gs_messaging;
 
 pub use data::Login;
 

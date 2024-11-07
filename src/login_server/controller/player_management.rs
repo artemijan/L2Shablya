@@ -12,17 +12,7 @@ impl Login {
         mut player_info: player::Info,
     ) -> anyhow::Result<(), error::PacketRun> {
         let account_name = player_info.account_name.clone();
-        if let Some(player_in_game) = self.players.remove(&account_name) {
-            if let Some(gs) = player_in_game.1.game_server {
-                let _ = self.notify_gs(gs, Box::new(KickPlayer::new(&account_name))).await;
-            } else {
-                let _ = self.notify_all_gs(|| Box::new(KickPlayer::new(&account_name))).await;
-            }
-            return Err(error::PacketRun {
-                msg: Some(format!("Account in use: {account_name}, IP {:?}", player_in_game.1.ip_address)),
-                response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonAccountInUse))),
-            });
-        }
+        self.check_player_in_game(&account_name).await?;
         let mut task_results = self.send_message_to_all_gs(
             &account_name, || Box::new(RequestChars::new(&account_name)),
         ).await.into_iter();
@@ -41,6 +31,21 @@ impl Login {
             // ignore all the tasks that are timed out
         }
         self.players.insert(account_name, player_info); // if player exists it will drop
+        Ok(())
+    }
+
+    async fn check_player_in_game(&self, account_name: &str) -> anyhow::Result<(), error::PacketRun> {
+        if let Some(player_in_game) = self.players.remove(account_name) {
+            if let Some(gs) = player_in_game.1.game_server {
+                let _ = self.notify_gs(gs, Box::new(KickPlayer::new(account_name))).await;
+            } else {
+                let _ = self.notify_all_gs(|| Box::new(KickPlayer::new(account_name))).await;
+            }
+            return Err(error::PacketRun {
+                msg: Some(format!("Account in use: {account_name}, IP {:?}", player_in_game.1.ip_address)),
+                response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonAccountInUse))),
+            });
+        }
         Ok(())
     }
 
@@ -64,5 +69,24 @@ impl Login {
     }
     pub async fn remove_player(&self, account_name: &str) {
         self.players.remove(account_name);
+    }
+
+    pub fn on_players_in_game(&self, gs_id: &u8, account_name: &[String]) {
+        for acc_name in account_name {
+            let op_success = self.with_player(acc_name, |pl| {
+                pl.game_server = Some(*gs_id);
+                pl.is_joined_gs = true;
+                true
+            });
+            if !op_success {
+                let pl = player::Info {
+                    account_name: acc_name.clone(),
+                    is_joined_gs: true,
+                    is_authed: true,
+                    ..player::Info::default()
+                };
+                self.players.insert(acc_name.clone(), pl);
+            }
+        }
     }
 }
