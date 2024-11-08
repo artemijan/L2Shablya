@@ -7,7 +7,6 @@ use std::time::SystemTime;
 use async_trait::async_trait;
 use tokio::net::TcpStream;
 use anyhow::{Context, Error};
-use rand::Rng;
 use tokio::io::AsyncWriteExt;
 use crate::common::dto::config;
 use crate::common::errors::Packet;
@@ -94,10 +93,9 @@ impl PacketHandler for Client {
     }
 
     fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
-        let mut rng = rand::thread_rng();
         let blowfish_key = generate_blowfish_key();
         let encryption = login::Encryption::new(&blowfish_key.clone());
-        let session_id = rng.gen();
+        let session_id = lc.generate_session_id();
         let connection_start_time = SystemTime::now();
         let timeout = lc.get_config().client.timeout;
         let ip = Self::get_ipv4_from_socket(&stream);
