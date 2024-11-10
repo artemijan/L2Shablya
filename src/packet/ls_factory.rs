@@ -29,6 +29,9 @@ pub fn build_client_packet(data: &[u8], key_pair: &ScrambledRSAKeyPair) -> Optio
         0x05 => Some(Box::new(RequestServerList::read(packet_body).unwrap())),
         // 0x0E => Some(LoginClientOpcodes::RequestPiAgreementCheck),
         // 0x0F => Some(LoginClientOpcodes::RequestPiAgreement),
-        _ => None,
+        _ => {
+            eprintln!("Unknown Client packet ID:0x{:02X}", data[0]);
+            None
+        }
     }
 }

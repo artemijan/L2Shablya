@@ -1,3 +1,4 @@
+use std::net::IpAddr;
 use argon2::{
     password_hash::{rand_core::OsRng, PasswordHasher, PasswordVerifier, SaltString},
     Argon2, PasswordHash,
@@ -6,11 +7,12 @@ use sqlx::{AnyPool, Error, FromRow};
 use tokio::task::spawn_blocking;
 
 /// This is a struct which is simply a DTO to get/store data in DB
-#[derive(Debug, Clone, FromRow)]
+#[derive(Debug, Clone, FromRow, Default)]
 pub struct User {
     pub id: Option<i64>,
     pub username: String,
     pub password: String,
+    pub access_level: i32,
 }
 
 #[allow(unused)]
@@ -39,8 +41,8 @@ impl User {
                 .unwrap()
                 .to_string()
         })
-        .await
-        .unwrap()
+            .await
+            .unwrap()
     }
     /// cpu bound need to spawn a separate thread
     pub async fn verify_password(&self, password: &str) -> bool {
@@ -52,22 +54,40 @@ impl User {
                 .verify_password(pwd.as_bytes(), &parsed_hash)
                 .is_ok()
         })
-        .await
-        .unwrap()
+            .await
+            .unwrap()
+    }
+    pub async fn change_access_level(db_pool: &AnyPool, access_level: i32, username: &str) -> anyhow::Result<User> {
+        let user = sqlx::query_as("UPDATE user SET access_level = $1 where username=$2")
+            .bind(access_level)
+            .bind(username)
+            .fetch_one(db_pool)
+            .await?;
+        Ok(user)
+    }
+    pub async fn req_temp_ban(db_pool: &AnyPool, username: &str, ban_duration:i64, ip: &str) -> anyhow::Result<User> {
+        let user = sqlx::query_as("UPDATE user SET ban_duration = $1, ban_ip = $2 where username=$3")
+            .bind(ban_duration)
+            .bind(ip)
+            .bind(username)
+            .fetch_one(db_pool)
+            .await?;
+        Ok(user)
     }
     pub async fn new(db_pool: &AnyPool, username: &str, password: &str) -> anyhow::Result<User> {
         let password_hash = Self::hash_password(password).await;
         let user = sqlx::query_as(
             "
-            INSERT INTO user (username, password) 
-            VALUES ($1, $2)
-            RETURNING id, username, password
+            INSERT INTO user (username, password, access_level) 
+            VALUES ($1, $2, $3)
+            RETURNING id, username, password, access_level
             ",
         )
-        .bind(username)
-        .bind(password_hash)
-        .fetch_one(db_pool)
-        .await?;
+            .bind(username)
+            .bind(password_hash)
+            .bind(0)
+            .fetch_one(db_pool)
+            .await?;
         Ok(user)
     }
 }

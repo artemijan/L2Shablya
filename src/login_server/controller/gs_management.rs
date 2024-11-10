@@ -10,7 +10,7 @@ use super::data::Login;
 impl Login {
     pub fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
         let mut servers = Vec::new();
-        for s in self.game_servers.iter() {
+        for s in &self.game_servers {
             servers.push(ServerData {
                 ip: s.get_host_ip(client_ip),
                 port: i32::from(s.get_port()),
@@ -28,11 +28,11 @@ impl Login {
         servers
     }
 
-    pub fn with_gs<F>(&self, gs_id: &u8, f: F) -> bool
+    pub fn with_gs<F>(&self, gs_id: u8, f: F) -> bool
     where
         F: Fn(&mut GSInfo),
     {
-        if let Some(mut gs) = self.game_servers.get_mut(gs_id) {
+        if let Some(mut gs) = self.game_servers.get_mut(&gs_id) {
             f(&mut gs);
             true
         } else {
@@ -49,10 +49,7 @@ impl Login {
                 });
             }
         }
-        if !self.game_servers.contains_key(&gs_info.get_id()) {
-            self.game_servers.insert(gs_info.get_id(), gs_info);
-            Ok(())
-        } else {
+        if self.game_servers.contains_key(&gs_info.get_id()) {
             Err(error::PacketRun {
                 msg: Some(format!(
                     "GS already registered with id: {:}",
@@ -62,11 +59,14 @@ impl Login {
                     GSLoginFailReasons::AlreadyRegistered,
                 ))),
             })
+        } else {
+            self.game_servers.insert(gs_info.get_id(), gs_info);
+            Ok(())
         }
     }
 
 
-    pub async fn remove_gs(&self, server_id: u8) {
+    pub fn remove_gs(&self, server_id: u8) {
         self.game_servers.remove(&server_id);
     }
 

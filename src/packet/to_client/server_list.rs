@@ -17,12 +17,12 @@ pub struct ServerList {
 }
 
 impl ServerList {
-    pub async fn new(
+    pub fn new(
         ch: &ClientHandler, username: &str,
     ) -> ServerList {
         let lc = ch.get_lc();
         let servers = lc.get_server_list(ch.ip);
-        let mut player_option = lc.get_player(username).await;
+        let mut player_option = lc.get_player(username);
         let mut chars_on_server = None;
         if let Some(player) = player_option {
             chars_on_server = Some(player.chars_on_servers);

@@ -152,7 +152,7 @@ impl PacketHandler for GS {
         Ok(())
     }
 
-    async fn on_disconnect(&mut self) {
+    fn on_disconnect(&mut self) {
         println!(
             "Game server disconnected: ID ({:})",
             self.server_id.unwrap_or_default()
@@ -211,5 +211,8 @@ impl PacketHandler for GS {
         })?;
         let resp = handler.handle(self).await;
         self.handle_result(resp).await
+    }
+    fn get_db_pool_mut(&mut self) -> &mut AnyPool {
+        &mut self.db_pool
     }
 }

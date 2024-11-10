@@ -16,7 +16,7 @@ impl Login {
         let timeout_duration = Duration::from_secs(u64::from(
             self.config.listeners.game_servers.messages.timeout,
         ));
-        for gs_id in self.game_servers.iter() {
+        for gs_id in &self.game_servers {
             let task = self.send_message_to_gs(gs_id.get_id(), msg_id, packet_factory());
             tasks.push(timeout(timeout_duration, task));
         }
@@ -33,7 +33,7 @@ impl Login {
         F: Fn() -> Box<dyn SendablePacket>,
     {
         let mut tasks = vec![];
-        for gsi in self.game_servers.iter() {
+        for gsi in &self.game_servers {
             let task = self.notify_gs(gsi.get_id(), packet_factory());
             tasks.push(task);
         }

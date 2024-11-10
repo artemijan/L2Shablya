@@ -27,7 +27,7 @@ impl ReadablePacket for RequestServerList {
 impl ClientHandle for RequestServerList {
     async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
         if let Some(ref acc_name) = ch.account_name {
-            Ok(Some(Box::new(ServerList::new(ch, acc_name).await)))
+            Ok(Some(Box::new(ServerList::new(ch, acc_name))))
         } else {
             Err(error::PacketRun {
                 msg: Some(format!("Login Fail, tried user: {:?}", ch.account_name)),

@@ -54,9 +54,6 @@ impl Client {
     pub fn get_session_id(&self) -> i32 {
         self.session_id
     }
-    pub fn get_db_pool_mut(&mut self) -> &mut AnyPool {
-        &mut self.db_pool
-    }
     pub fn get_session_key(&self) -> &SessionKey {
         &self.session_key
     }
@@ -95,7 +92,7 @@ impl PacketHandler for Client {
     fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
         let blowfish_key = generate_blowfish_key();
         let encryption = login::Encryption::new(&blowfish_key.clone());
-        let session_id = lc.generate_session_id();
+        let session_id = Login::generate_session_id();
         let connection_start_time = SystemTime::now();
         let timeout = lc.get_config().client.timeout;
         let ip = Self::get_ipv4_from_socket(&stream);
@@ -135,13 +132,8 @@ impl PacketHandler for Client {
         Ok(())
     }
 
-    async fn on_disconnect(&mut self) {
+    fn on_disconnect(&mut self) {
         println!("Player disconnected: {:?}", self.session_id);
-        if let Some(acc_name) = &self.account_name {
-            //todo: maybe we need to keep it in the list of already logged in players instead, 
-            // just to keep track of users which are in game?
-            self.lc.remove_player(acc_name);
-        }
     }
     fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>> {
         &self.tcp_reader
@@ -167,6 +159,10 @@ impl PacketHandler for Client {
             .write_all(bytes)
             .await
             .with_context(|| "Failed to flush packet to socket")
+    }
+
+    fn get_db_pool_mut(&mut self) -> &mut AnyPool {
+        &mut self.db_pool
     }
 
     async fn on_receive_bytes(&mut self, _: usize, data: &mut [u8]) -> Result<(), Error> {

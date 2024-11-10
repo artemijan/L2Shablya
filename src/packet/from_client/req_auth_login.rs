@@ -75,7 +75,7 @@ impl ClientHandle for RequestAuthLogin {
         if show_license {
             Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))))
         } else {
-            let s_list = ServerList::new(ch, &self.username).await;
+            let s_list = ServerList::new(ch, &self.username);
             Ok(Some(Box::new(s_list)))
         }
     }

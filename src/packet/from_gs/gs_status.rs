@@ -97,7 +97,7 @@ impl GSHandle for GSStatusUpdate {
         let lc = gs.get_lc();
         let mut updated = false;
         if let Some(server_id) = gs.server_id {
-            updated = lc.with_gs(&server_id, |gsi| {
+            updated = lc.with_gs(server_id, |gsi| {
                 gsi.set_max_players(self.max_players);
                 gsi.set_age_limit(self.server_age);
                 gsi.use_square_brackets(self.use_square_brackets);

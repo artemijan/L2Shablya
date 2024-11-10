@@ -20,9 +20,16 @@ where
     loop {
         match listener.accept().await {
             Ok((stream, _)) => {
-                println!("Incoming connection from {:?} ({:})", stream.peer_addr(), T::get_handler_name());
-                let mut handler = T::new(stream, pool.clone(), lc.clone());
-                tokio::spawn(async move { handler.handle_client().await });
+                let addr = stream.peer_addr().unwrap().ip().to_string();
+                if let Ok(addr) = stream.peer_addr() {
+                    println!("Incoming connection from {:?} ({:})", addr.ip(), T::get_handler_name());
+                    if lc.is_ip_banned(&addr.ip().to_string()) {
+                        eprint!("Ip is banned, skipping connection: {addr}"); //todo: maybe use EBPF?
+                    } else {
+                        let mut handler = T::new(stream, pool.clone(), lc.clone());
+                        tokio::spawn(async move { handler.handle_client().await });
+                    }
+                }
             }
             Err(e) => {
                 println!("Failed to accept connection: {e}");

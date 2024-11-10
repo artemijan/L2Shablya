@@ -12,6 +12,7 @@ pub struct Login {
     key_pairs: Vec<ScrambledRSAKeyPair>,
     pub(super) config: Arc<config::Server>,
     pub(super) game_servers: DashMap<u8, GSInfo>,
+    pub(super) ip_ban_list: DashMap<String, i64>,
     pub(super) players: DashMap<String, player::Info>,
     pub(super) gs_channels: DashMap<u8, Sender<(u8, Request)>>,
 }
@@ -23,6 +24,7 @@ impl Login {
         Login {
             key_pairs: Login::generate_rsa_key_pairs(10),
             config,
+            ip_ban_list: DashMap::new(),
             players: DashMap::new(),
             game_servers: DashMap::new(),
             gs_channels: DashMap::new(),

@@ -34,7 +34,7 @@ pub trait PacketHandler: Shutdown {
     fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self;
 
     async fn on_connect(&mut self) -> Result<(), Packet>;
-    async fn on_disconnect(&mut self);
+    fn on_disconnect(&mut self);
     fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>>;
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
     fn get_timeout(&self) -> Option<u64>;
@@ -42,6 +42,8 @@ pub trait PacketHandler: Shutdown {
     async fn send_packet(&self, packet: Box<dyn SendablePacket>) -> Result<Box<dyn SendablePacket>, Error>;
 
     async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error>;
+    fn get_db_pool_mut(&mut self) -> &mut AnyPool;
+
     async fn on_receive_bytes(
         &mut self,
         packet_size: usize,
@@ -95,7 +97,7 @@ pub trait PacketHandler: Shutdown {
                 Self::get_handler_name(),
                 e
             );
-            self.on_disconnect().await;
+            self.on_disconnect();
             return;
         }
         let shutdown_listener = self.get_shutdown_listener(); //shutdown listener must be cloned only once before the loop
@@ -110,7 +112,7 @@ pub trait PacketHandler: Shutdown {
                 read_result = read_future =>{
                     match read_result {
                         Ok((0, _)) => {
-                            self.on_disconnect().await;
+                            self.on_disconnect();
                             break;
                         }
                         Ok((bytes_read, mut data)) => {
@@ -121,13 +123,13 @@ pub trait PacketHandler: Shutdown {
                                     client_addr,
                                     e
                                 );
-                                self.on_disconnect().await;
+                                self.on_disconnect();
                                 break;
                             }
                         }
                         Err(e) => {
                             eprintln!("{}: Failed to read data from client: {}", Self::get_handler_name(), e);
-                            self.on_disconnect().await;
+                            self.on_disconnect();
                             break;
                         }
                     }
@@ -138,13 +140,13 @@ pub trait PacketHandler: Shutdown {
                         "{}: No data received within timeout. Dropping connection.",
                         Self::get_handler_name()
                     );
-                    self.on_disconnect().await;
+                    self.on_disconnect();
                     break;
                 }
                 // Handle shutdown notification (or other task notifications)
                 () = shutdown_listener.notified() => {
                     println!("{}: Received shutdown notification. Dropping connection.", Self::get_handler_name());
-                    self.on_disconnect().await;
+                    self.on_disconnect();
                     break;
                 }
             }
