@@ -9,7 +9,6 @@ use crate::packet::ls_factory::build_client_packet;
 use crate::packet::to_client::Init;
 use anyhow::{Context, Error};
 use async_trait::async_trait;
-use sqlx::AnyPool;
 use std::net::{IpAddr, Ipv4Addr};
 use std::sync::Arc;
 use std::time::SystemTime;
@@ -17,6 +16,7 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
+use crate::database::DBPool;
 
 #[derive(Clone, Debug)]
 pub struct Client {
@@ -25,7 +25,7 @@ pub struct Client {
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
     pub account_name: Option<String>,
-    db_pool: AnyPool,
+    db_pool: DBPool,
     session_id: i32,
     shutdown_notifier: Arc<Notify>,
     pub lc: Arc<Login>, // login controller
@@ -87,7 +87,7 @@ impl PacketHandler for Client {
         &self.lc
     }
 
-    fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
+    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self {
         let blowfish_key = generate_blowfish_key();
         let encryption = login::Encryption::new(&blowfish_key.clone());
         let session_id = Login::generate_session_id();
@@ -162,7 +162,7 @@ impl PacketHandler for Client {
             .with_context(|| "Failed to flush packet to socket")
     }
 
-    fn get_db_pool_mut(&mut self) -> &mut AnyPool {
+    fn get_db_pool_mut(&mut self) -> &mut DBPool {
         &mut self.db_pool
     }
 

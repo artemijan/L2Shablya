@@ -1,20 +1,20 @@
 use crate::common::dto::config::{Connection, Server};
 use crate::login_server::controller::Login;
 use anyhow::Context;
-use sqlx::AnyPool;
 use std::future::Future;
 use std::net::ToSocketAddrs;
 use std::sync::Arc;
 use tokio::net::{TcpListener, TcpSocket};
+use crate::database::DBPool;
 
 pub fn create_handle<F, Fut>(
     cfg: Arc<Server>,
     lc: Arc<Login>,
-    client_pool: AnyPool,
+    client_pool: DBPool,
     handler: F,
 ) -> tokio::task::JoinHandle<()>
 where
-    F: Fn(Arc<Server>, Arc<Login>, AnyPool) -> Fut + Send + 'static,
+    F: Fn(Arc<Server>, Arc<Login>, DBPool) -> Fut + Send + 'static,
     Fut: Future<Output = ()> + Send + 'static,
 {
     tokio::spawn(async move { handler(cfg, lc, client_pool).await })

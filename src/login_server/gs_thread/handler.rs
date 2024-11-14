@@ -12,7 +12,6 @@ use crate::packet::to_gs::InitLS;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use openssl::error::ErrorStack;
-use sqlx::AnyPool;
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::{Duration, SystemTime};
@@ -20,6 +19,7 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{mpsc, Mutex, Notify, RwLock};
+use crate::database::DBPool;
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
@@ -28,7 +28,7 @@ pub struct GS {
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
     shutdown_listener: Arc<Notify>,
     lc: Arc<Login>,
-    db_pool: AnyPool,
+    db_pool: DBPool,
     key_pair: ScrambledRSAKeyPair,
     blowfish: Encryption,
     connection_state: enums::GS,
@@ -124,7 +124,7 @@ impl PacketHandler for GS {
         &self.lc
     }
 
-    fn new(mut stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self {
+    fn new(mut stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self {
         let (tcp_reader, tcp_writer) = stream.into_split();
         let writer = Arc::new(Mutex::new(tcp_writer));
         let reader = Arc::new(Mutex::new(tcp_reader));
@@ -217,7 +217,7 @@ impl PacketHandler for GS {
         let resp = handler.handle(self).await;
         self.handle_result(resp).await
     }
-    fn get_db_pool_mut(&mut self) -> &mut AnyPool {
+    fn get_db_pool_mut(&mut self) -> &mut DBPool {
         &mut self.db_pool
     }
 }

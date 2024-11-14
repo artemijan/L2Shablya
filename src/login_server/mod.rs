@@ -2,14 +2,15 @@ use crate::common::dto::config;
 use crate::common::network;
 use crate::login_server::controller::Login;
 use crate::login_server::traits::PacketHandler;
-use sqlx::AnyPool;
 use std::sync::Arc;
+use crate::database::DBPool;
+
 pub mod client_thread;
 pub mod controller;
 pub mod gs_thread;
 pub mod traits;
 
-pub async fn main_loop<T>(config: Arc<config::Server>, lc: Arc<Login>, pool: AnyPool)
+pub async fn main_loop<T>(config: Arc<config::Server>, lc: Arc<Login>, pool: DBPool)
 where
     T: PacketHandler + Send + Sync + 'static,
 {

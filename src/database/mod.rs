@@ -3,8 +3,9 @@ pub mod user;
 use crate::common::dto::config::Database;
 use sqlx::any::AnyPoolOptions;
 use sqlx::AnyPool;
+pub type DBPool = AnyPool;
 
-pub async fn new_db_pool(db_config: &Database) -> AnyPool {
+pub async fn new_db_pool(db_config: &Database) -> DBPool {
     println!("Trying to create DB pool");
     AnyPoolOptions::new()
         .min_connections(u32::from(db_config.min_connections))
@@ -19,7 +20,7 @@ pub async fn new_db_pool(db_config: &Database) -> AnyPool {
         })
 }
 
-pub async fn run_migrations(pool: &AnyPool) {
+pub async fn run_migrations(pool: &DBPool) {
     println!("Running migrations if exist.");
     sqlx::migrate!("./migrations")
         .run(pool)

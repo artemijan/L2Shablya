@@ -1,3 +1,3 @@
 -- Add down migration script here
-ALTER TABLE your_table_name
+ALTER TABLE user
 DROP COLUMN access_level;

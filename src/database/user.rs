@@ -2,8 +2,9 @@ use argon2::{
     password_hash::{rand_core::OsRng, PasswordHasher, PasswordVerifier, SaltString},
     Argon2, PasswordHash,
 };
-use sqlx::{AnyPool, Error, FromRow};
+use sqlx::{Error, FromRow};
 use tokio::task::spawn_blocking;
+use crate::database::DBPool;
 
 /// This is a struct which is simply a DTO to get/store data in DB
 #[derive(Debug, Clone, FromRow, Default)]
@@ -17,7 +18,7 @@ pub struct User {
 #[allow(unused)]
 impl User {
     pub async fn fetch_by_username(
-        db_pool: &AnyPool,
+        db_pool: &DBPool,
         username: &str,
     ) -> Result<Option<Self>, Error> {
         let user = sqlx::query_as("select id,username,password from user where username=$1")
@@ -57,7 +58,7 @@ impl User {
         .unwrap()
     }
     pub async fn change_access_level(
-        db_pool: &AnyPool,
+        db_pool: &DBPool,
         access_level: i32,
         username: &str,
     ) -> anyhow::Result<User> {
@@ -69,7 +70,7 @@ impl User {
         Ok(user)
     }
     pub async fn req_temp_ban(
-        db_pool: &AnyPool,
+        db_pool: &DBPool,
         username: &str,
         ban_duration: i64,
         ip: &str,
@@ -83,7 +84,7 @@ impl User {
                 .await?;
         Ok(user)
     }
-    pub async fn new(db_pool: &AnyPool, username: &str, password: &str) -> anyhow::Result<User> {
+    pub async fn new(db_pool: &DBPool, username: &str, password: &str) -> anyhow::Result<User> {
         let password_hash = Self::hash_password(password).await;
         let user = sqlx::query_as(
             "

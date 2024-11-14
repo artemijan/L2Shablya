@@ -6,7 +6,6 @@ use crate::packet::common::SendablePacket;
 use crate::packet::error::PacketRun;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
-use sqlx::AnyPool;
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::io::AsyncReadExt;
@@ -14,6 +13,7 @@ use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
 use tokio::time::sleep;
+use crate::database::DBPool;
 
 pub trait Shutdown {
     fn get_shutdown_listener(&self) -> Arc<Notify>;
@@ -29,7 +29,7 @@ pub trait PacketHandler: Shutdown {
     fn get_handler_name() -> String;
     fn get_connection_config(cfg: &Server) -> &Connection;
     fn get_lc(&self) -> &Arc<Login>;
-    fn new(stream: TcpStream, db_pool: AnyPool, lc: Arc<Login>) -> Self;
+    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self;
 
     async fn on_connect(&mut self) -> Result<(), Packet>;
     fn on_disconnect(&mut self);
@@ -43,7 +43,7 @@ pub trait PacketHandler: Shutdown {
     ) -> Result<Box<dyn SendablePacket>, Error>;
 
     async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error>;
-    fn get_db_pool_mut(&mut self) -> &mut AnyPool;
+    fn get_db_pool_mut(&mut self) -> &mut DBPool;
 
     async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8])
         -> Result<(), Error>;
