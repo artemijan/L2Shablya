@@ -1,25 +1,25 @@
-use async_trait::async_trait;
-use std::sync::Arc;
-use tokio::net::TcpStream;
-use sqlx::AnyPool;
-use tokio::sync::{mpsc, Mutex, Notify, RwLock};
-use std::collections::HashMap;
-use std::time::{Duration, SystemTime};
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
-use anyhow::{bail, Error};
-use openssl::error::ErrorStack;
-use tokio::io::AsyncWriteExt;
 use crate::common::dto::config::{Connection, Server};
 use crate::common::errors::Packet;
 use crate::common::message::Request;
 use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
-use crate::login_server::gs_thread::enums;
 use crate::login_server::controller::Login;
+use crate::login_server::gs_thread::enums;
 use crate::login_server::traits::{PacketHandler, Shutdown};
 use crate::packet::common::{GSHandle, PacketResult, PacketType, SendablePacket};
 use crate::packet::gs_factory::build_gs_packet;
 use crate::packet::to_gs::InitLS;
+use anyhow::{bail, Error};
+use async_trait::async_trait;
+use openssl::error::ErrorStack;
+use sqlx::AnyPool;
+use std::collections::HashMap;
+use std::sync::Arc;
+use std::time::{Duration, SystemTime};
+use tokio::io::AsyncWriteExt;
+use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
+use tokio::net::TcpStream;
+use tokio::sync::{mpsc, Mutex, Notify, RwLock};
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
@@ -45,9 +45,9 @@ impl GS {
         self.lc.connect_gs(self.server_id.unwrap(), rx);
         let inbox = self.income_messages.clone();
         let cloned_self = self.clone();
-        let threshold = Duration::from_secs(
-            u64::from(self.lc.get_config().listeners.game_servers.messages.timeout)
-        );
+        let threshold = Duration::from_secs(u64::from(
+            self.lc.get_config().listeners.game_servers.messages.timeout,
+        ));
         tokio::spawn(async move {
             loop {
                 if let Some((_, mut request)) = tx.recv().await {
@@ -63,7 +63,8 @@ impl GS {
                     let now = SystemTime::now();
 
                     income_messages.retain(|_, req| {
-                        now.duration_since(req.sent_at).map_or(false, |elapsed| elapsed <= threshold)
+                        now.duration_since(req.sent_at)
+                            .map_or(false, |elapsed| elapsed <= threshold)
                     });
                     // send packet later, now we only remember it
                     let req_body = request.body;
@@ -86,7 +87,8 @@ impl GS {
         if let Some(request) = msg {
             if let Some(server_id) = self.server_id {
                 if let Some(resp) = request.response {
-                    resp.send(Some((server_id, message))).expect("Unable to send response");
+                    resp.send(Some((server_id, message)))
+                        .expect("Unable to send response");
                 }
             }
         }
@@ -174,7 +176,10 @@ impl PacketHandler for GS {
         None
     }
 
-    async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<Box<dyn SendablePacket>, Error> {
+    async fn send_packet(
+        &self,
+        mut packet: Box<dyn SendablePacket>,
+    ) -> Result<Box<dyn SendablePacket>, Error> {
         let mut buffer = packet.get_buffer_mut();
         buffer.write_i32(0)?;
         let padding = (buffer.get_size() - 2) % 8;

@@ -1,3 +1,4 @@
+use crate::login_server::gs_thread::enums;
 use crate::login_server::gs_thread::GSHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
@@ -6,7 +7,6 @@ use crate::packet::error::PacketRun;
 use crate::packet::login_fail::PlayerLogin;
 use crate::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
-use crate::login_server::gs_thread::enums;
 
 #[derive(Clone, Debug)]
 pub struct BlowFish {
@@ -27,7 +27,10 @@ impl ReadablePacket for BlowFish {
 
 #[async_trait]
 impl GSHandle for BlowFish {
-    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(
+        &self,
+        gs: &mut GSHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let mut key = self.encrypted_key.clone();
         if let Ok(mut decrypted) = gs.decrypt_rsa(&mut key) {
             // there are nulls before the key we must remove them
@@ -39,7 +42,9 @@ impl GSHandle for BlowFish {
         } else {
             return Err(PacketRun {
                 msg: Some("Unable to decrypt GS blowfish key".to_string()),
-                response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonNotAuthed))),
+                response: Some(Box::new(PlayerLogin::new(
+                    PlayerLoginFailReasons::ReasonNotAuthed,
+                ))),
             });
         }
         Ok(None)

@@ -1,5 +1,5 @@
-use chrono::Utc;
 use super::data::Login;
+use chrono::Utc;
 impl Login {
     pub fn update_ip_ban_list(&self, ip: &str, ban_duration: i64) {
         let _ = self.ip_ban_list.remove(ip);

@@ -1,10 +1,10 @@
-use async_trait::async_trait;
 use crate::database::user::User;
 use crate::login_server::gs_thread::GSHandler;
 use crate::login_server::traits::PacketHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::{GSHandle, ReadablePacket, SendablePacket};
 use crate::packet::error;
+use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
 pub struct RequestTempBan {
@@ -26,7 +26,10 @@ impl ReadablePacket for RequestTempBan {
 }
 #[async_trait]
 impl GSHandle for RequestTempBan {
-    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
+    async fn handle(
+        &self,
+        gs: &mut GSHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
         let db_pool = gs.get_db_pool_mut();
         //ignore error updating an account
         match User::req_temp_ban(db_pool, &self.account, self.ban_duration, &self.ip).await {

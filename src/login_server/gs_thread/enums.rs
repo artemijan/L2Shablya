@@ -1,7 +1,7 @@
-use strum::Display;
 use crate::packet::common::PacketResult;
-use crate::packet::{error, PlayerLoginFailReasons};
 use crate::packet::login_fail::PlayerLogin;
+use crate::packet::{error, PlayerLoginFailReasons};
+use strum::Display;
 
 #[derive(Debug, Clone, Display)]
 pub enum GS {
@@ -12,10 +12,7 @@ pub enum GS {
 }
 
 impl GS {
-    pub fn transition_to(
-        &mut self,
-        desired_state: &GS,
-    ) -> PacketResult {
+    pub fn transition_to(&mut self, desired_state: &GS) -> PacketResult {
         match (&self, desired_state) {
             (Self::Initial, Self::Connected) => *self = Self::Connected,
             (Self::Connected, Self::BfConnected) => *self = Self::BfConnected,

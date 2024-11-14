@@ -1,12 +1,12 @@
 use crate::common::dto::game_server::GSInfo;
-use crate::login_server::gs_thread::{GSHandler, enums};
+use crate::login_server::gs_thread::{enums, GSHandler};
+use crate::login_server::traits::PacketHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
-use crate::packet::{error, login_fail, GSLoginFailReasons};
 use crate::packet::to_gs::AuthGS;
+use crate::packet::{error, login_fail, GSLoginFailReasons};
 use async_trait::async_trait;
-use crate::login_server::traits::PacketHandler;
 
 #[derive(Clone, Debug)]
 pub struct GS {
@@ -47,7 +47,10 @@ impl ReadablePacket for GS {
 
 #[async_trait]
 impl GSHandle for GS {
-    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
+    async fn handle(
+        &self,
+        gs: &mut GSHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
         let gsi = GSInfo::new(
             self.desired_id,
             self.accept_alternative_id,
@@ -62,7 +65,8 @@ impl GSHandle for GS {
             self.max_players,
             self.hex_id.clone(),
             &self.hosts,
-        ).map_err(|e| error::PacketRun {
+        )
+        .map_err(|e| error::PacketRun {
             msg: Some(e.to_string()),
             response: Some(Box::new(login_fail::GSLogin::new(GSLoginFailReasons::None))),
         })?;

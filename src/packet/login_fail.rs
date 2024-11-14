@@ -53,7 +53,6 @@ impl SendablePacket for PlayerLogin {
     }
 }
 impl SendablePacket for GSLogin {
-
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
     }

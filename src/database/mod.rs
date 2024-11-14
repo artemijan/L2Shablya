@@ -11,7 +11,12 @@ pub async fn new_db_pool(db_config: &Database) -> AnyPool {
         .max_connections(u32::from(db_config.max_connections))
         .connect(&db_config.url)
         .await
-        .unwrap_or_else(|e| panic!("Failed to connect to database at url {}. Error {e}", &db_config.url))
+        .unwrap_or_else(|e| {
+            panic!(
+                "Failed to connect to database at url {}. Error {e}",
+                &db_config.url
+            )
+        })
 }
 
 pub async fn run_migrations(pool: &AnyPool) {

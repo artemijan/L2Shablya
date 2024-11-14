@@ -1,11 +1,14 @@
-use rand::{distributions::{Distribution, Standard}, Rng};
+use super::data::Login;
 use crate::common::dto::player;
 use crate::common::dto::player::GSCharsInfo;
-use super::data::Login;
-use crate::packet::{error, PlayerLoginFailReasons};
 use crate::packet::common::PacketType;
 use crate::packet::login_fail::PlayerLogin;
 use crate::packet::to_gs::{KickPlayer, RequestChars};
+use crate::packet::{error, PlayerLoginFailReasons};
+use rand::{
+    distributions::{Distribution, Standard},
+    Rng,
+};
 
 impl Login {
     pub async fn on_player_login(
@@ -14,9 +17,10 @@ impl Login {
     ) -> anyhow::Result<(), error::PacketRun> {
         let account_name = player_info.account_name.clone();
         self.check_player_in_game(&account_name).await?;
-        let mut task_results = self.send_message_to_all_gs(
-            &account_name, || Box::new(RequestChars::new(&account_name)),
-        ).await.into_iter();
+        let mut task_results = self
+            .send_message_to_all_gs(&account_name, || Box::new(RequestChars::new(&account_name)))
+            .await
+            .into_iter();
 
         while let Some(Ok(resp)) = task_results.next() {
             if let Some((gs_id, PacketType::ReplyChars(p))) = resp {
@@ -35,16 +39,28 @@ impl Login {
         Ok(())
     }
 
-    async fn check_player_in_game(&self, account_name: &str) -> anyhow::Result<(), error::PacketRun> {
+    async fn check_player_in_game(
+        &self,
+        account_name: &str,
+    ) -> anyhow::Result<(), error::PacketRun> {
         if let Some(player_in_game) = self.players.remove(account_name) {
             if let Some(gs) = player_in_game.1.game_server {
-                let _ = self.notify_gs(gs, Box::new(KickPlayer::new(account_name))).await;
+                let _ = self
+                    .notify_gs(gs, Box::new(KickPlayer::new(account_name)))
+                    .await;
             } else {
-                let _ = self.notify_all_gs(|| Box::new(KickPlayer::new(account_name))).await;
+                let _ = self
+                    .notify_all_gs(|| Box::new(KickPlayer::new(account_name)))
+                    .await;
             }
             return Err(error::PacketRun {
-                msg: Some(format!("Account in use: {account_name}, IP {:?}", player_in_game.1.ip_address)),
-                response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonAccountInUse))),
+                msg: Some(format!(
+                    "Account in use: {account_name}, IP {:?}",
+                    player_in_game.1.ip_address
+                )),
+                response: Some(Box::new(PlayerLogin::new(
+                    PlayerLoginFailReasons::ReasonAccountInUse,
+                ))),
             });
         }
         Ok(())

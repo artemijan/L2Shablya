@@ -1,11 +1,11 @@
-use std::net::Ipv4Addr;
-use tokio::sync::mpsc::Sender;
+use super::data::Login;
 use crate::common::dto::game_server::GSInfo;
 use crate::common::message::Request;
 use crate::packet::common::{ServerData, ServerStatus};
-use crate::packet::{error, GSLoginFailReasons};
 use crate::packet::login_fail::GSLogin;
-use super::data::Login;
+use crate::packet::{error, GSLoginFailReasons};
+use std::net::Ipv4Addr;
+use tokio::sync::mpsc::Sender;
 
 impl Login {
     pub fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
@@ -64,7 +64,6 @@ impl Login {
             Ok(())
         }
     }
-
 
     pub fn remove_gs(&self, server_id: u8) {
         self.game_servers.remove(&server_id);

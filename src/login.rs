@@ -1,6 +1,8 @@
 use crate::common::dto::config;
 use crate::database::new_db_pool;
+use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::controller::Login;
+use crate::login_server::gs_thread::GSHandler;
 use crate::login_server::traits::PacketHandler;
 use anyhow::Context;
 use common::network;
@@ -13,8 +15,6 @@ use std::net::ToSocketAddrs;
 use std::num::NonZero;
 use std::sync::Arc;
 use std::thread;
-use crate::login_server::client_thread::ClientHandler;
-use crate::login_server::gs_thread::GSHandler;
 
 mod common;
 mod crypt;
@@ -40,7 +40,8 @@ pub fn main() {
         .enable_all()
         .thread_name("login-worker")
         .worker_threads(worker_count)
-        .build().expect("Failed to build tokio runtime.");
+        .build()
+        .expect("Failed to build tokio runtime.");
     rt.block_on(async {
         start(config).await;
     });
@@ -65,7 +66,9 @@ async fn start(config: Arc<config::Server>) {
         pool.clone(),
         main_loop::<GSHandler>,
     );
-    clients_handle.await.expect("Exiting: Client handler closed");
+    clients_handle
+        .await
+        .expect("Exiting: Client handler closed");
     // actually this line is never reached, because in previous handle it's infinite loop
     gs_handle.await.expect("Exiting: GS handler closed");
 }

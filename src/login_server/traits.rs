@@ -7,14 +7,13 @@ use crate::packet::error::PacketRun;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use sqlx::AnyPool;
-use tokio::net::TcpStream;
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::io::AsyncReadExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
+use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
 use tokio::time::sleep;
-
 
 pub trait Shutdown {
     fn get_shutdown_listener(&self) -> Arc<Notify>;
@@ -22,7 +21,6 @@ pub trait Shutdown {
         self.get_shutdown_listener().notify_one();
     }
 }
-
 
 pub const PACKET_SIZE_BYTES: usize = 2;
 
@@ -39,16 +37,16 @@ pub trait PacketHandler: Shutdown {
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
     fn get_timeout(&self) -> Option<u64>;
 
-    async fn send_packet(&self, packet: Box<dyn SendablePacket>) -> Result<Box<dyn SendablePacket>, Error>;
+    async fn send_packet(
+        &self,
+        packet: Box<dyn SendablePacket>,
+    ) -> Result<Box<dyn SendablePacket>, Error>;
 
     async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error>;
     fn get_db_pool_mut(&mut self) -> &mut AnyPool;
 
-    async fn on_receive_bytes(
-        &mut self,
-        packet_size: usize,
-        bytes: &mut [u8],
-    ) -> Result<(), Error>;
+    async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8])
+        -> Result<(), Error>;
 
     async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
         let mut size_buf = [0; PACKET_SIZE_BYTES];

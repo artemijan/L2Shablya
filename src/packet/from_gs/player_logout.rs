@@ -1,10 +1,10 @@
 use crate::login_server::gs_thread::GSHandler;
+use crate::login_server::traits::PacketHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::error::PacketRun;
 use async_trait::async_trait;
-use crate::login_server::traits::PacketHandler;
 
 #[derive(Clone, Debug)]
 pub struct PlayerLogout {
@@ -22,7 +22,10 @@ impl ReadablePacket for PlayerLogout {
 
 #[async_trait]
 impl GSHandle for PlayerLogout {
-    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(
+        &self,
+        gs: &mut GSHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let lc = gs.get_lc();
         lc.on_player_logout(&self.acc);
         Ok(None)

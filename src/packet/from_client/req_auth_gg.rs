@@ -41,11 +41,16 @@ impl ReadablePacket for RequestAuthGG {
 
 #[async_trait]
 impl ClientHandle for RequestAuthGG {
-    async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(
+        &self,
+        ch: &mut ClientHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         if self.session_id != ch.get_session_id() {
             return Err(PacketRun {
                 msg: Some(format!("Wrong session id {}", self.session_id)),
-                response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonAccessFailed))),
+                response: Some(Box::new(PlayerLogin::new(
+                    PlayerLoginFailReasons::ReasonAccessFailed,
+                ))),
             });
         }
         Ok(Some(Box::new(AuthGG::new(ch.get_session_id()))))

@@ -1,7 +1,11 @@
 use crate::packet::common::GSHandle;
 use crate::packet::common::ReadablePacket;
-use crate::packet::from_gs::{BlowFish, ChangeAccessLevel, ChangePassword, PlayerTracert, RequestTempBan};
-use crate::packet::from_gs::{GSStatusUpdate, PlayerAuthRequest, PlayerInGame, PlayerLogout, ReplyChars, GS};
+use crate::packet::from_gs::{
+    BlowFish, ChangeAccessLevel, ChangePassword, PlayerTracert, RequestTempBan,
+};
+use crate::packet::from_gs::{
+    GSStatusUpdate, PlayerAuthRequest, PlayerInGame, PlayerLogout, ReplyChars, GS,
+};
 
 pub fn build_gs_packet(data: &[u8]) -> Option<Box<dyn GSHandle>> {
     if data.len() <= 1 {

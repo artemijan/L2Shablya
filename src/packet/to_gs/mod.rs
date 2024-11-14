@@ -1,10 +1,13 @@
 mod auth_gs;
 mod init_ls;
+mod kick_player;
 mod player_auth_response;
 mod request_chars;
-mod kick_player;
 
-pub use self::{auth_gs::AuthGS, init_ls::InitLS, player_auth_response::PlayerAuthResponse, request_chars::RequestChars, kick_player::KickPlayer};
+pub use self::{
+    auth_gs::AuthGS, init_ls::InitLS, kick_player::KickPlayer,
+    player_auth_response::PlayerAuthResponse, request_chars::RequestChars,
+};
 
 #[repr(i32)]
 #[derive(Clone, Debug)]

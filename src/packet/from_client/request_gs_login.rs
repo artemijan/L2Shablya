@@ -1,11 +1,11 @@
 use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::traits::PacketHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::error::PacketRun;
 use crate::packet::to_client::PlayOk;
 use async_trait::async_trait;
-use crate::login_server::traits::PacketHandler;
 
 #[derive(Clone, Debug)]
 pub struct RequestGSLogin {

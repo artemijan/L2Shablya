@@ -85,7 +85,6 @@ pub struct GSListener {
     pub messages: GSMessages,
 }
 
-
 #[derive(Debug, Clone, Deserialize)]
 pub struct ClientListener {
     pub connection: Connection,

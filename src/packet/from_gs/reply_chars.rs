@@ -1,10 +1,10 @@
 use crate::login_server::gs_thread::GSHandler;
+use crate::login_server::traits::PacketHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::{GSHandle, PacketType};
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::error::PacketRun;
 use async_trait::async_trait;
-use crate::login_server::traits::PacketHandler;
 
 #[derive(Clone, Debug)]
 pub struct ReplyChars {
@@ -37,11 +37,12 @@ impl ReadablePacket for ReplyChars {
 
 #[async_trait]
 impl GSHandle for ReplyChars {
-    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
-        gs.respond_to_message(
-            &self.account_name, 
-            PacketType::ReplyChars(self.clone()),
-        ).await;
+    async fn handle(
+        &self,
+        gs: &mut GSHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+        gs.respond_to_message(&self.account_name, PacketType::ReplyChars(self.clone()))
+            .await;
         Ok(None)
     }
 }

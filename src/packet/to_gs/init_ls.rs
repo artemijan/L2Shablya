@@ -29,7 +29,6 @@ impl InitLS {
 }
 
 impl SendablePacket for InitLS {
-    
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
     }

@@ -29,7 +29,6 @@ impl PlayOk {
 }
 
 impl SendablePacket for PlayOk {
-    
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
     }

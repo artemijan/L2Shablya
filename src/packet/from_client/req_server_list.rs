@@ -1,11 +1,11 @@
 use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::traits::PacketHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::ClientHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::to_client::ServerList;
-use async_trait::async_trait;
-use crate::login_server::traits::PacketHandler;
 use crate::packet::{error, login_fail, PlayerLoginFailReasons};
+use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
 pub struct RequestServerList {
@@ -25,7 +25,10 @@ impl ReadablePacket for RequestServerList {
 
 #[async_trait]
 impl ClientHandle for RequestServerList {
-    async fn handle(&self, ch: &mut ClientHandler) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
+    async fn handle(
+        &self,
+        ch: &mut ClientHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
         if let Some(ref acc_name) = ch.account_name {
             Ok(Some(Box::new(ServerList::new(ch, acc_name))))
         } else {

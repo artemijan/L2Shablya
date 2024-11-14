@@ -1,6 +1,6 @@
-use std::io::Read;
 use encoding::all::UTF_16LE;
 use encoding::{DecoderTrap, EncoderTrap, Encoding};
+use std::io::Read;
 
 #[derive(Debug, Clone)]
 pub struct ReadablePacketBuffer {

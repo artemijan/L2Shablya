@@ -1,14 +1,18 @@
-use std::time::{Duration, SystemTime};
+use super::data::Login;
+use crate::common::message::Request;
+use crate::packet::common::{PacketType, SendablePacket};
 use anyhow::Error;
 use futures::future::join_all;
+use std::time::{Duration, SystemTime};
 use tokio::sync::oneshot;
 use tokio::time::timeout;
 use uuid::Uuid;
-use crate::common::message::Request;
-use crate::packet::common::{PacketType, SendablePacket};
-use super::data::Login;
 impl Login {
-    pub async fn send_message_to_all_gs<F>(&self, msg_id: &str, packet_factory: F) -> Vec<anyhow::Result<Option<(u8, PacketType)>>>
+    pub async fn send_message_to_all_gs<F>(
+        &self,
+        msg_id: &str,
+        packet_factory: F,
+    ) -> Vec<anyhow::Result<Option<(u8, PacketType)>>>
     where
         F: Fn() -> Box<dyn SendablePacket>,
     {
@@ -20,12 +24,10 @@ impl Login {
             let task = self.send_message_to_gs(gs_id.get_id(), msg_id, packet_factory());
             tasks.push(timeout(timeout_duration, task));
         }
-        join_all(tasks).await.into_iter()
-            .map(|res| {
-                // Flatten each element by handling the outer Result
-                res.map_err(Error::from) // Convert TimeoutError to anyhow::Error
-                    .and_then(|inner| inner) // Flatten anyhow::Result<Option<(u8, PacketType)>> to anyhow::Result<Option<(u8, PacketType)>>
-            })
+        join_all(tasks)
+            .await
+            .into_iter()
+            .map(|res| res.map_err(Error::from).and_then(|inner| inner))
             .collect()
     }
     pub async fn notify_all_gs<F>(&self, packet_factory: F) -> Vec<anyhow::Result<()>>

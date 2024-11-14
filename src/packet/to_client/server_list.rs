@@ -1,12 +1,12 @@
 use crate::common::dto::player::GSCharsInfo;
+use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::controller::Login;
+use crate::login_server::traits::PacketHandler;
 use crate::packet::common::write::SendablePacketBuffer;
 use crate::packet::common::{SendablePacket, ServerData, ServerStatus};
 use crate::packet::LoginServerOpcodes;
 use std::collections::HashMap;
 use std::sync::Arc;
-use crate::login_server::client_thread::ClientHandler;
-use crate::login_server::controller::Login;
-use crate::login_server::traits::PacketHandler;
 
 #[derive(Debug, Clone)]
 pub struct ServerList {
@@ -17,9 +17,7 @@ pub struct ServerList {
 }
 
 impl ServerList {
-    pub fn new(
-        ch: &ClientHandler, username: &str,
-    ) -> ServerList {
+    pub fn new(ch: &ClientHandler, username: &str) -> ServerList {
         let lc = ch.get_lc();
         let servers = lc.get_server_list(ch.ip);
         let mut player_option = lc.get_player(username);

@@ -1,13 +1,3 @@
-use std::net::{IpAddr, Ipv4Addr};
-use std::sync::Arc;
-use tokio::sync::{Mutex, Notify};
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
-use sqlx::AnyPool;
-use std::time::SystemTime;
-use async_trait::async_trait;
-use tokio::net::TcpStream;
-use anyhow::{Context, Error};
-use tokio::io::AsyncWriteExt;
 use crate::common::dto::config;
 use crate::common::errors::Packet;
 use crate::common::session::SessionKey;
@@ -17,6 +7,16 @@ use crate::login_server::traits::{PacketHandler, Shutdown};
 use crate::packet::common::{ClientHandle, SendablePacket};
 use crate::packet::ls_factory::build_client_packet;
 use crate::packet::to_client::Init;
+use anyhow::{Context, Error};
+use async_trait::async_trait;
+use sqlx::AnyPool;
+use std::net::{IpAddr, Ipv4Addr};
+use std::sync::Arc;
+use std::time::SystemTime;
+use tokio::io::AsyncWriteExt;
+use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
+use tokio::net::TcpStream;
+use tokio::sync::{Mutex, Notify};
 
 #[derive(Clone, Debug)]
 pub struct Client {
@@ -60,12 +60,10 @@ impl Client {
     fn get_ipv4_from_socket(socket: &TcpStream) -> Ipv4Addr {
         let default = Ipv4Addr::new(127, 0, 0, 1);
         match socket.peer_addr() {
-            Ok(addr) => {
-                match addr.ip() {
-                    IpAddr::V4(ipv4) => ipv4,
-                    IpAddr::V6(_) => default,
-                }
-            }
+            Ok(addr) => match addr.ip() {
+                IpAddr::V4(ipv4) => ipv4,
+                IpAddr::V6(_) => default,
+            },
             _ => default,
         }
     }
@@ -147,7 +145,10 @@ impl PacketHandler for Client {
         Some(u64::from(self.timeout))
     }
 
-    async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<Box<dyn SendablePacket>, Error> {
+    async fn send_packet(
+        &self,
+        mut packet: Box<dyn SendablePacket>,
+    ) -> Result<Box<dyn SendablePacket>, Error> {
         self.send_bytes(packet.get_bytes_mut()).await?;
         Ok(packet)
     }
@@ -167,10 +168,11 @@ impl PacketHandler for Client {
 
     async fn on_receive_bytes(&mut self, _: usize, data: &mut [u8]) -> Result<(), Error> {
         self.encryption.decrypt(data)?;
-        let handler =
-            build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| Packet::ClientPacketNotFound {
+        let handler = build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| {
+            Packet::ClientPacketNotFound {
                 opcode: data[0] as usize,
-            })?;
+            }
+        })?;
         let resp = handler.handle(self).await;
         self.handle_result(resp).await
     }

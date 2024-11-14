@@ -1,11 +1,11 @@
-use std::sync::Arc;
-use dashmap::DashMap;
-use rand::Rng;
-use tokio::sync::mpsc::Sender;
-use crate::common::dto::{config, player};
 use crate::common::dto::game_server::GSInfo;
+use crate::common::dto::{config, player};
 use crate::common::message::Request;
 use crate::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
+use dashmap::DashMap;
+use rand::Rng;
+use std::sync::Arc;
+use tokio::sync::mpsc::Sender;
 
 #[derive(Clone, Debug)]
 pub struct Login {
@@ -16,7 +16,6 @@ pub struct Login {
     pub(super) players: DashMap<String, player::Info>,
     pub(super) gs_channels: DashMap<u8, Sender<(u8, Request)>>,
 }
-
 
 impl Login {
     pub fn new(config: Arc<config::Server>) -> Login {

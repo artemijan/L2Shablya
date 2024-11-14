@@ -7,7 +7,12 @@ use std::net::ToSocketAddrs;
 use std::sync::Arc;
 use tokio::net::{TcpListener, TcpSocket};
 
-pub fn create_handle<F, Fut>(cfg: Arc<Server>, lc: Arc<Login>, client_pool: AnyPool, handler: F) -> tokio::task::JoinHandle<()>
+pub fn create_handle<F, Fut>(
+    cfg: Arc<Server>,
+    lc: Arc<Login>,
+    client_pool: AnyPool,
+    handler: F,
+) -> tokio::task::JoinHandle<()>
 where
     F: Fn(Arc<Server>, Arc<Login>, AnyPool) -> Fut + Send + 'static,
     Fut: Future<Output = ()> + Send + 'static,
@@ -18,7 +23,10 @@ where
 pub fn bind_addr(config: &Connection) -> anyhow::Result<TcpListener> {
     let addr = format!("{}:{}", &config.ip, &config.port)
         .to_socket_addrs()
-        .context(format!("Failed to resolve address {}:{}", config.ip, config.port))?
+        .context(format!(
+            "Failed to resolve address {}:{}",
+            config.ip, config.port
+        ))?
         .next()
         .context("No address found for the given host and port")?;
     let socket = TcpSocket::new_v4()?;

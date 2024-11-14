@@ -1,10 +1,10 @@
-use async_trait::async_trait;
 use crate::database::user::User;
 use crate::login_server::gs_thread::GSHandler;
 use crate::login_server::traits::PacketHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::{GSHandle, ReadablePacket, SendablePacket};
 use crate::packet::error;
+use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
 pub struct ChangeAL {
@@ -24,7 +24,10 @@ impl ReadablePacket for ChangeAL {
 }
 #[async_trait]
 impl GSHandle for ChangeAL {
-    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
+    async fn handle(
+        &self,
+        gs: &mut GSHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
         let db_pool = gs.get_db_pool_mut();
         //ignore error updating an account
         match User::change_access_level(db_pool, self.level, &self.account).await {

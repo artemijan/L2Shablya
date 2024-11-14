@@ -9,7 +9,7 @@ pub trait Trim {
 impl StringTrim for String {
     ///this function is needed to trim also null bytes from a String
     /// # Example
-    /// 
+    ///
     /// ```
     /// let s = " ggg \0\0\0".to_string();
     /// s.trim_all()
@@ -24,7 +24,7 @@ impl StringTrim for String {
 impl Trim for str {
     ///this function is needed to trim also null bytes from a str slice
     /// # Example
-    /// 
+    ///
     /// ```
     /// let s:&'static str = " ggg \0\0\0";
     /// s.trim_all()

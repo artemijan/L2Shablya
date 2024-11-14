@@ -5,9 +5,9 @@ use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::traits::PacketHandler;
 use crate::packet::common::{ClientHandle, PacketResult, ReadablePacket};
 use crate::packet::error;
+use crate::packet::to_client::ServerList;
 use crate::packet::{login_fail, to_client::LoginOk, PlayerLoginFailReasons};
 use async_trait::async_trait;
-use crate::packet::to_client::ServerList;
 
 #[derive(Clone, Debug)]
 pub struct RequestAuthLogin {
@@ -29,21 +29,26 @@ impl ReadablePacket for RequestAuthLogin {
             let part1 = String::from_utf8_lossy(&body[0x4E..0x4E + 50]);
             let part2 = String::from_utf8_lossy(&body[0xCE..0xCE + 14]);
             username = format!("{}{}", part1.trim_all(), part2.trim_all());
-            password = String::from_utf8_lossy(&body[0xDC..0xDC + 16]).trim_all().to_string();
+            password = String::from_utf8_lossy(&body[0xDC..0xDC + 16])
+                .trim_all()
+                .to_string();
         } else {
             username = String::from_utf8_lossy(&body[0x5E..0x5E + 14]).to_string();
-            password = String::from_utf8_lossy(&body[0x6C..0x6C + 16]).trim_all().to_string();
+            password = String::from_utf8_lossy(&body[0x6C..0x6C + 16])
+                .trim_all()
+                .to_string();
         }
-        Some(Self { username, password, is_new_auth })
+        Some(Self {
+            username,
+            password,
+            is_new_auth,
+        })
     }
 }
 
 #[async_trait]
 impl ClientHandle for RequestAuthLogin {
-    async fn handle(
-        &self,
-        ch: &mut ClientHandler,
-    ) -> PacketResult {
+    async fn handle(&self, ch: &mut ClientHandler) -> PacketResult {
         let auto_registration = ch.get_lc().get_config().auto_registration;
         let show_license = ch.get_lc().get_config().client.show_licence;
         let pool = ch.get_db_pool_mut();
@@ -61,7 +66,11 @@ impl ClientHandle for RequestAuthLogin {
             }
         } else if auto_registration {
             user_option = User::new(pool, &self.username, &self.password).await.ok();
-            assert!(user_option.is_some(), "Can not create a user {}", self.username);
+            assert!(
+                user_option.is_some(),
+                "Can not create a user {}",
+                self.username
+            );
         }
         ch.account_name = Some(self.username.clone());
         let player_info = player::Info {

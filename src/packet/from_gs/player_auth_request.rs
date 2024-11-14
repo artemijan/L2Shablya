@@ -1,12 +1,12 @@
 use crate::common::session::SessionKey;
 use crate::login_server::gs_thread::GSHandler;
+use crate::login_server::traits::PacketHandler;
 use crate::packet::common::read::ReadablePacketBuffer;
 use crate::packet::common::GSHandle;
 use crate::packet::common::{ReadablePacket, SendablePacket};
 use crate::packet::error::PacketRun;
 use crate::packet::to_gs::{KickPlayer, PlayerAuthResponse};
 use async_trait::async_trait;
-use crate::login_server::traits::PacketHandler;
 
 #[derive(Clone, Debug)]
 pub struct PlayerAuthRequest {
@@ -37,7 +37,10 @@ impl ReadablePacket for PlayerAuthRequest {
 
 #[async_trait]
 impl GSHandle for PlayerAuthRequest {
-    async fn handle(&self, gs: &mut GSHandler) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(
+        &self,
+        gs: &mut GSHandler,
+    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         let lc = gs.get_lc();
         let show_license = lc.get_config().client.show_licence;
         let operation_ok = lc.with_player(&self.account_name, |pl| {
@@ -51,10 +54,16 @@ impl GSHandle for PlayerAuthRequest {
         });
         if !operation_ok {
             return Err(PacketRun {
-                msg: Some(format!("Can't find account on LS, or the session is invalid {:}", self.account_name)),
+                msg: Some(format!(
+                    "Can't find account on LS, or the session is invalid {:}",
+                    self.account_name
+                )),
                 response: Some(Box::new(KickPlayer::new(&self.account_name))),
             });
         }
-        Ok(Some(Box::new(PlayerAuthResponse::new(&self.account_name, true))))
+        Ok(Some(Box::new(PlayerAuthResponse::new(
+            &self.account_name,
+            true,
+        ))))
     }
 }

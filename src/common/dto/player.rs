@@ -1,6 +1,6 @@
+use crate::common::session::SessionKey;
 use std::collections::HashMap;
 use std::net::IpAddr;
-use crate::common::session::SessionKey;
 
 #[derive(Debug, Clone, Default)]
 pub struct GSCharsInfo {
