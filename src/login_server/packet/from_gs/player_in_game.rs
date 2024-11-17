@@ -31,7 +31,7 @@ impl GSHandle for PlayerInGame {
         &self,
         gs: &mut GSHandler,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
-        let lc = gs.get_lc();
+        let lc = gs.get_controller();
         lc.on_players_in_game(gs.server_id.unwrap(), &self.accounts);
         Ok(None)
     }

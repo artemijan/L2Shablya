@@ -40,7 +40,7 @@ impl GSHandle for RequestTempBan {
                 println!("[Failed to ban account] err {e:?}");
             }
         };
-        let lc = gs.get_lc();
+        let lc = gs.get_controller();
         lc.update_ip_ban_list(&self.ip, self.ban_duration);
         lc.remove_player(&self.account);
         Ok(None)

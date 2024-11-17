@@ -70,7 +70,7 @@ impl GSHandle for GS {
             msg: Some(e.to_string()),
             response: Some(Box::new(login_fail::GSLogin::new(GSLoginFailReasons::None))),
         })?;
-        match gs.get_lc().register_gs(gsi) {
+        match gs.get_controller().register_gs(gsi) {
             Ok(()) => {
                 gs.set_connection_state(&enums::GS::Authed)?;
                 gs.server_id = Some(self.desired_id);

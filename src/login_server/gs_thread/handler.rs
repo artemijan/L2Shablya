@@ -1,11 +1,9 @@
-use crate::common::dto;
 use crate::common::dto::Connection;
 use crate::common::errors::Packet;
 use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
-use crate::login_server::dto::config;
 use crate::login_server::dto::config::Server;
 use crate::login_server::gs_thread::enums;
 use crate::login_server::message::Request;
@@ -117,18 +115,19 @@ impl Shutdown for GS {
 
 #[async_trait]
 impl PacketHandler for GS {
-    
+    type ConfigType = Server;
+    type ControllerType = Login;
     fn get_handler_name() -> String {
         "Game server handler".to_string()
     }
-    fn get_connection_config(cfg: &Server) -> &Connection {
+    fn get_connection_config(cfg: &Self::ConfigType) -> &Connection {
         &cfg.listeners.game_servers.connection
     }
-    fn get_lc(&self) -> &Arc<Login> {
+    fn get_controller(&self) -> &Arc<Self::ControllerType> {
         &self.lc
     }
 
-    fn new(mut stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self {
+    fn new(mut stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self {
         let (tcp_reader, tcp_writer) = stream.into_split();
         let writer = Arc::new(Mutex::new(tcp_writer));
         let reader = Arc::new(Mutex::new(tcp_reader));
@@ -164,7 +163,7 @@ impl PacketHandler for GS {
             self.server_id.unwrap_or_default()
         );
         if let Some(server_id) = self.server_id {
-            let lc = self.get_lc();
+            let lc = self.get_controller();
             lc.remove_gs(server_id);
             lc.remove_all_gs_players(server_id);
         }
@@ -211,6 +210,9 @@ impl PacketHandler for GS {
         Ok(())
     }
 
+    fn get_db_pool_mut(&mut self) -> &mut DBPool {
+        &mut self.db_pool
+    }
     async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
         self.blowfish.decrypt(bytes)?;
         if !Encryption::verify_checksum(bytes) {
@@ -221,8 +223,5 @@ impl PacketHandler for GS {
         })?;
         let resp = handler.handle(self).await;
         self.handle_result(resp).await
-    }
-    fn get_db_pool_mut(&mut self) -> &mut DBPool {
-        &mut self.db_pool
     }
 }

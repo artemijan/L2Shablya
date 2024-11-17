@@ -18,7 +18,7 @@ pub struct ServerList {
 
 impl ServerList {
     pub fn new(ch: &ClientHandler, username: &str) -> ServerList {
-        let lc = ch.get_lc();
+        let lc = ch.get_controller();
         let servers = lc.get_server_list(ch.ip);
         let mut player_option = lc.get_player(username);
         let mut chars_on_server = None;

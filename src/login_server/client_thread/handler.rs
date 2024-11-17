@@ -19,6 +19,7 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
+use crate::login_server::dto::config::Server;
 
 #[derive(Clone, Debug)]
 pub struct Client {
@@ -82,18 +83,20 @@ impl Shutdown for Client {
 
 #[async_trait]
 impl PacketHandler for Client {
+    type ConfigType = Server;
+    type ControllerType = Login;
     fn get_handler_name() -> String {
         "Login client handler".into()
     }
     
-    fn get_connection_config(cfg: &config::Server) -> &dto::Connection {
+    fn get_connection_config(cfg: &Self::ConfigType) -> &dto::Connection {
         &cfg.listeners.clients.connection
     }
-    fn get_lc(&self) -> &Arc<Login> {
+    fn get_controller(&self) -> &Arc<Self::ControllerType> {
         &self.lc
     }
 
-    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self {
+    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self {
         let blowfish_key = generate_blowfish_key();
         let encryption = login::Encryption::new(&blowfish_key.clone());
         let session_id = Login::generate_session_id();

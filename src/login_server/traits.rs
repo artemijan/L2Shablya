@@ -1,4 +1,3 @@
-use crate::login_server::dto::config::Server;
 use crate::common::errors::Packet;
 use crate::common::errors::Packet::UnableToHandleClient;
 use crate::database::DBPool;
@@ -45,11 +44,13 @@ impl TokioAsyncSocket for TcpStream {
 
 #[async_trait]
 pub trait PacketHandler: Shutdown {
-    
+    type ConfigType;
+    type ControllerType;
+
     fn get_handler_name() -> String;
-    fn get_connection_config(cfg: &Server) -> &dto::Connection;
-    fn get_lc(&self) -> &Arc<Login>;
-    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self;
+    fn get_connection_config(cfg: &Self::ConfigType) -> &dto::Connection;
+    fn get_controller(&self) -> &Arc<Login>;
+    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self;
 
     async fn on_connect(&mut self) -> Result<(), Packet>;
     fn on_disconnect(&mut self);

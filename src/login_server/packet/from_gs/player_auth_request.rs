@@ -41,7 +41,7 @@ impl GSHandle for PlayerAuthRequest {
         &self,
         gs: &mut GSHandler,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
-        let lc = gs.get_lc();
+        let lc = gs.get_controller();
         let show_license = lc.get_config().client.show_licence;
         let operation_ok = lc.with_player(&self.account_name, |pl| {
             if let Some(session) = &pl.session {

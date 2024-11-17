@@ -56,14 +56,14 @@ async fn start(config: Arc<config::Server>) {
         config.clone(),
         lc.clone(),
         pool.clone(),
-        main_loop::<ClientHandler>,
+        main_loop::<ClientHandler, config::Server, Login>,
     );
 
     let gs_handle = network::create_handle(
         config.clone(),
         lc.clone(),
         pool.clone(),
-        main_loop::<GSHandler>,
+        main_loop::<GSHandler, config::Server, Login>,
     );
 
     clients_handle

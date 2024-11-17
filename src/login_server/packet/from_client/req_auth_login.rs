@@ -49,8 +49,8 @@ impl ReadablePacket for RequestAuthLogin {
 #[async_trait]
 impl ClientHandle for RequestAuthLogin {
     async fn handle(&self, ch: &mut ClientHandler) -> PacketResult {
-        let auto_registration = ch.get_lc().get_config().auto_registration;
-        let show_license = ch.get_lc().get_config().client.show_licence;
+        let auto_registration = ch.get_controller().get_config().auto_registration;
+        let show_license = ch.get_controller().get_config().client.show_licence;
         let pool = ch.get_db_pool_mut();
         let mut user_option = User::fetch_by_username(pool, &self.username)
             .await
@@ -79,7 +79,7 @@ impl ClientHandle for RequestAuthLogin {
             account_name: self.username.clone(),
             ..Default::default()
         };
-        let lc = ch.get_lc();
+        let lc = ch.get_controller();
         lc.on_player_login(player_info).await?;
         if show_license {
             Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))))
