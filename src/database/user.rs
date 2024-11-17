@@ -21,7 +21,7 @@ impl User {
         db_pool: &DBPool,
         username: &str,
     ) -> Result<Option<Self>, Error> {
-        let user = sqlx::query_as("select id,username,password from user where username=$1")
+        let user = sqlx::query_as("select id,username,password,access_level from user where username=$1")
             .bind(username)
             .fetch_optional(db_pool)
             .await?;

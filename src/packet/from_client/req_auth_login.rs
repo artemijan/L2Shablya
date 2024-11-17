@@ -54,7 +54,7 @@ impl ClientHandle for RequestAuthLogin {
         let pool = ch.get_db_pool_mut();
         let mut user_option = User::fetch_by_username(pool, &self.username)
             .await
-            .expect("Can not connect to the DB");
+            .expect("DB error");
         if let Some(user) = user_option {
             if !user.verify_password(&self.password).await {
                 return Err(error::PacketRun {
