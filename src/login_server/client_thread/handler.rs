@@ -1,15 +1,17 @@
-use crate::common::dto::config;
+use crate::common::dto;
 use crate::common::errors::Packet;
 use crate::common::session::SessionKey;
 use crate::crypt::{generate_blowfish_key, login, rsa};
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
+use crate::login_server::dto::config;
+use crate::login_server::packet::common::{ClientHandle, SendablePacket};
+use crate::login_server::packet::ls_factory::build_client_packet;
+use crate::login_server::packet::to_client::Init;
 use crate::login_server::traits::{PacketHandler, Shutdown, TokioAsyncSocket};
-use crate::packet::common::{ClientHandle, SendablePacket};
-use crate::packet::ls_factory::build_client_packet;
-use crate::packet::to_client::Init;
 use anyhow::{Context, Error};
 use async_trait::async_trait;
+use std::any::Any;
 use std::net::{IpAddr, Ipv4Addr};
 use std::sync::Arc;
 use std::time::SystemTime;
@@ -83,7 +85,8 @@ impl PacketHandler for Client {
     fn get_handler_name() -> String {
         "Login client handler".into()
     }
-    fn get_connection_config(cfg: &config::Server) -> &config::Connection {
+    
+    fn get_connection_config(cfg: &config::Server) -> &dto::Connection {
         &cfg.listeners.clients.connection
     }
     fn get_lc(&self) -> &Arc<Login> {
@@ -184,8 +187,8 @@ impl PacketHandler for Client {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::common::dto::config::Server;
     use crate::common::tests::get_test_db;
+    use crate::login_server::dto::config::Server;
     use tokio::net::TcpListener;
 
     #[tokio::test]

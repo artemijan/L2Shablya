@@ -1,6 +1,6 @@
-use crate::packet::common::PacketResult;
-use crate::packet::login_fail::PlayerLogin;
-use crate::packet::{error, PlayerLoginFailReasons};
+use crate::login_server::packet::common::PacketResult;
+use crate::login_server::packet::login_fail::PlayerLogin;
+use crate::login_server::packet::{error, PlayerLoginFailReasons};
 use strum::Display;
 
 #[derive(Debug, Clone, Display)]

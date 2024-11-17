@@ -1,14 +1,18 @@
-use crate::common::dto::config::{Connection, Server};
+use crate::common::dto;
+use crate::common::dto::Connection;
 use crate::common::errors::Packet;
-use crate::common::message::Request;
 use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
+use crate::database::DBPool;
 use crate::login_server::controller::Login;
+use crate::login_server::dto::config;
+use crate::login_server::dto::config::Server;
 use crate::login_server::gs_thread::enums;
+use crate::login_server::message::Request;
+use crate::login_server::packet::common::{GSHandle, PacketResult, PacketType, SendablePacket};
+use crate::login_server::packet::gs_factory::build_gs_packet;
+use crate::login_server::packet::to_gs::InitLS;
 use crate::login_server::traits::{PacketHandler, Shutdown, TokioAsyncSocket};
-use crate::packet::common::{GSHandle, PacketResult, PacketType, SendablePacket};
-use crate::packet::gs_factory::build_gs_packet;
-use crate::packet::to_gs::InitLS;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use openssl::error::ErrorStack;
@@ -19,7 +23,6 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{mpsc, Mutex, Notify, RwLock};
-use crate::database::DBPool;
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
@@ -114,6 +117,7 @@ impl Shutdown for GS {
 
 #[async_trait]
 impl PacketHandler for GS {
+    
     fn get_handler_name() -> String {
         "Game server handler".to_string()
     }
@@ -124,8 +128,7 @@ impl PacketHandler for GS {
         &self.lc
     }
 
-    fn new(mut stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self 
-    {
+    fn new(mut stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self {
         let (tcp_reader, tcp_writer) = stream.into_split();
         let writer = Arc::new(Mutex::new(tcp_writer));
         let reader = Arc::new(Mutex::new(tcp_reader));

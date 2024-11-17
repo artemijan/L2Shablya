@@ -1,16 +1,19 @@
-use crate::common::dto::config;
 use crate::common::network;
 use crate::database::DBPool;
-use crate::login_server::controller::Login;
 use crate::login_server::traits::{PacketHandler, TokioAsyncSocket};
 use std::sync::Arc;
+use crate::login_server::controller::Login;
+use crate::login_server::dto::config;
 
+mod message;
+mod packet;
 pub mod client_thread;
 pub mod controller;
 pub mod gs_thread;
 pub mod traits;
+pub mod dto;
 
-pub async fn main_loop<T>(config: Arc<config::Server>, lc: Arc<Login>, pool: DBPool)
+pub async fn main_loop<T>(config:  Arc<config::Server>, lc: Arc<Login>, pool: DBPool)
 where
     T: PacketHandler + Send + Sync + 'static,
 {

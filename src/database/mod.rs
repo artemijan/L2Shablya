@@ -1,6 +1,5 @@
 pub mod user;
-
-use crate::common::dto::config::Database;
+use crate::common::dto::Database;
 use sqlx::any::AnyPoolOptions;
 use sqlx::AnyPool;
 pub type DBPool = AnyPool;

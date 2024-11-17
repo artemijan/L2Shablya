@@ -1,0 +1,21 @@
+name: Game server
+blowfish_key: "_;v.]05-31!|+-%xT!^[$\0"
+runtime:
+  worker_threads: 10
+client:
+  timeout: 150
+allowed_gs:
+  -2ad66b3f483c22be097019f55c8abdf0:
+    server_id: 1
+listeners:
+  clients:
+    connection:
+      ip: 0.0.0.0
+      port: 2106
+      reuse_port: true
+      reuse_addr: true
+      no_delay: true
+database:
+  url: sqlite://local.sqlite?mode=rwc
+  max_connections: 10
+  min_connections: 5

@@ -1,4 +1,3 @@
-use crate::common::dto::config;
 use crate::database::new_db_pool;
 use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::controller::Login;
@@ -7,6 +6,7 @@ use crate::login_server::traits::PacketHandler;
 use anyhow::Context;
 use common::network;
 use dotenvy::dotenv;
+use login_server::dto::config;
 use login_server::main_loop;
 use sqlx::any::install_default_drivers;
 use sqlx::Connection;
@@ -20,7 +20,6 @@ mod common;
 mod crypt;
 mod database;
 mod login_server;
-mod packet;
 
 ///
 /// # Panics
@@ -59,14 +58,14 @@ async fn start(config: Arc<config::Server>) {
         pool.clone(),
         main_loop::<ClientHandler>,
     );
-    
+
     let gs_handle = network::create_handle(
         config.clone(),
         lc.clone(),
         pool.clone(),
         main_loop::<GSHandler>,
     );
-    
+
     clients_handle
         .await
         .expect("Exiting: Client handler closed");

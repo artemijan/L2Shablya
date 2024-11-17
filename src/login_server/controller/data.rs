@@ -1,6 +1,6 @@
-use crate::common::dto::game_server::GSInfo;
-use crate::common::dto::{config, player};
-use crate::common::message::Request;
+use crate::login_server::dto::game_server::GSInfo;
+use crate::login_server::dto::{config, player};
+use crate::login_server::message::Request;
 use crate::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
 use dashmap::DashMap;
 use rand::Rng;

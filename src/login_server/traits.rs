@@ -1,10 +1,10 @@
-use crate::common::dto::config::{Connection, Server};
+use crate::login_server::dto::config::Server;
 use crate::common::errors::Packet;
 use crate::common::errors::Packet::UnableToHandleClient;
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
-use crate::packet::common::SendablePacket;
-use crate::packet::error::PacketRun;
+use crate::login_server::packet::common::SendablePacket;
+use crate::login_server::packet::error::PacketRun;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use std::net::SocketAddr;
@@ -15,6 +15,7 @@ use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
 use tokio::time::sleep;
+use crate::common::dto;
 
 pub trait Shutdown {
     fn get_shutdown_listener(&self) -> Arc<Notify>;
@@ -44,8 +45,9 @@ impl TokioAsyncSocket for TcpStream {
 
 #[async_trait]
 pub trait PacketHandler: Shutdown {
+    
     fn get_handler_name() -> String;
-    fn get_connection_config(cfg: &Server) -> &Connection;
+    fn get_connection_config(cfg: &Server) -> &dto::Connection;
     fn get_lc(&self) -> &Arc<Login>;
     fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self;
 

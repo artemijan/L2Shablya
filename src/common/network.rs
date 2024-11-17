@@ -1,5 +1,4 @@
-use crate::common::dto::config::{Connection, Server};
-use crate::login_server::controller::Login;
+use crate::common::dto::{Connection};
 use anyhow::Context;
 use std::future::Future;
 use std::net::ToSocketAddrs;
@@ -7,17 +6,19 @@ use std::sync::Arc;
 use tokio::net::{TcpListener, TcpSocket};
 use crate::database::DBPool;
 
-pub fn create_handle<F, Fut>(
-    cfg: Arc<Server>,
-    lc: Arc<Login>,
+pub fn create_handle<F, Fut, CT, CFG>(
+    cfg: Arc<CFG>,
+    controller: Arc<CT>,
     client_pool: DBPool,
     handler: F,
 ) -> tokio::task::JoinHandle<()>
 where
-    F: Fn(Arc<Server>, Arc<Login>, DBPool) -> Fut + Send + 'static,
+    F: Fn(Arc<CFG>, Arc<CT>, DBPool) -> Fut + Send + 'static,
     Fut: Future<Output = ()> + Send + 'static,
+    CFG: Send + Sync + 'static,
+    CT: Send + Sync + 'static,
 {
-    tokio::spawn(async move { handler(cfg, lc, client_pool).await })
+    tokio::spawn(async move { handler(cfg, controller, client_pool).await })
 }
 
 pub fn bind_addr(config: &Connection) -> anyhow::Result<TcpListener> {

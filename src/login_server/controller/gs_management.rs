@@ -1,9 +1,9 @@
 use super::data::Login;
-use crate::common::dto::game_server::GSInfo;
-use crate::common::message::Request;
-use crate::packet::common::{ServerData, ServerStatus};
-use crate::packet::login_fail::GSLogin;
-use crate::packet::{error, GSLoginFailReasons};
+use crate::login_server::dto::game_server::GSInfo;
+use crate::login_server::message::Request;
+use crate::login_server::packet::common::{ServerData, ServerStatus};
+use crate::login_server::packet::login_fail::GSLogin;
+use crate::login_server::packet::{error, GSLoginFailReasons};
 use std::net::Ipv4Addr;
 use tokio::sync::mpsc::Sender;
 

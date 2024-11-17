@@ -1,10 +1,10 @@
 use super::data::Login;
-use crate::common::dto::player;
-use crate::common::dto::player::GSCharsInfo;
-use crate::packet::common::PacketType;
-use crate::packet::login_fail::PlayerLogin;
-use crate::packet::to_gs::{KickPlayer, RequestChars};
-use crate::packet::{error, PlayerLoginFailReasons};
+use crate::login_server::dto::player;
+use crate::login_server::dto::player::GSCharsInfo;
+use crate::login_server::packet::common::PacketType;
+use crate::login_server::packet::login_fail::PlayerLogin;
+use crate::login_server::packet::to_gs::{KickPlayer, RequestChars};
+use crate::login_server::packet::{error, PlayerLoginFailReasons};
 use rand::{
     distributions::{Distribution, Standard},
     Rng,
