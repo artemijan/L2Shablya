@@ -134,19 +134,72 @@ impl GSInfo {
     pub fn get_hosts(&self) -> Vec<ServerHost> {
         self.hosts.clone()
     }
-
-    fn validate_server_hosts(hosts: &[String]) -> anyhow::Result<Vec<ServerHost>> {
+    ///
+    /// This function takes as an input an iterable of strings and try to compile a list of pairs:
+    /// Subnet / Ip
+    /// 
+    /// ```
+    /// let hosts = vec!["127.0.0.5/32", "127.0.0.5"];
+    /// let validated = GSInfo::validate_server_hosts(hosts);
+    /// assert!(validated.is_ok());
+    /// ```
+    /// 
+    fn validate_server_hosts<I, T>(hosts: I) -> anyhow::Result<Vec<ServerHost>>
+    where
+        I: IntoIterator<Item = T>,
+        T: AsRef<str>,
+    {
         let mut validated_hosts = Vec::new();
-        for host in hosts.chunks(2) {
-            if host.len() != 2 {
-                bail!("Incorrect host sent by game server {:?}.", host);
+        let mut iter = hosts.into_iter();
+
+        loop {
+            // Attempt to get the subnet and IP as a pair
+            let Some(subnet_str) = iter.next() else { break };
+            let Some(ip_str) = iter.next() else {
+                bail!(
+                    "Incorrect host data: Subnet provided but IP is missing {:?}",
+                    subnet_str.as_ref()
+                )
+            };
+            let subnet = Ipv4Net::from_str(subnet_str.as_ref())?;
+            let ip = Ipv4Addr::from_str(ip_str.as_ref())?;
+            if !subnet.contains(&ip) {
+                bail!("Subnet \"{subnet}\" doesn't contain IP \"{ip}\". Check game server configuration.")
             }
-            let subnet = Ipv4Net::from_str(&host[0])?;
-            let ip = Ipv4Addr::from_str(&host[1])?;
             validated_hosts.push(ServerHost { ip, subnet });
         }
-        // sort from narrow to wide
+
+        // Sort from narrow to wide
         validated_hosts.sort_by(|a, b| b.subnet.prefix_len().cmp(&a.subnet.prefix_len()));
         Ok(validated_hosts)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::common::dto::game_server::GSInfo;
+    #[test]
+    fn test_validated_hosts_error() {
+        let hosts = vec!["127.0.0.1"];
+        let validated = GSInfo::validate_server_hosts(hosts);
+        assert!(validated.is_err());
+    }
+    #[test]
+    fn test_validated_hosts_error_invalid_subnet() {
+        let hosts = vec!["127.0.0.1", "127.0.0.2"];
+        let validated = GSInfo::validate_server_hosts(hosts);
+        assert!(validated.is_err());
+    }
+    #[test]
+    fn test_validated_hosts_err_wrong_subnet_range() {
+        let hosts = vec!["127.0.0.1/32", "127.0.0.5"];
+        let validated = GSInfo::validate_server_hosts(hosts);
+        assert!(validated.is_err());
+    }
+    #[test]
+    fn test_validated_hosts_ok() {
+        let hosts = vec!["127.0.0.5/32", "127.0.0.5"];
+        let validated = GSInfo::validate_server_hosts(hosts);
+        assert!(validated.is_ok());
     }
 }

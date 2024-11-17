@@ -5,7 +5,7 @@ use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::login_server::controller::Login;
 use crate::login_server::gs_thread::enums;
-use crate::login_server::traits::{PacketHandler, Shutdown};
+use crate::login_server::traits::{PacketHandler, Shutdown, TokioAsyncSocket};
 use crate::packet::common::{GSHandle, PacketResult, PacketType, SendablePacket};
 use crate::packet::gs_factory::build_gs_packet;
 use crate::packet::to_gs::InitLS;
@@ -124,7 +124,8 @@ impl PacketHandler for GS {
         &self.lc
     }
 
-    fn new(mut stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self {
+    fn new(mut stream: TcpStream, db_pool: DBPool, lc: Arc<Login>) -> Self 
+    {
         let (tcp_reader, tcp_writer) = stream.into_split();
         let writer = Arc::new(Mutex::new(tcp_writer));
         let reader = Arc::new(Mutex::new(tcp_reader));

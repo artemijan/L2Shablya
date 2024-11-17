@@ -1,0 +1,35 @@
+name: Login server
+blowfish_key: "_;v.]05-31!|+-%xT!^[$\0"
+auto_registration: true
+runtime:
+  worker_threads: 10
+client:
+  timeout: 150
+  enable_cmdline_login: true
+  show_licence: true
+  show_pi_agreement: true
+  auto_create_accounts: false
+allowed_gs:
+  -2ad66b3f483c22be097019f55c8abdf0:
+    server_id: 1
+listeners:
+  game_servers:
+    messages:
+      timeout: 3 # the timeout for messages sent from client thread to GS thread, we can't wait forever.
+    connection:
+      ip: 0.0.0.0
+      port: 9014
+      reuse_port: true
+      reuse_addr: true
+      no_delay: false
+  clients:
+    connection:
+      ip: 0.0.0.0
+      port: 2106
+      reuse_port: true
+      reuse_addr: true
+      no_delay: true
+database:
+  url: "sqlite::memory:"
+  max_connections: 10
+  min_connections: 5

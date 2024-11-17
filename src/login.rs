@@ -59,13 +59,14 @@ async fn start(config: Arc<config::Server>) {
         pool.clone(),
         main_loop::<ClientHandler>,
     );
-
+    
     let gs_handle = network::create_handle(
         config.clone(),
         lc.clone(),
         pool.clone(),
         main_loop::<GSHandler>,
     );
+    
     clients_handle
         .await
         .expect("Exiting: Client handler closed");

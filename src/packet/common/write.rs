@@ -13,7 +13,7 @@ pub struct SendablePacketBuffer {
 impl SendablePacketBuffer {
     pub fn new() -> Self {
         SendablePacketBuffer {
-            data: vec![0; 32],
+            data: vec![0; 512],
             position: 2,
         }
     }

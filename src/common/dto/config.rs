@@ -29,6 +29,10 @@ impl Server {
         println!("Configuration ok, starting application: {}", config.name);
         config
     }
+    pub fn from_string(conf: &str) -> Self {
+        serde_yaml::from_str::<Server>(conf)
+            .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]

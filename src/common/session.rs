@@ -28,3 +28,22 @@ impl SessionKey {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::common::session::SessionKey;
+
+    #[test]
+    fn test_session_key_not_equals() {
+        let session_key = SessionKey::new();
+        assert!(!session_key.equals(&SessionKey::new(), false));
+        assert!(!session_key.equals(&SessionKey::new(), true));
+    }
+    #[test]
+    fn test_session_key_equals() {
+        let session_key = SessionKey::new();
+        let other = session_key.clone();
+        assert!(session_key.equals(&other, false));
+        assert!(session_key.equals(&other, true));
+    }
+}

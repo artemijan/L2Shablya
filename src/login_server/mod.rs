@@ -1,9 +1,9 @@
 use crate::common::dto::config;
 use crate::common::network;
-use crate::login_server::controller::Login;
-use crate::login_server::traits::PacketHandler;
-use std::sync::Arc;
 use crate::database::DBPool;
+use crate::login_server::controller::Login;
+use crate::login_server::traits::{PacketHandler, TokioAsyncSocket};
+use std::sync::Arc;
 
 pub mod client_thread;
 pub mod controller;
@@ -25,7 +25,6 @@ where
     loop {
         match listener.accept().await {
             Ok((stream, _)) => {
-                let addr = stream.peer_addr().unwrap().ip().to_string();
                 if let Ok(addr) = stream.peer_addr() {
                     println!(
                         "Incoming connection from {:?} ({:})",
@@ -46,3 +45,5 @@ where
         }
     }
 }
+
+
