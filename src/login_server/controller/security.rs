@@ -1,6 +1,6 @@
 use super::data::Login;
 use crate::common::traits::IpBan;
-use dashmap::DashMap;
+use chrono::Utc;
 
 impl Login {
     pub fn update_ip_ban_list(&self, ip: &str, ban_duration: i64) {
@@ -9,7 +9,14 @@ impl Login {
     }
 }
 impl IpBan for Login {
-    fn get_ban_list(&self) -> &DashMap<String, i64> {
-        &self.ip_ban_list
+    fn is_ip_banned(&self, ip: &str) -> bool {
+        if let Some(res) = self.ip_ban_list.get(ip) {
+            let now = Utc::now().timestamp();
+            if now < *res {
+                return true;
+            }
+            self.ip_ban_list.remove(ip);
+        }
+        false
     }
 }

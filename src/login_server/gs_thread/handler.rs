@@ -7,10 +7,9 @@ use crate::login_server::controller::Login;
 use crate::login_server::dto::config::Server;
 use crate::login_server::gs_thread::enums;
 use crate::login_server::message::Request;
-use crate::login_server::packet::common::{GSHandle, PacketResult, PacketType, SendablePacket};
+use crate::login_server::packet::common::{GSHandle, PacketType};
 use crate::login_server::packet::gs_factory::build_gs_packet;
 use crate::login_server::packet::to_gs::InitLS;
-use crate::login_server::traits::{PacketHandler, Shutdown, TokioAsyncSocket};
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use openssl::error::ErrorStack;
@@ -21,6 +20,9 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{mpsc, Mutex, Notify, RwLock};
+use crate::common::packet::{PacketResult, SendablePacket};
+use crate::common::traits::Shutdown;
+use crate::common::traits::handler::PacketHandler;
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]

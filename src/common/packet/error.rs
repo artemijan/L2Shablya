@@ -1,4 +1,4 @@
-use crate::login_server::packet::common::SendablePacket;
+use crate::common::packet::SendablePacket;
 use std::fmt;
 use thiserror::Error;
 

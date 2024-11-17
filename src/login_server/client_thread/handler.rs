@@ -4,11 +4,9 @@ use crate::common::session::SessionKey;
 use crate::crypt::{generate_blowfish_key, login, rsa};
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
-use crate::login_server::dto::config;
-use crate::login_server::packet::common::{ClientHandle, SendablePacket};
+use crate::login_server::packet::common::ClientHandle;
 use crate::login_server::packet::ls_factory::build_client_packet;
 use crate::login_server::packet::to_client::Init;
-use crate::login_server::traits::{PacketHandler, Shutdown, TokioAsyncSocket};
 use anyhow::{Context, Error};
 use async_trait::async_trait;
 use std::any::Any;
@@ -19,6 +17,9 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
+use crate::common::packet::SendablePacket;
+use crate::common::traits::Shutdown;
+use crate::common::traits::handler::PacketHandler;
 use crate::login_server::dto::config::Server;
 
 #[derive(Clone, Debug)]
@@ -60,9 +61,7 @@ impl Client {
     pub fn get_session_key(&self) -> &SessionKey {
         &self.session_key
     }
-    fn get_ipv4_from_socket<T>(socket: &T) -> Ipv4Addr
-    where
-        T: TokioAsyncSocket,
+    fn get_ipv4_from_socket(socket: &TcpStream) -> Ipv4Addr
     {
         let default = Ipv4Addr::new(127, 0, 0, 1);
         match socket.peer_addr() {
@@ -193,6 +192,7 @@ mod test {
     use crate::common::tests::get_test_db;
     use crate::login_server::dto::config::Server;
     use tokio::net::TcpListener;
+    use crate::common::traits::ServerConfig;
 
     #[tokio::test]
     async fn test_init_packet_sent() {

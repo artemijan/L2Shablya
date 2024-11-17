@@ -1,12 +1,14 @@
 use super::data::Login;
 use crate::login_server::message::Request;
-use crate::login_server::packet::common::{PacketType, SendablePacket};
+use crate::login_server::packet::common::PacketType;
 use anyhow::Error;
 use futures::future::join_all;
 use std::time::{Duration, SystemTime};
 use tokio::sync::oneshot;
 use tokio::time::timeout;
 use uuid::Uuid;
+use crate::common::packet::SendablePacket;
+
 impl Login {
     pub async fn send_message_to_all_gs<F>(
         &self,

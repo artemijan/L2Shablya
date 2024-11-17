@@ -4,11 +4,12 @@ use crate::login_server::dto::player::GSCharsInfo;
 use crate::login_server::packet::common::PacketType;
 use crate::login_server::packet::login_fail::PlayerLogin;
 use crate::login_server::packet::to_gs::{KickPlayer, RequestChars};
-use crate::login_server::packet::{error, PlayerLoginFailReasons};
+use crate::login_server::packet::PlayerLoginFailReasons;
 use rand::{
     distributions::{Distribution, Standard},
     Rng,
 };
+use crate::common::packet::error;
 
 impl Login {
     pub async fn on_player_login(

@@ -1,10 +1,11 @@
 use crate::database::user::User;
 use crate::login_server::gs_thread::GSHandler;
-use crate::login_server::traits::PacketHandler;
-use crate::login_server::packet::common::read::ReadablePacketBuffer;
-use crate::login_server::packet::common::{GSHandle, ReadablePacket, SendablePacket};
-use crate::login_server::packet::error;
+use crate::common::traits::handler::PacketHandler;
+use crate::common::packet::read::ReadablePacketBuffer;
+use crate::login_server::packet::common::GSHandle;
+use crate::common::packet::error;
 use async_trait::async_trait;
+use crate::common::packet::{ReadablePacket, SendablePacket};
 
 #[derive(Clone, Debug)]
 pub struct ChangeAL {

@@ -1,6 +1,6 @@
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::login_server::packet::common::ClientHandle;
-use crate::login_server::packet::common::ReadablePacket;
+use crate::common::packet::ReadablePacket;
 use crate::login_server::packet::from_client::{
     RequestAuthGG, RequestAuthLogin, RequestGSLogin, RequestServerList,
 };

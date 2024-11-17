@@ -1,6 +1,6 @@
 use crate::common::session::SessionKey;
-use crate::login_server::packet::common::write::SendablePacketBuffer;
-use crate::login_server::packet::common::SendablePacket;
+use crate::common::packet::write::SendablePacketBuffer;
+use crate::common::packet::SendablePacket;
 use crate::login_server::packet::LoginServerOpcodes;
 
 #[derive(Debug)]

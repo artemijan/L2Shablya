@@ -1,12 +1,12 @@
 use crate::login_server::gs_thread::GSHandler;
-use crate::login_server::traits::PacketHandler;
-use crate::login_server::packet::common::read::ReadablePacketBuffer;
+use crate::common::traits::handler::PacketHandler;
+use crate::common::packet::read::ReadablePacketBuffer;
 use crate::login_server::packet::common::GSHandle;
-use crate::login_server::packet::common::{ReadablePacket, SendablePacket};
-use crate::login_server::packet::error::PacketRun;
+use crate::common::packet::error::PacketRun;
 use crate::login_server::packet::login_fail::PlayerLogin;
 use crate::login_server::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
+use crate::common::packet::{ReadablePacket, SendablePacket};
 
 #[repr(i32)]
 #[derive(Clone, Debug, Default)]

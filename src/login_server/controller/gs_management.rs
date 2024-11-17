@@ -3,9 +3,10 @@ use crate::login_server::dto::game_server::GSInfo;
 use crate::login_server::message::Request;
 use crate::login_server::packet::common::{ServerData, ServerStatus};
 use crate::login_server::packet::login_fail::GSLogin;
-use crate::login_server::packet::{error, GSLoginFailReasons};
+use crate::login_server::packet::GSLoginFailReasons;
 use std::net::Ipv4Addr;
 use tokio::sync::mpsc::Sender;
+use crate::common::packet::error;
 
 impl Login {
     pub fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {

@@ -1,46 +1,21 @@
+use crate::common::dto;
 use crate::common::errors::Packet;
 use crate::common::errors::Packet::UnableToHandleClient;
+use crate::common::packet::error::PacketRun;
+use crate::common::packet::SendablePacket;
+use crate::common::traits::Shutdown;
 use crate::database::DBPool;
-use crate::login_server::controller::Login;
-use crate::login_server::packet::common::SendablePacket;
-use crate::login_server::packet::error::PacketRun;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
-use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::io::AsyncReadExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
-use tokio::sync::{Mutex, Notify};
+use tokio::sync::Mutex;
 use tokio::time::sleep;
-use crate::common::dto;
-
-pub trait Shutdown {
-    fn get_shutdown_listener(&self) -> Arc<Notify>;
-    fn shutdown(&self) {
-        self.get_shutdown_listener().notify_one();
-    }
-}
 
 pub const PACKET_SIZE_BYTES: usize = 2;
-
-pub trait TokioAsyncSocket: AsyncReadExt + AsyncWriteExt + Unpin {
-    fn peer_addr(&self) -> Result<SocketAddr, std::io::Error>;
-    fn into_split(self) -> (OwnedReadHalf, OwnedWriteHalf);
-}
-
-impl TokioAsyncSocket for TcpStream {
-    fn peer_addr(&self) -> Result<SocketAddr, std::io::Error> {
-        TcpStream::peer_addr(self)
-    }
-    fn into_split(self) -> (OwnedReadHalf, OwnedWriteHalf)
-    where
-        Self: Sized
-    {
-        TcpStream::into_split(self)
-    }
-}
 
 #[async_trait]
 pub trait PacketHandler: Shutdown {
@@ -49,7 +24,7 @@ pub trait PacketHandler: Shutdown {
 
     fn get_handler_name() -> String;
     fn get_connection_config(cfg: &Self::ConfigType) -> &dto::Connection;
-    fn get_controller(&self) -> &Arc<Login>;
+    fn get_controller(&self) -> &Arc<Self::ControllerType>;
     fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self;
 
     async fn on_connect(&mut self) -> Result<(), Packet>;

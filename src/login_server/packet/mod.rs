@@ -1,5 +1,4 @@
 pub mod common;
-pub mod error;
 pub mod from_client;
 pub mod from_gs;
 pub mod gs_factory;

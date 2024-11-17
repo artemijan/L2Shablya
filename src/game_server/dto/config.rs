@@ -1,8 +1,9 @@
+use crate::common::dto::{Connection, Database, Runtime};
+use crate::common::traits::ServerConfig;
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
 use std::fs::File;
 use std::io::BufReader;
-use crate::common::dto::{Connection, Database, Runtime};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct GSServer {
@@ -14,8 +15,8 @@ pub struct GSServer {
     pub client: Client,
 }
 
-impl GSServer {
-    pub fn load(file_name: &str) -> Self {
+impl ServerConfig for GSServer {
+    fn load(file_name: &str) -> Self {
         let file = File::open(file_name)
             .unwrap_or_else(|e| panic!("Failed to open config file: {file_name}. Error: {e}"));
         let reader = BufReader::new(file);
@@ -25,9 +26,17 @@ impl GSServer {
         println!("Configuration ok, starting application: {}", config.name);
         config
     }
-    pub fn from_string(conf: &str) -> Self {
+    fn from_string(conf: &str) -> Self {
         serde_yaml::from_str::<GSServer>(conf)
             .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
+    }
+
+    fn runtime(&self) -> Option<&Runtime> {
+        self.runtime.as_ref()
+    }
+
+    fn database(&self) -> &Database {
+        &self.database
     }
 }
 

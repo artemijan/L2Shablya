@@ -1,5 +1,5 @@
 use crate::login_server::packet::common::GSHandle;
-use crate::login_server::packet::common::ReadablePacket;
+use crate::common::packet::ReadablePacket;
 use crate::login_server::packet::from_gs::{
     BlowFish, ChangeAccessLevel, ChangePassword, PlayerTracert, RequestTempBan,
 };

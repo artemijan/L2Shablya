@@ -1,34 +1,12 @@
 use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::gs_thread::GSHandler;
-use crate::login_server::packet::common::write::SendablePacketBuffer;
-use crate::login_server::packet::error::PacketRun;
+use crate::common::packet::error::PacketRun;
 use crate::login_server::packet::from_gs::ReplyChars;
 use async_trait::async_trait;
-use num::Integer;
 use num_enum::TryFromPrimitive;
-use num_traits::{Num, ToPrimitive};
 use std::fmt::Debug;
 use std::net::Ipv4Addr;
-use std::ops::Deref;
-
-pub mod read;
-pub mod write;
-
-pub type PacketResult = Result<Option<Box<dyn SendablePacket>>, PacketRun>;
-
-pub trait SendablePacket: Debug + Send + Sync {
-    fn get_bytes_mut(&mut self) -> &mut [u8] {
-        let buff = self.get_buffer_mut();
-        buff.get_data_mut()
-    }
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer;
-}
-
-pub trait ReadablePacket: Debug + Send + Sync {
-    fn read(data: &[u8]) -> Option<Self>
-    where
-        Self: Sized + ReadablePacket;
-}
+use crate::common::packet::SendablePacket;
 
 #[allow(unused)]
 #[derive(Debug, Clone, Copy, TryFromPrimitive)]

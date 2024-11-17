@@ -1,4 +1,5 @@
 use crate::common::dto::{Connection, Database, Runtime};
+use crate::common::traits::ServerConfig;
 use num::{BigInt, Num};
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
@@ -19,8 +20,8 @@ pub struct Server {
     pub client: Client,
 }
 
-impl Server {
-    pub fn load(file_name: &str) -> Self {
+impl ServerConfig for Server {
+    fn load(file_name: &str) -> Self {
         let file = File::open(file_name)
             .unwrap_or_else(|e| panic!("Failed to open config file: {file_name}. Error: {e}"));
         let reader = BufReader::new(file);
@@ -30,9 +31,16 @@ impl Server {
         println!("Configuration ok, starting application: {}", config.name);
         config
     }
-    pub fn from_string(conf: &str) -> Self {
+    fn from_string(conf: &str) -> Self {
         serde_yaml::from_str::<Server>(conf)
             .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
+    }
+
+    fn runtime(&self) -> Option<&Runtime> {
+        self.runtime.as_ref()
+    }
+    fn database(&self) -> &Database {
+        &self.database
     }
 }
 // Custom deserialization function to validate that all keys in the HashMap are valid hex strings

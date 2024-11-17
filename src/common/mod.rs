@@ -6,3 +6,4 @@ pub mod str;
 pub mod tests;
 pub mod dto;
 pub mod traits;
+pub mod packet;

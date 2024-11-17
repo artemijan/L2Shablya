@@ -1,11 +1,11 @@
 use crate::login_server::client_thread::ClientHandler;
-use crate::login_server::traits::PacketHandler;
-use crate::login_server::packet::common::read::ReadablePacketBuffer;
+use crate::common::traits::handler::PacketHandler;
+use crate::common::packet::read::ReadablePacketBuffer;
 use crate::login_server::packet::common::ClientHandle;
-use crate::login_server::packet::common::{ReadablePacket, SendablePacket};
 use crate::login_server::packet::to_client::ServerList;
-use crate::login_server::packet::{error, login_fail, PlayerLoginFailReasons};
+use crate::login_server::packet::{login_fail, PlayerLoginFailReasons};
 use async_trait::async_trait;
+use crate::common::packet::{error, ReadablePacket, SendablePacket};
 
 #[derive(Clone, Debug)]
 pub struct RequestServerList {

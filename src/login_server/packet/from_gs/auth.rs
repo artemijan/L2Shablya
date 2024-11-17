@@ -1,12 +1,12 @@
 use crate::login_server::dto::game_server::GSInfo;
 use crate::login_server::gs_thread::{enums, GSHandler};
-use crate::login_server::traits::PacketHandler;
-use crate::login_server::packet::common::read::ReadablePacketBuffer;
+use crate::common::traits::handler::PacketHandler;
+use crate::common::packet::read::ReadablePacketBuffer;
 use crate::login_server::packet::common::GSHandle;
-use crate::login_server::packet::common::{ReadablePacket, SendablePacket};
 use crate::login_server::packet::to_gs::AuthGS;
-use crate::login_server::packet::{error, login_fail, GSLoginFailReasons};
+use crate::login_server::packet::{login_fail, GSLoginFailReasons};
 use async_trait::async_trait;
+use crate::common::packet::{error, ReadablePacket, SendablePacket};
 
 #[derive(Clone, Debug)]
 pub struct GS {
