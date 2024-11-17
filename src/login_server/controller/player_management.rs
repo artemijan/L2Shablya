@@ -68,7 +68,7 @@ impl Login {
 
     pub fn on_player_logout(&self, account_name: &str) {
         println!("Player logged out: {account_name}");
-        self.players.remove(account_name);
+        self.remove_player(account_name);
     }
 
     pub fn get_player(&self, account_name: &str) -> Option<player::Info> {
@@ -86,6 +86,18 @@ impl Login {
     }
     pub fn remove_player(&self, account_name: &str) {
         self.players.remove(account_name);
+    }
+
+    pub fn remove_all_gs_players(&self, gs_id: u8) {
+        let accounts_to_remove: Vec<_> = self
+            .players
+            .iter()
+            .filter(|entry| entry.value().game_server == Some(gs_id))
+            .map(|entry| entry.key().clone())
+            .collect();
+        for acc in accounts_to_remove {
+            self.remove_player(&acc);
+        }
     }
 
     pub fn on_players_in_game(&self, gs_id: u8, account_name: &[String]) {

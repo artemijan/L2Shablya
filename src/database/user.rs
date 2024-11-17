@@ -1,10 +1,10 @@
+use crate::database::DBPool;
 use argon2::{
     password_hash::{rand_core::OsRng, PasswordHasher, PasswordVerifier, SaltString},
     Argon2, PasswordHash,
 };
 use sqlx::{Error, FromRow};
 use tokio::task::spawn_blocking;
-use crate::database::DBPool;
 
 /// This is a struct which is simply a DTO to get/store data in DB
 #[derive(Debug, Clone, FromRow, Default)]
@@ -21,15 +21,16 @@ impl User {
         db_pool: &DBPool,
         username: &str,
     ) -> Result<Option<Self>, Error> {
-        let user = sqlx::query_as("select id,username,password,access_level from user where username=$1")
-            .bind(username)
-            .fetch_optional(db_pool)
-            .await?;
+        let user =
+            sqlx::query_as("select id,username,password,access_level from user where username=$1")
+                .bind(username)
+                .fetch_optional(db_pool)
+                .await?;
         Ok(user)
     }
 
     /// cpu bound need to spawn a separate thread
-    pub async fn hash_password(password: &str) -> String {
+    pub async fn hash_password(password: &str) -> anyhow::Result<String> {
         let pwd = password.to_owned();
         spawn_blocking(move || {
             let salt = SaltString::generate(&mut OsRng);
@@ -42,7 +43,7 @@ impl User {
                 .to_string()
         })
         .await
-        .unwrap()
+        .map_err(Into::into)
     }
     /// cpu bound need to spawn a separate thread
     pub async fn verify_password(&self, password: &str) -> bool {
@@ -85,7 +86,7 @@ impl User {
         Ok(user)
     }
     pub async fn new(db_pool: &DBPool, username: &str, password: &str) -> anyhow::Result<User> {
-        let password_hash = Self::hash_password(password).await;
+        let password_hash = Self::hash_password(password).await?;
         let user = sqlx::query_as(
             "
             INSERT INTO user (username, password, access_level) 

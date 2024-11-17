@@ -163,6 +163,7 @@ impl PacketHandler for GS {
         if let Some(server_id) = self.server_id {
             let lc = self.get_lc();
             lc.remove_gs(server_id);
+            lc.remove_all_gs_players(server_id);
         }
     }
 
