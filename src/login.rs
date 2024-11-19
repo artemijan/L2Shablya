@@ -19,9 +19,11 @@ mod login_server;
 
 ///
 /// # Panics
+/// - when can't open a socket
+/// - when config file not found
+/// - when DB is not accessible
+/// - when can't run migrations
 ///
-/// - when Game server thread quits, and so login server can not accept new servers
-/// - when client listener thread quits so we can't accept new clients
 pub fn main() {
     LoginServer::bootstrap("config/login.yaml", |cfg, db_pool| async move {
         let lc = Arc::new(Login::new(cfg.clone()));
@@ -30,9 +32,13 @@ pub fn main() {
 
         let gs_handle =
             LoginServer::handler_loop::<GSHandler>(cfg.clone(), lc.clone(), db_pool.clone());
-        
-        clients_handle.await;
+
+        clients_handle
+            .await
+            .unwrap_or_else(|_| panic!("Client handler exited unexpectedly"));
         // actually this line is never reached, because in previous handle it's infinite loop
-        gs_handle.await;
+        gs_handle
+            .await
+            .unwrap_or_else(|_| panic!("Game server handler exited unexpectedly"));
     });
 }

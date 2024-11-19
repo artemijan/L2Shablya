@@ -21,6 +21,6 @@ pub fn main() {
         let controller = Arc::new(Controller::new(cfg.clone()));
         let clients_handle =
             GameServer::handler_loop::<PlayerHandler>(cfg.clone(), controller, db_pool.clone());
-        clients_handle.await;
+        clients_handle.await.unwrap();
     });
 }

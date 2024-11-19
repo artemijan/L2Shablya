@@ -10,6 +10,7 @@ use std::future::Future;
 use std::num::NonZero;
 use std::sync::Arc;
 use std::thread;
+use tokio::task::JoinHandle;
 
 #[async_trait]
 pub trait Server {
@@ -43,11 +44,12 @@ pub trait Server {
         });
     }
 
-    async fn handler_loop<T>(
+    fn handler_loop<T>(
         config: Arc<Self::ConfigType>,
         controller: Arc<Self::ControllerType>,
         pool: DBPool,
-    ) where
+    )-> JoinHandle<()>
+    where
         T: PacketHandler<ConfigType = Self::ConfigType, ControllerType = Self::ControllerType>
             + Send
             + Sync
@@ -86,7 +88,5 @@ pub trait Server {
                 }
             }
         })
-        .await
-        .unwrap_or_else(|_| panic!("Can't start handler loop {}", T::get_handler_name()))
     }
 }

@@ -27,6 +27,11 @@ use crate::common::traits::handler::PacketHandler;
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
 pub struct GS {
+    ///
+    /// `tcp_reader` and `tcp_writer` are wrapped into Arc<Mutex> because we need to share the handler
+    /// across two tokio threads:
+    /// 1. Main thread to accept and answer packets
+    /// 2. Listen for messages from Client login thread if we need info about logging in Player
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
     shutdown_listener: Arc<Notify>,
