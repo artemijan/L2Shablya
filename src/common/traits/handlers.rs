@@ -17,19 +17,28 @@ use tokio::time::sleep;
 
 pub const PACKET_SIZE_BYTES: usize = 2;
 
+pub trait InboundHandler {
+    type ConfigType;
+    fn get_connection_config(cfg: &Self::ConfigType) -> &dto::InboundConnection;
+}
+
+pub trait OutboundHandler {
+    type ConfigType;
+    fn get_connection_config(cfg: &Self::ConfigType) -> &dto::OutboundConnection;
+}
+
 #[async_trait]
 pub trait PacketHandler: Shutdown {
     type ConfigType;
     type ControllerType;
 
     fn get_handler_name() -> String;
-    fn get_connection_config(cfg: &Self::ConfigType) -> &dto::Connection;
     fn get_controller(&self) -> &Arc<Self::ControllerType>;
     fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self;
 
     async fn on_connect(&mut self) -> Result<(), Packet>;
     fn on_disconnect(&mut self);
-    fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>>;
+    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>>;
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
     fn get_timeout(&self) -> Option<u64>;
 

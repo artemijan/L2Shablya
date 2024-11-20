@@ -1,4 +1,4 @@
-pub mod handler;
+pub mod handlers;
 pub mod server;
 
 use crate::common::packet::SendablePacket;

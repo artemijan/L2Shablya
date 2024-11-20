@@ -1,5 +1,5 @@
 use crate::common::network::bind_addr;
-use crate::common::traits::handler::PacketHandler;
+use crate::common::traits::handlers::{InboundHandler, OutboundHandler, PacketHandler};
 use crate::common::traits::{IpBan, ServerConfig};
 use crate::database;
 use crate::database::{new_db_pool, DBPool};
@@ -10,6 +10,7 @@ use std::future::Future;
 use std::num::NonZero;
 use std::sync::Arc;
 use std::thread;
+use tokio::net::TcpStream;
 use tokio::task::JoinHandle;
 
 #[async_trait]
@@ -44,13 +45,14 @@ pub trait Server {
         });
     }
 
-    fn handler_loop<T>(
+    fn listener_loop<T>(
         config: Arc<Self::ConfigType>,
         controller: Arc<Self::ControllerType>,
         pool: DBPool,
-    )-> JoinHandle<()>
+    ) -> JoinHandle<()>
     where
         T: PacketHandler<ConfigType = Self::ConfigType, ControllerType = Self::ControllerType>
+            + InboundHandler<ConfigType = Self::ConfigType>
             + Send
             + Sync
             + 'static,
@@ -87,6 +89,39 @@ pub trait Server {
                     }
                 }
             }
+        })
+    }
+
+    fn connector_loop<T>(
+        config: Arc<Self::ConfigType>,
+        controller: Arc<Self::ControllerType>,
+        pool: DBPool,
+    ) -> JoinHandle<()>
+    where
+        T: PacketHandler<ConfigType = Self::ConfigType, ControllerType = Self::ControllerType>
+            + OutboundHandler<ConfigType = Self::ConfigType>
+            + Send
+            + Sync
+            + 'static,
+    {
+        tokio::spawn(async move {
+            let conn_cfg = T::get_connection_config(&config);
+            let address = format!("{}:{}", conn_cfg.ip, conn_cfg.port);
+            println!("Connecting to {} on: {}", T::get_handler_name(), &address);
+            let stream = loop {
+                match TcpStream::connect(&address).await {
+                    Ok(s) => break s, // Exit the loop when connection succeeds
+                    Err(e) => {
+                        eprintln!("Failed to connect: {e}. Retrying in 5 seconds...");
+                        tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
+                    }
+                }
+            };
+            stream
+                .set_nodelay(conn_cfg.no_delay)
+                .expect("Set nodelay failed");
+            let mut handler = T::new(stream, pool.clone(), controller.clone());
+            handler.handle_client().await;
         })
     }
 }

@@ -14,10 +14,17 @@ pub struct Runtime {
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
-pub struct Connection {
+pub struct InboundConnection {
     pub ip: String,
     pub port: u16,
     pub reuse_addr: bool,
     pub reuse_port: bool,
+    pub no_delay: bool,
+}
+
+#[derive(Debug, Clone, Deserialize, Default)]
+pub struct OutboundConnection {
+    pub ip: String,
+    pub port: u16,
     pub no_delay: bool,
 }

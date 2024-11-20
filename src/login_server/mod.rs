@@ -1,4 +1,4 @@
-use crate::common::traits::handler::PacketHandler;
+use crate::common::traits::handlers::PacketHandler;
 use crate::common::traits::server::Server;
 use crate::common::traits::IpBan;
 use crate::login_server::controller::Login;

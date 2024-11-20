@@ -2,7 +2,7 @@ use crate::login_server::dto::player;
 use crate::common::str::Trim;
 use crate::database::user::User;
 use crate::login_server::client_thread::ClientHandler;
-use crate::common::traits::handler::PacketHandler;
+use crate::common::traits::handlers::PacketHandler;
 use crate::login_server::packet::common::ClientHandle;
 use crate::common::packet::error;
 use crate::login_server::packet::to_client::ServerList;

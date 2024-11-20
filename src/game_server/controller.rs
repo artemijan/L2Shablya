@@ -12,6 +12,9 @@ impl Controller {
     pub fn new(cfg: Arc<GSServer>) -> Self {
         Controller { cfg }
     }
+    pub fn get_cfg(&self) -> Arc<GSServer> {
+        self.cfg.clone()
+    }
 }
 
 impl IpBan for Controller {

@@ -6,7 +6,7 @@ use crate::login_server::gs_thread::GSHandler;
 use crate::login_server::LoginServer;
 use anyhow::Context;
 use common::network;
-use common::traits::handler::PacketHandler;
+use common::traits::handlers::PacketHandler;
 use sqlx::Connection;
 use std::future::Future;
 use std::net::ToSocketAddrs;
@@ -28,10 +28,10 @@ pub fn main() {
     LoginServer::bootstrap("config/login.yaml", |cfg, db_pool| async move {
         let lc = Arc::new(Login::new(cfg.clone()));
         let clients_handle =
-            LoginServer::handler_loop::<ClientHandler>(cfg.clone(), lc.clone(), db_pool.clone());
+            LoginServer::listener_loop::<ClientHandler>(cfg.clone(), lc.clone(), db_pool.clone());
 
         let gs_handle =
-            LoginServer::handler_loop::<GSHandler>(cfg.clone(), lc.clone(), db_pool.clone());
+            LoginServer::listener_loop::<GSHandler>(cfg.clone(), lc.clone(), db_pool.clone());
 
         clients_handle
             .await

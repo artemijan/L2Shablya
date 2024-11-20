@@ -1,5 +1,5 @@
 use crate::login_server::client_thread::ClientHandler;
-use crate::common::traits::handler::PacketHandler;
+use crate::common::traits::handlers::PacketHandler;
 use crate::common::packet::read::ReadablePacketBuffer;
 use crate::login_server::packet::common::ClientHandle;
 use crate::login_server::packet::to_client::ServerList;

@@ -1,4 +1,4 @@
-use crate::common::dto::{Connection, Database, Runtime};
+use crate::common::dto::{InboundConnection, Database, Runtime};
 use crate::common::traits::ServerConfig;
 use num::{BigInt, Num};
 use serde::de::Error;
@@ -71,13 +71,13 @@ pub struct GSMessages {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct GSListener {
-    pub connection: Connection,
+    pub connection: InboundConnection,
     pub messages: GSMessages,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ClientListener {
-    pub connection: Connection,
+    pub connection: InboundConnection,
 }
 
 #[derive(Debug, Clone, Deserialize)]

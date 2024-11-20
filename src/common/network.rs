@@ -1,4 +1,4 @@
-use crate::common::dto::Connection;
+use crate::common::dto::InboundConnection;
 use anyhow::Context;
 use std::future::Future;
 use std::net::ToSocketAddrs;
@@ -7,7 +7,7 @@ use tokio::net::{TcpListener, TcpSocket};
 use crate::database::DBPool;
 
 
-pub fn bind_addr(config: &Connection) -> anyhow::Result<TcpListener> {
+pub fn bind_addr(config: &InboundConnection) -> anyhow::Result<TcpListener> {
     let addr = format!("{}:{}", &config.ip, &config.port)
         .to_socket_addrs()
         .context(format!(

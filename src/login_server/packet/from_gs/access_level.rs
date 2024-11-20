@@ -1,6 +1,6 @@
 use crate::database::user::User;
 use crate::login_server::gs_thread::GSHandler;
-use crate::common::traits::handler::PacketHandler;
+use crate::common::traits::handlers::PacketHandler;
 use crate::common::packet::read::ReadablePacketBuffer;
 use crate::login_server::packet::common::GSHandle;
 use crate::common::packet::error;

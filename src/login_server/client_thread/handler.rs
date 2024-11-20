@@ -1,9 +1,13 @@
-use crate::common::dto;
+use crate::common::dto::InboundConnection;
 use crate::common::errors::Packet;
+use crate::common::packet::SendablePacket;
 use crate::common::session::SessionKey;
+use crate::common::traits::handlers::{InboundHandler, PacketHandler};
+use crate::common::traits::Shutdown;
 use crate::crypt::{generate_blowfish_key, login, rsa};
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
+use crate::login_server::dto::config::Server;
 use crate::login_server::packet::common::ClientHandle;
 use crate::login_server::packet::ls_factory::build_client_packet;
 use crate::login_server::packet::to_client::Init;
@@ -17,10 +21,6 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
-use crate::common::packet::SendablePacket;
-use crate::common::traits::Shutdown;
-use crate::common::traits::handler::PacketHandler;
-use crate::login_server::dto::config::Server;
 
 #[derive(Clone, Debug)]
 pub struct Client {
@@ -61,8 +61,7 @@ impl Client {
     pub fn get_session_key(&self) -> &SessionKey {
         &self.session_key
     }
-    fn get_ipv4_from_socket(socket: &TcpStream) -> Ipv4Addr
-    {
+    fn get_ipv4_from_socket(socket: &TcpStream) -> Ipv4Addr {
         let default = Ipv4Addr::new(127, 0, 0, 1);
         match socket.peer_addr() {
             Ok(addr) => match addr.ip() {
@@ -87,10 +86,7 @@ impl PacketHandler for Client {
     fn get_handler_name() -> String {
         "Login client handler".into()
     }
-    
-    fn get_connection_config(cfg: &Self::ConfigType) -> &dto::Connection {
-        &cfg.listeners.clients.connection
-    }
+
     fn get_controller(&self) -> &Arc<Self::ControllerType> {
         &self.lc
     }
@@ -141,7 +137,7 @@ impl PacketHandler for Client {
     fn on_disconnect(&mut self) {
         println!("Player disconnected: {:?}", self.session_id);
     }
-    fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>> {
+    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {
         &self.tcp_reader
     }
 
@@ -186,13 +182,21 @@ impl PacketHandler for Client {
     }
 }
 
+impl InboundHandler for Client {
+    type ConfigType = Server;
+
+    fn get_connection_config(cfg: &Self::ConfigType) -> &InboundConnection {
+        &cfg.listeners.clients.connection
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
     use crate::common::tests::get_test_db;
+    use crate::common::traits::ServerConfig;
     use crate::login_server::dto::config::Server;
     use tokio::net::TcpListener;
-    use crate::common::traits::ServerConfig;
 
     #[tokio::test]
     async fn test_init_packet_sent() {

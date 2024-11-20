@@ -1,6 +1,6 @@
 use crate::login_server::dto::game_server::GSInfo;
 use crate::login_server::gs_thread::{enums, GSHandler};
-use crate::common::traits::handler::PacketHandler;
+use crate::common::traits::handlers::PacketHandler;
 use crate::common::packet::read::ReadablePacketBuffer;
 use crate::login_server::packet::common::GSHandle;
 use crate::login_server::packet::to_gs::AuthGS;

@@ -1,6 +1,6 @@
 use crate::login_server::dto::player::GSCharsInfo;
 use crate::login_server::client_thread::ClientHandler;
-use crate::common::traits::handler::PacketHandler;
+use crate::common::traits::handlers::PacketHandler;
 use crate::common::packet::write::SendablePacketBuffer;
 use crate::login_server::packet::common::{ServerData, ServerStatus};
 use crate::login_server::packet::LoginServerOpcodes;

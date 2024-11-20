@@ -1,5 +1,8 @@
-use crate::common::dto::Connection;
+use crate::common::dto::InboundConnection;
 use crate::common::errors::Packet;
+use crate::common::packet::{PacketResult, SendablePacket};
+use crate::common::traits::handlers::{InboundHandler, PacketHandler};
+use crate::common::traits::Shutdown;
 use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::database::DBPool;
@@ -20,9 +23,6 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{mpsc, Mutex, Notify, RwLock};
-use crate::common::packet::{PacketResult, SendablePacket};
-use crate::common::traits::Shutdown;
-use crate::common::traits::handler::PacketHandler;
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
@@ -127,9 +127,6 @@ impl PacketHandler for GS {
     fn get_handler_name() -> String {
         "Game server handler".to_string()
     }
-    fn get_connection_config(cfg: &Self::ConfigType) -> &Connection {
-        &cfg.listeners.game_servers.connection
-    }
     fn get_controller(&self) -> &Arc<Self::ControllerType> {
         &self.lc
     }
@@ -176,7 +173,7 @@ impl PacketHandler for GS {
         }
     }
 
-    fn get_stream_reader_mut(&mut self) -> &Arc<Mutex<OwnedReadHalf>> {
+    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {
         &self.tcp_reader
     }
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
@@ -230,5 +227,13 @@ impl PacketHandler for GS {
         })?;
         let resp = handler.handle(self).await;
         self.handle_result(resp).await
+    }
+}
+
+impl InboundHandler for GS {
+    type ConfigType = Server;
+
+    fn get_connection_config(cfg: &Self::ConfigType) -> &InboundConnection {
+        &cfg.listeners.game_servers.connection
     }
 }

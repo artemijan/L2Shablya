@@ -1,4 +1,4 @@
-use crate::common::dto::{Connection, Database, Runtime};
+use crate::common::dto::{Database, InboundConnection, OutboundConnection, Runtime};
 use crate::common::traits::ServerConfig;
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
@@ -42,12 +42,18 @@ impl ServerConfig for GSServer {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ClientListener {
-    pub connection: Connection,
+    pub connection: InboundConnection,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct LoginServerConnector {
+    pub connection: OutboundConnection,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Listeners {
     pub clients: ClientListener,
+    pub login_server: LoginServerConnector,
 }
 
 #[derive(Debug, Clone, Deserialize)]
