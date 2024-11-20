@@ -1,5 +1,5 @@
-use crate::common::packet::write::SendablePacketBuffer;
-use crate::common::packet::SendablePacket;
+use crate::common::packets::write::SendablePacketBuffer;
+use crate::common::packets::SendablePacket;
 use crate::login_server::packet::LoginServerOpcodes;
 
 #[derive(Debug)]

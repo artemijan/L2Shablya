@@ -1,8 +1,8 @@
 use crate::common::dto;
 use crate::common::errors::Packet;
 use crate::common::errors::Packet::UnableToHandleClient;
-use crate::common::packet::error::PacketRun;
-use crate::common::packet::SendablePacket;
+use crate::common::packets::error::PacketRun;
+use crate::common::packets::SendablePacket;
 use crate::common::traits::Shutdown;
 use crate::database::DBPool;
 use anyhow::{bail, Error};

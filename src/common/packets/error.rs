@@ -1,4 +1,4 @@
-use crate::common::packet::SendablePacket;
+use crate::common::packets::SendablePacket;
 use std::fmt;
 use thiserror::Error;
 

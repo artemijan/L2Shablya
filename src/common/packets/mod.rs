@@ -1,4 +1,4 @@
-use crate::common::packet::write::SendablePacketBuffer;
+use crate::common::packets::write::SendablePacketBuffer;
 use error::PacketRun;
 use std::fmt::Debug;
 

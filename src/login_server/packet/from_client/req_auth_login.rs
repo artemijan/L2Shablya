@@ -4,11 +4,11 @@ use crate::database::user::User;
 use crate::login_server::client_thread::ClientHandler;
 use crate::common::traits::handlers::PacketHandler;
 use crate::login_server::packet::common::ClientHandle;
-use crate::common::packet::error;
+use crate::common::packets::error;
 use crate::login_server::packet::to_client::ServerList;
 use crate::login_server::packet::{login_fail, to_client::LoginOk, PlayerLoginFailReasons};
 use async_trait::async_trait;
-use crate::common::packet::{PacketResult, ReadablePacket};
+use crate::common::packets::{PacketResult, ReadablePacket};
 
 #[derive(Clone, Debug)]
 pub struct RequestAuthLogin {

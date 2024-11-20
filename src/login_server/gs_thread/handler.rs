@@ -1,6 +1,6 @@
 use crate::common::dto::InboundConnection;
 use crate::common::errors::Packet;
-use crate::common::packet::{PacketResult, SendablePacket};
+use crate::common::packets::{PacketResult, SendablePacket};
 use crate::common::traits::handlers::{InboundHandler, PacketHandler};
 use crate::common::traits::Shutdown;
 use crate::crypt::login::Encryption;

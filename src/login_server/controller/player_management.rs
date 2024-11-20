@@ -9,7 +9,7 @@ use rand::{
     distributions::{Distribution, Standard},
     Rng,
 };
-use crate::common::packet::error;
+use crate::common::packets::error;
 
 impl Login {
     pub async fn on_player_login(

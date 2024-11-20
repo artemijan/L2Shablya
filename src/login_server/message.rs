@@ -1,7 +1,7 @@
 use crate::login_server::packet::common::PacketType;
 use std::time::SystemTime;
 use tokio::sync::oneshot::Sender;
-use crate::common::packet::SendablePacket;
+use crate::common::packets::SendablePacket;
 
 #[derive(Debug)]
 pub struct Request {

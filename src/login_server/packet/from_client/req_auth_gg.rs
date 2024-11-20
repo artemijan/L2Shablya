@@ -1,12 +1,12 @@
 use crate::login_server::client_thread::ClientHandler;
-use crate::common::packet::read::ReadablePacketBuffer;
+use crate::common::packets::read::ReadablePacketBuffer;
 use crate::login_server::packet::common::ClientHandle;
-use crate::common::packet::error::PacketRun;
+use crate::common::packets::error::PacketRun;
 use crate::login_server::packet::login_fail::PlayerLogin;
 use crate::login_server::packet::to_client::AuthGG;
 use crate::login_server::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
-use crate::common::packet::{ReadablePacket, SendablePacket};
+use crate::common::packets::{ReadablePacket, SendablePacket};
 
 #[derive(Clone, Debug)]
 pub struct RequestAuthGG {

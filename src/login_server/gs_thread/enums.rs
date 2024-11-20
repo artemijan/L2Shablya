@@ -1,4 +1,4 @@
-use crate::common::packet::{error, PacketResult};
+use crate::common::packets::{error, PacketResult};
 use crate::login_server::packet::login_fail::PlayerLogin;
 use crate::login_server::packet::PlayerLoginFailReasons;
 use strum::Display;

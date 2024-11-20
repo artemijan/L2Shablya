@@ -1,7 +1,7 @@
 pub mod handlers;
 pub mod server;
 
-use crate::common::packet::SendablePacket;
+use crate::common::packets::SendablePacket;
 use std::sync::Arc;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::sync::Notify;

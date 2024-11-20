@@ -1,12 +1,12 @@
 use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::gs_thread::GSHandler;
-use crate::common::packet::error::PacketRun;
+use crate::common::packets::error::PacketRun;
 use crate::login_server::packet::from_gs::ReplyChars;
 use async_trait::async_trait;
 use num_enum::TryFromPrimitive;
 use std::fmt::Debug;
 use std::net::Ipv4Addr;
-use crate::common::packet::SendablePacket;
+use crate::common::packets::SendablePacket;
 
 #[allow(unused)]
 #[derive(Debug, Clone, Copy, TryFromPrimitive)]
