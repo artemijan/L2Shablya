@@ -1,28 +1,9 @@
-pub mod common;
 pub mod from_client;
-pub mod from_gs;
+pub mod handlable;
 pub mod gs_factory;
 pub mod login_fail;
-pub mod ls_factory;
+pub mod cp_factory;
 pub mod to_client;
-pub mod to_gs;
-
-#[repr(u8)]
-#[allow(unused)]
-#[derive(Clone, Debug)]
-pub enum LoginServerOpcodes {
-    Init = 0x00,
-    LoginOk = 0x03,
-    ServerList = 0x04,
-    GgAuth = 0x0b,
-    LoginFail = 0x01,
-    AccountKicked = 0x02,
-    PlayFail = 0x06,
-    PlayOk = 0x07,
-    PiAgreementCheck = 0x11,
-    PiAgreementAck = 0x12,
-    LoginOptFail = 0x0D,
-}
 
 #[repr(u8)]
 #[allow(unused)]

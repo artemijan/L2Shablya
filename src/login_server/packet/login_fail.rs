@@ -1,7 +1,7 @@
 use super::GSLoginFailReasons;
+use crate::common::packets::common::{LoginServerOpcodes, SendablePacket};
 use crate::common::packets::write::SendablePacketBuffer;
-use crate::common::packets::SendablePacket;
-use crate::login_server::packet::{LoginServerOpcodes, PlayerLoginFailReasons};
+use crate::login_server::packet::PlayerLoginFailReasons;
 
 #[derive(Debug)]
 pub struct PlayerLogin {

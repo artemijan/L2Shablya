@@ -1,12 +1,11 @@
+use crate::common::packets::common::{HandlablePacket, ReadablePacket, SendablePacket};
 use crate::login_server::client_thread::ClientHandler;
 use crate::common::packets::read::ReadablePacketBuffer;
-use crate::login_server::packet::common::ClientHandle;
 use crate::common::packets::error::PacketRun;
 use crate::login_server::packet::login_fail::PlayerLogin;
 use crate::login_server::packet::to_client::AuthGG;
 use crate::login_server::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
-use crate::common::packets::{ReadablePacket, SendablePacket};
 
 #[derive(Clone, Debug)]
 pub struct RequestAuthGG {
@@ -40,10 +39,11 @@ impl ReadablePacket for RequestAuthGG {
 }
 
 #[async_trait]
-impl ClientHandle for RequestAuthGG {
+impl HandlablePacket for RequestAuthGG {
+    type HandlerType = ClientHandler;
     async fn handle(
         &self,
-        ch: &mut ClientHandler,
+        ch: &mut Self::HandlerType,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         if self.session_id != ch.get_session_id() {
             return Err(PacketRun {

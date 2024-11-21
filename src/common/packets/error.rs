@@ -1,6 +1,7 @@
-use crate::common::packets::SendablePacket;
 use std::fmt;
 use thiserror::Error;
+
+use super::common::SendablePacket;
 
 #[non_exhaustive]
 #[derive(Error, Debug)]

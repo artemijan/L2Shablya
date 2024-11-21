@@ -1,9 +1,10 @@
-use crate::login_server::packet::common::ServerType;
 use anyhow::bail;
 use ipnet::Ipv4Net;
 use num::BigInt;
 use std::net::Ipv4Addr;
 use std::str::FromStr;
+
+use crate::common::packets::common::ServerType;
 
 #[derive(Debug, Clone)]
 pub struct ServerHost {

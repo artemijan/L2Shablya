@@ -11,14 +11,20 @@ pub struct SendablePacketBuffer {
 
 #[allow(unused, clippy::cast_possible_truncation)]
 impl SendablePacketBuffer {
+    pub fn empty() -> Self {
+        Self {
+            data: vec![0; 2],
+            position: 2,
+        }
+    }
     pub fn new() -> Self {
-        SendablePacketBuffer {
+        Self {
             data: vec![0; 512],
             position: 2,
         }
     }
     pub fn from_bytes(data: &[u8]) -> Self {
-        SendablePacketBuffer {
+        Self {
             data: data.to_vec(),
             position: data.len(),
         }

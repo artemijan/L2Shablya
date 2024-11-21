@@ -1,14 +1,13 @@
+use crate::common::packets::common::{HandlablePacket, PacketResult, ReadablePacket};
 use crate::login_server::dto::player;
 use crate::common::str::Trim;
 use crate::database::user::User;
 use crate::login_server::client_thread::ClientHandler;
 use crate::common::traits::handlers::PacketHandler;
-use crate::login_server::packet::common::ClientHandle;
 use crate::common::packets::error;
 use crate::login_server::packet::to_client::ServerList;
 use crate::login_server::packet::{login_fail, to_client::LoginOk, PlayerLoginFailReasons};
 use async_trait::async_trait;
-use crate::common::packets::{PacketResult, ReadablePacket};
 
 #[derive(Clone, Debug)]
 pub struct RequestAuthLogin {
@@ -48,8 +47,9 @@ impl ReadablePacket for RequestAuthLogin {
 }
 
 #[async_trait]
-impl ClientHandle for RequestAuthLogin {
-    async fn handle(&self, ch: &mut ClientHandler) -> PacketResult {
+impl HandlablePacket for RequestAuthLogin {
+    type HandlerType = ClientHandler;
+    async fn handle(&self, ch: &mut Self::HandlerType) -> PacketResult {
         let auto_registration = ch.get_controller().get_config().auto_registration;
         let show_license = ch.get_controller().get_config().client.show_licence;
         let pool = ch.get_db_pool_mut();

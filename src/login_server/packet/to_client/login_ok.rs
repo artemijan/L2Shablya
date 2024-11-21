@@ -1,7 +1,6 @@
-use crate::common::session::SessionKey;
+use crate::common::packets::common::{LoginServerOpcodes, SendablePacket};
 use crate::common::packets::write::SendablePacketBuffer;
-use crate::common::packets::SendablePacket;
-use crate::login_server::packet::LoginServerOpcodes;
+use crate::common::session::SessionKey;
 
 #[derive(Debug)]
 pub struct LoginOk {

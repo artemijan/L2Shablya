@@ -91,7 +91,17 @@ pub trait Server {
             }
         })
     }
-
+    async fn get_stream(address: &str) -> TcpStream {
+        loop {
+            match TcpStream::connect(address).await {
+                Ok(s) => break s, // Exit the loop when connection succeeds
+                Err(e) => {
+                    eprintln!("Failed to connect: {e}. Retrying in 5 seconds...");
+                    tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
+                }
+            }
+        }
+    }
     fn connector_loop<T>(
         config: Arc<Self::ConfigType>,
         controller: Arc<Self::ControllerType>,
@@ -108,20 +118,14 @@ pub trait Server {
             let conn_cfg = T::get_connection_config(&config);
             let address = format!("{}:{}", conn_cfg.ip, conn_cfg.port);
             println!("Connecting to {} on: {}", T::get_handler_name(), &address);
-            let stream = loop {
-                match TcpStream::connect(&address).await {
-                    Ok(s) => break s, // Exit the loop when connection succeeds
-                    Err(e) => {
-                        eprintln!("Failed to connect: {e}. Retrying in 5 seconds...");
-                        tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
-                    }
-                }
-            };
-            stream
-                .set_nodelay(conn_cfg.no_delay)
-                .expect("Set nodelay failed");
-            let mut handler = T::new(stream, pool.clone(), controller.clone());
-            handler.handle_client().await;
+            loop {
+                let stream = Self::get_stream(&address).await;
+                stream
+                    .set_nodelay(conn_cfg.no_delay)
+                    .expect("Set nodelay failed");
+                let mut handler = T::new(stream, pool.clone(), controller.clone());
+                handler.handle_client().await;
+            }
         })
     }
 }

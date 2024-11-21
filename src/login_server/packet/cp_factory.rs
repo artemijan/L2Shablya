@@ -1,14 +1,14 @@
+use crate::common::packets::common::{HandlablePacket, ReadablePacket};
 use crate::crypt::rsa::ScrambledRSAKeyPair;
-use crate::login_server::packet::common::ClientHandle;
-use crate::common::packets::ReadablePacket;
+use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::packet::from_client::{
     RequestAuthGG, RequestAuthLogin, RequestGSLogin, RequestServerList,
 };
-
+/// Client Packet Factory
 pub fn build_client_packet(
     data: &[u8],
     key_pair: &ScrambledRSAKeyPair,
-) -> Option<Box<dyn ClientHandle>> {
+) -> Option<Box<dyn HandlablePacket<HandlerType = ClientHandler>>> {
     if data.len() <= 1 {
         return None;
     }

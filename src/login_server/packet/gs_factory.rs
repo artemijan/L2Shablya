@@ -1,13 +1,15 @@
-use crate::login_server::packet::common::GSHandle;
-use crate::common::packets::ReadablePacket;
-use crate::login_server::packet::from_gs::{
-    BlowFish, ChangeAccessLevel, ChangePassword, PlayerTracert, RequestTempBan,
-};
-use crate::login_server::packet::from_gs::{
-    GSStatusUpdate, PlayerAuthRequest, PlayerInGame, PlayerLogout, ReplyChars, GS,
+use crate::{
+    common::packets::{
+        common::{HandlablePacket, ReadablePacket},
+        gs_2_ls::{
+            BlowFish, ChangeAccessLevel, ChangePassword, GSStatusUpdate, PlayerAuthRequest,
+            PlayerInGame, PlayerLogout, PlayerTracert, ReplyChars, RequestTempBan, GS,
+        },
+    },
+    login_server::gs_thread::GSHandler,
 };
 
-pub fn build_gs_packet(data: &[u8]) -> Option<Box<dyn GSHandle>> {
+pub fn build_gs_packet(data: &[u8]) -> Option<Box<dyn HandlablePacket<HandlerType = GSHandler>>> {
     if data.len() <= 1 {
         return None;
     }

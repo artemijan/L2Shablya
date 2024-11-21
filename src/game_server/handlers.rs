@@ -1,7 +1,7 @@
 use crate::common::dto::{InboundConnection, OutboundConnection};
 use crate::common::errors::Packet;
+use crate::common::packets::common::SendablePacket;
 use crate::common::packets::error::PacketRun;
-use crate::common::packets::SendablePacket;
 use crate::common::traits::handlers::{OutboundHandler, PacketHandler};
 use crate::common::traits::Shutdown;
 use crate::database::DBPool;
@@ -15,7 +15,7 @@ use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
 
 pub struct PlayerHandler;
-pub struct LoginHandler{
+pub struct LoginHandler {
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
     db_pool: DBPool,
@@ -36,8 +36,8 @@ impl PacketHandler for LoginHandler {
     type ConfigType = GSServer;
     type ControllerType = Controller;
 
-    fn get_handler_name() -> String {
-        "Player handler".to_string()
+    fn get_handler_name() -> &'static str {
+        "Login handler"
     }
 
     fn get_controller(&self) -> &Arc<Self::ControllerType> {
@@ -65,7 +65,7 @@ impl PacketHandler for LoginHandler {
     }
 
     fn on_disconnect(&mut self) {
-        todo!()
+        println!("Login server disconnected");
     }
 
     fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {

@@ -1,10 +1,8 @@
-use crate::login_server::gs_thread::GSHandler;
+use crate::common::packets::common::ReadablePacket;
 use crate::common::traits::handlers::PacketHandler;
 use crate::common::packets::read::ReadablePacketBuffer;
-use crate::login_server::packet::common::GSHandle;
 use crate::common::packets::error;
 use async_trait::async_trait;
-use crate::common::packets::{ReadablePacket, SendablePacket};
 
 #[derive(Clone, Debug)]
 pub struct ChangePassword {
@@ -27,12 +25,3 @@ impl ReadablePacket for ChangePassword {
     }
 }
 
-#[async_trait]
-impl GSHandle for ChangePassword {
-    async fn handle(
-        &self,
-        gs: &mut GSHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
-        todo!()
-    }
-}

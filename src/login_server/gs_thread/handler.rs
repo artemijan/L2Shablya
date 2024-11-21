@@ -1,6 +1,6 @@
 use crate::common::dto::InboundConnection;
 use crate::common::errors::Packet;
-use crate::common::packets::{PacketResult, SendablePacket};
+use crate::common::packets::common::{PacketResult, PacketType, SendablePacket};
 use crate::common::traits::handlers::{InboundHandler, PacketHandler};
 use crate::common::traits::Shutdown;
 use crate::crypt::login::Encryption;
@@ -8,11 +8,9 @@ use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
 use crate::login_server::dto::config::Server;
-use crate::login_server::gs_thread::enums;
 use crate::login_server::message::Request;
-use crate::login_server::packet::common::{GSHandle, PacketType};
 use crate::login_server::packet::gs_factory::build_gs_packet;
-use crate::login_server::packet::to_gs::InitLS;
+use crate::common::packets::ls_2_gs::InitLS;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use openssl::error::ErrorStack;
@@ -23,10 +21,11 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{mpsc, Mutex, Notify, RwLock};
+use crate::login_server::gs_thread::enums;
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
-pub struct GS {
+pub struct GameServer {
     ///
     /// `tcp_reader` and `tcp_writer` are wrapped into Arc<Mutex> because we need to share the handler
     /// across two tokio threads:
@@ -44,7 +43,7 @@ pub struct GS {
     income_messages: Arc<RwLock<HashMap<String, Request>>>,
 }
 
-impl GS {
+impl GameServer {
     pub fn set_blowfish_key(&mut self, new_bf_key: &[u8]) {
         self.blowfish = Encryption::from_u8_key(new_bf_key);
     }
@@ -114,18 +113,18 @@ impl GS {
     }
 }
 
-impl Shutdown for GS {
+impl Shutdown for GameServer {
     fn get_shutdown_listener(&self) -> Arc<Notify> {
         self.shutdown_listener.clone()
     }
 }
 
 #[async_trait]
-impl PacketHandler for GS {
+impl PacketHandler for GameServer {
     type ConfigType = Server;
     type ControllerType = Login;
-    fn get_handler_name() -> String {
-        "Game server handler".to_string()
+    fn get_handler_name() -> &'static str {
+        "Game server handler"
     }
     fn get_controller(&self) -> &Arc<Self::ControllerType> {
         &self.lc
@@ -136,7 +135,7 @@ impl PacketHandler for GS {
         let writer = Arc::new(Mutex::new(tcp_writer));
         let reader = Arc::new(Mutex::new(tcp_reader));
         let cfg = lc.get_config();
-        GS {
+        Self {
             tcp_reader: reader,
             tcp_writer: writer,
             db_pool,
@@ -230,7 +229,7 @@ impl PacketHandler for GS {
     }
 }
 
-impl InboundHandler for GS {
+impl InboundHandler for GameServer {
     type ConfigType = Server;
 
     fn get_connection_config(cfg: &Self::ConfigType) -> &InboundConnection {

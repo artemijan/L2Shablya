@@ -1,8 +1,8 @@
 use crate::common::dto;
 use crate::common::errors::Packet;
 use crate::common::errors::Packet::UnableToHandleClient;
+use crate::common::packets::common::SendablePacket;
 use crate::common::packets::error::PacketRun;
-use crate::common::packets::SendablePacket;
 use crate::common::traits::Shutdown;
 use crate::database::DBPool;
 use anyhow::{bail, Error};
@@ -32,7 +32,7 @@ pub trait PacketHandler: Shutdown {
     type ConfigType;
     type ControllerType;
 
-    fn get_handler_name() -> String;
+    fn get_handler_name() -> &'static str;
     fn get_controller(&self) -> &Arc<Self::ControllerType>;
     fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self;
 

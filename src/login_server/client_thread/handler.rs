@@ -1,6 +1,6 @@
 use crate::common::dto::InboundConnection;
 use crate::common::errors::Packet;
-use crate::common::packets::SendablePacket;
+use crate::common::packets::common::SendablePacket;
 use crate::common::session::SessionKey;
 use crate::common::traits::handlers::{InboundHandler, PacketHandler};
 use crate::common::traits::Shutdown;
@@ -8,8 +8,7 @@ use crate::crypt::{generate_blowfish_key, login, rsa};
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
 use crate::login_server::dto::config::Server;
-use crate::login_server::packet::common::ClientHandle;
-use crate::login_server::packet::ls_factory::build_client_packet;
+use crate::login_server::packet::cp_factory::build_client_packet;
 use crate::login_server::packet::to_client::Init;
 use anyhow::{Context, Error};
 use async_trait::async_trait;
@@ -83,8 +82,8 @@ impl Shutdown for Client {
 impl PacketHandler for Client {
     type ConfigType = Server;
     type ControllerType = Login;
-    fn get_handler_name() -> String {
-        "Login client handler".into()
+    fn get_handler_name() -> &'static str {
+        "Login client handler"
     }
 
     fn get_controller(&self) -> &Arc<Self::ControllerType> {

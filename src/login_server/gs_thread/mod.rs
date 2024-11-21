@@ -1,4 +1,4 @@
 pub mod enums;
 mod handler;
 
-pub use handler::GS as GSHandler;
+pub use handler::GameServer as GSHandler;

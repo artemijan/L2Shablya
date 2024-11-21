@@ -1,7 +1,7 @@
 use super::data::Login;
+use crate::common::packets::common::{ServerData, ServerStatus};
 use crate::login_server::dto::game_server::GSInfo;
 use crate::login_server::message::Request;
-use crate::login_server::packet::common::{ServerData, ServerStatus};
 use crate::login_server::packet::login_fail::GSLogin;
 use crate::login_server::packet::GSLoginFailReasons;
 use std::net::Ipv4Addr;

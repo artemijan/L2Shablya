@@ -7,3 +7,4 @@ pub mod tests;
 pub mod dto;
 pub mod traits;
 pub mod packets;
+pub mod constants;

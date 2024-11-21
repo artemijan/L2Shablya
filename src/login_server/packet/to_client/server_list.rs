@@ -1,11 +1,9 @@
-use crate::login_server::dto::player::GSCharsInfo;
-use crate::login_server::client_thread::ClientHandler;
-use crate::common::traits::handlers::PacketHandler;
+use crate::common::packets::common::{LoginServerOpcodes, SendablePacket, ServerData, ServerStatus};
 use crate::common::packets::write::SendablePacketBuffer;
-use crate::login_server::packet::common::{ServerData, ServerStatus};
-use crate::login_server::packet::LoginServerOpcodes;
+use crate::common::traits::handlers::PacketHandler;
+use crate::login_server::client_thread::ClientHandler;
+use crate::login_server::dto::player::GSCharsInfo;
 use std::collections::HashMap;
-use crate::common::packets::SendablePacket;
 
 #[derive(Debug, Clone)]
 pub struct ServerList {

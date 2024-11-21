@@ -1,15 +1,15 @@
 use super::data::Login;
+use crate::common::packets::common::PacketType;
+use crate::common::packets::error;
 use crate::login_server::dto::player;
 use crate::login_server::dto::player::GSCharsInfo;
-use crate::login_server::packet::common::PacketType;
 use crate::login_server::packet::login_fail::PlayerLogin;
-use crate::login_server::packet::to_gs::{KickPlayer, RequestChars};
+use crate::common::packets::ls_2_gs::{KickPlayer, RequestChars};
 use crate::login_server::packet::PlayerLoginFailReasons;
 use rand::{
     distributions::{Distribution, Standard},
     Rng,
 };
-use crate::common::packets::error;
 
 impl Login {
     pub async fn on_player_login(

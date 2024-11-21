@@ -1,12 +1,44 @@
-use crate::login_server::client_thread::ClientHandler;
-use crate::login_server::gs_thread::GSHandler;
-use crate::common::packets::error::PacketRun;
-use crate::login_server::packet::from_gs::ReplyChars;
+
+use crate::common::packets::write::SendablePacketBuffer;
 use async_trait::async_trait;
+use crate::common::packets::error::PacketRun;
 use num_enum::TryFromPrimitive;
-use std::fmt::Debug;
-use std::net::Ipv4Addr;
-use crate::common::packets::SendablePacket;
+use std::{fmt::Debug, net::Ipv4Addr};
+
+use super::gs_2_ls::ReplyChars;
+
+pub type PacketResult = Result<Option<Box<dyn SendablePacket>>, PacketRun>;
+
+pub trait SendablePacket: Debug + Send + Sync {
+    fn get_bytes_mut(&mut self) -> &mut [u8] {
+        let buff = self.get_buffer_mut();
+        buff.get_data_mut()
+    }
+    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer;
+}
+
+pub trait ReadablePacket: Debug + Send + Sync {
+    fn read(data: &[u8]) -> Option<Self>
+    where
+        Self: Sized + ReadablePacket;
+}
+#[repr(u8)]
+#[allow(unused)]
+#[derive(Clone, Debug)]
+pub enum LoginServerOpcodes {
+    Init = 0x00,
+    LoginOk = 0x03,
+    ServerList = 0x04,
+    GgAuth = 0x0b,
+    LoginFail = 0x01,
+    AccountKicked = 0x02,
+    PlayFail = 0x06,
+    PlayOk = 0x07,
+    PiAgreementCheck = 0x11,
+    PiAgreementAck = 0x12,
+    LoginOptFail = 0x0D,
+}
+
 
 #[allow(unused)]
 #[derive(Debug, Clone, Copy, TryFromPrimitive)]
@@ -55,18 +87,11 @@ pub enum ServerType {
 }
 
 #[async_trait]
-pub trait ClientHandle: Debug + Send {
+pub trait HandlablePacket: Debug + Send {
+    type HandlerType;
     async fn handle(
         &self,
-        ch: &mut ClientHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun>;
-}
-
-#[async_trait]
-pub trait GSHandle: Debug + Send {
-    async fn handle(
-        &self,
-        gs: &mut GSHandler,
+        ch: &mut Self::HandlerType,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun>;
 }
 

@@ -1,11 +1,10 @@
+use crate::common::packets::common::{HandlablePacket, ReadablePacket, SendablePacket};
 use crate::login_server::client_thread::ClientHandler;
 use crate::common::traits::handlers::PacketHandler;
 use crate::common::packets::read::ReadablePacketBuffer;
-use crate::login_server::packet::common::ClientHandle;
 use crate::common::packets::error::PacketRun;
 use crate::login_server::packet::to_client::PlayOk;
 use async_trait::async_trait;
-use crate::common::packets::{ReadablePacket, SendablePacket};
 
 #[derive(Clone, Debug)]
 pub struct RequestGSLogin {
@@ -26,10 +25,11 @@ impl ReadablePacket for RequestGSLogin {
 }
 
 #[async_trait]
-impl ClientHandle for RequestGSLogin {
+impl HandlablePacket for RequestGSLogin {
+    type HandlerType = ClientHandler;
     async fn handle(
         &self,
-        ch: &mut ClientHandler,
+        ch: &mut Self::HandlerType,
     ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
         Ok(Some(Box::new(PlayOk::new(ch.get_session_key()))))
     }

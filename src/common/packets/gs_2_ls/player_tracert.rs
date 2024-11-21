@@ -1,10 +1,8 @@
-use crate::login_server::gs_thread::GSHandler;
-use crate::common::traits::handlers::PacketHandler;
-use crate::common::packets::read::ReadablePacketBuffer;
-use crate::login_server::packet::common::GSHandle;
+use crate::common::packets::common::ReadablePacket;
 use crate::common::packets::error::PacketRun;
+use crate::common::packets::read::ReadablePacketBuffer;
+use crate::common::traits::handlers::PacketHandler;
 use async_trait::async_trait;
-use crate::common::packets::{ReadablePacket, SendablePacket};
 
 #[derive(Clone, Debug)]
 pub struct PlayerTracert {
@@ -35,15 +33,5 @@ impl ReadablePacket for PlayerTracert {
             hop3,
             hop4,
         })
-    }
-}
-
-#[async_trait]
-impl GSHandle for PlayerTracert {
-    async fn handle(
-        &self,
-        _: &mut GSHandler,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
-        Ok(None)
     }
 }

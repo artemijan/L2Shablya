@@ -1,5 +1,4 @@
-use crate::common::packets::write::SendablePacketBuffer;
-use crate::common::packets::SendablePacket;
+use crate::common::packets::{common::SendablePacket, write::SendablePacketBuffer};
 
 #[derive(Debug)]
 pub struct PlayerAuthResponse {
