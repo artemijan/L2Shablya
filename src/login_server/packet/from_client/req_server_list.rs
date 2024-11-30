@@ -1,10 +1,9 @@
-use crate::common::packets::common::{HandlablePacket, ReadablePacket, SendablePacket};
+use crate::common::packets::common::{HandlablePacket, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket, SendablePacket};
 use crate::common::packets::error;
 use crate::login_server::client_thread::ClientHandler;
 use crate::common::traits::handlers::PacketHandler;
 use crate::common::packets::read::ReadablePacketBuffer;
 use crate::login_server::packet::to_client::ServerList;
-use crate::login_server::packet::{login_fail, PlayerLoginFailReasons};
 use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
@@ -35,7 +34,7 @@ impl HandlablePacket for RequestServerList {
         } else {
             Err(error::PacketRun {
                 msg: Some(format!("Login Fail, tried user: {:?}", ch.account_name)),
-                response: Some(Box::new(login_fail::PlayerLogin::new(
+                response: Some(Box::new(PlayerLoginFail::new(
                     PlayerLoginFailReasons::ReasonUserOrPassWrong,
                 ))),
             })

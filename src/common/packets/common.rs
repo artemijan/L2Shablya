@@ -1,11 +1,11 @@
-
-use crate::common::packets::write::SendablePacketBuffer;
-use async_trait::async_trait;
 use crate::common::packets::error::PacketRun;
+use crate::common::packets::write::SendablePacketBuffer;
+use anyhow::bail;
+use async_trait::async_trait;
 use num_enum::TryFromPrimitive;
 use std::{fmt::Debug, net::Ipv4Addr};
 
-use super::gs_2_ls::ReplyChars;
+use super::{gs_2_ls::ReplyChars, read::ReadablePacketBuffer};
 
 pub type PacketResult = Result<Option<Box<dyn SendablePacket>>, PacketRun>;
 
@@ -38,7 +38,6 @@ pub enum LoginServerOpcodes {
     PiAgreementAck = 0x12,
     LoginOptFail = 0x0D,
 }
-
 
 #[allow(unused)]
 #[derive(Debug, Clone, Copy, TryFromPrimitive)]
@@ -98,4 +97,152 @@ pub trait HandlablePacket: Debug + Send {
 #[derive(Debug)]
 pub enum PacketType {
     ReplyChars(ReplyChars),
+}
+
+#[repr(u8)]
+#[allow(unused)]
+#[derive(Debug, Clone)]
+pub enum GSLoginFailReasons {
+    None = 0x00,
+    IpBanned = 0x01,
+    IpRreserved = 0x02,
+    WrongHexId = 0x03,
+    IdReserved = 0x04,
+    NoFreeID = 0x05,
+    NotAuthed = 0x06,
+    AlreadyRegistered = 0x07,
+}
+
+impl GSLoginFailReasons {
+    pub fn from_u8(reason: u8) -> anyhow::Result<Self> {
+        match reason {
+            0x00 => Ok(Self::None),
+            0x01 => Ok(Self::IpBanned),
+            0x02 => Ok(Self::IpRreserved),
+            0x03 => Ok(Self::WrongHexId),
+            0x04 => Ok(Self::IdReserved),
+            0x05 => Ok(Self::NoFreeID),
+            0x06 => Ok(Self::NotAuthed),
+            0x07 => Ok(Self::AlreadyRegistered),
+            _=> bail!("Unknown reason")
+        }
+    }
+}
+
+#[repr(u8)]
+#[allow(unused)]
+#[derive(Debug, Clone)]
+pub enum PlayerLoginFailReasons {
+    ReasonNoMessage = 0x00,
+    ReasonSystemErrorLoginLater = 0x01,
+    /// this will close client, so user has to restart game
+    ReasonUserOrPassWrong = 0x02,
+    ReasonAccessFailedTryAgainLater = 0x04,
+    ReasonAccountInfoIncorrectContactSupport = 0x05,
+    /// maybe this is good for N tries and after N use 0x02
+    ReasonNotAuthed = 0x06,
+    ReasonAccountInUse = 0x07,
+    ReasonUnder18YearsKr = 0x0C,
+    ReasonServerOverloaded = 0x0F,
+    ReasonServerMaintenance = 0x10,
+    ReasonTempPassExpired = 0x11,
+    ReasonGameTimeExpired = 0x12,
+    ReasonNoTimeLeft = 0x13,
+    ReasonSystemError = 0x14,
+    ReasonAccessFailed = 0x15,
+    ReasonRestrictedIp = 0x16,
+    ReasonWeekUsageFinished = 0x1E,
+    ReasonSecurityCardNumberInvalid = 0x1F,
+    ReasonAgeNotVerifiedCantLogBeetween10pm6am = 0x20,
+    ReasonServerCannotBeAccessedByYourCoupon = 0x21,
+    ReasonDualBox = 0x23,
+    ReasonInactive = 0x24,
+    ReasonUserAgreementRejectedOnWebsite = 0x25,
+    ReasonGuardianConsentRequired = 0x26,
+    ReasonUserAgreementDeclinedOrWithdrawlRequest = 0x27,
+    ReasonAccountSuspendedCall = 0x28,
+    ReasonChangePasswordAndQuizOnWebsite = 0x29,
+    ReasonAlreadyLoggedInto10Accounts = 0x2A,
+    ReasonMasterAccountRestricted = 0x2B,
+    ReasonCertificationFailed = 0x2E,
+    ReasonTelephoneCertificationUnavailable = 0x2F,
+    ReasonTelephoneSignalsDelayed = 0x30,
+    ReasonCertificationFailedLineBusy = 0x31,
+    ReasonCertificationServiceNumberExpiredOrIncorrect = 0x32,
+    ReasonCertificationServiceCurrentlyBeingChecked = 0x33,
+    ReasonCertificationServiceCantBeUsedHeavyVolume = 0x34,
+    ReasonCertificationServiceExpiredGameplayBlocked = 0x35,
+    ReasonCertificationFailed3TimesGameplayBlocked30Min = 0x36,
+    ReasonCertificationDailyUseExceeded = 0x37,
+    ReasonCertificationUnderwayTryAgainLater = 0x38,
+}
+
+#[derive(Debug)]
+pub struct GSLoginFail {
+    pub buffer: SendablePacketBuffer,
+    pub reason: GSLoginFailReasons,
+}
+
+impl SendablePacket for GSLoginFail {
+    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
+        &mut self.buffer
+    }
+}
+impl ReadablePacket for GSLoginFail {
+    fn read(data: &[u8]) -> Option<Self>
+    where
+        Self: Sized + ReadablePacket,
+    {
+        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        buffer.read_byte(); //packet id
+        let reason = buffer.read_byte();
+        Some(Self {
+            buffer: SendablePacketBuffer::empty(),
+            reason: GSLoginFailReasons::from_u8(reason).unwrap(),
+        })
+    }
+}
+
+impl GSLoginFail {
+    pub fn new(reason: GSLoginFailReasons) -> Self {
+        let mut login_ok = Self {
+            buffer: SendablePacketBuffer::new(),
+            reason,
+        };
+        login_ok.write_all().unwrap();
+        login_ok
+    }
+    fn write_all(&mut self) -> Result<(), anyhow::Error> {
+        self.buffer.write(LoginServerOpcodes::LoginFail as u8)?;
+        self.buffer.write(self.reason.clone() as u8)?;
+        Ok(())
+    }
+}
+
+#[derive(Debug)]
+pub struct PlayerLoginFail {
+    pub buffer: SendablePacketBuffer,
+    pub reason: PlayerLoginFailReasons,
+}
+
+impl PlayerLoginFail {
+    pub fn new(reason: PlayerLoginFailReasons) -> Self {
+        let mut login_ok = Self {
+            buffer: SendablePacketBuffer::new(),
+            reason,
+        };
+        login_ok.write_all().unwrap();
+        login_ok
+    }
+    fn write_all(&mut self) -> Result<(), anyhow::Error> {
+        self.buffer.write(LoginServerOpcodes::LoginFail as u8)?;
+        self.buffer.write(self.reason.clone() as u8)?;
+        Ok(())
+    }
+}
+
+impl SendablePacket for PlayerLoginFail {
+    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
+        &mut self.buffer
+    }
 }

@@ -5,7 +5,7 @@ pub mod lsp_factory;
 pub mod dto;
 pub mod controller;
 pub mod handlers;
-
+pub mod packets;
 pub struct GameServer;
 
 impl Server for GameServer {

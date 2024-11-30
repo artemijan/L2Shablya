@@ -1,4 +1,4 @@
-use crate::common::packets::common::{HandlablePacket, PacketResult, ReadablePacket};
+use crate::common::packets::common::{HandlablePacket, PacketResult, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket};
 use crate::login_server::dto::player;
 use crate::common::str::Trim;
 use crate::database::user::User;
@@ -6,7 +6,7 @@ use crate::login_server::client_thread::ClientHandler;
 use crate::common::traits::handlers::PacketHandler;
 use crate::common::packets::error;
 use crate::login_server::packet::to_client::ServerList;
-use crate::login_server::packet::{login_fail, to_client::LoginOk, PlayerLoginFailReasons};
+use crate::login_server::packet::to_client::LoginOk;
 use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
@@ -60,7 +60,7 @@ impl HandlablePacket for RequestAuthLogin {
             if !user.verify_password(&self.password).await {
                 return Err(error::PacketRun {
                     msg: Some(format!("Login Fail, tried user: {}", self.username)),
-                    response: Some(Box::new(login_fail::PlayerLogin::new(
+                    response: Some(Box::new(PlayerLoginFail::new(
                         PlayerLoginFailReasons::ReasonUserOrPassWrong,
                     ))),
                 });

@@ -4,10 +4,12 @@ use crate::common::packets::common::SendablePacket;
 use crate::common::packets::error::PacketRun;
 use crate::common::traits::handlers::{OutboundHandler, PacketHandler};
 use crate::common::traits::Shutdown;
+use crate::crypt::login::Encryption;
 use crate::database::DBPool;
 use crate::game_server::controller::Controller;
 use crate::game_server::dto::config::GSServer;
-use anyhow::Error;
+use crate::game_server::lsp_factory::build_ls_packet;
+use anyhow::{bail, Error};
 use std::sync::Arc;
 use std::time::SystemTime;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
@@ -22,6 +24,7 @@ pub struct LoginHandler {
     controller: Arc<Controller>,
     shutdown_notifier: Arc<Notify>,
     timeout: u8,
+    blowfish: Encryption,
     connection_start_time: SystemTime,
 }
 
@@ -41,7 +44,7 @@ impl PacketHandler for LoginHandler {
     }
 
     fn get_controller(&self) -> &Arc<Self::ControllerType> {
-        todo!()
+        &self.controller
     }
 
     fn new(stream: TcpStream, db_pool: DBPool, controller: Arc<Self::ControllerType>) -> Self {
@@ -54,6 +57,7 @@ impl PacketHandler for LoginHandler {
             shutdown_notifier: Arc::new(Notify::new()),
             controller,
             db_pool,
+            blowfish: Encryption::from_u8_key(cfg.blowfish_key.as_bytes()),
             timeout: cfg.client.timeout,
             connection_start_time,
         }
@@ -92,7 +96,7 @@ impl PacketHandler for LoginHandler {
     }
 
     fn get_db_pool_mut(&mut self) -> &mut DBPool {
-        todo!()
+       &mut self.db_pool
     }
 
     async fn on_receive_bytes(
@@ -101,7 +105,15 @@ impl PacketHandler for LoginHandler {
         bytes: &mut [u8],
     ) -> Result<(), Error> {
         println!("Packet in with size {packet_size}, body: {bytes:?}");
-        Ok(())
+        self.blowfish.decrypt(bytes)?;
+        if !Encryption::verify_checksum(bytes) {
+            bail!("Can not verify check sum.");
+        }
+        let handler = build_ls_packet(bytes).ok_or_else(|| Packet::ClientPacketNotFound {
+            opcode: bytes[0] as usize,
+        })?;
+        let resp = handler.handle(self).await;
+        self.handle_result(resp).await
     }
 
     async fn handle_result(

@@ -1,10 +1,8 @@
-use crate::common::packets::common::{HandlablePacket, ReadablePacket, SendablePacket};
+use crate::common::packets::common::{HandlablePacket, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket, SendablePacket};
 use crate::login_server::client_thread::ClientHandler;
 use crate::common::packets::read::ReadablePacketBuffer;
 use crate::common::packets::error::PacketRun;
-use crate::login_server::packet::login_fail::PlayerLogin;
 use crate::login_server::packet::to_client::AuthGG;
-use crate::login_server::packet::PlayerLoginFailReasons;
 use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
@@ -48,7 +46,7 @@ impl HandlablePacket for RequestAuthGG {
         if self.session_id != ch.get_session_id() {
             return Err(PacketRun {
                 msg: Some(format!("Wrong session id {}", self.session_id)),
-                response: Some(Box::new(PlayerLogin::new(
+                response: Some(Box::new(PlayerLoginFail::new(
                     PlayerLoginFailReasons::ReasonAccessFailed,
                 ))),
             });

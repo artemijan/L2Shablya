@@ -1,4 +1,8 @@
-use crate::common::packets::{common::SendablePacket, write::SendablePacketBuffer};
+use crate::common::packets::{
+    common::{ReadablePacket, SendablePacket},
+    read::ReadablePacketBuffer,
+    write::SendablePacketBuffer,
+};
 
 #[derive(Debug, Clone)]
 pub struct RequestChars {
@@ -25,5 +29,16 @@ impl RequestChars {
 impl SendablePacket for RequestChars {
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
+    }
+}
+impl ReadablePacket for RequestChars {
+    fn read(data: &[u8]) -> Option<Self> {
+        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        buffer.read_byte();
+        let account_name = buffer.read_string();
+        Some(Self {
+            buffer: SendablePacketBuffer::empty(),
+            account_name,
+        })
     }
 }

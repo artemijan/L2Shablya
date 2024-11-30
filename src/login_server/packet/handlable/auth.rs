@@ -2,7 +2,7 @@ use async_trait::async_trait;
 
 use crate::{
     common::{packets::{
-        common::{HandlablePacket, SendablePacket},
+        common::{GSLoginFail, GSLoginFailReasons, HandlablePacket, SendablePacket},
         error,
         gs_2_ls,
         ls_2_gs::{self, AuthGS},
@@ -10,7 +10,6 @@ use crate::{
     login_server::{
         dto::game_server::GSInfo,
         gs_thread::{enums, GSHandler},
-        packet::{login_fail, GSLoginFailReasons},
     },
 };
 
@@ -38,7 +37,7 @@ impl HandlablePacket for gs_2_ls::GS {
         )
         .map_err(|e| error::PacketRun {
             msg: Some(e.to_string()),
-            response: Some(Box::new(login_fail::GSLogin::new(GSLoginFailReasons::None))),
+            response: Some(Box::new(GSLoginFail::new(GSLoginFailReasons::None))),
         })?;
         match gs.get_controller().register_gs(gsi) {
             Ok(()) => {

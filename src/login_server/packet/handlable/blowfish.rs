@@ -2,14 +2,11 @@ use async_trait::async_trait;
 
 use crate::{
     common::packets::{
-        common::{HandlablePacket, SendablePacket},
+        common::{HandlablePacket, PlayerLoginFail, PlayerLoginFailReasons, SendablePacket},
         error::PacketRun,
         gs_2_ls::BlowFish,
     },
-    login_server::{
-        gs_thread::{enums, GSHandler},
-        packet::{login_fail::PlayerLogin, PlayerLoginFailReasons},
-    },
+    login_server::gs_thread::{enums, GSHandler},
 };
 
 #[async_trait]
@@ -30,7 +27,7 @@ impl HandlablePacket for BlowFish {
         } else {
             return Err(PacketRun {
                 msg: Some("Unable to decrypt GS blowfish key".to_string()),
-                response: Some(Box::new(PlayerLogin::new(
+                response: Some(Box::new(PlayerLoginFail::new(
                     PlayerLoginFailReasons::ReasonNotAuthed,
                 ))),
             });

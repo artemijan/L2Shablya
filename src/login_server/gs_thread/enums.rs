@@ -1,7 +1,5 @@
-use crate::common::packets::common::PacketResult;
+use crate::common::packets::common::{PacketResult, PlayerLoginFail, PlayerLoginFailReasons};
 use crate::common::packets::error;
-use crate::login_server::packet::login_fail::PlayerLogin;
-use crate::login_server::packet::PlayerLoginFailReasons;
 use strum::Display;
 
 #[derive(Debug, Clone, Display)]
@@ -23,7 +21,7 @@ impl GS {
                     msg: Some(format!(
                         "Can not upgrade connection state for game server from {self}, to {desired_state}"
                     )),
-                    response: Some(Box::new(PlayerLogin::new(PlayerLoginFailReasons::ReasonNotAuthed))),
+                    response: Some(Box::new(PlayerLoginFail::new(PlayerLoginFailReasons::ReasonNotAuthed))),
                 });
             }
         }

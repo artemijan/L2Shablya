@@ -1,4 +1,8 @@
-use crate::common::packets::{common::SendablePacket, write::SendablePacketBuffer};
+use crate::common::packets::{
+    common::{ReadablePacket, SendablePacket},
+    read::ReadablePacketBuffer,
+    write::SendablePacketBuffer,
+};
 
 #[derive(Debug)]
 pub struct KickPlayer {
@@ -26,5 +30,16 @@ impl KickPlayer {
 impl SendablePacket for KickPlayer {
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
+    }
+}
+impl ReadablePacket for KickPlayer {
+    fn read(data: &[u8]) -> Option<Self> {
+        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        buffer.read_byte();
+        let account_name = buffer.read_string();
+        Some(Self {
+            buffer: SendablePacketBuffer::empty(),
+            account_name,
+        })
     }
 }

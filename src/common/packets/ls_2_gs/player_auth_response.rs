@@ -1,4 +1,8 @@
-use crate::common::packets::{common::SendablePacket, write::SendablePacketBuffer};
+use crate::common::packets::{
+    common::{ReadablePacket, SendablePacket},
+    read::ReadablePacketBuffer,
+    write::SendablePacketBuffer,
+};
 
 #[derive(Debug)]
 pub struct PlayerAuthResponse {
@@ -28,5 +32,19 @@ impl PlayerAuthResponse {
 impl SendablePacket for PlayerAuthResponse {
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
+    }
+}
+
+impl ReadablePacket for PlayerAuthResponse {
+    fn read(data: &[u8]) -> Option<Self> {
+        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let packet_id = buffer.read_byte();
+        let account = buffer.read_string();
+        let is_ok = buffer.read_boolean();
+        Some(Self {
+            buffer: SendablePacketBuffer::empty(),
+            is_ok,
+            account,
+        })
     }
 }

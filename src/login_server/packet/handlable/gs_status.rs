@@ -1,15 +1,15 @@
 use async_trait::async_trait;
 
 use crate::{
-    common::{packets::{
-        common::{HandlablePacket, SendablePacket},
-        error::PacketRun,
-        gs_2_ls::GSStatusUpdate,
-    }, traits::handlers::PacketHandler},
-    login_server::{
-        gs_thread::GSHandler,
-        packet::{login_fail::PlayerLogin, PlayerLoginFailReasons},
+    common::{
+        packets::{
+            common::{HandlablePacket, PlayerLoginFail, PlayerLoginFailReasons, SendablePacket},
+            error::PacketRun,
+            gs_2_ls::GSStatusUpdate,
+        },
+        traits::handlers::PacketHandler,
     },
+    login_server::gs_thread::GSHandler,
 };
 
 #[async_trait]
@@ -33,7 +33,7 @@ impl HandlablePacket for GSStatusUpdate {
         if !updated {
             return Err(PacketRun {
                 msg: Some(format!("Server was not found, GS id {:?}", gs.server_id)),
-                response: Some(Box::new(PlayerLogin::new(
+                response: Some(Box::new(PlayerLoginFail::new(
                     PlayerLoginFailReasons::ReasonAccessFailed,
                 ))),
             });

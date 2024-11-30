@@ -1,9 +1,7 @@
 use super::data::Login;
-use crate::common::packets::common::{ServerData, ServerStatus};
+use crate::common::packets::common::{GSLoginFail, GSLoginFailReasons, ServerData, ServerStatus};
 use crate::login_server::dto::game_server::GSInfo;
 use crate::login_server::message::Request;
-use crate::login_server::packet::login_fail::GSLogin;
-use crate::login_server::packet::GSLoginFailReasons;
 use std::net::Ipv4Addr;
 use tokio::sync::mpsc::Sender;
 use crate::common::packets::error;
@@ -46,7 +44,7 @@ impl Login {
             if !allowed_gs.contains_key(&gs_info.hex()) {
                 return Err(error::PacketRun {
                     msg: Some(format!("GS wrong hex: {:}", gs_info.hex())),
-                    response: Some(Box::new(GSLogin::new(GSLoginFailReasons::WrongHexId))),
+                    response: Some(Box::new(GSLoginFail::new(GSLoginFailReasons::WrongHexId))),
                 });
             }
         }
@@ -56,7 +54,7 @@ impl Login {
                     "GS already registered with id: {:}",
                     gs_info.get_id()
                 )),
-                response: Some(Box::new(GSLogin::new(
+                response: Some(Box::new(GSLoginFail::new(
                     GSLoginFailReasons::AlreadyRegistered,
                 ))),
             })

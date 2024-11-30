@@ -1,11 +1,9 @@
 use super::data::Login;
-use crate::common::packets::common::PacketType;
+use crate::common::packets::common::{PacketType, PlayerLoginFail, PlayerLoginFailReasons};
 use crate::common::packets::error;
 use crate::login_server::dto::player;
 use crate::login_server::dto::player::GSCharsInfo;
-use crate::login_server::packet::login_fail::PlayerLogin;
 use crate::common::packets::ls_2_gs::{KickPlayer, RequestChars};
-use crate::login_server::packet::PlayerLoginFailReasons;
 use rand::{
     distributions::{Distribution, Standard},
     Rng,
@@ -59,7 +57,7 @@ impl Login {
                     "Account in use: {account_name}, IP {:?}",
                     player_in_game.1.ip_address
                 )),
-                response: Some(Box::new(PlayerLogin::new(
+                response: Some(Box::new(PlayerLoginFail::new(
                     PlayerLoginFailReasons::ReasonAccountInUse,
                 ))),
             });
