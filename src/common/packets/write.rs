@@ -85,11 +85,16 @@ impl SendablePacketBuffer {
     pub fn write_u8(&mut self, value: u8) -> Res<(), Packet> {
         self.write(value)
     }
-    pub fn write_i8_from_bool(&mut self, value: bool) -> Res<(), Packet> {
-        self.write_i8(i8::from(value))
+    pub fn write_bool(&mut self, value: bool) -> Res<(), Packet> {
+        self.write_u8(u8::from(value))
     }
     #[allow(clippy::cast_sign_loss)]
     pub fn write_i16(&mut self, value: i16) -> Res<(), Packet> {
+        self.write((value & 0xff) as u8)?;
+        self.write(((value >> 8) & 0xff) as u8)
+    }
+
+    pub fn write_u16(&mut self, value: u16) -> Res<(), Packet> {
         self.write((value & 0xff) as u8)?;
         self.write(((value >> 8) & 0xff) as u8)
     }
@@ -98,6 +103,14 @@ impl SendablePacketBuffer {
     }
     #[allow(clippy::cast_sign_loss)]
     pub fn write_i32(&mut self, value: i32) -> Res<(), Packet> {
+        self.write((value & 0xff) as u8)?;
+        self.write(((value >> 8) & 0xff) as u8)?;
+        self.write(((value >> 16) & 0xff) as u8)?;
+        self.write(((value >> 24) & 0xff) as u8)?;
+        Ok(())
+    }
+    
+    pub fn write_u32(&mut self, value: u32) -> Res<(), Packet> {
         self.write((value & 0xff) as u8)?;
         self.write(((value >> 8) & 0xff) as u8)?;
         self.write(((value >> 16) & 0xff) as u8)?;

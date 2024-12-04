@@ -3,7 +3,7 @@ use crate::{
         common::{HandlablePacket, ReadablePacket},
         gs_2_ls::{
             BlowFish, ChangeAccessLevel, ChangePassword, GSStatusUpdate, PlayerAuthRequest,
-            PlayerInGame, PlayerLogout, PlayerTracert, ReplyChars, RequestTempBan, GS,
+            PlayerInGame, PlayerLogout, PlayerTracert, ReplyChars, RequestTempBan, RequestAuthGS,
         },
     },
     login_server::gs_thread::GSHandler,
@@ -15,7 +15,7 @@ pub fn build_gs_packet(data: &[u8]) -> Option<Box<dyn HandlablePacket<HandlerTyp
     }
     match data[0] {
         0x00 => Some(Box::new(BlowFish::read(data)?)),
-        0x01 => Some(Box::new(GS::read(data)?)),
+        0x01 => Some(Box::new(RequestAuthGS::read(data)?)),
         0x02 => Some(Box::new(PlayerInGame::read(data)?)),
         0x03 => Some(Box::new(PlayerLogout::read(data)?)),
         0x04 => Some(Box::new(ChangeAccessLevel::read(data)?)),

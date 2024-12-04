@@ -11,7 +11,7 @@ mod reply_chars;
 mod request_temp_ban;
 
 pub use self::{
-    access_level::ChangeAL as ChangeAccessLevel, auth::GS, blowfish::BlowFish,
+    access_level::ChangeAL as ChangeAccessLevel, auth::RequestAuthGS, blowfish::BlowFish,
     change_password::ChangePassword, gs_status::GSStatusUpdate,
     player_auth_request::PlayerAuthRequest, player_in_game::PlayerInGame,
     player_logout::PlayerLogout, player_tracert::PlayerTracert, reply_chars::ReplyChars,

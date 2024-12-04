@@ -61,12 +61,12 @@ impl ServerList {
             self.buffer.write_i16(server.max_players as i16)?;
             if let Some(status) = server.status {
                 self.buffer
-                    .write_i8_from_bool(!matches!(status, ServerStatus::Down))?;
+                    .write_bool(!matches!(status, ServerStatus::Down))?;
             } else {
-                self.buffer.write_i8_from_bool(false)?;
+                self.buffer.write_bool(false)?;
             }
             self.buffer.write_i32(1024)?; // 1: Normal, 2: Relax, 4: Public Test, 8: No Label, 16: Character Creation Restricted, 32: Event, 64: Free
-            self.buffer.write_i8_from_bool(server.brackets)?;
+            self.buffer.write_bool(server.brackets)?;
         }
         self.buffer.write_i16(0xA4)?; //unknown
         if let Some(ref servers) = self.chars_on_server {

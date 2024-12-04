@@ -96,7 +96,7 @@ impl PacketHandler for LoginHandler {
     }
 
     fn get_db_pool_mut(&mut self) -> &mut DBPool {
-       &mut self.db_pool
+        &mut self.db_pool
     }
 
     async fn on_receive_bytes(
@@ -114,13 +114,6 @@ impl PacketHandler for LoginHandler {
         })?;
         let resp = handler.handle(self).await;
         self.handle_result(resp).await
-    }
-
-    async fn handle_result(
-        &mut self,
-        resp: Result<Option<Box<dyn SendablePacket>>, PacketRun>,
-    ) -> Result<(), Error> {
-        todo!()
     }
 }
 

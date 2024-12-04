@@ -14,7 +14,7 @@ use crate::{
 };
 
 #[async_trait]
-impl HandlablePacket for gs_2_ls::GS {
+impl HandlablePacket for gs_2_ls::RequestAuthGS {
     type HandlerType = GSHandler;
     async fn handle(
         &self,

@@ -2,9 +2,9 @@ use crate::common::packets::{common::{ReadablePacket, SendablePacket}, read::Rea
 
 #[derive(Debug)]
 pub struct AuthGS {
-    pub buffer: SendablePacketBuffer,
-    server_id: u8,
-    server_name: String
+    buffer: SendablePacketBuffer,
+    pub server_id: u8,
+    pub server_name: String
 }
 
 impl AuthGS {

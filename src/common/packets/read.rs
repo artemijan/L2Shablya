@@ -65,8 +65,25 @@ impl ReadablePacketBuffer {
         short
     }
 
+    pub fn read_u16(&mut self) -> u16 {
+        let short = u16::from_le_bytes([self.bytes[self.position], self.bytes[self.position + 1]]);
+        self.position += 2;
+        short
+    }
+
     pub fn read_i32(&mut self) -> i32 {
         let int = i32::from_le_bytes([
+            self.bytes[self.position],
+            self.bytes[self.position + 1],
+            self.bytes[self.position + 2],
+            self.bytes[self.position + 3],
+        ]);
+        self.position += 4;
+        int
+    }
+    
+    pub fn read_u32(&mut self) -> u32 {
+        let int = u32::from_le_bytes([
             self.bytes[self.position],
             self.bytes[self.position + 1],
             self.bytes[self.position + 2],
