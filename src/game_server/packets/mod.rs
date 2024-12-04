@@ -1,1 +1,1 @@
-pub mod handlable;
+pub mod handleable;

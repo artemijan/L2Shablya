@@ -2,14 +2,16 @@ use async_trait::async_trait;
 
 use crate::{
     common::packets::{
-        common::{GSLoginFail, HandlablePacket, SendablePacket},
-        error, ls_2_gs::{self, KickPlayer},
+        common::{HandlablePacket, SendablePacket},
+        error,
+        gs_2_ls::ChangePassword
+        ,
     },
     game_server::handlers::LoginHandler,
 };
 
 #[async_trait]
-impl HandlablePacket for KickPlayer {
+impl HandlablePacket for ChangePassword {
     type HandlerType = LoginHandler;
     async fn handle(
         &self,

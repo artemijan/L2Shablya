@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use crate::{
     common::packets::{
         common::{GSLoginFail, HandlablePacket, SendablePacket},
-        error, ls_2_gs,
+        error,
     },
     game_server::handlers::LoginHandler,
 };

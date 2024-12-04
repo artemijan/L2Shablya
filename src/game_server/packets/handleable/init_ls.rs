@@ -5,7 +5,7 @@ use crate::{
         common::{HandlablePacket, SendablePacket},
         error,
         gs_2_ls::RequestAuthGS,
-        ls_2_gs::{AuthGS, InitLS},
+        ls_2_gs::InitLS,
         write::SendablePacketBuffer,
     },
     game_server::handlers::LoginHandler,
