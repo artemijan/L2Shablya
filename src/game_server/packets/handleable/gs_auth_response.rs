@@ -15,6 +15,14 @@ impl HandleablePacket for ls_2_gs::AuthGS {
     type HandlerType = LoginHandler;
     async fn handle(&self, lh: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let cfg = lh.get_controller().get_cfg();
+        if self.server_id != cfg.server_id && !cfg.accept_alternative_id {
+            return Err(PacketRun {
+                msg: Some(format!(
+                    "Can not accept alternative id from login server. Id is {}",
+                    self.server_id
+                )),
+            });
+        }
         let mut gsu = GSStatusUpdate {
             buffer: SendablePacketBuffer::new(),
             status: if cfg.gm_only {
