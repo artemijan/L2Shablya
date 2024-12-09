@@ -1,12 +1,12 @@
 use crate::common::constants;
 use crate::common::packets::common::{LoginServerOpcodes, ReadablePacket, SendablePacket};
-use crate::common::packets::write::SendablePacketBuffer;
 use crate::common::packets::read::ReadablePacketBuffer;
+use crate::common::packets::write::SendablePacketBuffer;
 
 #[derive(Debug)]
 pub struct InitLS {
     buffer: SendablePacketBuffer,
-    public_key: Vec<u8>,
+    pub public_key: Vec<u8>,
 }
 
 impl InitLS {
@@ -34,7 +34,7 @@ impl SendablePacket for InitLS {
     }
 }
 
-impl ReadablePacket for InitLS{
+impl ReadablePacket for InitLS {
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         let packet_id = buffer.read_byte();
@@ -42,9 +42,9 @@ impl ReadablePacket for InitLS{
         let key_size = buffer.read_i32(); // key length
         #[allow(clippy::cast_sign_loss)]
         let public_key = buffer.read_bytes(key_size as usize); // RSA Public Key
-        Some(Self{
+        Some(Self {
             buffer: SendablePacketBuffer::empty(),
-            public_key
+            public_key,
         })
     }
 }

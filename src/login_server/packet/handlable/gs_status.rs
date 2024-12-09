@@ -1,9 +1,10 @@
 use async_trait::async_trait;
 
+use crate::common::constants::get_server_name_by_id;
 use crate::{
     common::{
         packets::{
-            common::{HandlablePacket, PlayerLoginFail, PlayerLoginFailReasons, SendablePacket},
+            common::{HandleablePacket, PlayerLoginFail, PlayerLoginFailReasons},
             error::PacketRun,
             gs_2_ls::GSStatusUpdate,
         },
@@ -13,12 +14,9 @@ use crate::{
 };
 
 #[async_trait]
-impl HandlablePacket for GSStatusUpdate {
+impl HandleablePacket for GSStatusUpdate {
     type HandlerType = GSHandler;
-    async fn handle(
-        &self,
-        gs: &mut Self::HandlerType,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let lc = gs.get_controller();
         let mut updated = false;
         if let Some(server_id) = gs.server_id {
@@ -27,18 +25,23 @@ impl HandlablePacket for GSStatusUpdate {
                 gsi.set_age_limit(self.server_age);
                 gsi.use_square_brackets(self.use_square_brackets);
                 gsi.set_server_type(self.server_type);
-                gsi.set_server_status(self.status.clone() as i32);
+                gsi.set_server_status(self.status as i32);
             });
+            println!(
+                "Game server registered: {:}({server_id})",
+                get_server_name_by_id(server_id).unwrap()
+            );
         }
         if !updated {
+            gs.send_packet(Box::new(PlayerLoginFail::new(
+                PlayerLoginFailReasons::ReasonAccessFailed,
+            )))
+            .await?;
             return Err(PacketRun {
                 msg: Some(format!("Server was not found, GS id {:?}", gs.server_id)),
-                response: Some(Box::new(PlayerLoginFail::new(
-                    PlayerLoginFailReasons::ReasonAccessFailed,
-                ))),
             });
         }
         gs.start_channel();
-        Ok(None)
+        Ok(())
     }
 }

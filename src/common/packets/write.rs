@@ -3,7 +3,7 @@ use anyhow::Result as Res;
 use encoding::all::UTF_16LE;
 use encoding::{EncoderTrap, Encoding};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct SendablePacketBuffer {
     data: Vec<u8>,
     position: usize,

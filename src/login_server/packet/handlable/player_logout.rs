@@ -1,23 +1,20 @@
 use async_trait::async_trait;
 
+use crate::common::packets::error::PacketRun;
 use crate::{
-    common::{packets::{
-        common::{HandlablePacket, SendablePacket},
-        error::PacketRun,
-        gs_2_ls::PlayerLogout,
-    }, traits::handlers::PacketHandler},
+    common::{
+        packets::{common::HandleablePacket, gs_2_ls::PlayerLogout},
+        traits::handlers::PacketHandler,
+    },
     login_server::gs_thread::GSHandler,
 };
 
 #[async_trait]
-impl HandlablePacket for PlayerLogout {
+impl HandleablePacket for PlayerLogout {
     type HandlerType = GSHandler;
-    async fn handle(
-        &self,
-        gs: &mut Self::HandlerType,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let lc = gs.get_controller();
         lc.on_player_logout(&self.acc);
-        Ok(None)
+        Ok(())
     }
 }

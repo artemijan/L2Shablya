@@ -7,10 +7,11 @@ pub static STATIC_BLOWFISH_KEY: [u8; 16] = [
 use rand::{thread_rng, Rng};
 pub const BLOWFISH_KEY_SIZE: usize = 16;
 
-pub fn generate_blowfish_key() -> [u8; BLOWFISH_KEY_SIZE] {
-    let mut key = [0u8; BLOWFISH_KEY_SIZE];
+pub fn generate_blowfish_key(size: Option<usize>) -> Vec<u8> {
+    let the_size = size.unwrap_or(BLOWFISH_KEY_SIZE);
+    let mut key = vec![0u8; the_size];
     let mut rng = thread_rng();
-    for item in key.iter_mut().take(BLOWFISH_KEY_SIZE) {
+    for item in key.iter_mut().take(the_size) {
         *item = rng.gen();
     }
     key

@@ -1,5 +1,5 @@
 use super::handlers::LoginHandler;
-use crate::common::packets::common::{GSLoginFail, HandlablePacket, ReadablePacket};
+use crate::common::packets::common::{GSLoginFail, HandleablePacket, ReadablePacket};
 use crate::common::packets::gs_2_ls::ChangePassword;
 use crate::common::packets::ls_2_gs::{
     AuthGS, InitLS, KickPlayer, PlayerAuthResponse, RequestChars,
@@ -7,7 +7,7 @@ use crate::common::packets::ls_2_gs::{
 
 pub fn build_ls_packet(
     data: &[u8],
-) -> Option<Box<dyn HandlablePacket<HandlerType = LoginHandler>>> {
+) -> Option<Box<dyn HandleablePacket<HandlerType = LoginHandler>>> {
     if data.len() <= 1 {
         return None;
     }

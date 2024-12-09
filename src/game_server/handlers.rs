@@ -1,6 +1,5 @@
 use crate::common::dto::OutboundConnection;
 use crate::common::errors::Packet;
-use crate::common::packets::common::SendablePacket;
 use crate::common::traits::handlers::{OutboundHandler, PacketHandler};
 use crate::common::traits::Shutdown;
 use crate::crypt::login::Encryption;
@@ -26,7 +25,15 @@ pub struct LoginHandler {
     blowfish: Encryption,
     connection_start_time: SystemTime,
 }
-
+impl LoginHandler {
+    pub fn set_blowfish(&mut self, blowfish: Encryption) {
+        self.blowfish = blowfish;
+    }
+    pub fn reset_blowfish(&mut self) {
+        let cfg = self.controller.get_cfg();
+        self.blowfish = Encryption::from_u8_key(cfg.blowfish_key.as_bytes())
+    }
+}
 impl Shutdown for LoginHandler {
     fn get_shutdown_listener(&self) -> Arc<Notify> {
         self.shutdown_notifier.clone()
@@ -83,27 +90,11 @@ impl PacketHandler for LoginHandler {
         Some(u64::from(self.timeout))
     }
 
-    async fn send_packet(
-        &self,
-        packet: Box<dyn SendablePacket>,
-    ) -> Result<Box<dyn SendablePacket>, Error> {
-        todo!()
-    }
-
-    async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
-        todo!()
-    }
-
     fn get_db_pool_mut(&mut self) -> &mut DBPool {
         &mut self.db_pool
     }
 
-    async fn on_receive_bytes(
-        &mut self,
-        packet_size: usize,
-        bytes: &mut [u8],
-    ) -> Result<(), Error> {
-        println!("Packet in with size {packet_size}, body: {bytes:?}");
+    async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
         self.blowfish.decrypt(bytes)?;
         if !Encryption::verify_checksum(bytes) {
             bail!("Can not verify check sum.");
@@ -111,8 +102,15 @@ impl PacketHandler for LoginHandler {
         let handler = build_ls_packet(bytes).ok_or_else(|| Packet::ClientPacketNotFound {
             opcode: bytes[0] as usize,
         })?;
-        let resp = handler.handle(self).await;
-        self.handle_result(resp).await
+        if let Err(error) = handler.handle(self).await {
+            println!("Error handling packet: {:?}", error.msg);
+            return Err(error.into());
+        }
+        Ok(())
+    }
+
+    fn encryption(&self) -> Option<&Encryption> {
+        Some(&self.blowfish)
     }
 }
 

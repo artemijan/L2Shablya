@@ -1,8 +1,10 @@
-use crate::common::packets::common::{HandlablePacket, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket, SendablePacket};
-use crate::common::packets::error;
-use crate::login_server::client_thread::ClientHandler;
-use crate::common::traits::handlers::PacketHandler;
+use crate::common::packets::common::{
+    HandleablePacket, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket,
+};
+use crate::common::packets::error::PacketRun;
 use crate::common::packets::read::ReadablePacketBuffer;
+use crate::common::traits::handlers::PacketHandler;
+use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::packet::to_client::ServerList;
 use async_trait::async_trait;
 
@@ -23,20 +25,20 @@ impl ReadablePacket for RequestServerList {
 }
 
 #[async_trait]
-impl HandlablePacket for RequestServerList {
+impl HandleablePacket for RequestServerList {
     type HandlerType = ClientHandler;
-    async fn handle(
-        &self,
-        ch: &mut Self::HandlerType,
-    ) -> Result<Option<Box<dyn SendablePacket>>, error::PacketRun> {
+    async fn handle(&self, ch: &mut Self::HandlerType) -> Result<(), PacketRun> {
         if let Some(ref acc_name) = ch.account_name {
-            Ok(Some(Box::new(ServerList::new(ch, acc_name))))
+            ch.send_packet(Box::new(ServerList::new(ch, acc_name)))
+                .await?;
+            Ok(())
         } else {
-            Err(error::PacketRun {
+            ch.send_packet(Box::new(PlayerLoginFail::new(
+                PlayerLoginFailReasons::ReasonUserOrPassWrong,
+            )))
+            .await?;
+            Err(PacketRun {
                 msg: Some(format!("Login Fail, tried user: {:?}", ch.account_name)),
-                response: Some(Box::new(PlayerLoginFail::new(
-                    PlayerLoginFailReasons::ReasonUserOrPassWrong,
-                ))),
             })
         }
     }

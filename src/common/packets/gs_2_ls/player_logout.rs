@@ -1,8 +1,6 @@
 use crate::common::packets::common::ReadablePacket;
-use crate::common::packets::error::PacketRun;
 use crate::common::packets::read::ReadablePacketBuffer;
 use crate::common::traits::handlers::PacketHandler;
-use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
 pub struct PlayerLogout {

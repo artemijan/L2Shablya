@@ -1,7 +1,10 @@
-use crate::common::packets::common::{HandlablePacket, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket, SendablePacket};
-use crate::login_server::client_thread::ClientHandler;
-use crate::common::packets::read::ReadablePacketBuffer;
+use crate::common::packets::common::{
+    HandleablePacket, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket,
+};
 use crate::common::packets::error::PacketRun;
+use crate::common::packets::read::ReadablePacketBuffer;
+use crate::common::traits::handlers::PacketHandler;
+use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::packet::to_client::AuthGG;
 use async_trait::async_trait;
 
@@ -37,20 +40,20 @@ impl ReadablePacket for RequestAuthGG {
 }
 
 #[async_trait]
-impl HandlablePacket for RequestAuthGG {
+impl HandleablePacket for RequestAuthGG {
     type HandlerType = ClientHandler;
-    async fn handle(
-        &self,
-        ch: &mut Self::HandlerType,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun> {
+    async fn handle(&self, ch: &mut Self::HandlerType) -> Result<(), PacketRun> {
         if self.session_id != ch.get_session_id() {
+            ch.send_packet(Box::new(PlayerLoginFail::new(
+                PlayerLoginFailReasons::ReasonAccessFailed,
+            )))
+            .await?;
             return Err(PacketRun {
                 msg: Some(format!("Wrong session id {}", self.session_id)),
-                response: Some(Box::new(PlayerLoginFail::new(
-                    PlayerLoginFailReasons::ReasonAccessFailed,
-                ))),
             });
         }
-        Ok(Some(Box::new(AuthGG::new(ch.get_session_id()))))
+        ch.send_packet(Box::new(AuthGG::new(ch.get_session_id())))
+            .await?;
+        Ok(())
     }
 }

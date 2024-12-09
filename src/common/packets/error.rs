@@ -1,13 +1,17 @@
 use std::fmt;
 use thiserror::Error;
 
-use super::common::SendablePacket;
-
 #[non_exhaustive]
 #[derive(Error, Debug)]
 pub struct PacketRun {
     pub msg: Option<String>,
-    pub response: Option<Box<dyn SendablePacket>>,
+}
+impl From<anyhow::Error> for PacketRun {
+    fn from(error: anyhow::Error) -> Self {
+        PacketRun {
+            msg: Some(error.to_string()), // Use the error's string representation
+        }
+    }
 }
 
 impl fmt::Display for PacketRun {

@@ -1,37 +1,11 @@
-use crate::common::packets::common::ReadablePacket;
-use crate::common::traits::handlers::PacketHandler;
+use crate::common::packets::common::{GSStatus, ReadablePacket, SendablePacket};
 use crate::common::packets::read::ReadablePacketBuffer;
-use crate::common::packets::error::PacketRun;
-use async_trait::async_trait;
-
-#[repr(i32)]
-#[derive(Clone, Debug, Default)]
-pub enum GSStatus {
-    Auto = 0x00,
-    Good = 0x01,
-    Normal = 0x02,
-    Full = 0x03,
-    #[default]
-    Down = 0x04,
-    GmOnly = 0x05,
-}
-
-impl GSStatus {
-    pub fn from_opcode(opcode: i32) -> Option<Self> {
-        match opcode {
-            0x00 => Some(Self::Auto),
-            0x01 => Some(Self::Good),
-            0x02 => Some(Self::Normal),
-            0x03 => Some(Self::Full),
-            0x04 => Some(Self::Down),
-            0x05 => Some(Self::GmOnly),
-            _ => None,
-        }
-    }
-}
+use crate::common::packets::write::SendablePacketBuffer;
+use crate::common::traits::handlers::PacketHandler;
 
 #[derive(Clone, Debug, Default)]
 pub struct GSStatusUpdate {
+    pub buffer: SendablePacketBuffer,
     pub status: GSStatus,
     pub use_square_brackets: bool,
     pub max_players: u32,
@@ -46,6 +20,27 @@ impl GSStatusUpdate {
     const MAX_PLAYERS: i32 = 0x04;
     const TEST_SERVER: i32 = 0x05;
     const SERVER_AGE: i32 = 0x06;
+
+    #[allow(clippy::cast_possible_truncation, clippy::cast_possible_wrap)]
+    pub fn write_all(&mut self) -> Result<(), anyhow::Error> {
+        self.buffer.write(0x06)?;
+        let fields = [
+            (Self::SERVER_LIST_STATUS, self.status as i32),
+            (Self::SERVER_TYPE, self.server_type),
+            (
+                Self::SERVER_LIST_SQUARE_BRACKET,
+                i32::from(self.use_square_brackets),
+            ),
+            (Self::MAX_PLAYERS, self.max_players as i32),
+            (Self::SERVER_AGE, i32::from(self.server_age)),
+        ];
+        self.buffer.write_u32(fields.len() as u32)?;
+        for (f, v) in fields {
+            self.buffer.write_i32(f)?;
+            self.buffer.write_i32(v)?;
+        }
+        Ok(())
+    }
 }
 
 #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
@@ -84,3 +79,8 @@ impl ReadablePacket for GSStatusUpdate {
     }
 }
 
+impl SendablePacket for GSStatusUpdate {
+    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
+        &mut self.buffer
+    }
+}

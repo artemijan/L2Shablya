@@ -1,10 +1,7 @@
 use crate::common::packets::common::ReadablePacket;
-use crate::common::packets::error::PacketRun;
-use crate::common::packets::ls_2_gs::{KickPlayer, PlayerAuthResponse};
 use crate::common::packets::read::ReadablePacketBuffer;
 use crate::common::session::SessionKey;
 use crate::common::traits::handlers::PacketHandler;
-use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
 pub struct PlayerAuthRequest {

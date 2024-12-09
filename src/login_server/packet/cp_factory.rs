@@ -1,4 +1,4 @@
-use crate::common::packets::common::{HandlablePacket, ReadablePacket};
+use crate::common::packets::common::{HandleablePacket, ReadablePacket};
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::packet::from_client::{
@@ -8,7 +8,7 @@ use crate::login_server::packet::from_client::{
 pub fn build_client_packet(
     data: &[u8],
     key_pair: &ScrambledRSAKeyPair,
-) -> Option<Box<dyn HandlablePacket<HandlerType = ClientHandler>>> {
+) -> Option<Box<dyn HandleablePacket<HandlerType = ClientHandler>>> {
     if data.len() <= 1 {
         return None;
     }

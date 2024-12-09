@@ -4,10 +4,8 @@ use anyhow::bail;
 use async_trait::async_trait;
 use num_enum::TryFromPrimitive;
 use std::{fmt::Debug, net::Ipv4Addr};
-
+use std::str::FromStr;
 use super::{gs_2_ls::ReplyChars, read::ReadablePacketBuffer};
-
-pub type PacketResult = Result<Option<Box<dyn SendablePacket>>, PacketRun>;
 
 pub trait SendablePacket: Debug + Send + Sync {
     fn get_bytes_mut(&mut self) -> &mut [u8] {
@@ -85,13 +83,31 @@ pub enum ServerType {
     Free = 0x40,
 }
 
+impl FromStr for ServerType {
+    type Err = String;
+
+    fn from_str(input: &str) -> Result<Self, Self::Err> {
+        match input.to_lowercase().as_str() {
+            "normal" => Ok(ServerType::Normal),
+            "relax" => Ok(ServerType::Relax),
+            "test" => Ok(ServerType::Test),
+            "nolabel" => Ok(ServerType::Nolabel),
+            "creationrestricted" => Ok(ServerType::CreationRestricted),
+            "event" => Ok(ServerType::Event),
+            "free" => Ok(ServerType::Free),
+            _ => Err(format!("Invalid server type: {}", input)),
+        }
+    }
+}
+
+
 #[async_trait]
-pub trait HandlablePacket: Debug + Send {
+pub trait HandleablePacket: Debug + Send {
     type HandlerType;
     async fn handle(
         &self,
         ch: &mut Self::HandlerType,
-    ) -> Result<Option<Box<dyn SendablePacket>>, PacketRun>;
+    ) -> Result<(), PacketRun>;
 }
 
 #[derive(Debug)]
@@ -124,7 +140,7 @@ impl GSLoginFailReasons {
             0x05 => Ok(Self::NoFreeID),
             0x06 => Ok(Self::NotAuthed),
             0x07 => Ok(Self::AlreadyRegistered),
-            _=> bail!("Unknown reason")
+            _ => bail!("Unknown reason"),
         }
     }
 }
@@ -205,15 +221,15 @@ impl ReadablePacket for GSLoginFail {
 
 impl GSLoginFail {
     pub fn new(reason: GSLoginFailReasons) -> Self {
-        let mut login_ok = Self {
+        let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
             reason,
         };
-        login_ok.write_all().unwrap();
-        login_ok
+        inst.write_all().unwrap();
+        inst
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
-        self.buffer.write(LoginServerOpcodes::LoginFail as u8)?;
+        self.buffer.write(GSLoginFailReasons::NotAuthed as u8)?;
         self.buffer.write(self.reason.clone() as u8)?;
         Ok(())
     }
@@ -244,5 +260,31 @@ impl PlayerLoginFail {
 impl SendablePacket for PlayerLoginFail {
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
+    }
+}
+
+#[repr(i32)]
+#[derive(Clone, Debug, Default, Copy)]
+pub enum GSStatus {
+    Auto = 0x00,
+    Good = 0x01,
+    Normal = 0x02,
+    Full = 0x03,
+    #[default]
+    Down = 0x04,
+    GmOnly = 0x05,
+}
+
+impl GSStatus {
+    pub fn from_opcode(opcode: i32) -> Option<Self> {
+        match opcode {
+            0x00 => Some(Self::Auto),
+            0x01 => Some(Self::Good),
+            0x02 => Some(Self::Normal),
+            0x03 => Some(Self::Full),
+            0x04 => Some(Self::Down),
+            0x05 => Some(Self::GmOnly),
+            _ => None,
+        }
     }
 }

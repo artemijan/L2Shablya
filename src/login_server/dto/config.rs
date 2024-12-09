@@ -1,9 +1,8 @@
-use crate::common::dto::{InboundConnection, Database, Runtime};
+use crate::common::dto::{Database, InboundConnection, Runtime};
 use crate::common::traits::ServerConfig;
 use num::{BigInt, Num};
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::BufReader;
 
@@ -14,7 +13,7 @@ pub struct Server {
     pub runtime: Option<Runtime>,
     pub auto_registration: bool,
     #[serde(deserialize_with = "validate_allowed_gs_keys")]
-    pub allowed_gs: Option<HashMap<String, AllowedGS>>,
+    pub allowed_gs: Option<Vec<BigInt>>,
     pub listeners: Listeners,
     pub database: Database,
     pub client: Client,
@@ -44,24 +43,30 @@ impl ServerConfig for Server {
     }
 }
 // Custom deserialization function to validate that all keys in the HashMap are valid hex strings
-fn validate_allowed_gs_keys<'de, D>(
-    deserializer: D,
-) -> Result<Option<HashMap<String, AllowedGS>>, D::Error>
+fn validate_allowed_gs_keys<'de, D>(deserializer: D) -> Result<Option<Vec<BigInt>>, D::Error>
 where
     D: Deserializer<'de>,
 {
-    // Deserialize the HashMap first
-    let map: Option<HashMap<String, AllowedGS>> = Option::deserialize(deserializer)?;
+    // Deserialize the list of strings
+    let list: Option<Vec<String>> = Option::deserialize(deserializer)?;
 
-    if let Some(map) = &map {
-        for key in map.keys() {
-            // Check if each key is a valid hex string and convertible to a BigInt
-            if BigInt::from_str_radix(key, 16).is_err() {
-                return Err(Error::custom(format!("Invalid hex key: '{key}'")));
+    if let Some(severs) = list {
+        // Try to convert the keys into BigInt, returning an error if any are invalid
+        let mut converted = Vec::new();
+        for key in severs {
+            match BigInt::from_str_radix(&key, 16) {
+                Ok(big_int) => converted.push(big_int),
+                Err(_) => {
+                    return Err(serde::de::Error::custom(format!(
+                        "Invalid hex key: '{key}'"
+                    )));
+                }
             }
         }
+        return Ok(Some(converted));
     }
-    Ok(map)
+
+    Ok(None)
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -78,11 +83,6 @@ pub struct GSListener {
 #[derive(Debug, Clone, Deserialize)]
 pub struct ClientListener {
     pub connection: InboundConnection,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct AllowedGS {
-    server_id: u8,
 }
 
 #[derive(Debug, Clone, Deserialize)]

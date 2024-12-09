@@ -1,18 +1,22 @@
-use crate::common::packets::{common::{ReadablePacket, SendablePacket}, read::ReadablePacketBuffer, write::SendablePacketBuffer};
+use crate::common::packets::{
+    common::{ReadablePacket, SendablePacket},
+    read::ReadablePacketBuffer,
+    write::SendablePacketBuffer,
+};
 
 #[derive(Debug)]
 pub struct AuthGS {
     buffer: SendablePacketBuffer,
     pub server_id: u8,
-    pub server_name: String
+    pub server_name: String,
 }
 
 impl AuthGS {
-    pub fn new(server_id: u8) -> AuthGS {
+    pub fn new(server_id: u8, server_name: String) -> AuthGS {
         let mut gg = AuthGS {
             buffer: SendablePacketBuffer::new(),
             server_id,
-            server_name: "Bartz".to_owned()//todo: implement mapping for server names
+            server_name
         };
         let _ = gg.write_all();
         gg
@@ -20,7 +24,7 @@ impl AuthGS {
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write_u8(0x02)?;
         self.buffer.write_u8(self.server_id)?;
-        self.buffer.write_string(Some(&self.server_name))?; 
+        self.buffer.write_string(Some(&self.server_name))?;
         Ok(())
     }
 }
@@ -31,16 +35,16 @@ impl SendablePacket for AuthGS {
     }
 }
 
-impl ReadablePacket for AuthGS{
+impl ReadablePacket for AuthGS {
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         let packet_id = buffer.read_byte();
         let server_id = buffer.read_byte();
         let server_name = buffer.read_string();
-        Some(Self{
+        Some(Self {
             buffer: SendablePacketBuffer::empty(),
             server_id,
-            server_name
+            server_name,
         })
     }
 }

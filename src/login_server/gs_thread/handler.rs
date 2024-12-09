@@ -1,6 +1,7 @@
 use crate::common::dto::InboundConnection;
 use crate::common::errors::Packet;
-use crate::common::packets::common::{PacketResult, PacketType, SendablePacket};
+use crate::common::packets::common::{GSLoginFail, GSLoginFailReasons, PacketType, PlayerLoginFailReasons};
+use crate::common::packets::ls_2_gs::InitLS;
 use crate::common::traits::handlers::{InboundHandler, PacketHandler};
 use crate::common::traits::Shutdown;
 use crate::crypt::login::Encryption;
@@ -8,9 +9,9 @@ use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
 use crate::login_server::dto::config::Server;
+use crate::login_server::gs_thread::enums;
 use crate::login_server::message::Request;
 use crate::login_server::packet::gs_factory::build_gs_packet;
-use crate::common::packets::ls_2_gs::InitLS;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use openssl::error::ErrorStack;
@@ -21,7 +22,7 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{mpsc, Mutex, Notify, RwLock};
-use crate::login_server::gs_thread::enums;
+use crate::common::packets::error::PacketRun;
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
@@ -74,10 +75,11 @@ impl GameServer {
                             .map_or(false, |elapsed| elapsed <= threshold)
                     });
                     // send packet later, now we only remember it
-                    let req_body = request.body;
+                    let Some(req_body) = request.body.take() else {
+                        continue;
+                    };
                     // we are safe to send bytes firs and then update messages, there is a lock.
-                    if let Ok(packet_back) = cloned_self.send_packet(req_body).await {
-                        request.body = packet_back;
+                    if cloned_self.send_packet(req_body).await.is_ok() {
                         income_messages.insert(request.id.clone(), request);
                     } else if let Some(resp) = request.response {
                         //if it wasn't successful then just send back NoResponse without storing it
@@ -101,8 +103,16 @@ impl GameServer {
         }
         //if message is missing then we just ignore it
     }
-    pub fn set_connection_state(&mut self, state: &enums::GS) -> PacketResult {
-        self.connection_state.transition_to(state)
+    pub async fn set_connection_state(
+        &mut self,
+        state: &enums::GS,
+    ) -> Result<(), PacketRun> {
+        if let Err(err) = self.connection_state.transition_to(state){
+            let err_msg = format!("Connection state transition failed {err:?}");
+            self.send_packet(Box::new(GSLoginFail::new(err))).await?;
+            return Err(PacketRun{msg:Some(err_msg)});
+        }
+        Ok(())
     }
     pub fn decrypt(&self, data: &mut [u8]) -> Result<(), Packet> {
         self.blowfish.decrypt(data)
@@ -182,37 +192,6 @@ impl PacketHandler for GameServer {
     fn get_timeout(&self) -> Option<u64> {
         None
     }
-
-    async fn send_packet(
-        &self,
-        mut packet: Box<dyn SendablePacket>,
-    ) -> Result<Box<dyn SendablePacket>, Error> {
-        let mut buffer = packet.get_buffer_mut();
-        buffer.write_i32(0)?;
-        let padding = (buffer.get_size() - 2) % 8;
-        if padding != 0 {
-            for _ in padding..8 {
-                buffer.write_u8(0)?;
-            }
-        }
-
-        let bytes = packet.get_bytes_mut();
-        self.send_bytes(bytes).await?;
-        Ok(packet)
-    }
-    async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
-        let size = bytes.len();
-        Encryption::append_checksum(&mut bytes[2..size]);
-        self.blowfish.encrypt(&mut bytes[2..size]);
-        self.get_stream_writer_mut()
-            .await
-            .lock()
-            .await
-            .write_all(bytes)
-            .await?;
-        Ok(())
-    }
-
     fn get_db_pool_mut(&mut self) -> &mut DBPool {
         &mut self.db_pool
     }
@@ -224,8 +203,14 @@ impl PacketHandler for GameServer {
         let handler = build_gs_packet(bytes).ok_or_else(|| Packet::ClientPacketNotFound {
             opcode: bytes[0] as usize,
         })?;
-        let resp = handler.handle(self).await;
-        self.handle_result(resp).await
+        if let Err(error) = handler.handle(self).await {
+            println!("Error handling packet: {:?}", error);
+            return Err(error.into());
+        };
+        Ok(())
+    }
+    fn encryption(&self) -> Option<&Encryption> {
+        Some(&self.blowfish)
     }
 }
 

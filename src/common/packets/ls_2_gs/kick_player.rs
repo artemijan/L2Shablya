@@ -1,6 +1,6 @@
+use crate::common::packets::read::ReadablePacketBuffer;
 use crate::common::packets::{
     common::{ReadablePacket, SendablePacket},
-    read::ReadablePacketBuffer,
     write::SendablePacketBuffer,
 };
 

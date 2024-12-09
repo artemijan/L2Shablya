@@ -1,12 +1,14 @@
-use crate::common::packets::common::{HandlablePacket, PacketResult, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket};
-use crate::login_server::dto::player;
+use crate::common::packets::common::{
+    HandleablePacket, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket,
+};
+use crate::common::packets::error::PacketRun;
 use crate::common::str::Trim;
+use crate::common::traits::handlers::PacketHandler;
 use crate::database::user::User;
 use crate::login_server::client_thread::ClientHandler;
-use crate::common::traits::handlers::PacketHandler;
-use crate::common::packets::error;
-use crate::login_server::packet::to_client::ServerList;
+use crate::login_server::dto::player;
 use crate::login_server::packet::to_client::LoginOk;
+use crate::login_server::packet::to_client::ServerList;
 use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
@@ -47,9 +49,9 @@ impl ReadablePacket for RequestAuthLogin {
 }
 
 #[async_trait]
-impl HandlablePacket for RequestAuthLogin {
+impl HandleablePacket for RequestAuthLogin {
     type HandlerType = ClientHandler;
-    async fn handle(&self, ch: &mut Self::HandlerType) -> PacketResult {
+    async fn handle(&self, ch: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let auto_registration = ch.get_controller().get_config().auto_registration;
         let show_license = ch.get_controller().get_config().client.show_licence;
         let pool = ch.get_db_pool_mut();
@@ -58,11 +60,12 @@ impl HandlablePacket for RequestAuthLogin {
             .expect("DB error");
         if let Some(user) = user_option {
             if !user.verify_password(&self.password).await {
-                return Err(error::PacketRun {
+                ch.send_packet(Box::new(PlayerLoginFail::new(
+                    PlayerLoginFailReasons::ReasonUserOrPassWrong,
+                )))
+                .await?;
+                return Err(PacketRun {
                     msg: Some(format!("Login Fail, tried user: {}", self.username)),
-                    response: Some(Box::new(PlayerLoginFail::new(
-                        PlayerLoginFailReasons::ReasonUserOrPassWrong,
-                    ))),
                 });
             }
         } else if auto_registration {
@@ -81,12 +84,18 @@ impl HandlablePacket for RequestAuthLogin {
             ..Default::default()
         };
         let lc = ch.get_controller();
-        lc.on_player_login(player_info).await?;
+        if let Err(err) = lc.on_player_login(player_info).await {
+            let err_msg = format!("Player login failed: {err:?}");
+            ch.send_packet(Box::new(PlayerLoginFail::new(err))).await?;
+            return Err(PacketRun { msg: Some(err_msg) });
+        }
         if show_license {
-            Ok(Some(Box::new(LoginOk::new(ch.get_session_key()))))
+            ch.send_packet(Box::new(LoginOk::new(ch.get_session_key())))
+                .await?;
         } else {
             let s_list = ServerList::new(ch, &self.username);
-            Ok(Some(Box::new(s_list)))
+            ch.send_packet(Box::new(s_list)).await?;
         }
+        Ok(())
     }
 }

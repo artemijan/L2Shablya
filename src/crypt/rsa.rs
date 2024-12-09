@@ -1,6 +1,8 @@
 use crate::common::errors;
+use openssl::bn::BigNum;
+use openssl::encrypt::Encrypter;
 use openssl::error::ErrorStack;
-use openssl::pkey::PKey;
+use openssl::pkey::{PKey, Public};
 use openssl::rsa::{Padding, Rsa};
 
 #[derive(Debug, Clone)]
@@ -8,6 +10,34 @@ pub struct ScrambledRSAKeyPair {
     pair: (PKey<openssl::pkey::Private>, PKey<openssl::pkey::Public>),
     scrambled_modulus: Vec<u8>,
     modulus: Vec<u8>,
+}
+
+pub struct RSAPublicKey {
+    key: PKey<Public>
+}
+
+impl RSAPublicKey {
+    pub fn from_modulus(modulus: &[u8]) -> anyhow::Result<RSAPublicKey> {
+        let modulus = BigNum::from_slice(modulus)?;
+        // Use the standard public exponent: 65537 (0x10001)
+        let exponent = BigNum::from_u32(65537)?;
+
+        // Construct the RSA public key
+        let rsa = Rsa::from_public_components(modulus, exponent)?;
+        Ok(RSAPublicKey { key: PKey::from_rsa(rsa)? })
+    }
+    pub fn encrypt(&self, data: &[u8]) -> anyhow::Result<Vec<u8>> {
+        let mut encrypter = Encrypter::new(&self.key)?;
+        encrypter.set_rsa_padding(Padding::NONE)?;
+        let rsa_key_size = self.key.size();
+        let mut encrypted_data = vec![0; rsa_key_size];
+        let mut padded_input = vec![0; rsa_key_size];
+        let start_index = rsa_key_size - data.len();
+        padded_input[start_index..].copy_from_slice(data);
+        let encrypted_len = encrypter.encrypt(&padded_input, &mut encrypted_data)?;
+        encrypted_data.truncate(encrypted_len);
+        Ok(encrypted_data)
+    }
 }
 
 impl ScrambledRSAKeyPair {
@@ -28,7 +58,7 @@ impl ScrambledRSAKeyPair {
             modulus: modulus_bytes,
         }
     }
-
+    
     pub fn get_scrambled_modulus(&self) -> Vec<u8> {
         self.scrambled_modulus.clone()
     }

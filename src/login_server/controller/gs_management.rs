@@ -1,10 +1,10 @@
 use super::data::Login;
 use crate::common::packets::common::{GSLoginFail, GSLoginFailReasons, ServerData, ServerStatus};
+use crate::common::packets::error;
 use crate::login_server::dto::game_server::GSInfo;
 use crate::login_server::message::Request;
 use std::net::Ipv4Addr;
 use tokio::sync::mpsc::Sender;
-use crate::common::packets::error;
 
 impl Login {
     pub fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
@@ -38,30 +38,26 @@ impl Login {
             false
         }
     }
-
-    pub fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<(), error::PacketRun> {
+    fn generate_sequential_key(&self) -> anyhow::Result<u8, GSLoginFailReasons> {
+        (0..=u8::MAX)
+            .find(|key| !&self.game_servers.contains_key(key))
+            .ok_or(GSLoginFailReasons::NoFreeID)
+    }
+    pub fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<u8, GSLoginFailReasons> {
+        let id = gs_info.get_id();
         if let Some(allowed_gs) = &self.config.allowed_gs {
-            if !allowed_gs.contains_key(&gs_info.hex()) {
-                return Err(error::PacketRun {
-                    msg: Some(format!("GS wrong hex: {:}", gs_info.hex())),
-                    response: Some(Box::new(GSLoginFail::new(GSLoginFailReasons::WrongHexId))),
-                });
+            if !allowed_gs.contains(&gs_info.hex_int()) {
+                return Err(GSLoginFailReasons::WrongHexId);
             }
         }
         if self.game_servers.contains_key(&gs_info.get_id()) {
-            Err(error::PacketRun {
-                msg: Some(format!(
-                    "GS already registered with id: {:}",
-                    gs_info.get_id()
-                )),
-                response: Some(Box::new(GSLoginFail::new(
-                    GSLoginFailReasons::AlreadyRegistered,
-                ))),
-            })
-        } else {
-            self.game_servers.insert(gs_info.get_id(), gs_info);
-            Ok(())
+            if gs_info.accept_alternative_id() {
+                return self.generate_sequential_key();
+            }
+            return Err(GSLoginFailReasons::AlreadyRegistered);
         }
+        self.game_servers.insert(gs_info.get_id(), gs_info);
+        Ok(id)
     }
 
     pub fn remove_gs(&self, server_id: u8) {

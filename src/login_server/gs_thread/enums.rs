@@ -1,5 +1,4 @@
-use crate::common::packets::common::{PacketResult, PlayerLoginFail, PlayerLoginFailReasons};
-use crate::common::packets::error;
+use crate::common::packets::common::GSLoginFailReasons;
 use strum::Display;
 
 #[derive(Debug, Clone, Display)]
@@ -11,20 +10,15 @@ pub enum GS {
 }
 
 impl GS {
-    pub fn transition_to(&mut self, desired_state: &GS) -> PacketResult {
+    pub fn transition_to(&mut self, desired_state: &GS) -> Result<(), GSLoginFailReasons> {
         match (&self, desired_state) {
             (Self::Initial, Self::Connected) => *self = Self::Connected,
             (Self::Connected, Self::BfConnected) => *self = Self::BfConnected,
             (Self::BfConnected, Self::Authed) => *self = Self::Authed,
             _ => {
-                return Err(error::PacketRun {
-                    msg: Some(format!(
-                        "Can not upgrade connection state for game server from {self}, to {desired_state}"
-                    )),
-                    response: Some(Box::new(PlayerLoginFail::new(PlayerLoginFailReasons::ReasonNotAuthed))),
-                });
+                return Err(GSLoginFailReasons::NotAuthed);
             }
         }
-        Ok(None)
+        Ok(())
     }
 }

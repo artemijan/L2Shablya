@@ -1,6 +1,6 @@
 use crate::{
     common::packets::{
-        common::{HandlablePacket, ReadablePacket},
+        common::{HandleablePacket, ReadablePacket},
         gs_2_ls::{
             BlowFish, ChangeAccessLevel, ChangePassword, GSStatusUpdate, PlayerAuthRequest,
             PlayerInGame, PlayerLogout, PlayerTracert, ReplyChars, RequestTempBan, RequestAuthGS,
@@ -9,8 +9,9 @@ use crate::{
     login_server::gs_thread::GSHandler,
 };
 
-pub fn build_gs_packet(data: &[u8]) -> Option<Box<dyn HandlablePacket<HandlerType = GSHandler>>> {
+pub fn build_gs_packet(data: &[u8]) -> Option<Box<dyn HandleablePacket<HandlerType = GSHandler>>> {
     if data.len() <= 1 {
+        println!("GSFactory: data too short");
         return None;
     }
     match data[0] {

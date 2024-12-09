@@ -1,15 +1,14 @@
 use crate::common::dto;
 use crate::common::errors::Packet;
-use crate::common::errors::Packet::UnableToHandleClient;
 use crate::common::packets::common::SendablePacket;
-use crate::common::packets::error::PacketRun;
 use crate::common::traits::Shutdown;
+use crate::crypt::login::Encryption;
 use crate::database::DBPool;
-use anyhow::{bail, Error};
+use anyhow::Error;
 use async_trait::async_trait;
 use std::sync::Arc;
 use std::time::Duration;
-use tokio::io::AsyncReadExt;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
@@ -28,7 +27,7 @@ pub trait OutboundHandler {
 }
 
 #[async_trait]
-pub trait PacketHandler: Shutdown {
+pub trait PacketHandler: Shutdown + Send + Sync {
     type ConfigType;
     type ControllerType;
 
@@ -42,17 +41,54 @@ pub trait PacketHandler: Shutdown {
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
     fn get_timeout(&self) -> Option<u64>;
 
-    async fn send_packet(
-        &self,
-        packet: Box<dyn SendablePacket>,
-    ) -> Result<Box<dyn SendablePacket>, Error>;
-
-    async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error>;
     fn get_db_pool_mut(&mut self) -> &mut DBPool;
 
     async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8])
         -> Result<(), Error>;
+    fn encryption(&self) -> Option<&Encryption>;
 
+    fn add_padding(
+        &self,
+        mut packet: Box<dyn SendablePacket>,
+    ) -> Result<Box<dyn SendablePacket>, Error> {
+        let mut buffer = packet.get_buffer_mut();
+        buffer.write_i32(0)?;
+        let padding = (buffer.get_size() - 2) % 8;
+        if padding != 0 {
+            for _ in padding..8 {
+                buffer.write_u8(0)?;
+            }
+        }
+        Ok(packet)
+    }
+
+    async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
+        let size = bytes.len();
+        if let Some(blowfish) = self.encryption() {
+            Encryption::append_checksum(&mut bytes[2..size]);
+            blowfish.encrypt(&mut bytes[2..size]);
+        }
+        self.get_stream_writer_mut()
+            .await
+            .lock()
+            .await
+            .write_all(bytes)
+            .await?;
+        Ok(())
+    }
+
+    async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<(), Error> {
+        if self.encryption().is_some() {
+            let mut pack = self.add_padding(packet)?;
+            let bytes = pack.get_bytes_mut();
+            self.send_bytes(bytes).await?;
+            Ok(())
+        } else {
+            let bytes = packet.get_bytes_mut();
+            self.send_bytes(bytes).await?;
+            Ok(())
+        }
+    }
     async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
         let mut size_buf = [0; PACKET_SIZE_BYTES];
         let mut socket = self.get_stream_reader_mut().lock().await;
@@ -66,27 +102,6 @@ pub trait PacketHandler: Shutdown {
         socket.read_exact(&mut body).await?;
         Ok((size, body))
     }
-    async fn handle_result(
-        &mut self,
-        resp: Result<Option<Box<dyn SendablePacket>>, PacketRun>,
-    ) -> Result<(), Error> {
-        match resp {
-            Ok(result) => {
-                if let Some(packet) = result {
-                    self.send_packet(packet).await?;
-                }
-            }
-            Err(e) => {
-                if let Some(packet) = e.response {
-                    self.send_packet(packet).await?;
-                } else if let Some(msg) = e.msg {
-                    bail!(UnableToHandleClient { msg })
-                }
-            }
-        }
-        Ok(())
-    }
-
     async fn handle_client(&mut self) {
         let client_addr = self
             .get_stream_reader_mut()

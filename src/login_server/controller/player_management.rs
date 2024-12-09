@@ -13,7 +13,7 @@ impl Login {
     pub async fn on_player_login(
         &self,
         mut player_info: player::Info,
-    ) -> anyhow::Result<(), error::PacketRun> {
+    ) -> anyhow::Result<(), PlayerLoginFailReasons> {
         let account_name = player_info.account_name.clone();
         self.check_player_in_game(&account_name).await?;
         let mut task_results = self
@@ -41,7 +41,7 @@ impl Login {
     async fn check_player_in_game(
         &self,
         account_name: &str,
-    ) -> anyhow::Result<(), error::PacketRun> {
+    ) -> anyhow::Result<(), PlayerLoginFailReasons> {
         if let Some(player_in_game) = self.players.remove(account_name) {
             if let Some(gs) = player_in_game.1.game_server {
                 let _ = self
@@ -52,15 +52,7 @@ impl Login {
                     .notify_all_gs(|| Box::new(KickPlayer::new(account_name)))
                     .await;
             }
-            return Err(error::PacketRun {
-                msg: Some(format!(
-                    "Account in use: {account_name}, IP {:?}",
-                    player_in_game.1.ip_address
-                )),
-                response: Some(Box::new(PlayerLoginFail::new(
-                    PlayerLoginFailReasons::ReasonAccountInUse,
-                ))),
-            });
+            return Err(PlayerLoginFailReasons::ReasonAccountInUse);
         }
         Ok(())
     }

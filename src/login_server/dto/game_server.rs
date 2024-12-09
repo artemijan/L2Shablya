@@ -1,16 +1,10 @@
+use crate::common::dto::ServerHost;
+use crate::common::packets::common::ServerType;
 use anyhow::bail;
-use ipnet::Ipv4Net;
 use num::BigInt;
+use pnet::ipnetwork::Ipv4Network;
 use std::net::Ipv4Addr;
 use std::str::FromStr;
-
-use crate::common::packets::common::ServerType;
-
-#[derive(Debug, Clone)]
-pub struct ServerHost {
-    pub ip: Ipv4Addr,
-    pub subnet: Ipv4Net,
-}
 
 #[allow(clippy::struct_excessive_bools)]
 #[derive(Debug, Clone)]
@@ -71,7 +65,7 @@ impl GSInfo {
 
     pub fn get_host_ip(&self, client_ip: Ipv4Addr) -> Ipv4Addr {
         for s in &self.hosts {
-            if s.subnet.contains(&client_ip) {
+            if s.subnet.contains(client_ip) {
                 return s.ip;
             }
         }
@@ -79,6 +73,9 @@ impl GSInfo {
     }
     pub fn hex(&self) -> String {
         BigInt::from_signed_bytes_be(&self.hex_id).to_str_radix(16)
+    }
+    pub fn hex_int(&self) -> BigInt {
+        BigInt::from_signed_bytes_be(&self.hex_id)
     }
 
     pub fn get_id(&self) -> u8 {
@@ -138,13 +135,13 @@ impl GSInfo {
     ///
     /// This function takes as an input an iterable of strings and try to compile a list of pairs:
     /// Subnet / Ip
-    /// 
+    ///
     /// ```
     /// let hosts = vec!["127.0.0.5/32", "127.0.0.5"];
     /// let validated = GSInfo::validate_server_hosts(hosts);
     /// assert!(validated.is_ok());
     /// ```
-    /// 
+    ///
     fn validate_server_hosts<I, T>(hosts: I) -> anyhow::Result<Vec<ServerHost>>
     where
         I: IntoIterator<Item = T>,
@@ -162,16 +159,13 @@ impl GSInfo {
                     subnet_str.as_ref()
                 )
             };
-            let subnet = Ipv4Net::from_str(subnet_str.as_ref())?;
+            let subnet = Ipv4Network::from_str(subnet_str.as_ref())?;
             let ip = Ipv4Addr::from_str(ip_str.as_ref())?;
-            if !subnet.contains(&ip) {
+            if !subnet.contains(ip) {
                 bail!("Subnet \"{subnet}\" doesn't contain IP \"{ip}\". Check game server configuration.")
             }
             validated_hosts.push(ServerHost { ip, subnet });
         }
-
-        // Sort from narrow to wide
-        validated_hosts.sort_by(|a, b| b.subnet.prefix_len().cmp(&a.subnet.prefix_len()));
         Ok(validated_hosts)
     }
 }

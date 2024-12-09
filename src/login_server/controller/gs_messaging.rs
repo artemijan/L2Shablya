@@ -53,7 +53,7 @@ impl Login {
         let sender = sender_option.unwrap();
         let message = Request {
             response: Some(resp_tx),
-            body: packet,
+            body: Some(packet),
             sent_at: SystemTime::now(),
             id: message_id.to_string(),
         };
@@ -71,7 +71,7 @@ impl Login {
         let sender = self.gs_channels.get(&gs_id).unwrap();
         let message = Request {
             response: None,
-            body: packet,
+            body: Some(packet),
             sent_at: SystemTime::now(),
             id: Uuid::new_v4().to_string(),
         };

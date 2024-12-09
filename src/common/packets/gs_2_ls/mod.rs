@@ -15,5 +15,5 @@ pub use self::{
     change_password::ChangePassword, gs_status::GSStatusUpdate,
     player_auth_request::PlayerAuthRequest, player_in_game::PlayerInGame,
     player_logout::PlayerLogout, player_tracert::PlayerTracert, reply_chars::ReplyChars,
-    request_temp_ban::RequestTempBan,
+    request_temp_ban::RequestTempBan
 };

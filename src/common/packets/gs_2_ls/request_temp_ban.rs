@@ -1,9 +1,6 @@
 use crate::common::packets::common::ReadablePacket;
-use crate::common::packets::error;
 use crate::common::packets::read::ReadablePacketBuffer;
 use crate::common::traits::handlers::PacketHandler;
-use crate::database::user::User;
-use async_trait::async_trait;
 
 #[derive(Clone, Debug)]
 pub struct RequestTempBan {

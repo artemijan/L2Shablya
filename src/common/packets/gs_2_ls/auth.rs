@@ -1,14 +1,72 @@
 use crate::common::packets::common::{ReadablePacket, SendablePacket};
-use crate::common::packets::error;
-use crate::common::packets::ls_2_gs::AuthGS;
 use crate::common::packets::read::ReadablePacketBuffer;
 use crate::common::packets::write::SendablePacketBuffer;
 use crate::common::traits::handlers::PacketHandler;
-use async_trait::async_trait;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
+pub struct RequestAuthGSBuilder {
+    desired_id: u8,
+    accept_alternative_id: bool,
+    host_reserved: bool,
+    port: u16,
+    max_players: u32,
+    hex_id: Vec<u8>,
+    hosts: Vec<String>,
+}
+
+impl RequestAuthGSBuilder {
+    fn new() -> Self {
+        Self {
+            ..Default::default()
+        }
+    }
+    pub fn desired_id(mut self, id: u8) -> Self {
+        self.desired_id = id;
+        self
+    }
+    pub fn accept_alternative_id(mut self, accept: bool) -> Self {
+        self.accept_alternative_id = accept;
+        self
+    }
+    pub fn host_reserved(mut self, reserved: bool) -> Self {
+        self.host_reserved = reserved;
+        self
+    }
+    pub fn port(mut self, port: u16) -> Self {
+        self.port = port;
+        self
+    }
+    pub fn max_players(mut self, max_players: u32) -> Self {
+        self.max_players = max_players;
+        self
+    }
+    pub fn hex_id(mut self, hex_id: Vec<u8>) -> Self {
+        self.hex_id = hex_id;
+        self
+    }
+    pub fn hosts(mut self, hosts: Vec<String>) -> Self {
+        self.hosts = hosts;
+        self
+    }
+    pub fn build(self) -> anyhow::Result<RequestAuthGS> {
+        let mut inst = RequestAuthGS {
+            buffer: SendablePacketBuffer::new(),
+            desired_id: self.desired_id,
+            accept_alternative_id: self.accept_alternative_id,
+            host_reserved: self.host_reserved,
+            port: self.port,
+            max_players: self.max_players,
+            hex_id: self.hex_id,
+            hosts: self.hosts,
+        };
+        inst.write_all()?;
+        Ok(inst)
+    }
+}
+
+#[derive(Clone, Debug, Default)]
 pub struct RequestAuthGS {
-    pub buffer: SendablePacketBuffer,
+    buffer: SendablePacketBuffer,
     pub desired_id: u8,
     pub accept_alternative_id: bool,
     pub host_reserved: bool,
@@ -19,8 +77,11 @@ pub struct RequestAuthGS {
 }
 
 impl RequestAuthGS {
+    pub fn builder() -> RequestAuthGSBuilder {
+        RequestAuthGSBuilder::new()
+    }
     #[allow(clippy::cast_possible_truncation)]
-    pub fn write_all(&mut self) -> Result<(), anyhow::Error> {
+    fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write(0x01)?; // packet id
         self.buffer.write(self.desired_id)?;
         self.buffer.write_bool(self.accept_alternative_id)?;

@@ -4,7 +4,8 @@ use crate::common::packets::common::SendablePacket;
 use crate::common::session::SessionKey;
 use crate::common::traits::handlers::{InboundHandler, PacketHandler};
 use crate::common::traits::Shutdown;
-use crate::crypt::{generate_blowfish_key, login, rsa};
+use crate::crypt::login::Encryption;
+use crate::crypt::{generate_blowfish_key, rsa};
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
 use crate::login_server::dto::config::Server;
@@ -32,7 +33,7 @@ pub struct Client {
     session_id: i32,
     shutdown_notifier: Arc<Notify>,
     pub lc: Arc<Login>, // login controller
-    encryption: login::Encryption,
+    encryption: Encryption,
     timeout: u8,
     session_key: SessionKey,
     connection_start_time: SystemTime,
@@ -91,8 +92,8 @@ impl PacketHandler for Client {
     }
 
     fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self {
-        let blowfish_key = generate_blowfish_key();
-        let encryption = login::Encryption::new(&blowfish_key.clone());
+        let blowfish_key = generate_blowfish_key(None);
+        let encryption = Encryption::new(&blowfish_key.clone());
         let session_id = Login::generate_session_id();
         let connection_start_time = SystemTime::now();
         let timeout = lc.get_config().client.timeout;
@@ -110,7 +111,7 @@ impl PacketHandler for Client {
             account_name: None,
             connection_start_time,
             rsa_key_pair: lc.get_random_rsa_key_pair(),
-            blowfish_key: blowfish_key.to_vec(),
+            blowfish_key,
             timeout,
             lc,
         }
@@ -148,23 +149,6 @@ impl PacketHandler for Client {
         Some(u64::from(self.timeout))
     }
 
-    async fn send_packet(
-        &self,
-        mut packet: Box<dyn SendablePacket>,
-    ) -> Result<Box<dyn SendablePacket>, Error> {
-        self.send_bytes(packet.get_bytes_mut()).await?;
-        Ok(packet)
-    }
-
-    async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
-        self.tcp_writer
-            .lock()
-            .await
-            .write_all(bytes)
-            .await
-            .with_context(|| "Failed to flush packet to socket")
-    }
-
     fn get_db_pool_mut(&mut self) -> &mut DBPool {
         &mut self.db_pool
     }
@@ -176,8 +160,15 @@ impl PacketHandler for Client {
                 opcode: data[0] as usize,
             }
         })?;
-        let resp = handler.handle(self).await;
-        self.handle_result(resp).await
+        if let Err(err) = handler.handle(self).await {
+            println!("Client error: {:?}", err);
+            return Err(err.into());
+        };
+        Ok(())
+    }
+
+    fn encryption(&self) -> Option<&Encryption> {
+        None
     }
 }
 

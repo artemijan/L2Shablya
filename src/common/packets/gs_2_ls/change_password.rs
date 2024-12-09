@@ -1,8 +1,6 @@
 use crate::common::packets::common::ReadablePacket;
-use crate::common::traits::handlers::PacketHandler;
 use crate::common::packets::read::ReadablePacketBuffer;
-use crate::common::packets::error;
-use async_trait::async_trait;
+use crate::common::traits::handlers::PacketHandler;
 
 #[derive(Clone, Debug)]
 pub struct ChangePassword {
@@ -24,4 +22,3 @@ impl ReadablePacket for ChangePassword {
         })
     }
 }
-
