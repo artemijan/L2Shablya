@@ -1,7 +1,6 @@
 use crate::common::traits::handlers::PacketHandler;
 use async_trait::async_trait;
 
-use crate::common::packets::common::GSLoginFail;
 use crate::{
     common::packets::{
         common::{HandleablePacket, PlayerLoginFail, PlayerLoginFailReasons},

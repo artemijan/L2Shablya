@@ -2,7 +2,7 @@ use async_trait::async_trait;
 
 use crate::common::packets::common::GSStatus;
 use crate::common::packets::error::PacketRun;
-use crate::common::packets::gs_2_ls::GSStatusUpdate;
+use crate::common::packets::gs_2_ls::{GSStatusUpdate, PlayerInGame};
 use crate::common::packets::write::SendablePacketBuffer;
 use crate::common::traits::handlers::PacketHandler;
 use crate::{
@@ -14,7 +14,8 @@ use crate::{
 impl HandleablePacket for ls_2_gs::AuthGS {
     type HandlerType = LoginHandler;
     async fn handle(&self, lh: &mut Self::HandlerType) -> Result<(), PacketRun> {
-        let cfg = lh.get_controller().get_cfg();
+        let controller = lh.get_controller();
+        let cfg = controller.get_cfg();
         if self.server_id != cfg.server_id && !cfg.accept_alternative_id {
             return Err(PacketRun {
                 msg: Some(format!(
@@ -41,6 +42,11 @@ impl HandleablePacket for ls_2_gs::AuthGS {
             "Registered on Login server: {:} ({:})",
             self.server_name, self.server_id
         );
+        let accounts = controller.get_online_accounts();
+        if !accounts.is_empty() {
+            lh.send_packet(Box::new(PlayerInGame::new(accounts)?))
+                .await?;
+        }
         Ok(())
     }
 }

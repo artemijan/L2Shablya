@@ -1,4 +1,7 @@
-use crate::common::packets::{common::{LoginServerOpcodes, SendablePacket}, write::SendablePacketBuffer};
+use crate::common::packets::{
+    common::{LoginServerOpcodes, SendablePacket},
+    write::SendablePacketBuffer,
+};
 
 #[derive(Debug)]
 pub struct AuthGG {

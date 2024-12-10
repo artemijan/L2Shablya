@@ -7,13 +7,13 @@ use openssl::rsa::{Padding, Rsa};
 
 #[derive(Debug, Clone)]
 pub struct ScrambledRSAKeyPair {
-    pair: (PKey<openssl::pkey::Private>, PKey<openssl::pkey::Public>),
+    pair: (PKey<openssl::pkey::Private>, PKey<Public>),
     scrambled_modulus: Vec<u8>,
     modulus: Vec<u8>,
 }
 
 pub struct RSAPublicKey {
-    key: PKey<Public>
+    key: PKey<Public>,
 }
 
 impl RSAPublicKey {
@@ -24,7 +24,9 @@ impl RSAPublicKey {
 
         // Construct the RSA public key
         let rsa = Rsa::from_public_components(modulus, exponent)?;
-        Ok(RSAPublicKey { key: PKey::from_rsa(rsa)? })
+        Ok(RSAPublicKey {
+            key: PKey::from_rsa(rsa)?,
+        })
     }
     pub fn encrypt(&self, data: &[u8]) -> anyhow::Result<Vec<u8>> {
         let mut encrypter = Encrypter::new(&self.key)?;
@@ -58,7 +60,7 @@ impl ScrambledRSAKeyPair {
             modulus: modulus_bytes,
         }
     }
-    
+
     pub fn get_scrambled_modulus(&self) -> Vec<u8> {
         self.scrambled_modulus.clone()
     }

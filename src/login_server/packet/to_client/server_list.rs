@@ -1,4 +1,6 @@
-use crate::common::packets::common::{LoginServerOpcodes, SendablePacket, ServerData, ServerStatus};
+use crate::common::packets::common::{
+    LoginServerOpcodes, SendablePacket, ServerData, ServerStatus,
+};
 use crate::common::packets::write::SendablePacketBuffer;
 use crate::common::traits::handlers::PacketHandler;
 use crate::login_server::client_thread::ClientHandler;

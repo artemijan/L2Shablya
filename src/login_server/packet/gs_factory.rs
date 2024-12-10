@@ -3,7 +3,7 @@ use crate::{
         common::{HandleablePacket, ReadablePacket},
         gs_2_ls::{
             BlowFish, ChangeAccessLevel, ChangePassword, GSStatusUpdate, PlayerAuthRequest,
-            PlayerInGame, PlayerLogout, PlayerTracert, ReplyChars, RequestTempBan, RequestAuthGS,
+            PlayerInGame, PlayerLogout, PlayerTracert, ReplyChars, RequestAuthGS, RequestTempBan,
         },
     },
     login_server::gs_thread::GSHandler,

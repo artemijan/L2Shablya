@@ -1,6 +1,9 @@
 use crate::common::dto::InboundConnection;
 use crate::common::errors::Packet;
-use crate::common::packets::common::{GSLoginFail, GSLoginFailReasons, PacketType, PlayerLoginFailReasons};
+use crate::common::packets::common::{
+    GSLoginFail, PacketType,
+};
+use crate::common::packets::error::PacketRun;
 use crate::common::packets::ls_2_gs::InitLS;
 use crate::common::traits::handlers::{InboundHandler, PacketHandler};
 use crate::common::traits::Shutdown;
@@ -22,7 +25,6 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{mpsc, Mutex, Notify, RwLock};
-use crate::common::packets::error::PacketRun;
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
@@ -103,14 +105,11 @@ impl GameServer {
         }
         //if message is missing then we just ignore it
     }
-    pub async fn set_connection_state(
-        &mut self,
-        state: &enums::GS,
-    ) -> Result<(), PacketRun> {
-        if let Err(err) = self.connection_state.transition_to(state){
+    pub async fn set_connection_state(&mut self, state: &enums::GS) -> Result<(), PacketRun> {
+        if let Err(err) = self.connection_state.transition_to(state) {
             let err_msg = format!("Connection state transition failed {err:?}");
             self.send_packet(Box::new(GSLoginFail::new(err))).await?;
-            return Err(PacketRun{msg:Some(err_msg)});
+            return Err(PacketRun { msg: Some(err_msg) });
         }
         Ok(())
     }

@@ -14,6 +14,9 @@ impl Controller {
     pub fn get_cfg(&self) -> Arc<GSServer> {
         self.cfg.clone()
     }
+    pub fn get_online_accounts(&self) -> Vec<String> {
+        todo!()
+    }
 }
 
 impl IpBan for Controller {

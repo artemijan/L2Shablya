@@ -1,9 +1,8 @@
 use super::data::Login;
-use crate::common::packets::common::{PacketType, PlayerLoginFail, PlayerLoginFailReasons};
-use crate::common::packets::error;
+use crate::common::packets::common::{PacketType, PlayerLoginFailReasons};
+use crate::common::packets::ls_2_gs::{KickPlayer, RequestChars};
 use crate::login_server::dto::player;
 use crate::login_server::dto::player::GSCharsInfo;
-use crate::common::packets::ls_2_gs::{KickPlayer, RequestChars};
 use rand::{
     distributions::{Distribution, Standard},
     Rng,

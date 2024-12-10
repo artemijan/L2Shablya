@@ -1,8 +1,7 @@
 use crate::common::traits::server::Server;
 use crate::game_server::controller::Controller;
-use crate::game_server::handlers::{LoginHandler, PlayerHandler};
+use crate::game_server::handlers::LoginHandler;
 use crate::game_server::GameServer;
-use log::error;
 use std::sync::Arc;
 
 mod common;

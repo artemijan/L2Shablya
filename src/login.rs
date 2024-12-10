@@ -5,7 +5,6 @@ use crate::login_server::controller::Login;
 use crate::login_server::gs_thread::GSHandler;
 use crate::login_server::LoginServer;
 use anyhow::Context;
-use common::network;
 use common::traits::handlers::PacketHandler;
 use sqlx::Connection;
 use std::future::Future;
