@@ -15,7 +15,8 @@ impl Controller {
         self.cfg.clone()
     }
     pub fn get_online_accounts(&self) -> Vec<String> {
-        todo!()
+        // todo
+        vec![]
     }
 }
 

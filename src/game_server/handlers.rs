@@ -31,7 +31,7 @@ impl LoginHandler {
     }
     pub fn reset_blowfish(&mut self) {
         let cfg = self.controller.get_cfg();
-        self.blowfish = Encryption::from_u8_key(cfg.blowfish_key.as_bytes())
+        self.blowfish = Encryption::from_u8_key(cfg.blowfish_key.as_bytes());
     }
 }
 impl Shutdown for LoginHandler {

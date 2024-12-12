@@ -1,10 +1,11 @@
-# L2Shablya ⚔️ 🇺🇦 
+# L2Shablya ⚔️ 🇺🇦
 
 ![Shablya](shablya.png)
 
 *Inspired by the swift, light, and deadly Kozak weapon, L2Shablya embodies precision and speed in every line of code.*
 
-**Disclaimer**: *The name "Shablya" reflects the project's focus on performance and elegance, paying homage to the iconic Kozak weapon. It is used here metaphorically and holds no association with real-world conflict or violence.*
+**Disclaimer**: *The name "Shablya" reflects the project's focus on performance and elegance, paying homage to the
+iconic Kozak weapon. It is used here metaphorically and holds no association with real-world conflict or violence.*
 
 Current state: `Under development`
 
@@ -43,4 +44,19 @@ sequenceDiagram
 
     Game Server->>Login Server: Establish TCP connection
     Client->>Login Server: RequestServerList
+```
+
+## Local deployment
+
+- install cargo and rust
+- run login server
+
+```bahs
+cargo run --bin login
+```
+
+- run game server
+
+```bash
+cargo run --bin game
 ```

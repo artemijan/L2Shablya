@@ -3,7 +3,7 @@ use argon2::{
     password_hash::{rand_core::OsRng, PasswordHasher, PasswordVerifier, SaltString},
     Argon2, PasswordHash,
 };
-use sqlx::{Error, FromRow};
+use sqlx::{query_as, Error, FromRow};
 use tokio::task::spawn_blocking;
 
 /// This is a struct which is simply a DTO to get/store data in DB
@@ -11,8 +11,10 @@ use tokio::task::spawn_blocking;
 pub struct User {
     pub id: Option<i64>,
     pub username: String,
+    pub ban_duration: Option<i64>,
+    pub ban_ip: Option<String>,
     pub password: String,
-    pub access_level: i32,
+    pub access_level: i64,
 }
 
 #[allow(unused)]
@@ -76,27 +78,39 @@ impl User {
         ban_duration: i64,
         ip: &str,
     ) -> anyhow::Result<User> {
-        let user =
-            sqlx::query_as("UPDATE user SET ban_duration = $1, ban_ip = $2 where username=$3")
-                .bind(ban_duration)
-                .bind(ip)
-                .bind(username)
-                .fetch_one(db_pool)
-                .await?;
+        let user = query_as!(
+            User,
+            r#"
+            UPDATE user SET 
+                ban_duration = ?, 
+                ban_ip = ? 
+            WHERE username = ? 
+            RETURNING 
+                id, 
+                username, 
+                password, access_level, ban_ip, ban_duration
+            "#,
+            ban_duration,
+            ip,
+            username
+        )
+        .fetch_one(db_pool)
+        .await?;
         Ok(user)
     }
     pub async fn new(db_pool: &DBPool, username: &str, password: &str) -> anyhow::Result<User> {
         let password_hash = Self::hash_password(password).await?;
-        let user = sqlx::query_as(
-            "
-            INSERT INTO user (username, password, access_level) 
-            VALUES ($1, $2, $3)
-            RETURNING id, username, password, access_level
-            ",
+        let user = query_as!(
+            User,
+            r#"
+            INSERT INTO user (username, password, access_level, ban_ip, ban_duration) 
+            VALUES (?, ?, ?, NULL, NULL)
+            RETURNING id, username, password, access_level, ban_ip, ban_duration
+            "#,
+            username,
+            password_hash,
+            0,
         )
-        .bind(username)
-        .bind(password_hash)
-        .bind(0)
         .fetch_one(db_pool)
         .await?;
         Ok(user)
