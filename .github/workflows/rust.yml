@@ -16,6 +16,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Install
+      run: cargo install sqlx-cli
+    - name: Migrate
+      run: sqlx migrate run --database-url "sqlite://local.sqlite?mode=rwc"
     - name: Build
       run: cargo build --verbose
     - name: Run tests
