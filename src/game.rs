@@ -17,6 +17,13 @@ mod game_server;
 /// - when can't run migrations
 ///
 pub fn main() {
+    tracing_subscriber::fmt()
+        .compact()
+        .with_file(true)
+        .with_line_number(true)
+        .with_thread_ids(true)
+        .with_target(false)
+        .init();
     GameServer::bootstrap("config/game.yaml", |cfg, db_pool| async move {
         let controller = Arc::new(Controller::new(cfg.clone()));
         let ls_handle =

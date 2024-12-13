@@ -102,7 +102,7 @@ impl ServerConfig for GSServer {
         let mut config: GSServer = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
             panic!("Unable to parse {file_name}, the format is incorrect, {e}")
         });
-        println!("Configuration ok, starting application: {}", config.name);
+        info!("Configuration ok, starting application: {}", config.name);
         if config.ip_config.is_empty() {
             info!("Missing ip config, using autoconfiguration");
             config.auto_ip_config();

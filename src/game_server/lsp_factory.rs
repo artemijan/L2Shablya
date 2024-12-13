@@ -1,3 +1,4 @@
+use tracing::error;
 use super::handlers::LoginHandler;
 use crate::common::packets::common::{GSLoginFail, HandleablePacket, ReadablePacket};
 use crate::common::packets::gs_2_ls::ChangePassword;
@@ -20,7 +21,7 @@ pub fn build_ls_packet(
         0x05 => Some(Box::new(RequestChars::read(data)?)),
         0x06 => Some(Box::new(ChangePassword::read(data)?)),
         _ => {
-            eprintln!("Unknown GS packet ID:0x{:02X}", data[0]);
+            error!("Unknown GS packet ID:0x{:02X}", data[0]);
             None
         }
     }

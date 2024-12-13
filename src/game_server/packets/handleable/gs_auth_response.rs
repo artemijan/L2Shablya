@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-
+use tracing::{info, instrument};
 use crate::common::packets::common::GSStatus;
 use crate::common::packets::error::PacketRun;
 use crate::common::packets::gs_2_ls::{GSStatusUpdate, PlayerInGame};
@@ -13,6 +13,8 @@ use crate::{
 #[async_trait]
 impl HandleablePacket for ls_2_gs::AuthGS {
     type HandlerType = LoginHandler;
+    
+    #[instrument(skip_all)]
     async fn handle(&self, lh: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let controller = lh.get_controller();
         let cfg = controller.get_cfg();
@@ -38,7 +40,7 @@ impl HandleablePacket for ls_2_gs::AuthGS {
         };
         gsu.write_all()?;
         lh.send_packet(Box::new(gsu)).await?;
-        println!(
+        info!(
             "Registered on Login server: {:} ({:})",
             self.server_name, self.server_id
         );

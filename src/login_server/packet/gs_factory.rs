@@ -1,3 +1,4 @@
+use tracing::error;
 use crate::{
     common::packets::{
         common::{HandleablePacket, ReadablePacket},
@@ -11,7 +12,7 @@ use crate::{
 
 pub fn build_gs_packet(data: &[u8]) -> Option<Box<dyn HandleablePacket<HandlerType = GSHandler>>> {
     if data.len() <= 1 {
-        println!("GSFactory: data too short");
+        error!("GSFactory: data too short");
         return None;
     }
     match data[0] {
@@ -31,7 +32,7 @@ pub fn build_gs_packet(data: &[u8]) -> Option<Box<dyn HandleablePacket<HandlerTy
         // 0x0E => Some(LoginClientOpcodes::RequestPiAgreementCheck),
         // 0x0F => Some(LoginClientOpcodes::RequestPiAgreement),
         _ => {
-            eprintln!("Unknown GS packet ID:0x{:02X}", data[0]);
+            error!("Unknown GS packet ID:0x{:02X}", data[0]);
             None
         }
     }

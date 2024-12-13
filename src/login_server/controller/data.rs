@@ -6,6 +6,7 @@ use dashmap::DashMap;
 use rand::Rng;
 use std::sync::Arc;
 use tokio::sync::mpsc::Sender;
+use tracing::info;
 
 #[derive(Clone, Debug)]
 pub struct Login {
@@ -19,7 +20,7 @@ pub struct Login {
 
 impl Login {
     pub fn new(config: Arc<config::Server>) -> Login {
-        println!("Loading LoginController...");
+        info!("Loading LoginController...");
         Login {
             key_pairs: Login::generate_rsa_key_pairs(10),
             config,
@@ -48,7 +49,7 @@ impl Login {
             let scrumbled = ScrambledRSAKeyPair::new(rsa_pair);
             key_pairs.push(scrumbled);
         }
-        println!("Generated {count} RSA key pairs");
+        info!("Generated {count} RSA key pairs");
         key_pairs
     }
 }

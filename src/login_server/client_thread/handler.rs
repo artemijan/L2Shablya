@@ -21,6 +21,7 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
+use tracing::{error, info, instrument};
 
 #[derive(Clone, Debug)]
 pub struct Client {
@@ -116,10 +117,11 @@ impl PacketHandler for Client {
             lc,
         }
     }
-
+    
+    #[instrument(skip(self))]
     async fn on_connect(&mut self) -> Result<(), Packet> {
         let addr = self.tcp_reader.lock().await.peer_addr().unwrap();
-        println!("Client connected: {:?}", addr);
+        info!("Client connected: {:?}", addr);
         let mut init = Init::new(
             self.session_id,
             self.rsa_key_pair.get_scrambled_modulus(),
@@ -135,7 +137,7 @@ impl PacketHandler for Client {
     }
 
     fn on_disconnect(&mut self) {
-        println!("Player disconnected: {:?}", self.session_id);
+        info!("Player disconnected: {:?}", self.session_id);
     }
     fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {
         &self.tcp_reader
@@ -152,7 +154,8 @@ impl PacketHandler for Client {
     fn get_db_pool_mut(&mut self) -> &mut DBPool {
         &mut self.db_pool
     }
-
+    
+    #[instrument(skip(self,data))]
     async fn on_receive_bytes(&mut self, _: usize, data: &mut [u8]) -> Result<(), Error> {
         self.encryption.decrypt(data)?;
         let handler = build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| {
@@ -161,7 +164,7 @@ impl PacketHandler for Client {
             }
         })?;
         if let Err(err) = handler.handle(self).await {
-            println!("Client error: {:?}", err);
+            error!("Client error: {err:?}");
             return Err(err.into());
         };
         Ok(())

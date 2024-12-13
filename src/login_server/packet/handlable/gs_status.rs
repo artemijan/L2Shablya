@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-
+use tracing::{info, instrument};
 use crate::common::constants::get_server_name_by_id;
 use crate::{
     common::{
@@ -16,6 +16,8 @@ use crate::{
 #[async_trait]
 impl HandleablePacket for GSStatusUpdate {
     type HandlerType = GSHandler;
+    
+    #[instrument(skip(self, gs))]
     async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let lc = gs.get_controller();
         let mut updated = false;
@@ -27,7 +29,7 @@ impl HandleablePacket for GSStatusUpdate {
                 gsi.set_server_type(self.server_type);
                 gsi.set_server_status(self.status as i32);
             });
-            println!(
+            info!(
                 "Game server registered: {:}({server_id})",
                 get_server_name_by_id(server_id).unwrap()
             );

@@ -24,6 +24,13 @@ mod login_server;
 /// - when can't run migrations
 ///
 pub fn main() {
+    tracing_subscriber::fmt()
+        .compact()
+        .with_file(true)
+        .with_line_number(true)
+        .with_thread_ids(true)
+        .with_target(false)
+        .init();
     LoginServer::bootstrap("config/login.yaml", |cfg, db_pool| async move {
         let lc = Arc::new(Login::new(cfg.clone()));
         let clients_handle =

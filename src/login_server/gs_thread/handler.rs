@@ -1,8 +1,6 @@
 use crate::common::dto::InboundConnection;
 use crate::common::errors::Packet;
-use crate::common::packets::common::{
-    GSLoginFail, PacketType,
-};
+use crate::common::packets::common::{GSLoginFail, PacketType};
 use crate::common::packets::error::PacketRun;
 use crate::common::packets::ls_2_gs::InitLS;
 use crate::common::traits::handlers::{InboundHandler, PacketHandler};
@@ -25,6 +23,7 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{mpsc, Mutex, Notify, RwLock};
+use tracing::{info, instrument};
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone)]
@@ -157,9 +156,10 @@ impl PacketHandler for GameServer {
             income_messages: Arc::new(RwLock::new(HashMap::new())),
         }
     }
-
+    
+    #[instrument(skip(self))]
     async fn on_connect(&mut self) -> Result<(), Packet> {
-        println!(
+        info!(
             "Game server connected: {:?}",
             self.tcp_reader.lock().await.peer_addr().unwrap()
         );
@@ -170,7 +170,7 @@ impl PacketHandler for GameServer {
     }
 
     fn on_disconnect(&mut self) {
-        println!(
+        info!(
             "Game server disconnected: ID ({:})",
             self.server_id.unwrap_or_default()
         );
@@ -194,6 +194,7 @@ impl PacketHandler for GameServer {
     fn get_db_pool_mut(&mut self) -> &mut DBPool {
         &mut self.db_pool
     }
+    #[instrument(skip(self,bytes))]
     async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
         self.blowfish.decrypt(bytes)?;
         if !Encryption::verify_checksum(bytes) {
@@ -203,7 +204,7 @@ impl PacketHandler for GameServer {
             opcode: bytes[0] as usize,
         })?;
         if let Err(error) = handler.handle(self).await {
-            println!("Error handling packet: {:?}", error);
+            info!("Error handling packet: {error:?}");
             return Err(error.into());
         };
         Ok(())

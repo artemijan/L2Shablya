@@ -7,6 +7,7 @@ use rand::{
     distributions::{Distribution, Standard},
     Rng,
 };
+use tracing::info;
 
 impl Login {
     pub async fn on_player_login(
@@ -57,7 +58,7 @@ impl Login {
     }
 
     pub fn on_player_logout(&self, account_name: &str) {
-        println!("Player logged out: {account_name}");
+        info!("Player logged out: {account_name}");
         self.remove_player(account_name);
     }
 

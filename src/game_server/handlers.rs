@@ -13,8 +13,12 @@ use std::time::SystemTime;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
+use tracing::{info, instrument};
 
+#[derive(Debug)]
 pub struct PlayerHandler;
+
+#[derive(Debug)]
 pub struct LoginHandler {
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
@@ -68,14 +72,15 @@ impl PacketHandler for LoginHandler {
             connection_start_time,
         }
     }
-
+    
+    #[instrument(skip(self))]
     async fn on_connect(&mut self) -> Result<(), Packet> {
-        println!("Connected to Login server. Trying to Authenticate.");
+        info!("Connected to Login server. Trying to Authenticate.");
         Ok(())
     }
 
     fn on_disconnect(&mut self) {
-        println!("Login server disconnected");
+        info!("Login server disconnected");
     }
 
     fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {
@@ -93,7 +98,8 @@ impl PacketHandler for LoginHandler {
     fn get_db_pool_mut(&mut self) -> &mut DBPool {
         &mut self.db_pool
     }
-
+    
+    #[instrument(skip(self,bytes))]
     async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
         self.blowfish.decrypt(bytes)?;
         if !Encryption::verify_checksum(bytes) {
@@ -103,7 +109,7 @@ impl PacketHandler for LoginHandler {
             opcode: bytes[0] as usize,
         })?;
         if let Err(error) = handler.handle(self).await {
-            println!("Error handling packet: {:?}", error.msg);
+            info!("Error handling packet: {:?}", error.msg);
             return Err(error.into());
         }
         Ok(())

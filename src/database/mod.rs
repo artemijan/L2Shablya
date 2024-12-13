@@ -10,11 +10,14 @@ pub type DBPool = sqlx::PgPool;
 
 #[cfg(feature = "sqlite")]
 use sqlx::sqlite::SqlitePoolOptions;
+use tracing::{info, instrument};
+
 #[cfg(feature = "sqlite")]
 pub type DBPool = sqlx::SqlitePool;
 
+#[instrument]
 pub async fn new_db_pool(db_config: &Database) -> DBPool {
-    println!("Trying to create DB pool");
+    info!("Trying to create DB pool");
     #[cfg(feature = "postgres")]
     {
         PgPoolOptions::new()
@@ -46,8 +49,9 @@ pub async fn new_db_pool(db_config: &Database) -> DBPool {
     }
 }
 
+#[instrument(skip(pool))]
 pub async fn run_migrations(pool: &DBPool) {
-    println!("Running migrations if exist.");
+    info!("Running migrations if exist.");
     sqlx::migrate!("./migrations")
         .run(pool)
         .await

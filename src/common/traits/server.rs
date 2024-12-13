@@ -6,12 +6,14 @@ use crate::database::{new_db_pool, DBPool};
 use async_trait::async_trait;
 use dotenvy::dotenv;
 use sqlx::any::install_default_drivers;
+use std::any::type_name;
 use std::future::Future;
 use std::num::NonZero;
 use std::sync::Arc;
 use std::thread;
 use tokio::net::TcpStream;
 use tokio::task::JoinHandle;
+use tracing::{error, info, info_span, instrument, span, Instrument, Level};
 
 #[async_trait]
 pub trait Server {
@@ -29,7 +31,7 @@ pub trait Server {
         if let Some(wrk_cnt) = config.runtime() {
             worker_count = wrk_cnt.worker_threads;
         }
-        println!("Runtime: Worker count {worker_count}");
+        info!("Runtime: Worker count {worker_count}");
         let rt = tokio::runtime::Builder::new_multi_thread()
             .enable_all()
             .thread_name("worker")
@@ -61,7 +63,7 @@ pub trait Server {
             let conn_cfg = T::get_connection_config(&config);
             let listener =
                 bind_addr(conn_cfg).unwrap_or_else(|_| panic!("Can not bind socket {conn_cfg:?}"));
-            println!(
+            info!(
                 "{} listening on {}",
                 T::get_handler_name(),
                 &listener.local_addr().unwrap()
@@ -70,13 +72,13 @@ pub trait Server {
                 match listener.accept().await {
                     Ok((stream, _)) => {
                         if let Ok(addr) = stream.peer_addr() {
-                            println!(
+                            info!(
                                 "Incoming connection from {:?} ({:})",
                                 addr.ip(),
                                 T::get_handler_name()
                             );
                             if controller.is_ip_banned(&addr.ip().to_string()) {
-                                eprint!("Ip is banned, skipping connection: {addr}");
+                                error!("Ip is banned, skipping connection: {addr}");
                             //todo: maybe use EBPF?
                             } else {
                                 let mut handler = T::new(stream, pool.clone(), controller.clone());
@@ -85,18 +87,19 @@ pub trait Server {
                         }
                     }
                     Err(e) => {
-                        println!("Failed to accept connection: {e}");
+                        error!("Failed to accept connection: {e}");
                     }
                 }
             }
         })
     }
+    #[instrument]
     async fn get_stream(address: &str) -> TcpStream {
         loop {
             match TcpStream::connect(address).await {
                 Ok(s) => break s, // Exit the loop when connection succeeds
                 Err(e) => {
-                    eprintln!("Failed to connect: {e}. Retrying in 5 seconds...");
+                    error!("Failed to connect: {e}. Retrying in 5 seconds...");
                     tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
                 }
             }
@@ -117,7 +120,7 @@ pub trait Server {
         tokio::spawn(async move {
             let conn_cfg = T::get_connection_config(&config);
             let address = format!("{}:{}", conn_cfg.ip, conn_cfg.port);
-            println!("Connecting to {} on: {}", T::get_handler_name(), &address);
+            info!("Connecting to {} on: {}", T::get_handler_name(), &address);
             loop {
                 let stream = Self::get_stream(&address).await;
                 stream
@@ -125,7 +128,7 @@ pub trait Server {
                     .expect("Set nodelay failed");
                 let mut handler = T::new(stream, pool.clone(), controller.clone());
                 handler.handle_client().await;
-                println!("Lost connection to login server, trying again in 5 seconds...");
+                info!("Lost connection to login server, trying again in 5 seconds...");
                 tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
             }
         })

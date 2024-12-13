@@ -1,3 +1,4 @@
+use tracing::error;
 use crate::common::packets::common::{HandleablePacket, ReadablePacket};
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::login_server::client_thread::ClientHandler;
@@ -35,7 +36,7 @@ pub fn build_client_packet(
         // 0x0E => Some(LoginClientOpcodes::RequestPiAgreementCheck),
         // 0x0F => Some(LoginClientOpcodes::RequestPiAgreement),
         _ => {
-            eprintln!("Unknown Client packet ID:0x{:02X}", data[0]);
+            error!("Unknown Client packet ID:0x{:02X}", data[0]);
             None
         }
     }

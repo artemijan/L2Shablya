@@ -5,6 +5,7 @@ use serde::de::Error;
 use serde::{Deserialize, Deserializer};
 use std::fs::File;
 use std::io::BufReader;
+use tracing::info;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Server {
@@ -27,7 +28,7 @@ impl ServerConfig for Server {
         let config: Server = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
             panic!("Unable to parse {file_name}, the format is incorrect, {e}")
         });
-        println!("Configuration ok, starting application: {}", config.name);
+        info!("Configuration ok, starting application: {}", config.name);
         config
     }
     fn from_string(conf: &str) -> Self {

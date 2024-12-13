@@ -1,10 +1,11 @@
+use std::fmt::Debug;
 use crate::common::dto;
 use crate::common::errors::Packet;
 use crate::common::packets::common::SendablePacket;
 use crate::common::traits::Shutdown;
 use crate::crypt::login::Encryption;
 use crate::database::DBPool;
-use anyhow::Error;
+use anyhow::{Error};
 use async_trait::async_trait;
 use std::sync::Arc;
 use std::time::Duration;
@@ -13,6 +14,7 @@ use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
 use tokio::time::sleep;
+use tracing::{error, info, instrument};
 
 pub const PACKET_SIZE_BYTES: usize = 2;
 
@@ -27,7 +29,7 @@ pub trait OutboundHandler {
 }
 
 #[async_trait]
-pub trait PacketHandler: Shutdown + Send + Sync {
+pub trait PacketHandler: Shutdown + Send + Sync + Debug {
     type ConfigType;
     type ControllerType;
 
@@ -42,7 +44,7 @@ pub trait PacketHandler: Shutdown + Send + Sync {
     fn get_timeout(&self) -> Option<u64>;
 
     fn get_db_pool_mut(&mut self) -> &mut DBPool;
-
+    
     async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8])
         -> Result<(), Error>;
     fn encryption(&self) -> Option<&Encryption>;
@@ -89,6 +91,7 @@ pub trait PacketHandler: Shutdown + Send + Sync {
             Ok(())
         }
     }
+    #[instrument(skip(self))]
     async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
         let mut size_buf = [0; PACKET_SIZE_BYTES];
         let mut socket = self.get_stream_reader_mut().lock().await;
@@ -102,6 +105,8 @@ pub trait PacketHandler: Shutdown + Send + Sync {
         socket.read_exact(&mut body).await?;
         Ok((size, body))
     }
+    
+    #[instrument(skip(self))]
     async fn handle_client(&mut self) {
         let client_addr = self
             .get_stream_reader_mut()
@@ -110,7 +115,7 @@ pub trait PacketHandler: Shutdown + Send + Sync {
             .peer_addr()
             .unwrap();
         if let Err(e) = self.on_connect().await {
-            eprintln!(
+            error!(
                 "{}: Disconnecting client. Error: {}",
                 Self::get_handler_name(),
                 e
@@ -135,7 +140,7 @@ pub trait PacketHandler: Shutdown + Send + Sync {
                         }
                         Ok((bytes_read, mut data)) => {
                             if let Err(e) = self.on_receive_bytes(bytes_read, &mut data).await {
-                                eprintln!(
+                                error!(
                                     "{}: Disconnecting client {}, because error occurred {}",
                                     Self::get_handler_name(),
                                     client_addr,
@@ -146,7 +151,7 @@ pub trait PacketHandler: Shutdown + Send + Sync {
                             }
                         }
                         Err(e) => {
-                            eprintln!("{}: Failed to read data from client: {}", Self::get_handler_name(), e);
+                            error!("{}: Failed to read data from client: {}", Self::get_handler_name(), e);
                             self.on_disconnect();
                             break;
                         }
@@ -154,7 +159,7 @@ pub trait PacketHandler: Shutdown + Send + Sync {
                 }
                 // Handle timeout event separately
                 () = timeout_future => {
-                    println!(
+                    info!(
                         "{}: No data received within timeout. Dropping connection.",
                         Self::get_handler_name()
                     );
@@ -163,7 +168,7 @@ pub trait PacketHandler: Shutdown + Send + Sync {
                 }
                 // Handle shutdown notification (or other task notifications)
                 () = shutdown_listener.notified() => {
-                    println!("{}: Received shutdown notification. Dropping connection.", Self::get_handler_name());
+                    info!("{}: Received shutdown notification. Dropping connection.", Self::get_handler_name());
                     self.on_disconnect();
                     break;
                 }
