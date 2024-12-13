@@ -1,22 +1,19 @@
 name: L2Shablya
-
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
       with:
-        key: ${{ runner.os }}-cargo-${{ hashFiles('./Cargo.lock') }}
+        key: ${{ runner.os }}-cargo-${{ hashFiles('../**/Cargo.lock') }}
         path: |
           ~/.cargo/bin/
           ~/.cargo/registry/index/
