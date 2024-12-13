@@ -14,6 +14,7 @@ impl Controller {
     pub fn get_cfg(&self) -> Arc<GSServer> {
         self.cfg.clone()
     }
+    #[allow(clippy::unused_self)]
     pub fn get_online_accounts(&self) -> Vec<String> {
         // todo
         vec![]

@@ -1,5 +1,8 @@
 use crate::m20220101_000001_create_user as previous;
-use sea_orm_migration::{prelude::*, schema::*};
+use sea_orm_migration::{
+    prelude::*,
+    schema::{date_time_null, integer, pk_auto, string},
+};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;

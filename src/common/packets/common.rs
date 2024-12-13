@@ -95,7 +95,7 @@ impl FromStr for ServerType {
             "creationrestricted" => Ok(ServerType::CreationRestricted),
             "event" => Ok(ServerType::Event),
             "free" => Ok(ServerType::Free),
-            _ => Err(format!("Invalid server type: {}", input)),
+            _ => Err(format!("Invalid server type: {input}")),
         }
     }
 }
