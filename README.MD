@@ -1,6 +1,6 @@
 # L2Shablya ⚔️ 🇺🇦
 
-![Shablya](shablya.png)
+![Shablya](shablya.svg)
 
 *Inspired by the swift, light, and deadly Kozak weapon, L2Shablya embodies precision and speed in every line of code.*
 
