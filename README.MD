@@ -47,18 +47,23 @@ sequenceDiagram
 ```
 
 ## Local deployment
-
-- install cargo and rust
-- install sqlx-cli
+- create .env file
 
 ```bash
-cargo install sqlx-cli
+DATABASE_URL=sqlite://local.sqlite?mode=rwc
+```
+
+- install cargo and rust
+- install sea-orm-cli
+
+```bash
+cargo install sea-orm-cli
 ```
 
 - run migrations
 
 ```bash
-sqlx migrate run --database-url "sqlite://local.sqlite?mode=rwc"
+sea-orm-cli migrate up
 ```
 
 - run login server

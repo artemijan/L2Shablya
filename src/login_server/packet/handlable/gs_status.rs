@@ -17,7 +17,7 @@ use crate::{
 impl HandleablePacket for GSStatusUpdate {
     type HandlerType = GSHandler;
     
-    #[instrument(skip(self, gs))]
+    #[instrument(skip_all)]
     async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let lc = gs.get_controller();
         let mut updated = false;

@@ -1,8 +1,8 @@
+use pnet::ipnetwork::Ipv4Network;
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
 use std::net::Ipv4Addr;
 use std::str::FromStr;
-use pnet::ipnetwork::Ipv4Network;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Database {
@@ -10,8 +10,22 @@ pub struct Database {
     pub url: String,
     pub max_connections: u8,
     pub min_connections: u8,
+    #[serde(default = "default_timeout")]
+    pub connect_timeout: u64,
+    #[serde(default = "default_idle_timeout")]
+    pub idle_timeout: u64,
+    #[serde(default = "default_max_lifetime")]
+    pub max_lifetime: u64,
 }
-
+fn default_idle_timeout() -> u64 {
+    60
+}
+fn default_timeout() -> u64 {
+    10
+}
+fn default_max_lifetime() -> u64 {
+    60 * 60
+}
 #[derive(Debug, Clone, Deserialize)]
 pub struct Runtime {
     pub worker_threads: usize,

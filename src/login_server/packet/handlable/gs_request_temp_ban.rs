@@ -1,34 +1,30 @@
-use async_trait::async_trait;
-use tracing::{error, info, instrument};
+use crate::common::packets::error::PacketRun;
+use entities::entities::user;
 use crate::{
     common::{
-        packets::{
-            common::HandleablePacket
-            ,
-            gs_2_ls::RequestTempBan,
-        },
+        packets::{common::HandleablePacket, gs_2_ls::RequestTempBan},
         traits::handlers::PacketHandler,
     },
-    database::user::User,
     login_server::gs_thread::GSHandler,
 };
-use crate::common::packets::error::PacketRun;
+use async_trait::async_trait;
+use sea_orm::QueryFilter;
+use sea_orm::{ActiveModelTrait, ActiveValue, ColumnTrait, EntityTrait, QuerySelect};
+use tracing::{error, info, instrument};
 
 #[async_trait]
 impl HandleablePacket for RequestTempBan {
     type HandlerType = GSHandler;
     #[instrument(skip(self, gs))]
-    async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(),PacketRun> {
+    async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let db_pool = gs.get_db_pool_mut();
         //ignore error updating an account
-        match User::req_temp_ban(db_pool, &self.account, self.ban_duration, &self.ip).await {
-            Ok(user) => {
-                info!("[Account banned] OK {:?}", user.id);
-            }
-            Err(e) => {
-                error!("[Failed to ban account] err {e:?}");
-            }
-        };
+        let user_model = user::Model::find_by_username(db_pool, &self.account).await?;
+        let mut active_record: user::ActiveModel = user_model.into();
+        active_record.ban_duration = ActiveValue::Set(Some(self.ban_duration));
+        active_record.ban_ip = ActiveValue::Set(Some(self.ip.clone()));
+        active_record.save(db_pool).await?;
+        info!("[Account banned] OK: {:?}", self.account);
         let lc = gs.get_controller();
         lc.update_ip_ban_list(&self.ip, self.ban_duration);
         lc.remove_player(&self.account);

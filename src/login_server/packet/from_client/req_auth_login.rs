@@ -1,15 +1,17 @@
+use crate::common::hash_password;
 use crate::common::packets::common::{
     HandleablePacket, PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket,
 };
 use crate::common::packets::error::PacketRun;
 use crate::common::str::Trim;
 use crate::common::traits::handlers::PacketHandler;
-use crate::database::user::User;
+use entities::entities::user;
 use crate::login_server::client_thread::ClientHandler;
 use crate::login_server::dto::player;
 use crate::login_server::packet::to_client::LoginOk;
 use crate::login_server::packet::to_client::ServerList;
 use async_trait::async_trait;
+use sea_orm::{ActiveModelTrait, ActiveValue, ColumnTrait, EntityTrait, QueryFilter};
 
 #[derive(Clone, Debug)]
 pub struct RequestAuthLogin {
@@ -55,9 +57,8 @@ impl HandleablePacket for RequestAuthLogin {
         let auto_registration = ch.get_controller().get_config().auto_registration;
         let show_license = ch.get_controller().get_config().client.show_licence;
         let pool = ch.get_db_pool_mut();
-        let mut user_option = User::fetch_by_username(pool, &self.username)
-            .await
-            .expect("DB error");
+        let user_option = user::Model::find_some_by_username(pool, &self.username).await?;
+
         if let Some(user) = user_option {
             if !user.verify_password(&self.password).await {
                 ch.send_packet(Box::new(PlayerLoginFail::new(
@@ -69,12 +70,16 @@ impl HandleablePacket for RequestAuthLogin {
                 });
             }
         } else if auto_registration {
-            user_option = User::new(pool, &self.username, &self.password).await.ok();
-            assert!(
-                user_option.is_some(),
-                "Can not create a user {}",
-                self.username
-            );
+            let password_hash = hash_password(&self.password).await?;
+            let user_record = user::ActiveModel {
+                id: ActiveValue::NotSet,
+                username: ActiveValue::Set(self.username.clone()),
+                password: ActiveValue::Set(password_hash),
+                access_level: ActiveValue::Set(0),
+                ban_duration: ActiveValue::NotSet,
+                ban_ip: ActiveValue::NotSet,
+            };
+            user_record.save(pool).await?;
         }
         ch.account_name = Some(self.username.clone());
         let player_info = player::Info {

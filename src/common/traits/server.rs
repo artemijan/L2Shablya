@@ -42,7 +42,6 @@ pub trait Server {
         dotenv().ok();
         rt.block_on(async {
             let pool = new_db_pool(config.database()).await;
-            database::run_migrations(&pool).await;
             start(config, pool).await;
         });
     }
