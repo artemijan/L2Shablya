@@ -49,6 +49,18 @@ sequenceDiagram
 ## Local deployment
 
 - install cargo and rust
+- install sqlx-cli
+
+```bash
+cargo install sqlx-cli
+```
+
+- run migrations
+
+```bash
+sqlx migrate run --database-url "sqlite://local.sqlite?mode=rwc"
+```
+
 - run login server
 
 ```bahs
