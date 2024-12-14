@@ -26,9 +26,9 @@ impl Login {
                 player_info.chars_on_servers.insert(
                     gs_id,
                     GSCharsInfo {
-                        char_list: p.char_list,
-                        chars_to_delete: p.chars_to_delete,
-                        chars: p.chars,
+                        char_deletion_timestamps: p.char_deletion_timestamps,
+                        chars_to_delete: p.delete_chars_len,
+                        total_chars: p.chars,
                     },
                 );
             }

@@ -7,7 +7,7 @@ use crate::common::packets::{
 #[derive(Debug, Clone)]
 pub struct RequestChars {
     pub buffer: SendablePacketBuffer,
-    account_name: String,
+    pub account_name: String,
 }
 
 impl RequestChars {

@@ -4,9 +4,9 @@ use std::net::IpAddr;
 
 #[derive(Debug, Clone, Default)]
 pub struct GSCharsInfo {
-    pub chars: u8,
+    pub total_chars: u8,
     pub chars_to_delete: u8,
-    pub char_list: Vec<i64>,
+    pub char_deletion_timestamps: Vec<i64>,
 }
 #[derive(Debug, Clone, Default)]
 pub struct Info {

@@ -75,7 +75,7 @@ impl ServerList {
             for (server_id, info) in servers {
                 self.buffer.write(*server_id)?;
                 // todo: here should be real count of chars on server
-                self.buffer.write(info.chars)?;
+                self.buffer.write(info.total_chars)?;
             }
         }
         Ok(())
