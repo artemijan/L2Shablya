@@ -127,7 +127,7 @@ pub trait Server {
                     .expect("Set nodelay failed");
                 let mut handler = T::new(stream, pool.clone(), controller.clone());
                 handler.handle_client().await;
-                info!("Lost connection to login server, trying again in 5 seconds...");
+                error!("Lost connection to login server, trying again in 5 seconds...");
                 tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
             }
         })
