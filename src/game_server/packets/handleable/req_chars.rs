@@ -14,7 +14,6 @@ impl HandleablePacket for RequestChars {
     type HandlerType = LoginHandler;
 
     #[instrument(skip_all)]
-    #[allow(clippy::cast_possible_truncation)]
     async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let db_pool = gs.get_db_pool_mut();
         let chars =
