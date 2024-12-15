@@ -1,8 +1,8 @@
+use crate::common::config::gs::GSServer;
 use crate::common::packets::common::{GSStatus, ReadablePacket, SendablePacket};
 use crate::common::packets::read::ReadablePacketBuffer;
 use crate::common::packets::write::SendablePacketBuffer;
 use crate::common::traits::handlers::PacketHandler;
-use crate::common::config::gs::GSServer;
 
 #[derive(Clone, Debug, Default)]
 pub struct GSStatusUpdate {
@@ -38,7 +38,7 @@ impl GSStatusUpdate {
         Ok(inst)
     }
     #[allow(clippy::cast_possible_truncation, clippy::cast_possible_wrap)]
-    pub fn write_all(&mut self) -> Result<(), anyhow::Error> {
+    fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write(0x06)?;
         let fields = [
             (Self::SERVER_LIST_STATUS, self.status as i32),
