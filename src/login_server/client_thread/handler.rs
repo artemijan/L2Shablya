@@ -8,7 +8,7 @@ use crate::crypt::login::Encryption;
 use crate::crypt::{generate_blowfish_key, rsa};
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
-use crate::login_server::dto::config::Server;
+use crate::common::config::login::LoginServer;
 use crate::login_server::packet::cp_factory::build_client_packet;
 use crate::login_server::packet::to_client::Init;
 use anyhow::{Context, Error};
@@ -82,7 +82,7 @@ impl Shutdown for Client {
 
 #[async_trait]
 impl PacketHandler for Client {
-    type ConfigType = Server;
+    type ConfigType = LoginServer;
     type ControllerType = Login;
     fn get_handler_name() -> &'static str {
         "Login client handler"
@@ -176,7 +176,7 @@ impl PacketHandler for Client {
 }
 
 impl InboundHandler for Client {
-    type ConfigType = Server;
+    type ConfigType = LoginServer;
 
     fn get_connection_config(cfg: &Self::ConfigType) -> &InboundConnection {
         &cfg.listeners.clients.connection
@@ -188,7 +188,7 @@ mod test {
     use super::*;
     use crate::common::tests::get_test_db;
     use crate::common::traits::ServerConfig;
-    use crate::login_server::dto::config::Server;
+    use crate::common::config::login::LoginServer;
     use tokio::net::TcpListener;
 
     #[tokio::test]
@@ -197,7 +197,7 @@ mod test {
         let listener = TcpListener::bind("127.0.0.1:3333").await.unwrap();
         let addr = listener.local_addr().unwrap();
         let db_pool = get_test_db().await;
-        let cfg = Server::from_string(include_str!("../../test_data/test_config.yaml"));
+        let cfg = LoginServer::from_string(include_str!("../../test_data/test_config.yaml"));
         let lc = Arc::new(Login::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
         // Spawn a server task to handle a single connection

@@ -1,7 +1,8 @@
-use crate::login_server::dto::game_server::GSInfo;
-use crate::login_server::dto::{config, player};
-use crate::login_server::message::Request;
+use crate::common::config::login;
 use crate::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
+use crate::login_server::dto::game_server::GSInfo;
+use crate::login_server::dto::player;
+use crate::login_server::message::Request;
 use dashmap::DashMap;
 use rand::Rng;
 use std::sync::Arc;
@@ -11,7 +12,7 @@ use tracing::info;
 #[derive(Clone, Debug)]
 pub struct Login {
     key_pairs: Vec<ScrambledRSAKeyPair>,
-    pub(super) config: Arc<config::Server>,
+    pub(super) config: Arc<login::LoginServer>,
     pub(super) game_servers: DashMap<u8, GSInfo>,
     pub(super) ip_ban_list: DashMap<String, i64>,
     pub(super) players: DashMap<String, player::Info>,
@@ -19,7 +20,7 @@ pub struct Login {
 }
 
 impl Login {
-    pub fn new(config: Arc<config::Server>) -> Login {
+    pub fn new(config: Arc<login::LoginServer>) -> Login {
         info!("Loading LoginController...");
         Login {
             key_pairs: Login::generate_rsa_key_pairs(10),
@@ -30,7 +31,7 @@ impl Login {
             gs_channels: DashMap::new(),
         }
     }
-    pub fn get_config(&self) -> &config::Server {
+    pub fn get_config(&self) -> &login::LoginServer {
         &self.config
     }
     pub fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {

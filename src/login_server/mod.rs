@@ -1,8 +1,8 @@
+use crate::common::config::login;
 use crate::common::traits::handlers::PacketHandler;
 use crate::common::traits::server::Server;
 use crate::common::traits::IpBan;
 use crate::login_server::controller::Login;
-use crate::login_server::dto::config;
 pub mod client_thread;
 pub mod controller;
 pub mod dto;
@@ -13,6 +13,6 @@ mod packet;
 pub struct LoginServer;
 
 impl Server for LoginServer {
-    type ConfigType = config::Server;
+    type ConfigType = login::LoginServer;
     type ControllerType = Login;
 }

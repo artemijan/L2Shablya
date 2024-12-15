@@ -9,7 +9,7 @@ use crate::crypt::login::Encryption;
 use crate::crypt::rsa::ScrambledRSAKeyPair;
 use crate::database::DBPool;
 use crate::login_server::controller::Login;
-use crate::login_server::dto::config::Server;
+use crate::common::config::login::LoginServer;
 use crate::login_server::gs_thread::enums;
 use crate::login_server::message::Request;
 use crate::login_server::packet::gs_factory::build_gs_packet;
@@ -129,7 +129,7 @@ impl Shutdown for GameServer {
 
 #[async_trait]
 impl PacketHandler for GameServer {
-    type ConfigType = Server;
+    type ConfigType = LoginServer;
     type ControllerType = Login;
     fn get_handler_name() -> &'static str {
         "Game server handler"
@@ -215,7 +215,7 @@ impl PacketHandler for GameServer {
 }
 
 impl InboundHandler for GameServer {
-    type ConfigType = Server;
+    type ConfigType = LoginServer;
 
     fn get_connection_config(cfg: &Self::ConfigType) -> &InboundConnection {
         &cfg.listeners.game_servers.connection

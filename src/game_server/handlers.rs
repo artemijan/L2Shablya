@@ -5,7 +5,7 @@ use crate::common::traits::Shutdown;
 use crate::crypt::login::Encryption;
 use crate::database::DBPool;
 use crate::game_server::controller::Controller;
-use crate::game_server::dto::config::GSServer;
+use crate::common::config::gs::GSServer;
 use crate::game_server::lsp_factory::build_ls_packet;
 use anyhow::{bail, Error};
 use std::sync::Arc;

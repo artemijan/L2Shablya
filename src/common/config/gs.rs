@@ -36,15 +36,6 @@ pub struct GSServer {
     #[serde(default)]
     pub ip_config: Vec<ServerHost>,
 }
-impl GSServer {
-    pub fn get_hosts(&self) -> Vec<String> {
-        self.ip_config
-            .iter()
-            .flat_map(|h| vec![h.subnet.to_string(), h.ip.to_string()])
-            .collect()
-    }
-}
-
 fn deserialize_hex_to_bigint<'de, D>(deserializer: D) -> Result<BigInt, D::Error>
 where
     D: Deserializer<'de>,
@@ -52,12 +43,22 @@ where
     let s = String::deserialize(deserializer)?;
     BigInt::from_str_radix(&s, 16).map_err(Error::custom)
 }
+
 fn deserialize_server_type<'de, D>(deserializer: D) -> Result<ServerType, D::Error>
 where
     D: Deserializer<'de>,
 {
     let s = String::deserialize(deserializer)?;
     ServerType::from_str(&s).map_err(Error::custom)
+}
+
+impl GSServer {
+    pub fn get_hosts(&self) -> Vec<String> {
+        self.ip_config
+            .iter()
+            .flat_map(|h| vec![h.subnet.to_string(), h.ip.to_string()])
+            .collect()
+    }
 }
 
 impl GSServer {
@@ -94,6 +95,7 @@ impl GSServer {
         }
     }
 }
+
 impl ServerConfig for GSServer {
     fn load(file_name: &str) -> Self {
         let file = File::open(file_name)

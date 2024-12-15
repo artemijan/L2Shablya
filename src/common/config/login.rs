@@ -1,6 +1,7 @@
 use crate::common::dto::{Database, InboundConnection, Runtime};
 use crate::common::traits::ServerConfig;
-use num::{BigInt, Num};
+use num::BigInt;
+use num_traits::Num;
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
 use std::fs::File;
@@ -8,7 +9,7 @@ use std::io::BufReader;
 use tracing::info;
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Server {
+pub struct LoginServer {
     pub name: String,
     pub blowfish_key: String,
     pub runtime: Option<Runtime>,
@@ -20,19 +21,19 @@ pub struct Server {
     pub client: Client,
 }
 
-impl ServerConfig for Server {
+impl ServerConfig for LoginServer {
     fn load(file_name: &str) -> Self {
         let file = File::open(file_name)
             .unwrap_or_else(|e| panic!("Failed to open config file: {file_name}. Error: {e}"));
         let reader = BufReader::new(file);
-        let config: Server = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
+        let config: LoginServer = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
             panic!("Unable to parse {file_name}, the format is incorrect, {e}")
         });
         info!("Configuration ok, starting application: {}", config.name);
         config
     }
     fn from_string(conf: &str) -> Self {
-        serde_yaml::from_str::<Server>(conf)
+        serde_yaml::from_str::<LoginServer>(conf)
             .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
     }
 
@@ -43,6 +44,7 @@ impl ServerConfig for Server {
         &self.database
     }
 }
+
 // Custom deserialization function to validate that all keys in the HashMap are valid hex strings
 fn validate_allowed_gs_keys<'de, D>(deserializer: D) -> Result<Option<Vec<BigInt>>, D::Error>
 where
@@ -71,11 +73,6 @@ where
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct GSMessages {
-    pub timeout: u8,
-}
-
-#[derive(Debug, Clone, Deserialize)]
 pub struct GSListener {
     pub connection: InboundConnection,
     pub messages: GSMessages,
@@ -97,4 +94,9 @@ pub struct Client {
     pub timeout: u8,
     pub show_licence: bool,
     pub enable_cmdline_login: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct GSMessages {
+    pub timeout: u8,
 }

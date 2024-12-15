@@ -1,6 +1,6 @@
 use crate::common::traits::IpBan;
-use crate::game_server::dto::config::GSServer;
 use std::sync::Arc;
+use crate::common::config::gs::GSServer;
 
 #[derive(Clone, Debug)]
 pub struct Controller {

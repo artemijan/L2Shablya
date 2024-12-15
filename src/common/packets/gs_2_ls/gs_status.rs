@@ -2,10 +2,11 @@ use crate::common::packets::common::{GSStatus, ReadablePacket, SendablePacket};
 use crate::common::packets::read::ReadablePacketBuffer;
 use crate::common::packets::write::SendablePacketBuffer;
 use crate::common::traits::handlers::PacketHandler;
+use crate::common::config::gs::GSServer;
 
 #[derive(Clone, Debug, Default)]
 pub struct GSStatusUpdate {
-    pub buffer: SendablePacketBuffer,
+    buffer: SendablePacketBuffer,
     pub status: GSStatus,
     pub use_square_brackets: bool,
     pub max_players: u32,
@@ -20,7 +21,22 @@ impl GSStatusUpdate {
     const MAX_PLAYERS: i32 = 0x04;
     const TEST_SERVER: i32 = 0x05;
     const SERVER_AGE: i32 = 0x06;
-
+    pub fn new(cfg: &GSServer) -> anyhow::Result<Self> {
+        let mut inst = Self {
+            buffer: SendablePacketBuffer::new(),
+            status: if cfg.gm_only {
+                GSStatus::GmOnly
+            } else {
+                GSStatus::Auto
+            },
+            use_square_brackets: cfg.use_brackets,
+            max_players: cfg.max_players,
+            server_type: cfg.server_type as i32,
+            server_age: cfg.server_age,
+        };
+        inst.write_all()?;
+        Ok(inst)
+    }
     #[allow(clippy::cast_possible_truncation, clippy::cast_possible_wrap)]
     pub fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write(0x06)?;

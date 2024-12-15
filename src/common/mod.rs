@@ -13,6 +13,7 @@ pub mod str;
 #[cfg(test)]
 pub mod tests;
 pub mod traits;
+pub mod config;
 
 pub async fn hash_password(password: &str) -> anyhow::Result<String> {
     let pwd = password.to_owned();
