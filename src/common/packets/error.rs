@@ -2,7 +2,6 @@ use sea_orm::DbErr;
 use std::fmt;
 use thiserror::Error;
 
-#[non_exhaustive]
 #[derive(Error, Debug)]
 pub struct PacketRun {
     pub msg: Option<String>,
