@@ -1,0 +1,26 @@
+[package]
+name = "login"
+version = "0.1.0"
+edition = "2021"
+publish = false
+[[bin]]
+name = "login"
+path = "src/main.rs"
+[dependencies]
+entities = { path = "../entities" }
+l2-core = { path = "../l2-core" }
+rand = "^0.8.5"
+anyhow = "^1.0.92"
+num = "^0.4.3"
+openssl = "^0.10.68"
+tokio = { version = "^1.41.0", features = ["full"] }
+futures = "^0.3.31"
+async-trait = "^0.1.83"
+strum = { version = "^0.26.3", features = ["derive"] }
+uuid = { version = "^1.11.0", features = ["v4"] }
+dashmap = "6.1.0"
+chrono = "0.4.38"
+pnet = "0.35.0"
+tracing = "0.1.41"
+tracing-subscriber = "0.3.19"
+sea-orm = { version = "1.1.2" }

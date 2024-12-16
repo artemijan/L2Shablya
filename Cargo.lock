@@ -3,42 +3,6 @@
 version = 4
 
 [[package]]
-name = "L2Shablya"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "argon2",
- "async-trait",
- "blowfish",
- "chrono",
- "dashmap",
- "dotenvy",
- "encoding",
- "entities",
- "futures",
- "log",
- "migration",
- "num",
- "num-traits",
- "num_enum",
- "openssl",
- "pnet",
- "rand",
- "rand_core",
- "reqwest",
- "sea-orm",
- "serde",
- "serde_yaml",
- "sqlx",
- "strum",
- "thiserror 2.0.6",
- "tokio",
- "tracing",
- "tracing-subscriber",
- "uuid",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1114,6 +1078,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "game"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "entities",
+ "l2-core",
+ "num",
+ "num-traits",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "generic-array"
 version = "0.14.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1628,6 +1607,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "l2-core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "argon2",
+ "async-trait",
+ "blowfish",
+ "dotenvy",
+ "encoding",
+ "entities",
+ "log",
+ "migration",
+ "num",
+ "num-traits",
+ "num_enum",
+ "openssl",
+ "pnet",
+ "rand",
+ "rand_core",
+ "reqwest",
+ "sea-orm",
+ "serde",
+ "serde_yaml",
+ "sqlx",
+ "thiserror 2.0.6",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1688,6 +1697,29 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a7a70ba024b9dc04c27ea2f0c0548feb474ec5c54bba33a7f72f873a39d07b24"
 dependencies = [
  "value-bag",
+]
+
+[[package]]
+name = "login"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "chrono",
+ "dashmap",
+ "entities",
+ "futures",
+ "l2-core",
+ "num",
+ "openssl",
+ "pnet",
+ "rand",
+ "sea-orm",
+ "strum",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "uuid",
 ]
 
 [[package]]
