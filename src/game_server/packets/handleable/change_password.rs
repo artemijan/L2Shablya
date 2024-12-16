@@ -1,14 +1,8 @@
-use async_trait::async_trait;
-
 use crate::{
-    common::packets::{
-        common::HandleablePacket
-        ,
-        gs_2_ls::ChangePassword,
-    },
+    common::packets::{common::HandleablePacket, error::PacketRun, gs_2_ls::ChangePassword},
     game_server::handlers::LoginHandler,
 };
-use crate::common::packets::error::PacketRun;
+use async_trait::async_trait;
 
 #[async_trait]
 impl HandleablePacket for ChangePassword {
