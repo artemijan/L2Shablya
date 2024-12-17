@@ -18,6 +18,7 @@ impl MigrationTrait for Migration {
                     .col(string(User::Username))
                     .col(integer(User::AccessLevel))
                     .col(string_null(User::BanIp))
+                    .col(string(User::Password))
                     .col(integer_null(User::BanDuration))
                     .to_owned(),
             )
@@ -48,4 +49,5 @@ pub enum User {
     AccessLevel,
     BanDuration,
     BanIp,
+    Password
 }
