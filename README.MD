@@ -3,6 +3,7 @@
 <div align="center">
     <img src="shablya.svg" alt="shablya" width="250"/>
 </div>
+
 *Inspired by the swift, light, and deadly Kozak weapon, L2Shablya embodies precision and speed in every line of code.*
 
 **Disclaimer**: *The name "Shablya" reflects the project's focus on performance and elegance, paying homage to the
