@@ -8,13 +8,14 @@ use async_trait::async_trait;
 use crate::packet::HandleablePacket;
 
 #[derive(Clone, Debug)]
-pub struct RequestGSLogin {
+#[allow(unused)]
+pub struct RequestPlayerLogin {
     pub s_key_1: i32,
     pub s_key_2: i32,
     pub server_id: u8,
 }
 
-impl ReadablePacket for RequestGSLogin {
+impl ReadablePacket for RequestPlayerLogin {
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         Some(Self {
@@ -26,7 +27,7 @@ impl ReadablePacket for RequestGSLogin {
 }
 
 #[async_trait]
-impl HandleablePacket for RequestGSLogin {
+impl HandleablePacket for RequestPlayerLogin {
     type HandlerType = ClientHandler;
     async fn handle(&self, ch: &mut Self::HandlerType) -> Result<(), PacketRun> {
         ch.send_packet(Box::new(PlayOk::new(ch.get_session_key())))

@@ -13,6 +13,7 @@ pub struct GSStatusUpdate {
     pub server_age: u8,
 }
 
+#[allow(unused)]
 impl GSStatusUpdate {
     const SERVER_LIST_STATUS: i32 = 0x01;
     const SERVER_TYPE: i32 = 0x02;

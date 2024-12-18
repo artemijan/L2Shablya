@@ -1,9 +1,7 @@
 use async_trait::async_trait;
 use l2_core::packets::common::GSLoginFail;
 use l2_core::packets::error::PacketRun;
-use crate::{
-    handlers::LoginHandler,
-};
+use crate::ls_thread::LoginHandler;
 use crate::packets::HandleablePacket;
 
 #[async_trait]

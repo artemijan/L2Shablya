@@ -10,6 +10,7 @@ use async_trait::async_trait;
 use crate::packet::HandleablePacket;
 
 #[derive(Clone, Debug)]
+#[allow(unused)]
 pub struct RequestServerList {
     pub login_ok_1: i32,
     pub login_ok_2: i32,

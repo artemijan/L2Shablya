@@ -1,10 +1,10 @@
-use crate::handlers::LoginHandler;
 use async_trait::async_trait;
 use l2_core::packets::error::PacketRun;
 use l2_core::packets::gs_2_ls::{GSStatusUpdate, PlayerInGame};
 use l2_core::packets::ls_2_gs;
-use l2_core::traits::handlers::PacketHandler;
 use tracing::{info, instrument};
+use l2_core::traits::handlers::PacketHandler;
+use crate::ls_thread::LoginHandler;
 use crate::packets::HandleablePacket;
 
 #[async_trait]

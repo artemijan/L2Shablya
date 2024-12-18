@@ -4,12 +4,10 @@ use l2_core::packets::{
     error::PacketRun,
     gs_2_ls::ReplyChars,
 };
-use crate::{
-    handlers::LoginHandler,
-};
 use async_trait::async_trait;
 use entities::entities::character;
 use tracing::instrument;
+use crate::ls_thread::LoginHandler;
 use crate::packets::HandleablePacket;
 
 #[async_trait]

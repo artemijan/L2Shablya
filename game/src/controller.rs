@@ -1,22 +1,26 @@
+use l2_core::config::gs::GSServer;
 use l2_core::traits::IpBan;
 use std::sync::Arc;
-use l2_core::config::gs::GSServer;
 
 #[derive(Clone, Debug)]
 pub struct Controller {
     cfg: Arc<GSServer>,
+    online_accounts: Vec<String>,
 }
 
 impl Controller {
     pub fn new(cfg: Arc<GSServer>) -> Self {
-        Controller { cfg }
+        Controller {
+            cfg,
+            online_accounts: Vec::new(),
+        }
     }
     pub fn get_cfg(&self) -> Arc<GSServer> {
         self.cfg.clone()
     }
-    pub fn get_online_accounts(&self) -> Vec<String> {
-        // todo
-        vec![]
+    
+    pub fn get_online_accounts(&self) -> &Vec<String> {
+        &self.online_accounts
     }
 }
 

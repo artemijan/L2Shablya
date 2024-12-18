@@ -1,10 +1,10 @@
 use tracing::error;
-use super::handlers::LoginHandler;
 use l2_core::packets::common::{GSLoginFail, ReadablePacket};
 use l2_core::packets::gs_2_ls::ChangePassword;
 use l2_core::packets::ls_2_gs::{
     AuthGS, InitLS, KickPlayer, PlayerAuthResponse, RequestChars,
 };
+use crate::ls_thread::LoginHandler;
 use crate::packets::HandleablePacket;
 
 pub fn build_ls_packet(

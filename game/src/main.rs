@@ -1,13 +1,17 @@
+use crate::client_thread::ClientHandler;
 use crate::controller::Controller;
-use crate::handlers::LoginHandler;
 use l2_core::config::gs::GSServer;
 use l2_core::traits::server::Server;
 use std::sync::Arc;
+use tracing::error;
+use crate::ls_thread::LoginHandler;
 
+mod client_thread;
 mod controller;
-mod handlers;
+mod cp_factory;
 mod lsp_factory;
 mod packets;
+mod ls_thread;
 
 pub struct GameServer;
 
@@ -33,8 +37,26 @@ pub fn main() {
         .init();
     GameServer::bootstrap("config/game.yaml", |cfg, db_pool| async move {
         let controller = Arc::new(Controller::new(cfg.clone()));
-        let ls_handle =
-            GameServer::connector_loop::<LoginHandler>(cfg.clone(), controller, db_pool.clone());
-        ls_handle.await.expect("Login server loop crashed");
+        let mut ls_handle = GameServer::connector_loop::<LoginHandler>(
+            cfg.clone(),
+            controller.clone(),
+            db_pool.clone(),
+        );
+        let mut client_handle =
+            GameServer::listener_loop::<ClientHandler>(cfg, controller, db_pool);
+        tokio::select!(
+            _ = &mut ls_handle => {
+                error!("Login server thread exited unexpectedly");
+            },
+            _ = &mut client_handle => {
+                error!("Client thread exited unexpectedly");
+            },
+        );
+        if !ls_handle.is_finished() {
+            ls_handle.abort();
+        }
+        if !client_handle.is_finished() {
+            client_handle.abort();
+        }
     });
 }

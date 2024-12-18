@@ -1,67 +1,8 @@
+use crate::config::gs::GSServer;
 use crate::packets::common::{ReadablePacket, SendablePacket};
 use crate::packets::read::ReadablePacketBuffer;
 use crate::packets::write::SendablePacketBuffer;
-
-#[derive(Clone, Debug, Default)]
-pub struct RequestAuthGSBuilder {
-    desired_id: u8,
-    accept_alternative_id: bool,
-    host_reserved: bool,
-    port: u16,
-    max_players: u32,
-    hex_id: Vec<u8>,
-    hosts: Vec<String>,
-}
-
-impl RequestAuthGSBuilder {
-    fn new() -> Self {
-        Self {
-            ..Default::default()
-        }
-    }
-    pub fn desired_id(mut self, id: u8) -> Self {
-        self.desired_id = id;
-        self
-    }
-    pub fn accept_alternative_id(mut self, accept: bool) -> Self {
-        self.accept_alternative_id = accept;
-        self
-    }
-    pub fn host_reserved(mut self, reserved: bool) -> Self {
-        self.host_reserved = reserved;
-        self
-    }
-    pub fn port(mut self, port: u16) -> Self {
-        self.port = port;
-        self
-    }
-    pub fn max_players(mut self, max_players: u32) -> Self {
-        self.max_players = max_players;
-        self
-    }
-    pub fn hex_id(mut self, hex_id: Vec<u8>) -> Self {
-        self.hex_id = hex_id;
-        self
-    }
-    pub fn hosts(mut self, hosts: Vec<String>) -> Self {
-        self.hosts = hosts;
-        self
-    }
-    pub fn build(self) -> anyhow::Result<RequestAuthGS> {
-        let mut inst = RequestAuthGS {
-            buffer: SendablePacketBuffer::new(),
-            desired_id: self.desired_id,
-            accept_alternative_id: self.accept_alternative_id,
-            host_reserved: self.host_reserved,
-            port: self.port,
-            max_players: self.max_players,
-            hex_id: self.hex_id,
-            hosts: self.hosts,
-        };
-        inst.write_all()?;
-        Ok(inst)
-    }
-}
+use num_traits::ToBytes;
 
 #[derive(Clone, Debug, Default)]
 pub struct RequestAuthGS {
@@ -76,8 +17,22 @@ pub struct RequestAuthGS {
 }
 
 impl RequestAuthGS {
-    pub fn builder() -> RequestAuthGSBuilder {
-        RequestAuthGSBuilder::new()
+    ///
+    /// # Errors
+    /// - if writing packet bytes is not possible, for example when packet size is too big
+    pub fn new(cfg: &GSServer) -> anyhow::Result<Self> {
+        let mut inst = Self {
+            buffer: SendablePacketBuffer::new(),
+            desired_id: cfg.server_id,
+            accept_alternative_id: cfg.accept_alternative_id,
+            host_reserved: cfg.host_reserved,
+            port: cfg.listeners.clients.connection.port,
+            max_players: cfg.max_players,
+            hex_id: cfg.hex_id.to_be_bytes(),
+            hosts: cfg.get_hosts(),
+        };
+        inst.write_all()?;
+        Ok(inst)
     }
     #[allow(clippy::cast_possible_truncation)]
     fn write_all(&mut self) -> Result<(), anyhow::Error> {

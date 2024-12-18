@@ -9,14 +9,19 @@ pub struct PlayerInGame {
 }
 
 impl PlayerInGame {
-    pub fn new(accounts: Vec<String>) -> anyhow::Result<Self> {
+    ///
+    /// # Errors
+    /// - when packet size is too big
+    pub fn new(accounts: &[String]) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
-            accounts,
+            accounts: accounts.to_vec(),
         };
         inst.write_all()?;
         Ok(inst)
     }
+    /// # Errors
+    /// - when packet size is too big
     #[allow(clippy::cast_possible_truncation, clippy::cast_possible_wrap)]
     pub fn write_all(&mut self) -> anyhow::Result<()> {
         self.buffer.write(0x02)?;

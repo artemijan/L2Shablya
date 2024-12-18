@@ -13,6 +13,7 @@ use l2_core::traits::handlers::PacketHandler;
 use sea_orm::{ActiveModelTrait, ActiveValue};
 
 #[derive(Clone, Debug)]
+#[allow(unused)]
 pub struct RequestAuthLogin {
     pub username: String,
     pub password: String,
@@ -44,7 +45,7 @@ impl ReadablePacket for RequestAuthLogin {
         Some(Self {
             username,
             password,
-            is_new_auth,
+            is_new_auth
         })
     }
 }
