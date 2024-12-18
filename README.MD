@@ -70,11 +70,11 @@ sea-orm-cli migrate up
 - run login server
 
 ```bahs
-cargo run --bin login
+cargo run -p login
 ```
 
 - run game server
 
 ```bash
-cargo run --bin game
+cargo run -p game
 ```
