@@ -1,7 +1,7 @@
 use crate::controller::Login;
 use crate::packet::cp_factory::build_client_packet;
 use crate::packet::to_client::Init;
-use anyhow::Error;
+use anyhow::{bail, Error};
 use async_trait::async_trait;
 use entities::DBPool;
 use l2_core::config::login::LoginServer;
@@ -10,7 +10,7 @@ use l2_core::crypt::{generate_blowfish_key, rsa};
 use l2_core::dto::InboundConnection;
 use l2_core::errors::Packet;
 use l2_core::session::SessionKey;
-use l2_core::traits::handlers::{InboundHandler, PacketHandler};
+use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
 use std::net::{IpAddr, Ipv4Addr};
 use std::sync::Arc;
@@ -52,6 +52,12 @@ pub struct Client {
 /// 7. Respond with `ServerList::new()`
 ///
 impl Client {
+    pub fn check_session(&self, s_key1: i32, s_key2: i32) -> anyhow::Result<()> {
+        if !self.session_key.check_session(s_key1, s_key2) {
+            bail!("Session key check failed");
+        }
+        Ok(())
+    }
     pub fn get_session_id(&self) -> i32 {
         self.session_id
     }
@@ -137,10 +143,6 @@ impl PacketHandler for Client {
         &self.tcp_reader
     }
 
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
-        &self.tcp_writer
-    }
-
     fn get_timeout(&self) -> Option<u64> {
         Some(u64::from(self.timeout))
     }
@@ -164,8 +166,17 @@ impl PacketHandler for Client {
         Ok(())
     }
 
+    
+}
+
+#[async_trait]
+impl PacketSender for Client {
     fn encryption(&self) -> Option<&Encryption> {
         None
+    }
+
+    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
+        &self.tcp_writer
     }
 }
 
@@ -179,11 +190,11 @@ impl InboundHandler for Client {
 
 #[cfg(test)]
 mod test {
-    use tokio::io::AsyncReadExt;
     use super::*;
     use l2_core::config::login::LoginServer;
     use l2_core::tests::get_test_db;
     use l2_core::traits::ServerConfig;
+    use tokio::io::AsyncReadExt;
     use tokio::net::TcpListener;
 
     #[tokio::test]

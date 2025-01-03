@@ -3,7 +3,7 @@ use l2_core::packets::common::ReadablePacket;
 use l2_core::crypt::rsa::ScrambledRSAKeyPair;
 use crate::client_thread::ClientHandler;
 use crate::packet::from_client::{
-    RequestAuthGG, RequestAuthLogin, RequestPlayerLogin, RequestServerList,
+    RequestAuthGG, RequestAuthLogin, RequestGSLogin, RequestServerList,
 };
 use crate::packet::HandleablePacket;
 
@@ -33,7 +33,7 @@ pub fn build_client_packet(
         }
         0x07 => Some(Box::new(RequestAuthGG::read(packet_body).unwrap())),
         // 0x0B => Some(), //cmd login
-        0x02 => Some(Box::new(RequestPlayerLogin::read(packet_body).unwrap())),
+        0x02 => Some(Box::new(RequestGSLogin::read(packet_body).unwrap())),
         0x05 => Some(Box::new(RequestServerList::read(packet_body).unwrap())),
         // 0x0E => Some(LoginClientOpcodes::RequestPiAgreementCheck),
         // 0x0F => Some(LoginClientOpcodes::RequestPiAgreement),

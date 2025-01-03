@@ -1,12 +1,13 @@
 use crate::controller::Controller;
 use crate::lsp_factory::build_ls_packet;
 use anyhow::{bail, Error};
+use async_trait::async_trait;
 use entities::DBPool;
 use l2_core::config::gs::GSServer;
 use l2_core::crypt::login::Encryption;
 use l2_core::dto::OutboundConnection;
 use l2_core::errors::Packet;
-use l2_core::traits::handlers::{OutboundHandler, PacketHandler};
+use l2_core::traits::handlers::{OutboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
 use std::sync::Arc;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
@@ -14,7 +15,7 @@ use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
 use tracing::{info, instrument};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(clippy::module_name_repetitions)]
 pub struct LoginHandler {
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
@@ -26,6 +27,7 @@ pub struct LoginHandler {
     blowfish: Encryption,
 }
 impl LoginHandler {
+    pub const HANDLER_ID: u8 = 1;
     pub fn set_blowfish(&mut self, blowfish: Encryption) {
         self.blowfish = blowfish;
     }
@@ -33,6 +35,17 @@ impl LoginHandler {
 impl Shutdown for LoginHandler {
     fn get_shutdown_listener(&self) -> Arc<Notify> {
         self.shutdown_notifier.clone()
+    }
+}
+
+#[async_trait]
+impl PacketSender for LoginHandler {
+    fn encryption(&self) -> Option<&Encryption> {
+        Some(&self.blowfish)
+    }
+
+    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
+        &self.tcp_writer
     }
 }
 
@@ -70,6 +83,7 @@ impl PacketHandler for LoginHandler {
     }
 
     fn on_disconnect(&mut self) {
+        self.controller.message_broker.unregister_packet_handler(Self::HANDLER_ID);
         info!("Login server disconnected");
     }
 
@@ -77,12 +91,8 @@ impl PacketHandler for LoginHandler {
         &self.tcp_reader
     }
 
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
-        &self.tcp_writer
-    }
-
     fn get_timeout(&self) -> Option<u64> {
-        Some(u64::from(self.timeout))
+        None
     }
 
     fn get_db_pool_mut(&mut self) -> &mut DBPool {
@@ -103,10 +113,6 @@ impl PacketHandler for LoginHandler {
             return Err(error.into());
         }
         Ok(())
-    }
-
-    fn encryption(&self) -> Option<&Encryption> {
-        Some(&self.blowfish)
     }
 }
 

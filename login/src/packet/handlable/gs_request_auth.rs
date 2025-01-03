@@ -14,6 +14,7 @@ use l2_core::{
     },
     traits::handlers::PacketHandler,
 };
+use l2_core::traits::handlers::PacketSender;
 
 #[async_trait]
 impl HandleablePacket for RequestAuthGS {

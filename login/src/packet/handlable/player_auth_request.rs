@@ -7,6 +7,7 @@ use l2_core::{
     },
     traits::handlers::PacketHandler,
 };
+use l2_core::traits::handlers::PacketSender;
 use crate::{
     gs_thread::GSHandler,
 };

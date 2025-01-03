@@ -1,4 +1,4 @@
-use l2_core::traits::handlers::PacketHandler;
+use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use l2_core::packets::{
     ls_2_gs::RequestChars,
     error::PacketRun,

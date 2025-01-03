@@ -10,14 +10,14 @@ pub struct PlayOk {
 }
 
 impl PlayOk {
-    pub fn new(session_key: &SessionKey) -> PlayOk {
+    pub fn new(session_key: &SessionKey) -> anyhow::Result<PlayOk> {
         let mut login_ok = PlayOk {
             buffer: SendablePacketBuffer::new(),
             play_ok1: session_key.play_ok1,
             play_ok2: session_key.play_ok2,
         };
-        let _ = login_ok.write_all();
-        login_ok
+        login_ok.write_all()?;
+        Ok(login_ok)
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write_i8(LoginServerOpcodes::PlayOk as i8)?;

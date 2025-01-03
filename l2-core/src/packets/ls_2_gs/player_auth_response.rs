@@ -4,14 +4,15 @@ use crate::packets::{
     write::SendablePacketBuffer,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct PlayerAuthResponse {
     pub buffer: SendablePacketBuffer,
-    account: String,
-    is_ok: bool,
+    pub account: String,
+    pub is_ok: bool,
 }
 
 impl PlayerAuthResponse {
+    #[must_use]
     pub fn new(account: &str, is_ok: bool) -> PlayerAuthResponse {
         let mut gg = PlayerAuthResponse {
             buffer: SendablePacketBuffer::new(),

@@ -9,6 +9,8 @@ pub struct ReadablePacketBuffer {
 
 #[allow(unused)]
 impl ReadablePacketBuffer {
+    
+    #[must_use]
     pub fn new(bytes: Vec<u8>) -> Self {
         ReadablePacketBuffer { bytes, position: 0 }
     }

@@ -1,34 +1,38 @@
+use crate::dto::game_server::GSInfo;
+use crate::dto::player;
+use dashmap::DashMap;
 use l2_core::config::login;
 use l2_core::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
-use crate::dto::player;
-use crate::message::Request;
-use dashmap::DashMap;
+use l2_core::message_broker::MessageBroker;
+use l2_core::packets::common::PacketType;
 use rand::Rng;
 use std::sync::Arc;
-use tokio::sync::mpsc::Sender;
+use std::time::Duration;
 use tracing::info;
-use crate::dto::game_server::GSInfo;
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Login {
     key_pairs: Vec<ScrambledRSAKeyPair>,
     pub(super) config: Arc<login::LoginServer>,
     pub(super) game_servers: DashMap<u8, GSInfo>,
     pub(super) ip_ban_list: DashMap<String, i64>,
     pub(super) players: DashMap<String, player::Info>,
-    pub(super) gs_channels: DashMap<u8, Sender<(u8, Request)>>,
+    pub message_broker: Arc<MessageBroker<u8, PacketType>>,
 }
 
 impl Login {
+  
     pub fn new(config: Arc<login::LoginServer>) -> Login {
         info!("Loading LoginController...");
+        let threshold =
+            Duration::from_secs(u64::from(config.listeners.game_servers.messages.timeout));
         Login {
             key_pairs: Login::generate_rsa_key_pairs(10),
             config,
             ip_ban_list: DashMap::new(),
             players: DashMap::new(),
             game_servers: DashMap::new(),
-            gs_channels: DashMap::new(),
+            message_broker: MessageBroker::new(threshold),
         }
     }
     pub fn get_config(&self) -> &login::LoginServer {

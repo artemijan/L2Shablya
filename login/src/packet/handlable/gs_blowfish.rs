@@ -1,4 +1,4 @@
-use l2_core::traits::handlers::PacketHandler;
+use l2_core::traits::handlers::PacketSender;
 use async_trait::async_trait;
 use l2_core::packets::{
     common::{PlayerLoginFail, PlayerLoginFailReasons},

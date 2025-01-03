@@ -1,6 +1,8 @@
+use crate::gs_thread::GSHandler;
+use crate::packet::HandleablePacket;
 use async_trait::async_trait;
-use tracing::{info, instrument};
 use l2_core::constants::get_server_name_by_id;
+use l2_core::traits::handlers::PacketSender;
 use l2_core::{
     packets::{
         common::{PlayerLoginFail, PlayerLoginFailReasons},
@@ -9,15 +11,13 @@ use l2_core::{
     },
     traits::handlers::PacketHandler,
 };
-use crate::{
-    gs_thread::GSHandler,
-};
-use crate::packet::HandleablePacket;
+use std::sync::Arc;
+use tracing::{info, instrument};
 
 #[async_trait]
 impl HandleablePacket for GSStatusUpdate {
     type HandlerType = GSHandler;
-    
+
     #[instrument(skip_all)]
     async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let lc = gs.get_controller();
@@ -44,7 +44,8 @@ impl HandleablePacket for GSStatusUpdate {
                 msg: Some(format!("Server was not found, GS id {:?}", gs.server_id)),
             });
         }
-        gs.start_channel();
+        lc.message_broker
+            .register_packet_handler(gs.server_id.unwrap(), Arc::new(gs.clone()));
         Ok(())
     }
 }

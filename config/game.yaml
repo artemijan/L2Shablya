@@ -4,7 +4,8 @@ runtime:
   worker_threads: 10
 client:
   timeout: 150
-revision: ""
+allowed_revisions:
+  - 110
 server_id: 1
 hex_id: -2ad66b3f483c22be097019f55c8abdf0
 accept_alternative_id: true
@@ -14,19 +15,20 @@ gm_only: false
 host_reserved: false
 server_type: Normal
 max_players: 5000
+enable_encryption: false
 ip_config:
+  - subnet: 192.168.0.0/0
+    ip: 192.168.0.27
   - subnet: 127.0.0.0/8
     ip: 127.0.0.1
   - subnet: 192.168.64.0/24
     ip: 192.168.64.1
   - subnet: 192.168.20.0/24
     ip: 192.168.20.103
-  - subnet: 0.0.0.0/0
-    ip: 192.168.20.103
-  - subnet: 192.168.0.0/0
-    ip: 192.168.0.47
 listeners:
   login_server:
+    messages:
+      timeout: 3
     connection:
       ip: 127.0.0.1
       port: 9014

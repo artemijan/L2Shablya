@@ -1,3 +1,4 @@
+use crate::config::login::GSMessages;
 use crate::dto::{Database, InboundConnection, OutboundConnection, Runtime, ServerHost};
 use crate::packets::common::ServerType;
 use crate::traits::ServerConfig;
@@ -26,6 +27,8 @@ pub struct GSServer {
     pub hex_id: BigInt,
     pub server_id: u8,
     pub accept_alternative_id: bool,
+    pub allowed_revisions: Vec<i32>,
+    pub enable_encryption: bool,
     pub host_reserved: bool,
     pub use_brackets: bool,
     pub max_players: u32,
@@ -35,7 +38,14 @@ pub struct GSServer {
     pub gm_only: bool,
     #[serde(default)]
     pub ip_config: Vec<ServerHost>,
+    #[serde(default = "default_chars_on_acc")]
+    pub max_chars_on_account: u8,
 }
+
+fn default_chars_on_acc() -> u8 {
+    5
+}
+
 fn deserialize_hex_to_bigint<'de, D>(deserializer: D) -> Result<BigInt, D::Error>
 where
     D: Deserializer<'de>,
@@ -134,6 +144,7 @@ pub struct ClientListener {
 #[derive(Debug, Clone, Deserialize)]
 pub struct LoginServerConnector {
     pub connection: OutboundConnection,
+    pub messages: GSMessages,
 }
 
 #[derive(Debug, Clone, Deserialize)]

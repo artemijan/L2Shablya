@@ -5,7 +5,7 @@ use l2_core::crypt::rsa::RSAPublicKey;
 use l2_core::packets::error::PacketRun;
 use l2_core::packets::gs_2_ls::BlowFish;
 use l2_core::packets::{gs_2_ls::RequestAuthGS, ls_2_gs::InitLS};
-use l2_core::traits::handlers::PacketHandler;
+use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use crate::ls_thread::LoginHandler;
 use crate::packets::HandleablePacket;
 
