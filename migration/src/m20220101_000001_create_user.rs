@@ -2,6 +2,7 @@ use sea_orm_migration::{
     prelude::*,
     schema::{integer, integer_null, pk_auto, string, string_null},
 };
+use sea_orm_migration::schema::big_integer_null;
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -19,7 +20,7 @@ impl MigrationTrait for Migration {
                     .col(integer(User::AccessLevel))
                     .col(string_null(User::BanIp))
                     .col(string(User::Password))
-                    .col(integer_null(User::BanDuration))
+                    .col(big_integer_null(User::BanDuration))
                     .to_owned(),
             )
             .await?;

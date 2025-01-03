@@ -1,9 +1,7 @@
 use super::data::Login;
-use l2_core::packets::common::{GSLoginFailReasons, ServerData, ServerStatus};
 use crate::dto::game_server::GSInfo;
-use crate::message::Request;
+use l2_core::packets::common::{GSLoginFailReasons, ServerData, ServerStatus};
 use std::net::Ipv4Addr;
-use tokio::sync::mpsc::Sender;
 
 impl Login {
     pub fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
@@ -61,9 +59,5 @@ impl Login {
 
     pub fn remove_gs(&self, server_id: u8) {
         self.game_servers.remove(&server_id);
-    }
-
-    pub fn connect_gs(&self, server_id: u8, gs_channel: Sender<(u8, Request)>) {
-        self.gs_channels.entry(server_id).or_insert(gs_channel);
     }
 }

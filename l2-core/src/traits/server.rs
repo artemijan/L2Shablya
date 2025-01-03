@@ -60,7 +60,7 @@ pub trait Server {
         tokio::spawn(async move {
             let conn_cfg = T::get_connection_config(&config);
             let listener =
-                bind_addr(conn_cfg).unwrap_or_else(|_| panic!("Can not bind socket {conn_cfg:?}"));
+                bind_addr(conn_cfg).unwrap_or_else(|e| panic!("{e}:Can not bind socket {conn_cfg:?}"));
             info!(
                 "{} listening on {}",
                 T::get_handler_name(),

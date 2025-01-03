@@ -12,11 +12,12 @@ pub struct AuthGS {
 }
 
 impl AuthGS {
+    #[must_use]
     pub fn new(server_id: u8, server_name: String) -> AuthGS {
         let mut gg = AuthGS {
             buffer: SendablePacketBuffer::new(),
             server_id,
-            server_name
+            server_name,
         };
         let _ = gg.write_all();
         gg

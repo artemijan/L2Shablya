@@ -18,6 +18,7 @@ pub mod tests;
 pub mod traits;
 pub mod config;
 pub mod crypt;
+pub mod message_broker;
 
 pub async fn hash_password(password: &str) -> anyhow::Result<String> {
     let pwd = password.to_owned();

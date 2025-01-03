@@ -1,6 +1,6 @@
 use rand::Rng;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 #[allow(clippy::module_name_repetitions)]
 pub struct SessionKey {
     pub play_ok1: i32,
@@ -10,6 +10,7 @@ pub struct SessionKey {
 }
 
 impl SessionKey {
+    #[must_use]
     pub fn new() -> Self {
         let mut rng = rand::thread_rng();
         SessionKey {
@@ -19,6 +20,11 @@ impl SessionKey {
             login_ok2: rng.gen(),
         }
     }
+    #[must_use]
+    pub fn check_session(&self, s_key_1: i32, s_key_2: i32) -> bool {
+        s_key_1 == self.login_ok1 && s_key_2 == self.login_ok2
+    }
+    #[must_use]
     pub fn equals(&self, other: &SessionKey, show_license: bool) -> bool {
         let is_play_ok = self.play_ok1 == other.play_ok1 && self.play_ok2 == other.play_ok2;
         if show_license {

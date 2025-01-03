@@ -10,7 +10,6 @@ mod client_thread;
 mod controller;
 mod dto;
 mod gs_thread;
-mod message;
 mod packet;
 pub struct LoginServer;
 

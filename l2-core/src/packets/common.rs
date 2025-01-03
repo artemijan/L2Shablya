@@ -1,9 +1,10 @@
+use super::{gs_2_ls::ReplyChars, read::ReadablePacketBuffer};
+use crate::packets::ls_2_gs::PlayerAuthResponse;
 use crate::packets::write::SendablePacketBuffer;
 use anyhow::bail;
 use num_enum::TryFromPrimitive;
-use std::{fmt::Debug, net::Ipv4Addr};
 use std::str::FromStr;
-use super::{gs_2_ls::ReplyChars, read::ReadablePacketBuffer};
+use std::{fmt::Debug, net::Ipv4Addr};
 
 pub trait SendablePacket: Debug + Send + Sync {
     fn get_bytes_mut(&mut self) -> &mut [u8] {
@@ -98,9 +99,10 @@ impl FromStr for ServerType {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum PacketType {
     ReplyChars(ReplyChars),
+    PlayerAuthResp(PlayerAuthResponse),
 }
 
 #[repr(u8)]
@@ -181,7 +183,7 @@ pub enum PlayerLoginFailReasons {
     ReasonCertificationUnderwayTryAgainLater = 0x38,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct GSLoginFail {
     pub buffer: SendablePacketBuffer,
     pub reason: GSLoginFailReasons,
@@ -208,6 +210,9 @@ impl ReadablePacket for GSLoginFail {
 }
 
 impl GSLoginFail {
+    /// # Panics
+    /// - never
+    #[must_use]
     pub fn new(reason: GSLoginFailReasons) -> Self {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
@@ -223,13 +228,17 @@ impl GSLoginFail {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct PlayerLoginFail {
     pub buffer: SendablePacketBuffer,
     pub reason: PlayerLoginFailReasons,
 }
 
 impl PlayerLoginFail {
+    ///
+    /// # Panics
+    /// - never
+    #[must_use]
     pub fn new(reason: PlayerLoginFailReasons) -> Self {
         let mut login_ok = Self {
             buffer: SendablePacketBuffer::new(),
@@ -264,6 +273,7 @@ pub enum GSStatus {
 }
 
 impl GSStatus {
+    #[must_use]
     pub fn from_opcode(opcode: i32) -> Option<Self> {
         match opcode {
             0x00 => Some(Self::Auto),

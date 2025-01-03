@@ -27,28 +27,11 @@ pub trait OutboundHandler {
     type ConfigType;
     fn get_connection_config(cfg: &Self::ConfigType) -> &dto::OutboundConnection;
 }
-
 #[async_trait]
-pub trait PacketHandler: Shutdown + Send + Sync + Debug {
-    type ConfigType;
-    type ControllerType;
-
-    fn get_handler_name() -> &'static str;
-    fn get_controller(&self) -> &Arc<Self::ControllerType>;
-    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self;
-
-    async fn on_connect(&mut self) -> Result<(), Packet>;
-    fn on_disconnect(&mut self);
-    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>>;
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
-    fn get_timeout(&self) -> Option<u64>;
-
-    fn get_db_pool_mut(&mut self) -> &mut DBPool;
-    
-    async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8])
-        -> Result<(), Error>;
-    fn encryption(&self) -> Option<&Encryption>;
-
+pub trait PacketSender: Send + Sync + Debug {
+    ///
+    /// # Errors
+    /// - when packet is too large
     fn add_padding(
         &self,
         mut packet: Box<dyn SendablePacket>,
@@ -63,7 +46,18 @@ pub trait PacketHandler: Shutdown + Send + Sync + Debug {
         }
         Ok(packet)
     }
-
+    async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<(), Error> {
+        if self.encryption().is_some() {
+            let mut pack = self.add_padding(packet)?;
+            let bytes = pack.get_bytes_mut();
+            self.send_bytes(bytes).await?;
+            Ok(())
+        } else {
+            let bytes = packet.get_bytes_mut();
+            self.send_bytes(bytes).await?;
+            Ok(())
+        }
+    }
     async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
         let size = bytes.len();
         if let Some(blowfish) = self.encryption() {
@@ -78,19 +72,29 @@ pub trait PacketHandler: Shutdown + Send + Sync + Debug {
             .await?;
         Ok(())
     }
+    fn encryption(&self) -> Option<&Encryption>;
+    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
+}
+#[async_trait]
+pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
+    type ConfigType;
+    type ControllerType;
 
-    async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<(), Error> {
-        if self.encryption().is_some() {
-            let mut pack = self.add_padding(packet)?;
-            let bytes = pack.get_bytes_mut();
-            self.send_bytes(bytes).await?;
-            Ok(())
-        } else {
-            let bytes = packet.get_bytes_mut();
-            self.send_bytes(bytes).await?;
-            Ok(())
-        }
-    }
+    fn get_handler_name() -> &'static str;
+    fn get_controller(&self) -> &Arc<Self::ControllerType>;
+    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self;
+
+    async fn on_connect(&mut self) -> Result<(), Packet>;
+    fn on_disconnect(&mut self);
+    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>>;
+    
+    fn get_timeout(&self) -> Option<u64>;
+
+    fn get_db_pool_mut(&mut self) -> &mut DBPool;
+    
+    async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8])
+        -> Result<(), Error>;
+    
     #[instrument(skip(self))]
     async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
         let mut size_buf = [0; PACKET_SIZE_BYTES];

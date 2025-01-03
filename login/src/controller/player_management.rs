@@ -16,8 +16,8 @@ impl Login {
     ) -> anyhow::Result<(), PlayerLoginFailReasons> {
         let account_name = player_info.account_name.clone();
         self.check_player_in_game(&account_name).await?;
-        let mut task_results = self
-            .send_message_to_all_gs(&account_name, || Box::new(RequestChars::new(&account_name)))
+        let mut task_results = self.message_broker
+            .send_message_to_all(&account_name, || Box::new(RequestChars::new(&account_name)))
             .await
             .into_iter();
 
@@ -44,12 +44,12 @@ impl Login {
     ) -> anyhow::Result<(), PlayerLoginFailReasons> {
         if let Some(player_in_game) = self.players.remove(account_name) {
             if let Some(gs) = player_in_game.1.game_server {
-                let _ = self
-                    .notify_gs(gs, Box::new(KickPlayer::new(account_name)))
+                let _ = self.message_broker
+                    .notify(gs, Box::new(KickPlayer::new(account_name)))
                     .await;
             } else {
-                let _ = self
-                    .notify_all_gs(|| Box::new(KickPlayer::new(account_name)))
+                let _ = self.message_broker
+                    .notify_all(|| Box::new(KickPlayer::new(account_name)))
                     .await;
             }
             return Err(PlayerLoginFailReasons::ReasonAccountInUse);

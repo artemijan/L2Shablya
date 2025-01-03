@@ -9,7 +9,7 @@ use l2_core::hash_password;
 use l2_core::packets::common::{PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket};
 use l2_core::packets::error::PacketRun;
 use l2_core::str::Trim;
-use l2_core::traits::handlers::PacketHandler;
+use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use sea_orm::{ActiveModelTrait, ActiveValue};
 
 #[derive(Clone, Debug)]
