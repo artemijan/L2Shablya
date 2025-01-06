@@ -12,39 +12,18 @@ Current state: `Under development`
 Ready features:
 
 - [x] Login server
-- [ ] Game server
+  - [x] Login process + auto create accounts
+  - [x] Game server registration
+  - [x] Kicking player
+  - [ ] CMD login
+  - [ ] EBPF filtering of banned IPs
+- [x] Game server 
+  - [x] register o login server
+  - [x] player can select game server
+  - [ ] player can create char
+  - [ ] player can delete char
+  - [ ] player can enter the game world
 
-## The login process
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant Login Server
-    participant Game Server
-
-    Client->>Login Server: Establish TCP connection (port 2106)
-    Login Server->>Client: Send InitPacket
-    Client->>Login Server: RequestAuthGG
-    Login Server->>Client: AuthGGOk(session_id)
-    Client->>Login Server: RequestAuthLogin
-    Login Server->>Game Server: RequestChars
-    Game Server->>Login Server: ReplyChars
-    Login Server->>Client: LoginOk
-    Client->>Login Server: RequestServerList
-    Login Server->>Client: ServerList
-
-```
-
-## Game server connection process
-
-```mermaid
-sequenceDiagram
-    participant Login Server
-    participant Game Server
-
-    Game Server->>Login Server: Establish TCP connection
-    Client->>Login Server: RequestServerList
-```
 
 ## Local deployment
 
