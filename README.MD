@@ -12,18 +12,22 @@ Current state: `Under development`
 Ready features:
 
 - [x] Login server
-  - [x] Login process + auto create accounts
-  - [x] Game server registration
-  - [x] Kicking player
-  - [ ] CMD login
-  - [ ] EBPF filtering of banned IPs
-- [x] Game server 
-  - [x] register o login server
-  - [x] player can select game server
-  - [ ] player can create char
-  - [ ] player can delete char
-  - [ ] player can enter the game world
+    - [x] Login process + auto create accounts
+    - [x] Game server registration
+    - [x] Kicking player
+    - [ ] CMD login
+    - [ ] EBPF filtering of banned IPs
+- [x] Game server
+    - [x] register o login server
+    - [x] player can select game server
+    - [ ] player can create char
+    - [ ] player can delete char
+    - [ ] player can enter the game world
 
+## The client
+
+[Here](https://drive.google.com/file/d/1sXMoENX7YuhqKTYSjJN8RfHMgJ6Yeu6s/view?usp=share_link) is google drive link where
+you can download client. In order to play, you have to change ip in L2.ini file.
 
 ## Local deployment
 
