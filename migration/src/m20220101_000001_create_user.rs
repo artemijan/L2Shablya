@@ -1,6 +1,6 @@
 use sea_orm_migration::{
     prelude::*,
-    schema::{integer, integer_null, pk_auto, string, string_null},
+    schema::{integer, pk_auto, string, string_null},
 };
 use sea_orm_migration::schema::big_integer_null;
 

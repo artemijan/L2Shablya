@@ -10,7 +10,7 @@ use tracing::error;
 use crate::packet::HandleablePacket;
 
 pub fn build_gs_packet(data: &[u8]) -> Option<Box<dyn HandleablePacket<HandlerType = GSHandler>>> {
-    if data.len() <= 1 {
+    if data.is_empty() {
         error!("GSFactory: data too short");
         return None;
     }

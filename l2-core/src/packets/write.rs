@@ -9,20 +9,23 @@ pub struct SendablePacketBuffer {
     position: usize,
 }
 
-#[allow(unused, clippy::cast_possible_truncation)]
+#[allow(unused, clippy::cast_possible_truncation, clippy::missing_errors_doc)]
 impl SendablePacketBuffer {
+    #[must_use]
     pub fn empty() -> Self {
         Self {
             data: vec![0; 2],
             position: 2,
         }
     }
+    #[must_use]
     pub fn new() -> Self {
         Self {
             data: vec![0; 512],
             position: 2,
         }
     }
+    #[must_use]
     pub fn from_bytes(data: &[u8]) -> Self {
         Self {
             data: data.to_vec(),
@@ -85,6 +88,7 @@ impl SendablePacketBuffer {
     pub fn write_u8(&mut self, value: u8) -> Res<(), Packet> {
         self.write(value)
     }
+
     pub fn write_bool(&mut self, value: bool) -> Res<(), Packet> {
         self.write_u8(u8::from(value))
     }
@@ -109,7 +113,7 @@ impl SendablePacketBuffer {
         self.write(((value >> 24) & 0xff) as u8)?;
         Ok(())
     }
-    
+
     pub fn write_u32(&mut self, value: u32) -> Res<(), Packet> {
         self.write((value & 0xff) as u8)?;
         self.write(((value >> 8) & 0xff) as u8)?;
@@ -144,10 +148,11 @@ impl SendablePacketBuffer {
     pub fn write_f64(&mut self, value: f64) -> Res<(), Packet> {
         self.write_i64(value.to_bits() as i64)
     }
-
+    #[must_use]
     pub fn get_cursor_position(&self) -> usize {
         self.position
     }
+    #[must_use]
     pub fn get_size(&self) -> usize {
         self.position
     }
@@ -186,6 +191,7 @@ impl SendablePacketBuffer {
         self.data.resize(size, 0);
     }
 
+    #[must_use]
     pub fn get_max_size() -> usize {
         65535
     }

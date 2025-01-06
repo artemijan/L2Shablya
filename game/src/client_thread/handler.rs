@@ -145,8 +145,8 @@ impl PacketHandler for ClientHandler {
         Some(u64::from(self.timeout))
     }
 
-    fn get_db_pool_mut(&mut self) -> &mut DBPool {
-        &mut self.db_pool
+    fn get_db_pool(&self) -> &DBPool {
+        &self.db_pool
     }
 
     #[instrument(skip(self, bytes))]

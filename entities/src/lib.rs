@@ -1,6 +1,6 @@
 use sea_orm::DatabaseConnection;
 
 pub mod entities;
-mod services;
+pub mod dao;
 
 pub type DBPool = DatabaseConnection;

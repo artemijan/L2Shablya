@@ -17,7 +17,7 @@ impl HandleablePacket for RequestTempBan {
     type HandlerType = GSHandler;
     #[instrument(skip(self, gs))]
     async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
-        let db_pool = gs.get_db_pool_mut();
+        let db_pool = gs.get_db_pool();
         //ignore error updating an account
         let user_model = user::Model::find_by_username(db_pool, &self.account).await?;
         let mut active_record: user::ActiveModel = user_model.into();

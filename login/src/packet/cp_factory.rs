@@ -12,7 +12,7 @@ pub fn build_client_packet(
     data: &[u8],
     key_pair: &ScrambledRSAKeyPair,
 ) -> Option<Box<dyn HandleablePacket<HandlerType = ClientHandler>>> {
-    if data.len() <= 1 {
+    if data.is_empty() {
         return None;
     }
     let (opcode, packet_body) = data.split_at(1);

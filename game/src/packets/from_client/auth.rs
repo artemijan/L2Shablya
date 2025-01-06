@@ -24,8 +24,8 @@ impl ReadablePacket for AuthLogin {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte(); // packet_id
         let login_name = buffer.read_string().to_lowercase();
+        let play_key_2 = buffer.read_i32(); // wtf? client decided to send first play_key_2 and not play_key_1
         let play_key_1 = buffer.read_i32();
-        let play_key_2 = buffer.read_i32();
         let login_key_1 = buffer.read_i32();
         let login_key_2 = buffer.read_i32();
         Some(Self {
@@ -73,6 +73,7 @@ impl HandleablePacket for AuthLogin {
                     .await?;
                 match resp {
                     Some((_, PacketType::PlayerAuthResp(p))) if p.is_ok => {
+                        let contr = controller.clone();
                         controller
                             .message_broker
                             .notify(
@@ -85,14 +86,17 @@ impl HandleablePacket for AuthLogin {
                         handler
                             .send_packet(Box::new(PlayerLoginResponse::ok()?))
                             .await?;
-                        let mut db_pool = handler.get_db_pool_mut().clone();
+                        let mut db_pool = handler.get_db_pool().clone();
                         handler
-                            .send_packet(Box::new(CharSelectionInfo::new(
-                                &self.login_name,
-                                self.play_key_1,
-                                &_cfg,
-                                &mut db_pool,
-                            ).await?))
+                            .send_packet(Box::new(
+                                CharSelectionInfo::new(
+                                    &self.login_name,
+                                    self.play_key_1,
+                                    contr,
+                                    &mut db_pool,
+                                )
+                                .await?,
+                            ))
                             .await?;
                         // todo: set char list to handler
                     }
@@ -102,12 +106,14 @@ impl HandleablePacket for AuthLogin {
                                 PlayerLoginResponse::SYSTEM_ERROR_LOGIN_LATER,
                             )?))
                             .await?;
+                        controller.remove_online_account(&self.login_name);
                         return Err(PacketRun {
                             msg: Some(format!("Login failed {}", self.login_name)),
                         });
                     }
                 }
             } else {
+                controller.remove_online_account(&self.login_name);
                 return Err(PacketRun {
                     msg: Some(format!("Account already in game {}", self.login_name)),
                 });
