@@ -56,7 +56,7 @@ impl HandleablePacket for RequestAuthLogin {
     async fn handle(&self, ch: &mut Self::HandlerType) -> Result<(), PacketRun> {
         let auto_registration = ch.get_controller().get_config().auto_registration;
         let show_license = ch.get_controller().get_config().client.show_licence;
-        let pool = ch.get_db_pool_mut();
+        let pool = ch.get_db_pool();
         let user_option = user::Model::find_some_by_username(pool, &self.username).await?;
 
         if let Some(user) = user_option {

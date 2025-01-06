@@ -1,2 +1,4 @@
 pub mod protocol;
-mod auth;
+pub mod auth;
+pub mod noop;
+pub mod new_char;

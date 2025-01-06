@@ -40,6 +40,7 @@ pub struct GSServer {
     pub ip_config: Vec<ServerHost>,
     #[serde(default = "default_chars_on_acc")]
     pub max_chars_on_account: u8,
+    pub rates: Rates,
 }
 
 fn default_chars_on_acc() -> u8 {
@@ -63,15 +64,13 @@ where
 }
 
 impl GSServer {
+    #[must_use]
     pub fn get_hosts(&self) -> Vec<String> {
         self.ip_config
             .iter()
             .flat_map(|h| vec![h.subnet.to_string(), h.ip.to_string()])
             .collect()
     }
-}
-
-impl GSServer {
     fn auto_ip_config(&mut self) {
         // Get all network interfaces
         let interfaces = datalink::interfaces();
@@ -156,4 +155,8 @@ pub struct Listeners {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Client {
     pub timeout: u8,
+}
+#[derive(Debug, Clone, Deserialize)]
+pub struct Rates {
+    pub vitality_exp_multiplier: i32,
 }

@@ -1,8 +1,9 @@
+use sea_orm::JsonValue;
 use crate::m20220101_000001_create_user as previous;
-use sea_orm_migration::schema::{big_integer, big_unsigned, big_unsigned_null, double, double_null, integer_null, small_integer, small_unsigned, small_unsigned_null, string_len_null, timestamp_with_time_zone_null, tiny_unsigned, tiny_unsigned_null, unsigned, unsigned_null};
+use sea_orm_migration::schema::{big_unsigned, big_unsigned_null, boolean, double, integer_null, json_binary, small_unsigned, small_unsigned_null, string_len_null, timestamp_with_time_zone_null, tiny_unsigned, tiny_unsigned_null, unsigned, unsigned_null};
 use sea_orm_migration::{
     prelude::*,
-    schema::{date_time_null, integer, pk_auto, string},
+    schema::{integer, pk_auto, string},
 };
 
 #[derive(DeriveMigrationName)]
@@ -19,7 +20,7 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(pk_auto(Character::Id))
                     .col(string(Character::Name))
-                    .col(integer(Character::Level))
+                    .col(tiny_unsigned(Character::Level))
                     .col(timestamp_with_time_zone_null(Character::DeleteAt))
                     .col(integer(Character::UserId))
                     .col(double(Character::MaxHP).default(0))
@@ -39,19 +40,19 @@ impl MigrationTrait for Migration {
                     .col(big_unsigned(Character::Exp).default(0))
                     .col(big_unsigned_null(Character::ExpBeforeDeath).default(0))
                     .col(big_unsigned(Character::SP).default(0))
-                    .col(integer_null(Character::Reputation))
+                    .col(integer(Character::Reputation).default(0))
                     .col(unsigned(Character::Fame).default(0))
                     .col(unsigned(Character::RbPoints).default(0))
-                    .col(small_unsigned(Character::PvpKills).default(0))
-                    .col(small_unsigned_null(Character::PkKills).default(0))
+                    .col(unsigned(Character::PvpKills).default(0))
+                    .col(unsigned(Character::PkKills).default(0))
                     .col(tiny_unsigned(Character::RaceId))
-                    .col(tiny_unsigned_null(Character::ClassId))
+                    .col(tiny_unsigned(Character::ClassId).default(0))
                     .col(tiny_unsigned(Character::BaseClassId).default(0))
                     .col(small_unsigned(Character::TransformId))
                     .col(tiny_unsigned_null(Character::CanCraft))
                     .col(string_len_null(Character::Title, 21))
                     .col(unsigned_null(Character::TitleColor).default(15_530_402))
-                    .col(unsigned_null(Character::AccessLevel).default(0))
+                    .col(unsigned(Character::AccessLevel).default(0))
                     .col(tiny_unsigned_null(Character::Online))
                     .col(unsigned_null(Character::OnlineTime))
                     .col(tiny_unsigned_null(Character::CharSlot))
@@ -59,12 +60,13 @@ impl MigrationTrait for Migration {
                     .col(unsigned_null(Character::ClanPrivs).default(0))
                     .col(tiny_unsigned_null(Character::WantsPeace).default(0))
                     .col(tiny_unsigned_null(Character::PowerGrade))
-                    .col(tiny_unsigned_null(Character::Nobless).default(0))
+                    .col(boolean(Character::Nobless).default(0))
                     .col(small_unsigned_null(Character::SubPledge).default(0))
                     .col(tiny_unsigned(Character::LvlJoinedAcademy).default(0))
                     .col(unsigned(Character::Apprentice).default(0))
                     .col(unsigned(Character::Sponsor).default(0))
                     .col(timestamp_with_time_zone_null(Character::ClanJoinExpiryTime))
+                    .col(json_binary(Character::Variables).default(JsonValue::default()))
                     .col(timestamp_with_time_zone_null(
                         Character::ClanCreateExpiryTime,
                     ))
@@ -102,7 +104,7 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum Character {
+pub enum Character {
     Table,
     Id,
     Name,
@@ -160,4 +162,5 @@ enum Character {
     Language,
     Faction,
     PcCafePoints,
+    Variables
 }

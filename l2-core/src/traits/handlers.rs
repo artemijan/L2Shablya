@@ -90,7 +90,7 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
     
     fn get_timeout(&self) -> Option<u64>;
 
-    fn get_db_pool_mut(&mut self) -> &mut DBPool;
+    fn get_db_pool(&self) -> &DBPool;
     
     async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8])
         -> Result<(), Error>;

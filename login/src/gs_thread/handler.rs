@@ -137,8 +137,8 @@ impl PacketHandler for GameServer {
     fn get_timeout(&self) -> Option<u64> {
         None
     }
-    fn get_db_pool_mut(&mut self) -> &mut DBPool {
-        &mut self.db_pool
+    fn get_db_pool(&self) -> &DBPool {
+        &self.db_pool
     }
     #[instrument(skip(self, bytes))]
     async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {

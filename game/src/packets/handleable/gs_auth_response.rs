@@ -1,12 +1,12 @@
-use std::sync::Arc;
+use crate::ls_thread::LoginHandler;
+use crate::packets::HandleablePacket;
 use async_trait::async_trait;
 use l2_core::packets::error::PacketRun;
 use l2_core::packets::gs_2_ls::{GSStatusUpdate, PlayerInGame};
 use l2_core::packets::ls_2_gs;
-use tracing::{info, instrument};
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
-use crate::ls_thread::LoginHandler;
-use crate::packets::HandleablePacket;
+use std::sync::Arc;
+use tracing::{info, instrument};
 
 #[async_trait]
 impl HandleablePacket for ls_2_gs::AuthGS {
@@ -30,7 +30,9 @@ impl HandleablePacket for ls_2_gs::AuthGS {
             "Registered on Login server: {:} ({:})",
             self.server_name, self.server_id
         );
-        controller.message_broker.register_packet_handler(self.server_id, Arc::new(lh.clone()));
+        controller
+            .message_broker
+            .register_packet_handler(Self::HandlerType::HANDLER_ID, Arc::new(lh.clone()));
         let accounts = controller.get_online_accounts();
         if !accounts.is_empty() {
             lh.send_packet(Box::new(PlayerInGame::new(&accounts)?))

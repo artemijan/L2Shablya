@@ -10,7 +10,7 @@ use crate::packets::HandleablePacket;
 pub fn build_ls_packet(
     data: &[u8],
 ) -> Option<Box<dyn HandleablePacket<HandlerType = LoginHandler>>> {
-    if data.len() <= 1 {
+    if data.is_empty() {
         return None;
     }
     match data[0] {

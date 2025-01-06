@@ -1,17 +1,15 @@
+use crate::gs_thread::GSHandler;
+use crate::packet::HandleablePacket;
 use async_trait::async_trait;
+use l2_core::traits::handlers::PacketSender;
 use l2_core::{
     packets::{
         error::PacketRun,
         gs_2_ls::PlayerAuthRequest,
-        ls_2_gs::{KickPlayer, PlayerAuthResponse},
+        ls_2_gs::PlayerAuthResponse,
     },
     traits::handlers::PacketHandler,
 };
-use l2_core::traits::handlers::PacketSender;
-use crate::{
-    gs_thread::GSHandler,
-};
-use crate::packet::HandleablePacket;
 
 #[async_trait]
 impl HandleablePacket for PlayerAuthRequest {
@@ -28,18 +26,11 @@ impl HandleablePacket for PlayerAuthRequest {
             }
             false // operation wasn't successful
         });
-        if !operation_ok {
-            gs.send_packet(Box::new(KickPlayer::new(&self.account_name)))
-                .await?;
-            return Err(PacketRun {
-                msg: Some(format!(
-                    "Can't find account on LS, or the session is invalid {:}",
-                    self.account_name
-                )),
-            });
-        }
-        gs.send_packet(Box::new(PlayerAuthResponse::new(&self.account_name, true)))
-            .await?;
+        gs.send_packet(Box::new(PlayerAuthResponse::new(
+            &self.account_name,
+            operation_ok,
+        )))
+        .await?;
         Ok(())
     }
 }

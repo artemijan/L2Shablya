@@ -95,8 +95,8 @@ impl PacketHandler for LoginHandler {
         None
     }
 
-    fn get_db_pool_mut(&mut self) -> &mut DBPool {
-        &mut self.db_pool
+    fn get_db_pool(&self) -> &DBPool {
+        &self.db_pool
     }
 
     #[instrument(skip(self, bytes))]
