@@ -8,6 +8,7 @@
 iconic Kozak weapon. It is used here metaphorically and holds no association with real-world conflict or violence.*
 
 Current state: `Under development`
+
 About: This implementation is based on L2J, e.g. I reimplement everything in rust from java + I optimize things, 
 like DB denormalization for performance boost, removing unnecessary operations and so on.
 
