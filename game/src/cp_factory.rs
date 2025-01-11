@@ -5,6 +5,7 @@ use crate::packets::from_client::protocol::ProtocolVersion;
 use crate::packets::HandleablePacket;
 use l2_core::packets::common::ReadablePacket;
 use tracing::error;
+use crate::packets::from_client::new_char::NewCharacter;
 
 pub fn build_client_packet(
     data: &[u8],
@@ -14,7 +15,8 @@ pub fn build_client_packet(
     }
     match data[0] {
         0x0E => Some(Box::new(ProtocolVersion::read(data)?)),
-        0x2B => Some(Box::new(AuthLogin::read(data)?)), //auth login
+        0x2B => Some(Box::new(AuthLogin::read(data)?)),
+        0x13 => Some(Box::new(NewCharacter::read(data)?)), 
         _ => {
             error!("Unknown GS packet ID:0x{:02X}", data[0]);
             Some(Box::new(NoOp::read(data)?))

@@ -1,5 +1,6 @@
 use crate::data::exp_table::ExpTable;
 use dashmap::DashMap;
+use entities::entities::prelude::Character;
 use l2_core::config::gs::GSServer;
 use l2_core::dto::Player;
 use l2_core::message_broker::MessageBroker;
@@ -7,14 +8,15 @@ use l2_core::packets::common::PacketType;
 use l2_core::traits::IpBan;
 use std::sync::Arc;
 use std::time::Duration;
-use entities::entities::prelude::Character;
+use crate::data::char_template::ClassTemplates;
 
 #[derive(Clone, Debug)]
 pub struct Controller {
     cfg: Arc<GSServer>,
     pub exp_table: ExpTable,
+    pub class_templates: Arc<ClassTemplates>,
     online_accounts: DashMap<String, Player>,
-    pub hero_list:DashMap<i32,Character>,
+    pub hero_list: DashMap<i32, Character>,
     pub message_broker: Arc<MessageBroker<u8, PacketType>>,
 }
 
@@ -22,10 +24,12 @@ impl Controller {
     pub fn new(cfg: Arc<GSServer>) -> Self {
         let threshold = Duration::from_secs(u64::from(cfg.listeners.login_server.messages.timeout));
         let exp_table = ExpTable::load();
+        let class_templates = ClassTemplates::load();
         Controller {
             exp_table,
             cfg,
-            hero_list:DashMap::new(),
+            class_templates:Arc::new(class_templates),
+            hero_list: DashMap::new(),
             message_broker: MessageBroker::new(threshold),
             online_accounts: DashMap::new(),
         }

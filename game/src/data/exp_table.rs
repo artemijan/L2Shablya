@@ -9,6 +9,7 @@ pub struct ExpTable {
     exp_data: HashMap<u8, i64>,
     training_data: HashMap<u8, f64>,
 }
+
 #[derive(Debug, Clone, Deserialize)]
 struct LevelData {
     level: u8,
