@@ -37,6 +37,8 @@ impl SendablePacket for AuthGS {
 }
 
 impl ReadablePacket for AuthGS {
+    const PACKET_ID: u8 = 0x02;
+
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         let _packet_id = buffer.read_byte();

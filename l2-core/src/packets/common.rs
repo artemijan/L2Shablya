@@ -15,6 +15,7 @@ pub trait SendablePacket: Debug + Send + Sync {
 }
 
 pub trait ReadablePacket: Debug + Send + Sync {
+    const PACKET_ID:u8; 
     fn read(data: &[u8]) -> Option<Self>
     where
         Self: Sized + ReadablePacket;
@@ -195,6 +196,8 @@ impl SendablePacket for GSLoginFail {
     }
 }
 impl ReadablePacket for GSLoginFail {
+    const PACKET_ID: u8 = 0x01;
+
     fn read(data: &[u8]) -> Option<Self>
     where
         Self: Sized + ReadablePacket,

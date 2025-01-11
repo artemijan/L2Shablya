@@ -18,6 +18,8 @@ pub struct RequestAuthGG {
 }
 
 impl ReadablePacket for RequestAuthGG {
+    const PACKET_ID: u8 = 0x07;
+
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         if buffer.get_remaining_length() > 20 {

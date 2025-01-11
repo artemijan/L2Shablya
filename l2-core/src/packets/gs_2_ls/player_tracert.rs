@@ -14,6 +14,8 @@ pub struct PlayerTracert {
 
 #[async_trait]
 impl ReadablePacket for PlayerTracert {
+    const PACKET_ID: u8 = 0x07;
+
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();

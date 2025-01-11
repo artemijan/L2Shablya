@@ -30,6 +30,8 @@ impl PlayerAuthRequest {
     }
 }
 impl ReadablePacket for PlayerAuthRequest {
+    const PACKET_ID: u8 = 0x05;
+
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();

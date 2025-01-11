@@ -1,11 +1,8 @@
-use tracing::error;
-use l2_core::packets::common::{GSLoginFail, ReadablePacket};
-use l2_core::packets::gs_2_ls::ChangePassword;
-use l2_core::packets::ls_2_gs::{
-    AuthGS, InitLS, KickPlayer, PlayerAuthResponse, RequestChars,
-};
 use crate::ls_thread::LoginHandler;
 use crate::packets::HandleablePacket;
+use l2_core::packets::common::{GSLoginFail, ReadablePacket};
+use l2_core::packets::ls_2_gs::{AuthGS, InitLS, KickPlayer, PlayerAuthResponse, RequestChars};
+use tracing::error;
 
 pub fn build_ls_packet(
     data: &[u8],
@@ -14,13 +11,12 @@ pub fn build_ls_packet(
         return None;
     }
     match data[0] {
-        0x00 => Some(Box::new(InitLS::read(data)?)),
-        0x01 => Some(Box::new(GSLoginFail::read(data)?)),
-        0x02 => Some(Box::new(AuthGS::read(data)?)),
-        0x03 => Some(Box::new(PlayerAuthResponse::read(data)?)),
-        0x04 => Some(Box::new(KickPlayer::read(data)?)),
-        0x05 => Some(Box::new(RequestChars::read(data)?)),
-        0x06 => Some(Box::new(ChangePassword::read(data)?)),
+        InitLS::PACKET_ID => Some(Box::new(InitLS::read(data)?)),
+        GSLoginFail::PACKET_ID => Some(Box::new(GSLoginFail::read(data)?)),
+        AuthGS::PACKET_ID => Some(Box::new(AuthGS::read(data)?)),
+        PlayerAuthResponse::PACKET_ID => Some(Box::new(PlayerAuthResponse::read(data)?)),
+        KickPlayer::PACKET_ID => Some(Box::new(KickPlayer::read(data)?)),
+        RequestChars::PACKET_ID => Some(Box::new(RequestChars::read(data)?)),
         _ => {
             error!("Unknown GS packet ID:0x{:02X}", data[0]);
             None

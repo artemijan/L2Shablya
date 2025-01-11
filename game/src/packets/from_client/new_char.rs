@@ -10,6 +10,8 @@ use l2_core::traits::handlers::{PacketHandler, PacketSender};
 pub struct NewCharacter;
 
 impl ReadablePacket for NewCharacter {
+    const PACKET_ID: u8 = 0x13;
+
     fn read(_: &[u8]) -> Option<Self> {
         Some(Self {})
     }

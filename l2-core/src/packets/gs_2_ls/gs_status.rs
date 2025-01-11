@@ -61,6 +61,8 @@ impl GSStatusUpdate {
 
 #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
 impl ReadablePacket for GSStatusUpdate {
+    const PACKET_ID: u8 = 0x06;
+
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte(); //packet id

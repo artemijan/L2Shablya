@@ -15,6 +15,8 @@ pub struct RequestServerList {
 }
 
 impl ReadablePacket for RequestServerList {
+    const PACKET_ID: u8 = 0x05;
+
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         Some(Self {

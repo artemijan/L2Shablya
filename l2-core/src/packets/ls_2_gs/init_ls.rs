@@ -37,6 +37,8 @@ impl SendablePacket for InitLS {
 }
 
 impl ReadablePacket for InitLS {
+    const PACKET_ID: u8 = 0x00;
+
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         let _packet_id = buffer.read_byte();

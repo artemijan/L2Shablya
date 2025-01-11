@@ -54,6 +54,8 @@ impl RequestAuthGS {
 
 #[allow(clippy::cast_sign_loss)]
 impl ReadablePacket for RequestAuthGS {
+    const PACKET_ID: u8 = 0x01;
+
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer: ReadablePacketBuffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();

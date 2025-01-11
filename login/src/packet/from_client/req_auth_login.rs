@@ -21,6 +21,8 @@ pub struct RequestAuthLogin {
 }
 
 impl ReadablePacket for RequestAuthLogin {
+    const PACKET_ID: u8 = 0x00;
+
     fn read(data: &[u8]) -> Option<Self> {
         let body = &data[..data.len() - 1]; //exclude last byte from calculation
         let mut is_new_auth = false;

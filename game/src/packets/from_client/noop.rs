@@ -10,6 +10,8 @@ use tracing::info;
 pub struct NoOp {}
 
 impl ReadablePacket for NoOp {
+    const PACKET_ID: u8 = 0;
+
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         let packet_id = buffer.read_byte();
