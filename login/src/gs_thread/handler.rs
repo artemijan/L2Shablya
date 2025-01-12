@@ -14,7 +14,6 @@ use l2_core::packets::error::PacketRun;
 use l2_core::packets::ls_2_gs::InitLS;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
-use openssl::error::ErrorStack;
 use std::sync::Arc;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
