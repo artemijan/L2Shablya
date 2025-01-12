@@ -18,7 +18,7 @@ impl HandleablePacket for InitLS {
         let ra = RequestAuthGS::new(&config)?;
         let p_key = RSAPublicKey::from_modulus(&self.public_key)?;
         let new_key = generate_blowfish_key(Some(40));
-        let encrypted_data = p_key.encrypt(&new_key)?;
+        let encrypted_data = p_key.encrypt(&new_key);
         let bf = BlowFish::new(encrypted_data);
         gs.send_packet(Box::new(bf)).await?;
         gs.set_blowfish(Encryption::new(&new_key));

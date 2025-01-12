@@ -28,10 +28,11 @@ impl RSAPublicKey {
             rsa::RsaPublicKey::new(modulus, exponent).context("Failed to create RSA public key")?;
         Ok(RSAPublicKey { key: rsa })
     }
-    pub fn encrypt(&self, data: &[u8]) -> anyhow::Result<Vec<u8>> {
-        let mut rng = rand::thread_rng();
-        let res = self.key.encrypt(&mut rng, rsa::Pkcs1v15Encrypt, data)?;
-        Ok(res)
+
+    ///Encryption with No Padding scheme
+    pub fn encrypt(&self, data: &[u8]) -> Vec<u8> {
+        let m = rsa::BigUint::from_bytes_be(data);
+        m.modpow(self.key.e(), self.key.n()).to_bytes_be()
     }
 }
 
@@ -147,6 +148,36 @@ mod test {
         let pem = keypair.0.to_pkcs1_pem(LineEnding::LF).unwrap();
         let formatted = String::from_utf8_lossy(pem.as_bytes());
         assert!(formatted.starts_with("-----BEGIN RSA PRIVATE KEY-----"));
+    }
+
+    #[test]
+    fn test_encryption_works() {
+        let modulus = [
+            0, 223, 167, 200, 243, 159, 71, 142, 226, 187, 170, 69, 162, 8, 145, 92, 139, 207, 67,
+            189, 1, 35, 109, 221, 188, 209, 20, 151, 56, 79, 70, 169, 46, 43, 166, 136, 99, 234, 1,
+            212, 249, 191, 87, 41, 151, 102, 78, 192, 172, 57, 96, 199, 159, 204, 50, 5, 117, 148,
+            85, 211, 203, 225, 211, 138, 173, 63, 12, 45, 94, 31, 14, 43, 248, 64, 85, 8, 55, 188,
+            74, 101, 232, 218, 224, 185, 181, 248, 245, 201, 69, 133, 89, 95, 186, 28, 72, 54, 0,
+            178, 194, 218, 96, 228, 6, 155, 52, 193, 24, 157, 192, 30, 84, 48, 0, 133, 76, 146, 83,
+            185, 243, 100, 148, 180, 242, 5, 237, 62, 0, 159, 53,
+        ];
+        let unencrypted = [
+            79, 112, 181, 90, 8, 119, 15, 29, 159, 106, 254, 130, 170, 198, 87, 88, 143, 86, 230,
+            61, 98, 228, 151, 38, 253, 34, 225, 55, 105, 250, 215, 98, 30, 78, 104, 221, 149, 6,
+            82, 128,
+        ];
+        let expected = [
+            36, 35, 171, 97, 133, 151, 145, 133, 240, 167, 43, 52, 152, 194, 103, 216, 33, 116, 84,
+            6, 190, 142, 175, 168, 229, 130, 203, 147, 67, 108, 231, 112, 238, 91, 171, 124, 254,
+            82, 15, 244, 96, 58, 145, 240, 144, 91, 33, 247, 109, 186, 252, 4, 197, 62, 80, 172,
+            130, 212, 35, 175, 34, 64, 209, 9, 182, 214, 116, 112, 254, 6, 175, 90, 180, 5, 215,
+            32, 85, 132, 18, 230, 39, 165, 12, 149, 191, 100, 101, 100, 36, 107, 147, 37, 139, 193,
+            145, 60, 93, 96, 156, 78, 103, 11, 3, 112, 243, 146, 241, 21, 6, 139, 5, 88, 144, 249,
+            215, 81, 128, 96, 232, 226, 15, 60, 178, 15, 118, 38, 67, 109,
+        ];
+        let key = RSAPublicKey::from_modulus(&modulus).unwrap();
+        let encrypted = key.encrypt(&unencrypted);
+        assert_eq!(encrypted, expected, "Should encrypt properly");
     }
 
     #[test]
