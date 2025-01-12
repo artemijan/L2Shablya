@@ -1,55 +1,47 @@
-use crate::errors;
-use openssl::bn::BigNum;
-use openssl::encrypt::Encrypter;
-use openssl::error::ErrorStack;
-use openssl::pkey::{PKey, Public};
-use openssl::rsa::{Padding, Rsa};
+use anyhow::{bail, Context};
+use num_traits::{FromPrimitive, Zero};
+use pem::parse;
+use rsa;
+use rsa::pkcs8::DecodePrivateKey;
+use rsa::traits::{PrivateKeyParts, PublicKeyParts};
 
 #[derive(Debug, Clone)]
 pub struct ScrambledRSAKeyPair {
-    pair: (PKey<openssl::pkey::Private>, PKey<Public>),
+    pair: (rsa::RsaPrivateKey, rsa::RsaPublicKey),
     scrambled_modulus: Vec<u8>,
     modulus: Vec<u8>,
 }
 
 pub struct RSAPublicKey {
-    key: PKey<Public>,
+    key: rsa::RsaPublicKey,
 }
 
 impl RSAPublicKey {
     pub fn from_modulus(modulus: &[u8]) -> anyhow::Result<RSAPublicKey> {
-        let modulus = BigNum::from_slice(modulus)?;
+        let modulus = rsa::BigUint::from_bytes_be(modulus);
         // Use the standard public exponent: 65537 (0x10001)
-        let exponent = BigNum::from_u32(65537)?;
+        let exponent = rsa::BigUint::from_u32(65537)
+            .context("Failed to create BigUint for public exponent")?;
 
         // Construct the RSA public key
-        let rsa = Rsa::from_public_components(modulus, exponent)?;
-        Ok(RSAPublicKey {
-            key: PKey::from_rsa(rsa)?,
-        })
+        let rsa =
+            rsa::RsaPublicKey::new(modulus, exponent).context("Failed to create RSA public key")?;
+        Ok(RSAPublicKey { key: rsa })
     }
     pub fn encrypt(&self, data: &[u8]) -> anyhow::Result<Vec<u8>> {
-        let mut encrypter = Encrypter::new(&self.key)?;
-        encrypter.set_rsa_padding(Padding::NONE)?;
-        let rsa_key_size = self.key.size();
-        let mut encrypted_data = vec![0; rsa_key_size];
-        let mut padded_input = vec![0; rsa_key_size];
-        let start_index = rsa_key_size - data.len();
-        padded_input[start_index..].copy_from_slice(data);
-        let encrypted_len = encrypter.encrypt(&padded_input, &mut encrypted_data)?;
-        encrypted_data.truncate(encrypted_len);
-        Ok(encrypted_data)
+        let mut rng = rand::thread_rng();
+        let res = self.key.encrypt(&mut rng, rsa::Pkcs1v15Encrypt, data)?;
+        Ok(res)
     }
 }
 
 impl ScrambledRSAKeyPair {
-    pub fn new(key: (PKey<openssl::pkey::Private>, PKey<openssl::pkey::Public>)) -> Self {
+    pub fn new(key: (rsa::RsaPrivateKey, rsa::RsaPublicKey)) -> Self {
         let (prv, pbc) = key;
-        let pub_key = pbc.rsa().unwrap();
-        let modulus = pub_key.n();
-        let mut modulus_bytes = modulus.to_vec();
+        let modulus = pbc.n();
+        let mut modulus_bytes = modulus.to_bytes_be();
         //we have to handle the sign -/+ manually
-        if modulus.is_negative() {
+        if modulus < &rsa::BigUint::zero() {
             modulus_bytes.insert(0, 0xFF);
         } else {
             modulus_bytes.insert(0, 0x00);
@@ -98,40 +90,62 @@ impl ScrambledRSAKeyPair {
         }
         scrambled_mod
     }
-    pub fn decrypt_data(&self, encrypted_data: &[u8]) -> Result<Vec<u8>, ErrorStack> {
-        let mut decrypted_data = vec![0; self.pair.0.size()];
-        let pkey = self.pair.0.rsa()?;
-        let size = pkey.private_decrypt(encrypted_data, &mut decrypted_data, Padding::NONE)?;
-        decrypted_data.truncate(size);
-        Ok(decrypted_data)
+    pub fn decrypt_data(&self, encrypted_data: &[u8]) -> anyhow::Result<Vec<u8>> {
+        let n = self.pair.0.n();
+        let size = self.pair.0.size();
+        let d = self.pair.0.d();
+
+        // Convert ciphertext to BigUint
+        let c = rsa::BigUint::from_bytes_be(encrypted_data);
+
+        // Perform modular exponentiation: c^d mod n
+        let m = c.modpow(d, n);
+        let mut decrypted_bytes = m.to_bytes_be();
+        // padding
+        if decrypted_bytes.len() < size {
+            let pad_length = size - decrypted_bytes.len();
+            decrypted_bytes.splice(0..0, vec![0; pad_length]); // Prepend padding
+        }
+        // Return the decrypted message as bytes
+        Ok(decrypted_bytes)
     }
 
     #[allow(unused)]
-    pub fn from_pem(private_key_pem: &str) -> Result<PKey<openssl::pkey::Private>, errors::Rsa> {
-        let private_key = Rsa::private_key_from_pem(private_key_pem.as_bytes())
-            .map_err(|_| errors::Rsa::ErrorReadingPem)?;
-        PKey::from_rsa(private_key).map_err(|_| errors::Rsa::ErrorReadingPem)
+    pub fn from_pem(private_key_pem: &str) -> anyhow::Result<rsa::RsaPrivateKey> {
+        // Parse the PEM string
+        let pem = parse(private_key_pem).context("Failed to parse PEM string")?;
+
+        // Ensure the PEM label is for an RSA public key
+        // Ensure the PEM tag is for an RSA PRIVATE KEY
+        if pem.tag() != "PRIVATE KEY" {
+            bail!("Unexpected PEM tag: {}", pem.tag());
+        }
+        let private_key_der = rsa::RsaPrivateKey::from_pkcs8_der(pem.contents())
+            .context("Failed to parse DER-encoded PKCS#8 private key")?;
+
+        Ok(private_key_der)
     }
 }
 
-pub fn generate_rsa_key_pair() -> (PKey<openssl::pkey::Private>, PKey<openssl::pkey::Public>) {
-    let bits: u32 = 1024;
-    let rsa = Rsa::generate(bits).unwrap();
-    let private_key = PKey::from_rsa(rsa).unwrap();
-    let public_key = private_key.public_key_to_pem().unwrap();
-    (private_key, PKey::public_key_from_pem(&public_key).unwrap())
+pub fn generate_rsa_key_pair() -> (rsa::RsaPrivateKey, rsa::RsaPublicKey) {
+    let bits: usize = 1024;
+    let mut rng = rand::thread_rng();
+    let private_key = rsa::RsaPrivateKey::new(&mut rng, bits).unwrap();
+    let public_key = rsa::RsaPublicKey::from(&private_key);
+    (private_key, public_key)
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
     use crate::str::Trim;
+    use rsa::pkcs1::{EncodeRsaPrivateKey, LineEnding};
 
     #[test]
     fn test_rsa_key_generated() {
         let keypair = generate_rsa_key_pair();
-        let pem = keypair.0.rsa().unwrap().private_key_to_pem().unwrap();
-        let formatted = String::from_utf8_lossy(&pem);
+        let pem = keypair.0.to_pkcs1_pem(LineEnding::LF).unwrap();
+        let formatted = String::from_utf8_lossy(pem.as_bytes());
         assert!(formatted.starts_with("-----BEGIN RSA PRIVATE KEY-----"));
     }
 
@@ -173,7 +187,7 @@ mod test {
             0,
         ];
         let p_key = ScrambledRSAKeyPair::from_pem(file_content).unwrap();
-        let pub_key = PKey::public_key_from_pem(&p_key.public_key_to_pem().unwrap()).unwrap();
+        let pub_key = p_key.to_public_key();
         let scrambl = ScrambledRSAKeyPair::new((p_key, pub_key));
         let decr_raw1 = scrambl.decrypt_data(raw1).unwrap();
         let decr_raw2 = scrambl.decrypt_data(raw2).unwrap();

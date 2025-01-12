@@ -4,6 +4,9 @@ version = "0.1.0"
 edition = "2021"
 publish = false
 
+[profile.dev.package.num-bigint-dig]
+opt-level = 3
+
 [dependencies]
 migration = { path = "../migration" }
 entities = { path = "../entities" }
@@ -16,7 +19,6 @@ log = "^0.4.22"
 serde = { version = "^1.0.214", features = ["derive"] }
 num = "^0.4.3"
 num-traits = "^0.2.19"
-openssl = "^0.10.68"
 tokio = { version = "^1.41.0", features = ["full"] }
 sqlx = { version = "^0.8.2", features = [
     "postgres",
@@ -37,4 +39,6 @@ tracing = "0.1.41"
 sea-orm = { version = "1.1.2" }
 dashmap = "6.1.0"
 futures = "^0.3.31"
+rsa = "0.9.7"
+pem = "3.0.4"
 uuid = { version = "^1.11.0", features = ["v4"] }

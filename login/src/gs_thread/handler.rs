@@ -54,7 +54,7 @@ impl GameServer {
         Ok(())
     }
 
-    pub fn decrypt_rsa(&self, data: &mut [u8]) -> Result<Vec<u8>, ErrorStack> {
+    pub fn decrypt_rsa(&self, data: &mut [u8]) -> anyhow::Result<Vec<u8>> {
         self.key_pair.decrypt_data(data)
     }
 }

@@ -142,7 +142,6 @@ mod test {
             12, 84, 204, 79, 78, 136, 249, 67, 63, 70, 44, 61, 28, 224, 9, 31,
         ];
         let decryptor = Encryption::from_u8_key(&key);
-        let data_len = data.len();
         let res = decryptor.decrypt(&mut data);
         assert!(res.is_ok(), "Result must be ok");
         assert_eq!(
@@ -241,7 +240,6 @@ mod test {
             174, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         ];
         let decryptor = Encryption::from_u8_key(&key);
-        let data_len = data.len();
         let res = decryptor.decrypt(&mut data);
         assert!(res.is_ok(), "Result must be ok");
         assert_eq!(
