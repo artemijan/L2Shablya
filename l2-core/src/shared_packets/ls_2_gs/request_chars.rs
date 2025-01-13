@@ -11,6 +11,7 @@ pub struct RequestChars {
 }
 
 impl RequestChars {
+    #[must_use]
     pub fn new(account_name: &str) -> RequestChars {
         let mut gg = RequestChars {
             buffer: SendablePacketBuffer::new(),

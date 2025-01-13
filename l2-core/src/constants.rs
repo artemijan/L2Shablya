@@ -1,4 +1,5 @@
 pub const PROTOCOL_REVISION: i32 = 0x0106;
+#[must_use]
 pub fn get_server_name_by_id(server_id: u8) -> Option<String> {
     if (0..127).contains(&server_id) {
         return Some(SERVER_NAMES[server_id as usize - 1].to_owned());

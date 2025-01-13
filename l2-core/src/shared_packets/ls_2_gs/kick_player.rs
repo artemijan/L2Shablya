@@ -11,6 +11,7 @@ pub struct KickPlayer {
 }
 
 impl KickPlayer {
+    #[must_use]
     pub fn new(account_name: &str) -> Self {
         let mut pack = Self {
             buffer: SendablePacketBuffer::new(),

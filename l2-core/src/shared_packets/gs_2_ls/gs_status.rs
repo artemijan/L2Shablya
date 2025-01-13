@@ -21,6 +21,8 @@ impl GSStatusUpdate {
     const MAX_PLAYERS: i32 = 0x04;
     const TEST_SERVER: i32 = 0x05;
     const SERVER_AGE: i32 = 0x06;
+
+    #[allow(clippy::missing_errors_doc)]
     pub fn new(cfg: &GSServer) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),

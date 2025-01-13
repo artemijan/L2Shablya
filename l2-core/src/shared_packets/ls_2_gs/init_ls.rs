@@ -11,6 +11,7 @@ pub struct InitLS {
 }
 
 impl InitLS {
+    #[must_use]
     pub fn new(public_key: Vec<u8>) -> Self {
         let mut init_ls = InitLS {
             buffer: SendablePacketBuffer::new(),

@@ -15,7 +15,7 @@ pub trait SendablePacket: Debug + Send + Sync {
 }
 
 pub trait ReadablePacket: Debug + Send + Sync {
-    const PACKET_ID:u8; 
+    const PACKET_ID:u8;
     fn read(data: &[u8]) -> Option<Self>
     where
         Self: Sized + ReadablePacket;
@@ -65,6 +65,7 @@ pub struct ServerData {
 }
 
 impl ServerData {
+    #[must_use]
     pub fn get_ip_octets(&self) -> [u8; 4] {
         self.ip.octets()
     }
@@ -121,6 +122,7 @@ pub enum GSLoginFailReasons {
 }
 
 impl GSLoginFailReasons {
+    #[allow(clippy::missing_errors_doc)]
     pub fn from_u8(reason: u8) -> anyhow::Result<Self> {
         match reason {
             0x00 => Ok(Self::None),

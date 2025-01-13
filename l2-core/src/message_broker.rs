@@ -59,7 +59,7 @@ where
 
                     broker.inbox.retain(|_, req| {
                         now.duration_since(req.sent_at)
-                            .map_or(false, |elapsed| elapsed <= broker.timeout)
+                            .is_ok_and(|elapsed| elapsed <= broker.timeout)
                     });
                     // send packet later, now we only remember it
                     let Some(req_body) = request.body.take() else {

@@ -14,7 +14,8 @@ pub struct ReplyChars {
 }
 
 impl ReplyChars {
-    #[allow(clippy::cast_possible_truncation)]
+    #[must_use]
+    #[allow(clippy::cast_possible_truncation, clippy::missing_panics_doc)]
     pub fn new(account_name: String, chars: &[character::Model]) -> ReplyChars {
         let mut chars_to_del_list = vec![];
         for ch in chars {

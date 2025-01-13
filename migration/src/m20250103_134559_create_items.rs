@@ -1,6 +1,7 @@
-use sea_orm_migration::{prelude::*, schema::*};
-use sea_orm::JsonValue;
 use crate::m20241213_210106_create_char::Character;
+use sea_orm::JsonValue;
+use sea_orm_migration::prelude::*;
+use sea_orm_migration::schema::{big_unsigned, decimal_len, integer, json_binary, pk_auto, string};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -15,7 +16,7 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(pk_auto(Item::Id))
                     .col(integer(Item::Owner))
-                    .col(integer(Item::ItemId))
+                    .col(integer(Item::TypeId))
                     .col(big_unsigned(Item::Count).default(0))
                     .col(integer(Item::EnchantLevel).default(0))
                     .col(string(Item::Loc))
@@ -69,7 +70,7 @@ pub enum Item {
     Table,
     Id,
     Owner,
-    ItemId,
+    TypeId, //item_id
     Count,
     EnchantLevel,
     Loc,
@@ -80,5 +81,5 @@ pub enum Item {
     ManaLeft,
     Time,
     Variables,
-    Variations
+    Variations,
 }

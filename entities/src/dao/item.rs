@@ -44,13 +44,10 @@ impl item::Model {
     ///  1. mineral id
     ///  2. option 1
     ///  3. option 2
+    #[allow(clippy::cast_possible_truncation)]
     pub fn get_augmentation(&self) -> Option<(i32, i32, i32)> {
-        let Some(option_1) = self.variations.get("option_1").and_then(Value::as_i64) else {
-            return None;
-        };
-        let Some(option_2) = self.variations.get("option_2").and_then(Value::as_i64) else {
-            return None;
-        };
+        let option_1 = self.variations.get("option_1").and_then(Value::as_i64)?;
+        let option_2 = self.variations.get("option_2").and_then(Value::as_i64)?;
         let mineral_id = self
             .variations
             .get("mineralId")

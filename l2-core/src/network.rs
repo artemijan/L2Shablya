@@ -3,6 +3,7 @@ use anyhow::Context;
 use std::net::ToSocketAddrs;
 use tokio::net::{TcpListener, TcpSocket};
 
+#[allow(clippy::missing_errors_doc)]
 pub fn bind_addr(config: &InboundConnection) -> anyhow::Result<TcpListener> {
     let addr = format!("{}:{}", &config.ip, &config.port)
         .to_socket_addrs()

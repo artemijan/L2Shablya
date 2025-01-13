@@ -1,25 +1,26 @@
-use std::time::Duration;
-use argon2::{Argon2, PasswordHasher};
+use crate::dto::Database as DBConfig;
 use argon2::password_hash::SaltString;
+use argon2::{Argon2, PasswordHasher};
 use rand_core::OsRng;
 use sea_orm::{ConnectOptions, Database, DatabaseConnection};
+use std::time::Duration;
 use tokio::task::spawn_blocking;
 use tracing::instrument;
-use crate::dto::Database as DBConfig;
 
+pub mod config;
 pub mod constants;
+pub mod crypt;
 pub mod dto;
 pub mod errors;
+pub mod message_broker;
 pub mod network;
-pub mod shared_packets;
 pub mod session;
+pub mod shared_packets;
 pub mod str;
 pub mod tests;
 pub mod traits;
-pub mod config;
-pub mod crypt;
-pub mod message_broker;
 
+#[allow(clippy::missing_errors_doc, clippy::missing_panics_doc)]
 pub async fn hash_password(password: &str) -> anyhow::Result<String> {
     let pwd = password.to_owned();
     spawn_blocking(move || {
@@ -29,11 +30,11 @@ pub async fn hash_password(password: &str) -> anyhow::Result<String> {
         // might take a second of CPU time
         argon2
             .hash_password(pwd.as_bytes(), &salt)
-            .unwrap()
+            .expect("Unable to hash password")
             .to_string()
     })
-        .await
-        .map_err(Into::into)
+    .await
+    .map_err(Into::into)
 }
 
 #[instrument]

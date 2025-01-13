@@ -9,7 +9,6 @@ pub struct ReadablePacketBuffer {
 
 #[allow(unused)]
 impl ReadablePacketBuffer {
-    
     #[must_use]
     pub fn new(bytes: Vec<u8>) -> Self {
         ReadablePacketBuffer { bytes, position: 0 }
@@ -41,12 +40,14 @@ impl ReadablePacketBuffer {
         hosts
     }
 
-    #[allow(clippy::cast_sign_loss)]
+    #[allow(clippy::cast_sign_loss, clippy::missing_panics_doc)]
     pub fn read_sized_string(&mut self) -> String {
         let length = self.read_i16() as usize;
         let bytes = self.read_bytes(length * 2);
         // safe to use unwrap, because decoder is "Replace", error here unreachable
-        UTF_16LE.decode(&bytes, DecoderTrap::Replace).unwrap()
+        UTF_16LE
+            .decode(&bytes, DecoderTrap::Replace)
+            .expect("Can not decode string from bytes")
     }
     pub fn read_bytes(&mut self, length: usize) -> Vec<u8> {
         let result = &self.bytes[self.position..self.position + length];
@@ -82,7 +83,7 @@ impl ReadablePacketBuffer {
         self.position += 4;
         int
     }
-    
+
     pub fn read_u32(&mut self) -> u32 {
         let int = u32::from_le_bytes([
             self.bytes[self.position],
@@ -117,10 +118,12 @@ impl ReadablePacketBuffer {
         f64::from_bits(self.read_i64() as u64)
     }
 
+    #[must_use]
     pub fn get_remaining_length(&self) -> usize {
         self.bytes.len() - self.position
     }
 
+    #[must_use]
     pub fn get_length(&self) -> usize {
         self.bytes.len()
     }

@@ -26,7 +26,7 @@ pub struct GameServer {
     ///
     /// `tcp_reader` and `tcp_writer` are wrapped into Arc<Mutex> because we need to share the handler
     /// across two tokio threads:
-    /// 1. Main thread to accept and answer shared_packets
+    /// 1. Main thread to accept and answer `shared_packets`
     /// 2. Listen for messages from Client login thread if we need info about logging in Player
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,

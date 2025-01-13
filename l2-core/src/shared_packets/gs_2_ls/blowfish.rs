@@ -8,6 +8,8 @@ pub struct BlowFish {
     pub encrypted_key: Vec<u8>,
 }
 impl BlowFish {
+    #[must_use]
+    #[allow(clippy::missing_panics_doc)]
     pub fn new(encrypted_key: Vec<u8>) -> Self {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
@@ -17,7 +19,7 @@ impl BlowFish {
             .expect("Failed to write bytes while building blowfish packet.");
         inst
     }
-    
+
     #[allow(clippy::cast_possible_truncation)]
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write(0x00)?;
