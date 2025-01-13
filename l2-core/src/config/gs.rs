@@ -1,6 +1,6 @@
 use crate::config::login::GSMessages;
 use crate::dto::{Database, InboundConnection, OutboundConnection, Runtime, ServerHost};
-use crate::packets::common::ServerType;
+use crate::shared_packets::common::ServerType;
 use crate::traits::ServerConfig;
 use log::{error, info};
 use num::BigInt;

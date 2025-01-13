@@ -2,8 +2,8 @@ use crate::client_thread::ClientHandler;
 use crate::packets::to_client::NewCharacterResponse;
 use crate::packets::HandleablePacket;
 use async_trait::async_trait;
-use l2_core::packets::common::ReadablePacket;
-use l2_core::packets::error::PacketRun;
+use l2_core::shared_packets::common::ReadablePacket;
+use l2_core::shared_packets::error::PacketRun;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
 
 #[derive(Debug, Clone)]

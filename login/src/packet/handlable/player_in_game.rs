@@ -2,8 +2,8 @@ use async_trait::async_trait;
 
 use crate::gs_thread::GSHandler;
 use crate::packet::HandleablePacket;
-use l2_core::packets::error::PacketRun;
-use l2_core::{packets::gs_2_ls::PlayerInGame, traits::handlers::PacketHandler};
+use l2_core::shared_packets::error::PacketRun;
+use l2_core::{shared_packets::gs_2_ls::PlayerInGame, traits::handlers::PacketHandler};
 
 #[async_trait]
 impl HandleablePacket for PlayerInGame {

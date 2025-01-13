@@ -1,6 +1,6 @@
 use super::data::Login;
 use crate::dto::game_server::GSInfo;
-use l2_core::packets::common::{GSLoginFailReasons, ServerData, ServerStatus};
+use l2_core::shared_packets::common::{GSLoginFailReasons, ServerData, ServerStatus};
 use std::net::Ipv4Addr;
 
 impl Login {

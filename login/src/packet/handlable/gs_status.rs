@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use l2_core::constants::get_server_name_by_id;
 use l2_core::traits::handlers::PacketSender;
 use l2_core::{
-    packets::{
+    shared_packets::{
         common::{PlayerLoginFail, PlayerLoginFailReasons},
         error::PacketRun,
         gs_2_ls::GSStatusUpdate,

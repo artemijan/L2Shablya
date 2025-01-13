@@ -3,10 +3,10 @@ use crate::ls_thread::LoginHandler;
 use crate::packets::to_client::{CharSelectionInfo, PlayerLoginResponse};
 use crate::packets::HandleablePacket;
 use async_trait::async_trait;
-use l2_core::packets::common::{PacketType, ReadablePacket};
-use l2_core::packets::error::PacketRun;
-use l2_core::packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
-use l2_core::packets::read::ReadablePacketBuffer;
+use l2_core::shared_packets::common::{PacketType, ReadablePacket};
+use l2_core::shared_packets::error::PacketRun;
+use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
+use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::session::SessionKey;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
 

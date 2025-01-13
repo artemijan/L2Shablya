@@ -1,6 +1,6 @@
-use crate::packets::common::{ReadablePacket, SendablePacket};
-use crate::packets::read::ReadablePacketBuffer;
-use crate::packets::write::SendablePacketBuffer;
+use crate::shared_packets::common::{ReadablePacket, SendablePacket};
+use crate::shared_packets::read::ReadablePacketBuffer;
+use crate::shared_packets::write::SendablePacketBuffer;
 use async_trait::async_trait;
 use entities::entities::character;
 

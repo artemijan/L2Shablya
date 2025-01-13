@@ -1,5 +1,5 @@
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
-use l2_core::packets::{
+use l2_core::shared_packets::{
     ls_2_gs::RequestChars,
     error::PacketRun,
     gs_2_ls::ReplyChars,

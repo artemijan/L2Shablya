@@ -1,7 +1,7 @@
 use crate::ls_thread::LoginHandler;
 use crate::packets::HandleablePacket;
-use l2_core::packets::common::{GSLoginFail, ReadablePacket};
-use l2_core::packets::ls_2_gs::{AuthGS, InitLS, KickPlayer, PlayerAuthResponse, RequestChars};
+use l2_core::shared_packets::common::{GSLoginFail, ReadablePacket};
+use l2_core::shared_packets::ls_2_gs::{AuthGS, InitLS, KickPlayer, PlayerAuthResponse, RequestChars};
 use tracing::error;
 
 pub fn build_ls_packet(

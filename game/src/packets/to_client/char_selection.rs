@@ -4,8 +4,8 @@ use entities::dao::char_info::PaperDoll;
 use entities::dao::item::LocType;
 use entities::entities::character;
 use entities::DBPool;
-use l2_core::packets::common::SendablePacket;
-use l2_core::packets::write::SendablePacketBuffer;
+use l2_core::shared_packets::common::SendablePacket;
+use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::sync::Arc;
 
 #[derive(Debug, Clone)]

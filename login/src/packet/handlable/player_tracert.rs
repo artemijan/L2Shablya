@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 
 use crate::gs_thread::GSHandler;
-use l2_core::packets::{error::PacketRun, gs_2_ls::PlayerTracert};
+use l2_core::shared_packets::{error::PacketRun, gs_2_ls::PlayerTracert};
 use crate::packet::HandleablePacket;
 
 #[async_trait]

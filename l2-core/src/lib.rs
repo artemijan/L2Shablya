@@ -11,7 +11,7 @@ pub mod constants;
 pub mod dto;
 pub mod errors;
 pub mod network;
-pub mod packets;
+pub mod shared_packets;
 pub mod session;
 pub mod str;
 pub mod tests;

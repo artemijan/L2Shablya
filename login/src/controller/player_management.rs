@@ -1,6 +1,6 @@
 use super::data::Login;
-use l2_core::packets::common::{PacketType, PlayerLoginFailReasons};
-use l2_core::packets::ls_2_gs::{KickPlayer, RequestChars};
+use l2_core::shared_packets::common::{PacketType, PlayerLoginFailReasons};
+use l2_core::shared_packets::ls_2_gs::{KickPlayer, RequestChars};
 use crate::dto::player;
 use crate::dto::player::GSCharsInfo;
 use rand::{

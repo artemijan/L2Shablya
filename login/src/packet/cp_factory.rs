@@ -4,7 +4,7 @@ use crate::packet::from_client::{
 };
 use crate::packet::HandleablePacket;
 use l2_core::crypt::rsa::ScrambledRSAKeyPair;
-use l2_core::packets::common::ReadablePacket;
+use l2_core::shared_packets::common::ReadablePacket;
 use tracing::error;
 
 /// Client Packet Factory

@@ -17,6 +17,7 @@ pub struct RSAPublicKey {
 }
 
 impl RSAPublicKey {
+    #[allow(clippy::missing_errors_doc)]
     pub fn from_modulus(modulus: &[u8]) -> anyhow::Result<RSAPublicKey> {
         let modulus = rsa::BigUint::from_bytes_be(modulus);
         // Use the standard public exponent: 65537 (0x10001)
@@ -30,6 +31,7 @@ impl RSAPublicKey {
     }
 
     ///Encryption with No Padding scheme
+    #[must_use]
     pub fn encrypt(&self, data: &[u8]) -> Vec<u8> {
         let m = rsa::BigUint::from_bytes_be(data);
         m.modpow(self.key.e(), self.key.n()).to_bytes_be()
@@ -37,6 +39,7 @@ impl RSAPublicKey {
 }
 
 impl ScrambledRSAKeyPair {
+    #[must_use]
     pub fn new(key: (rsa::RsaPrivateKey, rsa::RsaPublicKey)) -> Self {
         let (prv, pbc) = key;
         let modulus = pbc.n();
@@ -53,14 +56,15 @@ impl ScrambledRSAKeyPair {
             modulus: modulus_bytes,
         }
     }
-
+    #[must_use]
     pub fn get_scrambled_modulus(&self) -> Vec<u8> {
         self.scrambled_modulus.clone()
     }
-
+    #[must_use]
     pub fn get_modulus(&self) -> Vec<u8> {
         self.modulus.clone()
     }
+    #[must_use]
     pub fn scramble_modulus(modulus_bytes: Vec<u8>) -> Vec<u8> {
         let mut scrambled_mod: Vec<u8> = modulus_bytes;
 
@@ -91,6 +95,8 @@ impl ScrambledRSAKeyPair {
         }
         scrambled_mod
     }
+
+    #[allow(clippy::missing_errors_doc)]
     pub fn decrypt_data(&self, encrypted_data: &[u8]) -> anyhow::Result<Vec<u8>> {
         let n = self.pair.0.n();
         let size = self.pair.0.size();
@@ -111,7 +117,7 @@ impl ScrambledRSAKeyPair {
         Ok(decrypted_bytes)
     }
 
-    #[allow(unused)]
+    #[allow(clippy::missing_errors_doc)]
     pub fn from_pem(private_key_pem: &str) -> anyhow::Result<rsa::RsaPrivateKey> {
         // Parse the PEM string
         let pem = parse(private_key_pem).context("Failed to parse PEM string")?;
@@ -128,6 +134,8 @@ impl ScrambledRSAKeyPair {
     }
 }
 
+#[must_use]
+#[allow(clippy::missing_panics_doc)]
 pub fn generate_rsa_key_pair() -> (rsa::RsaPrivateKey, rsa::RsaPublicKey) {
     let bits: usize = 1024;
     let mut rng = rand::thread_rng();

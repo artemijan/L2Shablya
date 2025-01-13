@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 use crate::dto;
 use crate::errors::Packet;
-use crate::packets::common::SendablePacket;
+use crate::shared_packets::common::SendablePacket;
 use crate::traits::Shutdown;
 use anyhow::{Error};
 use async_trait::async_trait;

@@ -4,7 +4,7 @@ use entities::entities::prelude::Character;
 use l2_core::config::gs::GSServer;
 use l2_core::dto::Player;
 use l2_core::message_broker::MessageBroker;
-use l2_core::packets::common::PacketType;
+use l2_core::shared_packets::common::PacketType;
 use l2_core::traits::IpBan;
 use std::sync::Arc;
 use std::time::Duration;

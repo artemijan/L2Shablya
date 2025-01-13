@@ -2,8 +2,8 @@ use async_trait::async_trait;
 
 use crate::gs_thread::GSHandler;
 use crate::packet::HandleablePacket;
-use l2_core::packets::error::PacketRun;
-use l2_core::packets::{common::PacketType, gs_2_ls::ReplyChars};
+use l2_core::shared_packets::error::PacketRun;
+use l2_core::shared_packets::{common::PacketType, gs_2_ls::ReplyChars};
 use l2_core::traits::handlers::PacketHandler;
 
 #[async_trait]

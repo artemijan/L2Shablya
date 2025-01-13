@@ -8,16 +8,20 @@ pub struct Encryption {
 }
 
 impl Encryption {
+    #[must_use]
     pub fn new(key: &[u8]) -> Self {
         Self::from_u8_key(key)
     }
+
+    #[must_use]
+    #[allow(clippy::missing_panics_doc)]
     pub fn from_u8_key(key: &[u8]) -> Self {
-        let cipher = BlowfishLE::new_from_slice(key).unwrap();
+        let cipher = BlowfishLE::new_from_slice(key).expect("Received invalid blowfish key");
         Encryption { cipher }
     }
 
     fn calculate_checksum_block(raw: &[u8]) -> (u32, u32) {
-        let mut chksum: u32 = 0;
+        let mut checksum: u32 = 0;
         let count = raw.len();
         let mut check: u32 = 0;
         let mut offset = 0;
@@ -28,28 +32,29 @@ impl Encryption {
             check |= (u32::from(raw[offset + 3]) << 0x18) & 0xff00_0000;
             offset += 4;
             if offset < count {
-                chksum ^= check;
+                checksum ^= check;
             }
         }
-        (check, chksum)
+        (check, checksum)
     }
 
+    #[must_use]
     pub fn verify_checksum(raw: &[u8]) -> bool {
         let size = raw.len();
         if size & 3 != 0 || size <= 4 {
             return false;
         }
-        let (check, chksum) = Self::calculate_checksum_block(raw);
-        check == chksum
+        let (check, checksum) = Self::calculate_checksum_block(raw);
+        check == checksum
     }
 
     pub fn append_checksum(raw: &mut [u8]) {
-        let (_, chksum) = Self::calculate_checksum_block(raw);
+        let (_, checksum) = Self::calculate_checksum_block(raw);
         let last = raw.len() - 4; //modify last 4 bytes, starting from offset
-        raw[last] = (chksum & 0xff) as u8;
-        raw[last + 1] = ((chksum >> 0x08) & 0xff) as u8;
-        raw[last + 2] = ((chksum >> 0x10) & 0xff) as u8;
-        raw[last + 3] = ((chksum >> 0x18) & 0xff) as u8;
+        raw[last] = (checksum & 0xff) as u8;
+        raw[last + 1] = ((checksum >> 0x08) & 0xff) as u8;
+        raw[last + 2] = ((checksum >> 0x10) & 0xff) as u8;
+        raw[last + 3] = ((checksum >> 0x18) & 0xff) as u8;
     }
     #[allow(clippy::similar_names)]
     pub fn enc_xor_pass(raw: &mut [u8], offset: usize, size: usize, key: u32) {
@@ -80,6 +85,7 @@ impl Encryption {
         raw[pos + 3] = ((ecx >> 24) & 0xFF) as u8;
     }
 
+    #[allow(clippy::missing_errors_doc)]
     pub fn decrypt(&self, raw: &mut [u8]) -> Result<(), Packet> {
         let size = raw.len();
         let offset = 0;
@@ -100,7 +106,6 @@ impl Encryption {
 
 #[cfg(test)]
 mod test {
-    use super::*;
     use crate::crypt::login::Encryption;
 
     #[test]
@@ -118,7 +123,6 @@ mod test {
             128, 157, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         ];
         let decryptor = Encryption::from_u8_key(&key);
-        let data_len = data.len();
         let res = decryptor.decrypt(&mut data);
         assert!(res.is_ok(), "Result must be ok");
         assert_eq!(

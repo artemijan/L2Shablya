@@ -1,7 +1,7 @@
-use l2_core::packets::common::{
+use l2_core::shared_packets::common::{
     LoginServerOpcodes, SendablePacket, ServerData, ServerStatus,
 };
-use l2_core::packets::write::SendablePacketBuffer;
+use l2_core::shared_packets::write::SendablePacketBuffer;
 use l2_core::traits::handlers::PacketHandler;
 use crate::client_thread::ClientHandler;
 use crate::dto::player::GSCharsInfo;

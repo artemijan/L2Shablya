@@ -4,7 +4,7 @@ use crate::packets::from_client::new_char::NewCharacter;
 use crate::packets::from_client::noop::NoOp;
 use crate::packets::from_client::protocol::ProtocolVersion;
 use crate::packets::HandleablePacket;
-use l2_core::packets::common::ReadablePacket;
+use l2_core::shared_packets::common::ReadablePacket;
 use tracing::error;
 
 pub fn build_client_packet(

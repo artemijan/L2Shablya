@@ -1,5 +1,5 @@
 use l2_core::dto::ServerHost;
-use l2_core::packets::common::ServerType;
+use l2_core::shared_packets::common::ServerType;
 use anyhow::bail;
 use num::BigInt;
 use pnet::ipnetwork::Ipv4Network;

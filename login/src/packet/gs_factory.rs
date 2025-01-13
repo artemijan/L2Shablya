@@ -1,5 +1,5 @@
 use crate::gs_thread::GSHandler;
-use l2_core::packets::{
+use l2_core::shared_packets::{
     common::ReadablePacket,
     gs_2_ls::{
         BlowFish, ChangeAccessLevel, ChangePassword, GSStatusUpdate, PlayerAuthRequest,

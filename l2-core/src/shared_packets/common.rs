@@ -1,6 +1,6 @@
 use super::{gs_2_ls::ReplyChars, read::ReadablePacketBuffer};
-use crate::packets::ls_2_gs::PlayerAuthResponse;
-use crate::packets::write::SendablePacketBuffer;
+use crate::shared_packets::ls_2_gs::PlayerAuthResponse;
+use crate::shared_packets::write::SendablePacketBuffer;
 use anyhow::bail;
 use num_enum::TryFromPrimitive;
 use std::str::FromStr;

@@ -1,6 +1,6 @@
 use crate::controller::Controller;
-use l2_core::packets::common::SendablePacket;
-use l2_core::packets::write::SendablePacketBuffer;
+use l2_core::shared_packets::common::SendablePacket;
+use l2_core::shared_packets::write::SendablePacketBuffer;
 
 #[derive(Debug, Clone)]
 pub struct NewCharacterResponse {

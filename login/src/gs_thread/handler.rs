@@ -9,9 +9,9 @@ use l2_core::crypt::login::Encryption;
 use l2_core::crypt::rsa::ScrambledRSAKeyPair;
 use l2_core::dto::InboundConnection;
 use l2_core::errors::Packet;
-use l2_core::packets::common::GSLoginFail;
-use l2_core::packets::error::PacketRun;
-use l2_core::packets::ls_2_gs::InitLS;
+use l2_core::shared_packets::common::GSLoginFail;
+use l2_core::shared_packets::error::PacketRun;
+use l2_core::shared_packets::ls_2_gs::InitLS;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
 use std::sync::Arc;
@@ -26,7 +26,7 @@ pub struct GameServer {
     ///
     /// `tcp_reader` and `tcp_writer` are wrapped into Arc<Mutex> because we need to share the handler
     /// across two tokio threads:
-    /// 1. Main thread to accept and answer packets
+    /// 1. Main thread to accept and answer shared_packets
     /// 2. Listen for messages from Client login thread if we need info about logging in Player
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,

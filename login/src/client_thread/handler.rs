@@ -39,7 +39,7 @@ pub struct Client {
 
 /// # This function called each time when there is a new connection.
 /// ## Arguments
-/// - stream - `TcpStream` to send/receive packets
+/// - stream - `TcpStream` to send/receive shared_packets
 /// - lc - `LoginClient` object is needed to store some client related data
 ///
 /// # The whole login process looks like the following:

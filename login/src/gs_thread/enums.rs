@@ -1,4 +1,4 @@
-use l2_core::packets::common::GSLoginFailReasons;
+use l2_core::shared_packets::common::GSLoginFailReasons;
 use strum::Display;
 
 #[derive(Debug, Clone, Display)]

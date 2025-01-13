@@ -1,7 +1,7 @@
 use crate::constants;
-use crate::packets::common::{LoginServerOpcodes, ReadablePacket, SendablePacket};
-use crate::packets::read::ReadablePacketBuffer;
-use crate::packets::write::SendablePacketBuffer;
+use crate::shared_packets::common::{LoginServerOpcodes, ReadablePacket, SendablePacket};
+use crate::shared_packets::read::ReadablePacketBuffer;
+use crate::shared_packets::write::SendablePacketBuffer;
 
 #[derive(Debug)]
 pub struct InitLS {

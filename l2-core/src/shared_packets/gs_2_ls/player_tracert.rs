@@ -1,5 +1,5 @@
-use crate::packets::common::ReadablePacket;
-use crate::packets::read::ReadablePacketBuffer;
+use crate::shared_packets::common::ReadablePacket;
+use crate::shared_packets::read::ReadablePacketBuffer;
 use async_trait::async_trait;
 
 #[derive(Clone, Debug)]

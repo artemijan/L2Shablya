@@ -3,7 +3,7 @@ use crate::packet::HandleablePacket;
 use async_trait::async_trait;
 use l2_core::traits::handlers::PacketSender;
 use l2_core::{
-    packets::{
+    shared_packets::{
         error::PacketRun,
         gs_2_ls::PlayerAuthRequest,
         ls_2_gs::PlayerAuthResponse,

@@ -1,5 +1,5 @@
-use crate::packets::common::ReadablePacket;
-use crate::packets::read::ReadablePacketBuffer;
+use crate::shared_packets::common::ReadablePacket;
+use crate::shared_packets::read::ReadablePacketBuffer;
 
 #[derive(Clone, Debug)]
 pub struct ChangePassword {

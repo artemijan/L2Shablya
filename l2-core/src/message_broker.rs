@@ -1,4 +1,4 @@
-use crate::packets::common::SendablePacket;
+use crate::shared_packets::common::SendablePacket;
 use crate::traits::handlers::PacketSender;
 use anyhow::Error;
 use dashmap::DashMap;

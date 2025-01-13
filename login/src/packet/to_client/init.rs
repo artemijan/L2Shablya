@@ -1,4 +1,4 @@
-use l2_core::packets::{
+use l2_core::shared_packets::{
     common::{LoginServerOpcodes, SendablePacket},
     write::SendablePacketBuffer,
 };

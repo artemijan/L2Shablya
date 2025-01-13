@@ -1,9 +1,9 @@
 use crate::ls_thread::LoginHandler;
 use crate::packets::HandleablePacket;
 use async_trait::async_trait;
-use l2_core::packets::error::PacketRun;
-use l2_core::packets::gs_2_ls::{GSStatusUpdate, PlayerInGame};
-use l2_core::packets::ls_2_gs;
+use l2_core::shared_packets::error::PacketRun;
+use l2_core::shared_packets::gs_2_ls::{GSStatusUpdate, PlayerInGame};
+use l2_core::shared_packets::ls_2_gs;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use std::sync::Arc;
 use tracing::{info, instrument};

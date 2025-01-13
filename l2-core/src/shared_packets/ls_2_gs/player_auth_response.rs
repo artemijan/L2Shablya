@@ -1,4 +1,4 @@
-use crate::packets::{
+use crate::shared_packets::{
     common::{ReadablePacket, SendablePacket},
     read::ReadablePacketBuffer,
     write::SendablePacketBuffer,

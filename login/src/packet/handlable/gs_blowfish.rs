@@ -1,6 +1,6 @@
 use l2_core::traits::handlers::PacketSender;
 use async_trait::async_trait;
-use l2_core::packets::{
+use l2_core::shared_packets::{
     common::{PlayerLoginFail, PlayerLoginFailReasons},
     error::PacketRun,
     gs_2_ls::BlowFish,

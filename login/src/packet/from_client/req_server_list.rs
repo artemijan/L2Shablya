@@ -2,9 +2,9 @@ use crate::client_thread::ClientHandler;
 use crate::packet::to_client::ServerList;
 use crate::packet::HandleablePacket;
 use async_trait::async_trait;
-use l2_core::packets::common::{PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket};
-use l2_core::packets::error::PacketRun;
-use l2_core::packets::read::ReadablePacketBuffer;
+use l2_core::shared_packets::common::{PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket};
+use l2_core::shared_packets::error::PacketRun;
+use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::traits::handlers::PacketSender;
 
 #[derive(Clone, Debug)]

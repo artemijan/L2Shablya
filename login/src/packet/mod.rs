@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 use async_trait::async_trait;
-use l2_core::packets::error::PacketRun;
+use l2_core::shared_packets::error::PacketRun;
 
 pub mod from_client;
 pub mod handlable;

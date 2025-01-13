@@ -1,38 +1,39 @@
-use crate::packets::{
+use crate::shared_packets::read::ReadablePacketBuffer;
+use crate::shared_packets::{
     common::{ReadablePacket, SendablePacket},
-    read::ReadablePacketBuffer,
     write::SendablePacketBuffer,
 };
 
-#[derive(Debug, Clone)]
-pub struct RequestChars {
+#[derive(Debug)]
+pub struct KickPlayer {
     pub buffer: SendablePacketBuffer,
     pub account_name: String,
 }
 
-impl RequestChars {
-    pub fn new(account_name: &str) -> RequestChars {
-        let mut gg = RequestChars {
+impl KickPlayer {
+    pub fn new(account_name: &str) -> Self {
+        let mut pack = Self {
             buffer: SendablePacketBuffer::new(),
             account_name: account_name.to_string(),
         };
-        let _ = gg.write_all(); // safe to ignore
-        gg
+        let _ = pack.write_all();
+        pack
     }
+
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
-        self.buffer.write_u8(0x05)?;
+        self.buffer.write(0x04)?;
         self.buffer.write_string(Some(&self.account_name))?;
         Ok(())
     }
 }
 
-impl SendablePacket for RequestChars {
+impl SendablePacket for KickPlayer {
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
         &mut self.buffer
     }
 }
-impl ReadablePacket for RequestChars {
-    const PACKET_ID: u8 = 0x05;
+impl ReadablePacket for KickPlayer {
+    const PACKET_ID: u8 = 0x04;
 
     fn read(data: &[u8]) -> Option<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());

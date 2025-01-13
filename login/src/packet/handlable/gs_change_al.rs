@@ -1,7 +1,7 @@
-use l2_core::packets::error::PacketRun;
+use l2_core::shared_packets::error::PacketRun;
 use entities::entities::user;
 use l2_core::{
-    packets::gs_2_ls::ChangeAccessLevel,
+    shared_packets::gs_2_ls::ChangeAccessLevel,
     traits::handlers::PacketHandler,
 };
 use crate::gs_thread::GSHandler;

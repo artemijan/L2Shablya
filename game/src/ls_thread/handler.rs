@@ -16,7 +16,7 @@ use tokio::sync::{Mutex, Notify};
 use tracing::{info, instrument};
 
 #[derive(Debug, Clone)]
-#[allow(clippy::module_name_repetitions)]
+#[allow(clippy::module_name_repetitions, unused)]
 pub struct LoginHandler {
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,

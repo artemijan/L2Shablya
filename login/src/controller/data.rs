@@ -4,7 +4,7 @@ use dashmap::DashMap;
 use l2_core::config::login;
 use l2_core::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
 use l2_core::message_broker::MessageBroker;
-use l2_core::packets::common::PacketType;
+use l2_core::shared_packets::common::PacketType;
 use rand::Rng;
 use std::sync::Arc;
 use std::time::Duration;

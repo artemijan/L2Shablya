@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use l2_core::config::gs::GSServer;
-use l2_core::packets::common::SendablePacket;
-use l2_core::packets::write::SendablePacketBuffer;
+use l2_core::shared_packets::common::SendablePacket;
+use l2_core::shared_packets::write::SendablePacketBuffer;
 
 #[derive(Debug, Clone)]
 #[allow(unused)]
