@@ -10,7 +10,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 2. Permitted Commercial Use
 
-        - You are allowed to use the Software in commercial environments, provided that it is not sold, licensed, or otherwise distributed as a standalone product or service, whether modified or unmodified.
+        - You are allowed to use the Software in commercial environments, provided that it is not sold (this software itself), licensed, or otherwise distributed as a standalone product or service, whether modified or unmodified.
         - Commercial use related to services hosted by the Software, such as selling in-game goods or other value-added services facilitated through the Software, is permitted.
 
 3. Prohibited Commercial Use
