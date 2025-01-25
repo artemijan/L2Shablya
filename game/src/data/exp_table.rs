@@ -1,9 +1,10 @@
+use macro_common::config_file;
 use serde::{de, Deserialize, Deserializer};
 use std::collections::HashMap;
-use std::fs;
 use tracing::info;
 
 #[derive(Debug, Clone)]
+#[config_file(path="config/data/stats/exp_table.yaml")]
 pub struct ExpTable {
     pub max_level: u8,
     exp_data: HashMap<u8, i64>,
@@ -16,6 +17,7 @@ struct LevelData {
     exp: i64,
     training_rate: f64,
 }
+
 impl<'de> Deserialize<'de> for ExpTable {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
@@ -62,14 +64,8 @@ impl<'de> Deserialize<'de> for ExpTable {
         Ok(exp_table)
     }
 }
+
 impl ExpTable {
-    const DATA_FILE: &'static str = "config/data/stats/exp_table.yaml";
-    pub fn load() -> Self {
-        let file_content = fs::read_to_string(Self::DATA_FILE)
-            .expect("Can't read experience table file, check if it exists");
-        let inst: Self = serde_yaml::from_str(&file_content).expect("Can't read experience table");
-        inst
-    }
     pub fn get_exp(&self, level: u8) -> i64 {
         if level > self.max_level {
             return *self.exp_data.get(&self.max_level).unwrap_or(&0);

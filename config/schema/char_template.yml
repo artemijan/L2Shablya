@@ -1,0 +1,285 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "Char template Schema"
+type: "object"
+properties:
+  class_id:
+    type: "integer"
+    description: "The ID of the class."
+  static_data:
+    type: "object"
+    properties:
+      base_int:
+        type: "integer"
+        description: "Base intelligence stat."
+      base_str:
+        type: "integer"
+        description: "Base strength stat."
+      base_con:
+        type: "integer"
+        description: "Base constitution stat."
+      base_men:
+        type: "integer"
+        description: "Base mental stat."
+      base_dex:
+        type: "integer"
+        description: "Base dexterity stat."
+      base_wit:
+        type: "integer"
+        description: "Base wit stat."
+      physical_abnormal_resist:
+        type: "integer"
+        description: "Resistance to physical abnormalities."
+      magic_abnormal_resist:
+        type: "integer"
+        description: "Resistance to magical abnormalities."
+      creation_points:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            x:
+              type: "integer"
+              description: "X coordinate."
+            y:
+              type: "integer"
+              description: "Y coordinate."
+            z:
+              type: "integer"
+              description: "Z coordinate."
+          required:
+            - x
+            - y
+            - z
+        description: "List of creation points."
+      base_p_atk:
+        type: "integer"
+        description: "Base physical attack."
+      base_crit_rate:
+        type: "integer"
+        description: "Base critical rate."
+      base_m_crit_rate:
+        type: "integer"
+        description: "Base magical critical rate."
+      base_atk_type:
+        type: "string"
+        enum: ["FIST", "SWORD", "BOW", "MAGIC"]
+        description: "Base attack type."
+      base_p_atk_spd:
+        type: "integer"
+        description: "Base physical attack speed."
+      base_m_atk_spd:
+        type: "integer"
+        description: "Base magical attack speed."
+      base_p_def:
+        type: "object"
+        properties:
+          chest:
+            type: "integer"
+            description: "Chest defense."
+          legs:
+            type: "integer"
+            description: "Legs defense."
+          head:
+            type: "integer"
+            description: "Head defense."
+          feet:
+            type: "integer"
+            description: "Feet defense."
+          gloves:
+            type: "integer"
+            description: "Gloves defense."
+          underwear:
+            type: "integer"
+            description: "Underwear defense."
+          cloak:
+            type: "integer"
+            description: "Cloak defense."
+        required:
+          - chest
+          - legs
+          - head
+          - feet
+          - gloves
+          - underwear
+          - cloak
+        description: "Base physical defense stats."
+      base_m_atk:
+        type: "integer"
+        description: "Base magical attack."
+      base_m_def:
+        type: "object"
+        properties:
+          r_ear:
+            type: "integer"
+            description: "Right ear defense."
+          l_ear:
+            type: "integer"
+            description: "Left ear defense."
+          r_finger:
+            type: "integer"
+            description: "Right finger defense."
+          l_finger:
+            type: "integer"
+            description: "Left finger defense."
+          neck:
+            type: "integer"
+            description: "Neck defense."
+        required:
+          - r_ear
+          - l_ear
+          - r_finger
+          - l_finger
+          - neck
+        description: "Base magical defense stats."
+      base_can_penetrate:
+        type: "integer"
+        description: "Base penetration capability."
+      base_atk_range:
+        type: "integer"
+        description: "Base attack range."
+      base_dam_range:
+        type: "object"
+        properties:
+          vertical_direction:
+            type: "integer"
+            description: "Vertical direction of damage range."
+          horizontal_direction:
+            type: "integer"
+            description: "Horizontal direction of damage range."
+          distance:
+            type: "integer"
+            description: "Distance of damage range."
+          width:
+            type: "integer"
+            description: "Width of damage range."
+        required:
+          - vertical_direction
+          - horizontal_direction
+          - distance
+          - width
+        description: "Base damage range."
+      base_rnd_dam:
+        type: "integer"
+        description: "Base random damage."
+      base_move_spd:
+        type: "object"
+        properties:
+          walk:
+            type: "integer"
+            description: "Walking speed."
+          run:
+            type: "integer"
+            description: "Running speed."
+          slow_swim:
+            type: "integer"
+            description: "Slow swimming speed."
+          fast_swim:
+            type: "integer"
+            description: "Fast swimming speed."
+        required:
+          - walk
+          - run
+          - slow_swim
+          - fast_swim
+        description: "Base movement speeds."
+      base_breath:
+        type: "integer"
+        description: "Base breath stat."
+      base_safe_fall:
+        type: "integer"
+        description: "Base safe fall stat."
+      collision_male:
+        type: "object"
+        properties:
+          radius:
+            type: "number"
+            description: "Collision radius for male characters."
+          height:
+            type: "number"
+            description: "Collision height for male characters."
+        required:
+          - radius
+          - height
+        description: "Collision data for male characters."
+      collision_female:
+        type: "object"
+        properties:
+          radius:
+            type: "number"
+            description: "Collision radius for female characters."
+          height:
+            type: "number"
+            description: "Collision height for female characters."
+        required:
+          - radius
+          - height
+        description: "Collision data for female characters."
+    required:
+      - base_int
+      - base_str
+      - base_con
+      - base_men
+      - base_dex
+      - base_wit
+      - physical_abnormal_resist
+      - magic_abnormal_resist
+      - creation_points
+      - base_p_atk
+      - base_crit_rate
+      - base_m_crit_rate
+      - base_atk_type
+      - base_p_atk_spd
+      - base_m_atk_spd
+      - base_p_def
+      - base_m_atk
+      - base_m_def
+      - base_can_penetrate
+      - base_atk_range
+      - base_dam_range
+      - base_rnd_dam
+      - base_move_spd
+      - base_breath
+      - base_safe_fall
+      - collision_male
+      - collision_female
+    description: "Static data for the class."
+  lvl_up_gain_data:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        lvl:
+          type: "integer"
+          description: "The level."
+        hp:
+          type: "number"
+          description: "Health points gained at this level."
+        mp:
+          type: "number"
+          description: "Mana points gained at this level."
+        cp:
+          type: "number"
+          description: "Combat points gained at this level."
+        hp_regen:
+          type: "number"
+          description: "Health regeneration at this level."
+        mp_regen:
+          type: "number"
+          description: "Mana regeneration at this level."
+        cp_regen:
+          type: "number"
+          description: "Combat regeneration at this level."
+      required:
+        - lvl
+        - hp
+        - mp
+        - cp
+        - hp_regen
+        - mp_regen
+        - cp_regen
+      description: "Level-up gain data."
+    description: "List of level-up gain data."
+required:
+  - class_id
+  - static_data
+  - lvl_up_gain_data

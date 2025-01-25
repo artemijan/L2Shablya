@@ -2,6 +2,7 @@ use super::{gs_2_ls::ReplyChars, read::ReadablePacketBuffer};
 use crate::shared_packets::ls_2_gs::PlayerAuthResponse;
 use crate::shared_packets::write::SendablePacketBuffer;
 use anyhow::bail;
+use macro_common::SendablePacketImpl;
 use num_enum::TryFromPrimitive;
 use std::str::FromStr;
 use std::{fmt::Debug, net::Ipv4Addr};
@@ -12,11 +13,13 @@ pub trait SendablePacket: Debug + Send + Sync {
         buff.get_data_mut()
     }
     fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer;
+    fn get_buffer(&self) -> &SendablePacketBuffer;
 }
 
 pub trait ReadablePacket: Debug + Send + Sync {
-    const PACKET_ID:u8;
-    fn read(data: &[u8]) -> Option<Self>
+    const PACKET_ID: u8;
+    const EX_PACKET_ID: Option<u16>;
+    fn read(data: &[u8]) -> anyhow::Result<Self>
     where
         Self: Sized + ReadablePacket;
 }
@@ -186,30 +189,25 @@ pub enum PlayerLoginFailReasons {
     ReasonCertificationUnderwayTryAgainLater = 0x38,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct GSLoginFail {
     pub buffer: SendablePacketBuffer,
     pub reason: GSLoginFailReasons,
 }
-
-impl SendablePacket for GSLoginFail {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
-    }
-}
 impl ReadablePacket for GSLoginFail {
     const PACKET_ID: u8 = 0x01;
+    const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self>
+    fn read(data: &[u8]) -> anyhow::Result<Self>
     where
         Self: Sized + ReadablePacket,
     {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte(); //packet id
         let reason = buffer.read_byte();
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
-            reason: GSLoginFailReasons::from_u8(reason).unwrap(),
+            reason: GSLoginFailReasons::from_u8(reason)?,
         })
     }
 }
@@ -233,7 +231,7 @@ impl GSLoginFail {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct PlayerLoginFail {
     pub buffer: SendablePacketBuffer,
     pub reason: PlayerLoginFailReasons,
@@ -256,12 +254,6 @@ impl PlayerLoginFail {
         self.buffer.write(LoginServerOpcodes::LoginFail as u8)?;
         self.buffer.write(self.reason.clone() as u8)?;
         Ok(())
-    }
-}
-
-impl SendablePacket for PlayerLoginFail {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }
 

@@ -2,7 +2,7 @@ use crate::data::classes::Race;
 use anyhow::bail;
 use serde::{Deserialize, Deserializer};
 
-#[derive(Clone, Debug, Copy)]
+#[derive(Clone, Debug, Copy, Eq, PartialEq)]
 pub struct CharClass {
     pub id: Class,
     pub is_mage: bool,

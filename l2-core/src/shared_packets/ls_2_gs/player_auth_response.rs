@@ -3,8 +3,9 @@ use crate::shared_packets::{
     read::ReadablePacketBuffer,
     write::SendablePacketBuffer,
 };
+use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct PlayerAuthResponse {
     pub buffer: SendablePacketBuffer,
     pub account: String,
@@ -30,21 +31,16 @@ impl PlayerAuthResponse {
     }
 }
 
-impl SendablePacket for PlayerAuthResponse {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
-    }
-}
-
 impl ReadablePacket for PlayerAuthResponse {
     const PACKET_ID: u8 = 0x03;
+    const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         let _packet_id = buffer.read_byte();
         let account = buffer.read_string();
         let is_ok = buffer.read_boolean();
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             is_ok,
             account,

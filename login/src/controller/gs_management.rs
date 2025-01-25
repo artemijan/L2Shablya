@@ -1,9 +1,9 @@
-use super::data::Login;
+use super::data::LoginController;
 use crate::dto::game_server::GSInfo;
 use l2_core::shared_packets::common::{GSLoginFailReasons, ServerData, ServerStatus};
 use std::net::Ipv4Addr;
 
-impl Login {
+impl LoginController {
     pub fn get_server_list(&self, client_ip: Ipv4Addr) -> Vec<ServerData> {
         let mut servers = Vec::new();
         for s in &self.game_servers {

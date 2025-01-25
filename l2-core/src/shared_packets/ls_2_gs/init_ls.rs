@@ -2,8 +2,9 @@ use crate::constants;
 use crate::shared_packets::common::{LoginServerOpcodes, ReadablePacket, SendablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacketImpl;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct InitLS {
     buffer: SendablePacketBuffer,
     pub revision: i32,
@@ -31,23 +32,19 @@ impl InitLS {
     }
 }
 
-impl SendablePacket for InitLS {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
-    }
-}
 
 impl ReadablePacket for InitLS {
     const PACKET_ID: u8 = 0x00;
+    const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         let _packet_id = buffer.read_byte();
         let revision = buffer.read_i32(); // LS protocol revision
         let key_size = buffer.read_i32(); // key length
         #[allow(clippy::cast_sign_loss)]
         let public_key = buffer.read_bytes(key_size as usize); // RSA Public Key
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             revision,
             public_key,

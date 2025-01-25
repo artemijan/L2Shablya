@@ -1,3 +1,4 @@
+use anyhow::bail;
 use crate::client_thread::ClientHandler;
 use crate::dto::player;
 use crate::packet::to_client::LoginOk;
@@ -7,7 +8,6 @@ use async_trait::async_trait;
 use entities::entities::user;
 use l2_core::hash_password;
 use l2_core::shared_packets::common::{PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket};
-use l2_core::shared_packets::error::PacketRun;
 use l2_core::str::Trim;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use sea_orm::{ActiveModelTrait, ActiveValue};
@@ -22,8 +22,9 @@ pub struct RequestAuthLogin {
 
 impl ReadablePacket for RequestAuthLogin {
     const PACKET_ID: u8 = 0x00;
+const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let body = &data[..data.len() - 1]; //exclude last byte from calculation
         let mut is_new_auth = false;
         if let Some(val) = data.last() {
@@ -44,7 +45,7 @@ impl ReadablePacket for RequestAuthLogin {
                 .trim_all()
                 .to_string();
         }
-        Some(Self {
+        Ok(Self {
             username,
             password,
             is_new_auth
@@ -55,7 +56,7 @@ impl ReadablePacket for RequestAuthLogin {
 #[async_trait]
 impl HandleablePacket for RequestAuthLogin {
     type HandlerType = ClientHandler;
-    async fn handle(&self, ch: &mut Self::HandlerType) -> Result<(), PacketRun> {
+    async fn handle(&self, ch: &mut Self::HandlerType) -> anyhow::Result<()> {
         let auto_registration = ch.get_controller().get_config().auto_registration;
         let show_license = ch.get_controller().get_config().client.show_licence;
         let pool = ch.get_db_pool();
@@ -67,9 +68,7 @@ impl HandleablePacket for RequestAuthLogin {
                     PlayerLoginFailReasons::ReasonUserOrPassWrong,
                 )))
                 .await?;
-                return Err(PacketRun {
-                    msg: Some(format!("Login Fail, tried user: {}", self.username)),
-                });
+                bail!(format!("Login Fail, tried user: {}", self.username));
             }
         } else if auto_registration {
             let password_hash = hash_password(&self.password).await?;
@@ -94,7 +93,7 @@ impl HandleablePacket for RequestAuthLogin {
         if let Err(err) = lc.on_player_login(player_info).await {
             let err_msg = format!("Player login failed: {err:?}");
             ch.send_packet(Box::new(PlayerLoginFail::new(err))).await?;
-            return Err(PacketRun { msg: Some(err_msg) });
+            bail!(err_msg);
         }
         if show_license {
             ch.send_packet(Box::new(LoginOk::new(ch.get_session_key())))

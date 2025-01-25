@@ -2,7 +2,7 @@ use crate::entities::item;
 use sea_orm::{DeriveActiveEnum, EnumIter};
 use serde_json::Value;
 
-#[derive(EnumIter, DeriveActiveEnum, Clone, Debug, PartialEq, Eq)]
+#[derive(EnumIter, DeriveActiveEnum, Clone, Debug, Copy, PartialEq, Eq)]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "LocType")]
 pub enum LocType {
     #[sea_orm(string_value = "INVENTORY")]

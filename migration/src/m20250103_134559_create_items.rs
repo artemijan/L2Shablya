@@ -16,7 +16,7 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(pk_auto(Item::Id))
                     .col(integer(Item::Owner))
-                    .col(integer(Item::TypeId))
+                    .col(integer(Item::ItemId))
                     .col(big_unsigned(Item::Count).default(0))
                     .col(integer(Item::EnchantLevel).default(0))
                     .col(string(Item::Loc))
@@ -66,11 +66,12 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
+#[allow(clippy::enum_variant_names)]
 pub enum Item {
     Table,
     Id,
     Owner,
-    TypeId, //item_id
+    ItemId,
     Count,
     EnchantLevel,
     Loc,

@@ -1,10 +1,10 @@
+use macro_common::SendablePacketImpl;
+use crate::session::SessionKey;
 use crate::shared_packets::common::{ReadablePacket, SendablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use crate::session::SessionKey;
-use async_trait::async_trait;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacketImpl)]
 pub struct PlayerAuthRequest {
     pub session: SessionKey,
     pub account_name: String,
@@ -31,8 +31,9 @@ impl PlayerAuthRequest {
 }
 impl ReadablePacket for PlayerAuthRequest {
     const PACKET_ID: u8 = 0x05;
+    const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         let account_name = buffer.read_string();
@@ -40,7 +41,7 @@ impl ReadablePacket for PlayerAuthRequest {
         let play_ok2 = buffer.read_i32();
         let login_ok1 = buffer.read_i32();
         let login_ok2 = buffer.read_i32();
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             account_name,
             session: SessionKey {
@@ -52,9 +53,4 @@ impl ReadablePacket for PlayerAuthRequest {
         })
     }
 }
-#[async_trait]
-impl SendablePacket for PlayerAuthRequest {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
-    }
-}
+

@@ -7,35 +7,30 @@ publish = false
 [dependencies]
 migration = { path = "../migration" }
 entities = { path = "../entities" }
-encoding = "^0.2.33"
-rand = "^0.8.5"
-rand_core = "^0.6.4"
-anyhow = "^1.0.92"
-thiserror = "2.0.6"
-log = "^0.4.22"
-serde = { version = "^1.0.214", features = ["derive"] }
-num = "^0.4.3"
-num-traits = "^0.2.19"
-tokio = { version = "^1.41.0", features = ["full"] }
-sqlx = { version = "^0.8.2", features = [
-    "postgres",
-    "sqlite",
-    "runtime-tokio-rustls",
-    "sqlx-macros",
-    "chrono"
-] }
-async-trait = "^0.1.83"
-argon2 = "^0.5.3"
-serde_yaml = "^0.9.34"
-dotenvy = "^0.15.7"
-blowfish = "^0.9.1"
-num_enum = "^0.7.3"
-pnet = "0.35.0"
-reqwest = { version = "0.12.9", features = ["blocking"], default-features = false }
-tracing = "0.1.41"
-sea-orm = { version = "1.1.2" }
-dashmap = "6.1.0"
-futures = "^0.3.31"
-rsa = { version = "0.9.7" }
-pem = "3.0.4"
-uuid = { version = "^1.11.0", features = ["v4"] }
+macro-common = { path = "../macro-common" }
+encoding.workspace = true
+rand.workspace = true
+rand_core.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+log.workspace = true
+serde.workspace = true
+num.workspace = true
+num-traits.workspace = true
+tokio.workspace = true
+sqlx.workspace = true
+async-trait.workspace = true
+argon2.workspace = true
+serde_yaml.workspace = true
+dotenvy.workspace = true
+blowfish.workspace = true
+num_enum.workspace = true
+pnet.workspace = true
+reqwest.workspace = true
+tracing.workspace = true
+sea-orm.workspace = true
+dashmap.workspace = true
+futures.workspace = true
+rsa.workspace = true
+pem.workspace = true
+uuid.workspace = true

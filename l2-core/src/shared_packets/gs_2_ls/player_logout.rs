@@ -8,11 +8,12 @@ pub struct PlayerLogout {
 
 impl ReadablePacket for PlayerLogout {
     const PACKET_ID: u8 = 0x03;
+const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         let acc = buffer.read_string();
-        Some(Self { acc })
+        Ok(Self { acc })
     }
 }

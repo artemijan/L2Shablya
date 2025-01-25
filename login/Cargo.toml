@@ -9,17 +9,16 @@ path = "src/main.rs"
 [dependencies]
 entities = { path = "../entities" }
 l2-core = { path = "../l2-core" }
-rand = "^0.8.5"
-anyhow = "^1.0.92"
-num = "^0.4.3"
-tokio = { version = "^1.43.0", features = ["full"] }
-futures = "^0.3.31"
-async-trait = "^0.1.83"
-strum = { version = "^0.26.3", features = ["derive"] }
-uuid = { version = "^1.11.0", features = ["v4"] }
-dashmap = "6.1.0"
-chrono = "0.4.38"
-pnet = "0.35.0"
-tracing = "0.1.41"
-tracing-subscriber = "0.3.19"
-sea-orm = { version = "1.1.2" }
+macro-common = { path = "../macro-common" }
+rand.workspace = true
+anyhow.workspace = true
+num.workspace = true
+tokio.workspace = true
+async-trait.workspace = true
+strum.workspace = true
+dashmap.workspace = true
+chrono.workspace = true
+pnet.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+sea-orm.workspace = true

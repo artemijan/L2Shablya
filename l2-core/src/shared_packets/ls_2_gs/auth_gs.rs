@@ -1,10 +1,11 @@
+use macro_common::SendablePacketImpl;
 use crate::shared_packets::{
     common::{ReadablePacket, SendablePacket},
     read::ReadablePacketBuffer,
     write::SendablePacketBuffer,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct AuthGS {
     buffer: SendablePacketBuffer,
     pub server_id: u8,
@@ -30,21 +31,16 @@ impl AuthGS {
     }
 }
 
-impl SendablePacket for AuthGS {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
-    }
-}
-
 impl ReadablePacket for AuthGS {
     const PACKET_ID: u8 = 0x02;
+    const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         let _packet_id = buffer.read_byte();
         let server_id = buffer.read_byte();
         let server_name = buffer.read_string();
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             server_id,
             server_name,

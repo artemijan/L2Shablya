@@ -11,11 +11,12 @@ pub struct ChangePassword {
 
 impl ReadablePacket for ChangePassword {
     const PACKET_ID: u8 = 0x0B;
+const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
-        Some(Self {
+        Ok(Self {
             account: buffer.read_string(),
             char_name: buffer.read_string(),
             current_password: buffer.read_string(),

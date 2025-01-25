@@ -6,8 +6,9 @@ use l2_core::traits::handlers::PacketHandler;
 use crate::client_thread::ClientHandler;
 use crate::dto::player::GSCharsInfo;
 use std::collections::HashMap;
+use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct ServerList {
     pub buffer: SendablePacketBuffer,
     servers: Vec<ServerData>,
@@ -80,11 +81,5 @@ impl ServerList {
             }
         }
         Ok(())
-    }
-}
-
-impl SendablePacket for ServerList {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

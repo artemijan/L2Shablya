@@ -1,8 +1,9 @@
+use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::{LoginServerOpcodes, SendablePacket};
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use l2_core::session::SessionKey;
+use macro_common::SendablePacketImpl;
 
-#[derive(Debug)]
+#[derive(Debug, SendablePacketImpl)]
 pub struct LoginOk {
     pub buffer: SendablePacketBuffer,
     login_ok1: i32,
@@ -32,11 +33,5 @@ impl LoginOk {
         self.buffer.write_i32(0x00)?;
         self.buffer.write_bytes(vec![0; 16].as_slice())?;
         Ok(())
-    }
-}
-
-impl SendablePacket for LoginOk {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

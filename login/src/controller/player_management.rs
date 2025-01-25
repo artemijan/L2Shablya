@@ -1,4 +1,4 @@
-use super::data::Login;
+use super::data::LoginController;
 use l2_core::shared_packets::common::{PacketType, PlayerLoginFailReasons};
 use l2_core::shared_packets::ls_2_gs::{KickPlayer, RequestChars};
 use crate::dto::player;
@@ -9,7 +9,7 @@ use rand::{
 };
 use tracing::info;
 
-impl Login {
+impl LoginController {
     pub async fn on_player_login(
         &self,
         mut player_info: player::Info,

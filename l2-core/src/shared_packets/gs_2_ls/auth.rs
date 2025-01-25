@@ -3,8 +3,9 @@ use crate::shared_packets::common::{ReadablePacket, SendablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use num_traits::ToBytes;
+use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, SendablePacketImpl)]
 pub struct RequestAuthGS {
     buffer: SendablePacketBuffer,
     pub desired_id: u8,
@@ -55,8 +56,9 @@ impl RequestAuthGS {
 #[allow(clippy::cast_sign_loss)]
 impl ReadablePacket for RequestAuthGS {
     const PACKET_ID: u8 = 0x01;
+    const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer: ReadablePacketBuffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         let desired_id = buffer.read_byte();
@@ -68,7 +70,7 @@ impl ReadablePacket for RequestAuthGS {
         let hex_id = buffer.read_bytes(size as usize);
         size = buffer.read_u32() * 2;
         let hosts = buffer.read_n_strings(size as usize);
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             desired_id,
             accept_alternative_id,
@@ -78,11 +80,5 @@ impl ReadablePacket for RequestAuthGS {
             hex_id,
             hosts,
         })
-    }
-}
-
-impl SendablePacket for RequestAuthGS {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

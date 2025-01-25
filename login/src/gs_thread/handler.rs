@@ -1,4 +1,4 @@
-use crate::controller::Login;
+use crate::controller::LoginController;
 use crate::gs_thread::enums;
 use crate::packet::gs_factory::build_gs_packet;
 use anyhow::{bail, Error};
@@ -10,7 +10,6 @@ use l2_core::crypt::rsa::ScrambledRSAKeyPair;
 use l2_core::dto::InboundConnection;
 use l2_core::errors::Packet;
 use l2_core::shared_packets::common::GSLoginFail;
-use l2_core::shared_packets::error::PacketRun;
 use l2_core::shared_packets::ls_2_gs::InitLS;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
@@ -31,7 +30,7 @@ pub struct GameServer {
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
     tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
     shutdown_listener: Arc<Notify>,
-    lc: Arc<Login>,
+    lc: Arc<LoginController>,
     db_pool: DBPool,
     key_pair: ScrambledRSAKeyPair,
     blowfish: Encryption,
@@ -44,11 +43,11 @@ impl GameServer {
         self.blowfish = Encryption::from_u8_key(new_bf_key);
     }
 
-    pub async fn set_connection_state(&mut self, state: &enums::GS) -> Result<(), PacketRun> {
+    pub async fn set_connection_state(&mut self, state: &enums::GS) -> anyhow::Result<()> {
         if let Err(err) = self.connection_state.transition_to(state) {
             let err_msg = format!("Connection state transition failed {err:?}");
             self.send_packet(Box::new(GSLoginFail::new(err))).await?;
-            return Err(PacketRun { msg: Some(err_msg) });
+            bail!(err_msg);
         }
         Ok(())
     }
@@ -78,7 +77,7 @@ impl PacketSender for GameServer {
 #[async_trait]
 impl PacketHandler for GameServer {
     type ConfigType = LoginServer;
-    type ControllerType = Login;
+    type ControllerType = LoginController;
     fn get_handler_name() -> &'static str {
         "Game server handler"
     }
@@ -139,20 +138,15 @@ impl PacketHandler for GameServer {
     fn get_db_pool(&self) -> &DBPool {
         &self.db_pool
     }
+    
     #[instrument(skip(self, bytes))]
     async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
         self.blowfish.decrypt(bytes)?;
         if !Encryption::verify_checksum(bytes) {
             bail!("Can not verify check sum.")
         }
-        let handler = build_gs_packet(bytes).ok_or_else(|| Packet::ClientPacketNotFound {
-            opcode: bytes[0] as usize,
-        })?;
-        if let Err(error) = handler.handle(self).await {
-            info!("Error handling packet: {error:?}");
-            return Err(error.into());
-        };
-        Ok(())
+        let handler = build_gs_packet(bytes)?;
+        handler.handle(self).await
     }
 }
 

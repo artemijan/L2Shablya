@@ -1,8 +1,9 @@
 use crate::controller::Controller;
 use l2_core::shared_packets::common::SendablePacket;
 use l2_core::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct NewCharacterResponse {
     buffer: SendablePacketBuffer,
 }
@@ -43,10 +44,5 @@ impl NewCharacterResponse {
             inst.buffer.write_i32(1)?;
         }
         Ok(inst)
-    }
-}
-impl SendablePacket for NewCharacterResponse {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

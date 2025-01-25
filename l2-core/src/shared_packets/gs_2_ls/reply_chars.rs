@@ -3,8 +3,9 @@ use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use async_trait::async_trait;
 use entities::entities::character;
+use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacketImpl)]
 pub struct ReplyChars {
     pub buffer: SendablePacketBuffer,
     pub account_name: String,
@@ -44,8 +45,9 @@ impl ReplyChars {
 #[async_trait]
 impl ReadablePacket for ReplyChars {
     const PACKET_ID: u8 = 0x08;
+    const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         let account_name = buffer.read_string();
@@ -55,19 +57,12 @@ impl ReadablePacket for ReplyChars {
         for _ in 0..chars_to_delete {
             char_list.push(buffer.read_i64());
         }
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             account_name,
             chars,
             delete_chars_len: chars_to_delete,
             char_deletion_timestamps: char_list,
         })
-    }
-}
-
-#[async_trait]
-impl SendablePacket for ReplyChars {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

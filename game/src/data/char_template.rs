@@ -1,45 +1,53 @@
+use crate::data::base_stat::{BaseStat, CreatureParameter};
 use crate::data::classes::mapping::Class;
-use serde::Deserialize;
+use anyhow::bail;
+use entities::entities::character;
+use l2_core::config::traits::{LoadFileHandler, Loadable};
+use macro_common::config_dir;
+use rand::prelude::SliceRandom;
+use rand::thread_rng;
+use serde::{Deserialize, Deserializer};
 use std::collections::HashMap;
-use std::fs;
 use tracing::info;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
+#[config_dir(path = "config/data/stats/chars/base_stats", post_load)]
 pub struct ClassTemplates {
     templates: HashMap<Class, CharTemplate>,
 }
 
-impl ClassTemplates {
-    const DATA_DIR: &'static str = "config/data/stats/chars/base_stats";
-    pub fn load() -> Self {
-        let dir_entries = fs::read_dir(Self::DATA_DIR).unwrap_or_else(|e| {
-            panic!("Can't open {} to read class templates. {e}", Self::DATA_DIR)
-        });
-        let mut result = Self {
-            templates: HashMap::new(),
-        };
-        for dir_entry in dir_entries {
-            let path = dir_entry.expect("Can not read dir entry").path();
-            if path.is_file() && path.extension().and_then(|ext| ext.to_str()) == Some("yaml") {
-                let file = fs::read_to_string(path).expect("Can not read file");
-                let inst: CharTemplate =
-                    serde_yaml::from_str(&file).expect("Can't read experience table");
-                if let Some(i) = result.templates.insert(inst.class_id, inst) {
-                    panic!("Duplicate template id: {:?}", i.class_id);
-                }
-            }
-        }
-        info!("Loaded {} class templates.", result.templates.len());
+impl Loadable for ClassTemplates {
+    fn post_load(&self) {
+        info!("Loaded {} class templates.", self.templates.len());
         for t in Self::registration_classes() {
             assert!(
-                result.templates.contains_key(t),
+                self.templates.contains_key(t),
                 "Missing class template for class id: {t:?}"
             );
         }
-        result
     }
-    pub fn get_template(&self, template_id: Class) -> Option<CharTemplate> {
-        self.templates.get(&template_id).cloned()
+}
+
+impl LoadFileHandler for ClassTemplates {
+    type TargetConfigType = CharTemplate;
+    fn for_each(&mut self, item: Self::TargetConfigType) {
+        if let Some(i) = self.templates.insert(item.class_id, item) {
+            panic!("Duplicate template id: {:?}", i.class_id);
+        }
+    }
+}
+impl ClassTemplates {
+    pub fn get_template(&self, template_id: Class) -> Option<&CharTemplate> {
+        self.templates.get(&template_id)
+    }
+    pub fn try_get_template(&self, template_id: Class) -> anyhow::Result<&CharTemplate> {
+        self.templates.get(&template_id).ok_or(anyhow::anyhow!(
+            "Invalid class template: {:?}.",
+            template_id
+        ))
+    }
+    pub fn has_template(&self, template_id: Class) -> bool {
+        self.templates.contains_key(&template_id)
     }
 
     fn registration_classes() -> &'static [Class] {
@@ -67,7 +75,86 @@ impl ClassTemplates {
 pub struct CharTemplate {
     pub class_id: Class,
     pub static_data: CharTemplateStaticData,
-    pub lvl_up_gain_data: Vec<LvlUpGainData>,
+
+    #[serde(deserialize_with = "deserialize_lvl_up_gain_data")]
+    pub lvl_up_gain_data: HashMap<u8, LvlUpGainData>,
+}
+
+fn deserialize_lvl_up_gain_data<'de, D>(
+    deserializer: D,
+) -> Result<HashMap<u8, LvlUpGainData>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    // Deserialize into a Vec<LvlUpGainData>
+    let vec: Vec<LvlUpGainData> = Deserialize::deserialize(deserializer)?;
+
+    // Convert the Vec into a HashMap
+    let map: HashMap<u8, LvlUpGainData> = vec.into_iter().map(|data| (data.lvl, data)).collect();
+
+    Ok(map)
+}
+
+impl CharTemplate {
+    #[allow(clippy::cast_sign_loss)]
+    pub fn initialize_character(
+        &self,
+        target: &mut character::Model,
+        base_stats: &BaseStat,
+    ) -> anyhow::Result<()> {
+        target.class_id = self.class_id as i8;
+        let p = self.get_random_loc()?;
+        //todo custom starting loc
+        target.x = p.x;
+        target.y = p.y;
+        target.z = p.z;
+        target.base_class_id = self.class_id as i8;
+        target.access_level = 0;
+        target.race_id = self.class_id.get_class().race as i8;
+        let base_max_hp = self.get_base_max_parameter(target.level as u8, &CreatureParameter::HP)?;
+        let base_max_mp = self.get_base_max_parameter(target.level as u8, &CreatureParameter::MP)?;
+        let base_max_cp = self.get_base_max_parameter(target.level as u8, &CreatureParameter::CP)?;
+        let base_con = base_stats.con_bonus(u8::try_from(self.static_data.base_con)?);
+        let base_men = base_stats.con_bonus(u8::try_from(self.static_data.base_men)?);
+        target.max_hp = f64::from(base_max_hp) * base_con;
+        target.max_mp = f64::from(base_max_mp) * base_men;
+        target.max_cp = f64::from(base_max_cp) * base_con;
+        target.cur_hp = target.max_hp;
+        target.cur_mp = target.max_mp;
+        target.cur_cp = target.max_cp;
+        //todo skill tree
+        //todo shortcut panel initialization
+        //todo initial items
+        //todo vitality
+        //todo starting level
+        //todo starting adena
+        Ok(())
+    }
+    pub fn get_base_max_parameter(
+        &self,
+        lvl: u8,
+        parameter: &CreatureParameter,
+    ) -> anyhow::Result<f32> {
+        if let Some(val) = self.lvl_up_gain_data.get(&lvl) {
+            return match parameter {
+                CreatureParameter::CP => Ok(val.cp),
+                CreatureParameter::HP => Ok(val.hp),
+                CreatureParameter::MP => Ok(val.mp),
+            };
+        }
+        bail!("No max {:?} found for lvl {lvl}", parameter);
+    }
+    pub fn get_random_loc(&self) -> anyhow::Result<&Point> {
+        let mut rng = thread_rng();
+        if let Some(random_item) = self.static_data.creation_points.choose(&mut rng) {
+            Ok(random_item)
+        } else {
+            bail!(
+                "Creation points are not specified in template {:?}!",
+                self.class_id
+            );
+        }
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -100,6 +187,7 @@ pub struct CharTemplateStaticData {
     pub collision_male: CharCollision,
     pub collision_female: CharCollision,
 }
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct LvlUpGainData {
     pub lvl: u8,

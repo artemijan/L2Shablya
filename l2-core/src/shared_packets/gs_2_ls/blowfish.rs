@@ -1,8 +1,9 @@
 use crate::shared_packets::common::{ReadablePacket, SendablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacketImpl)]
 pub struct BlowFish {
     buffer: SendablePacketBuffer,
     pub encrypted_key: Vec<u8>,
@@ -30,20 +31,16 @@ impl BlowFish {
 }
 impl ReadablePacket for BlowFish {
     const PACKET_ID: u8 = 0x00;
+    const EX_PACKET_ID: Option<u16> = None;
 
     #[allow(clippy::cast_sign_loss)]
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         let size = buffer.read_i32();
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             encrypted_key: buffer.read_bytes(size as usize),
         })
-    }
-}
-impl SendablePacket for BlowFish {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

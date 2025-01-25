@@ -1,5 +1,5 @@
 use crate::client_thread::ClientHandler;
-use crate::controller::Login;
+use crate::controller::LoginController;
 use crate::gs_thread::GSHandler;
 use l2_core::config::login;
 use l2_core::traits::server::Server;
@@ -15,7 +15,7 @@ pub struct LoginServer;
 
 impl Server for LoginServer {
     type ConfigType = login::LoginServer;
-    type ControllerType = Login;
+    type ControllerType = LoginController;
 }
 ///
 /// # Panics
@@ -33,7 +33,7 @@ pub fn main() {
         .with_target(false)
         .init();
     LoginServer::bootstrap("config/login.yaml", |cfg, db_pool| async move {
-        let lc = Arc::new(Login::new(cfg.clone()));
+        let lc = Arc::new(LoginController::new(cfg.clone()));
         let mut clients_handle =
             LoginServer::listener_loop::<ClientHandler>(cfg.clone(), lc.clone(), db_pool.clone());
 

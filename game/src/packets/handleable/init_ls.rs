@@ -2,7 +2,6 @@ use async_trait::async_trait;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::crypt::rsa::RSAPublicKey;
-use l2_core::shared_packets::error::PacketRun;
 use l2_core::shared_packets::gs_2_ls::BlowFish;
 use l2_core::shared_packets::{gs_2_ls::RequestAuthGS, ls_2_gs::InitLS};
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
@@ -12,7 +11,7 @@ use crate::packets::HandleablePacket;
 #[async_trait]
 impl HandleablePacket for InitLS {
     type HandlerType = LoginHandler;
-    async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
+    async fn handle(&self, gs: &mut Self::HandlerType) -> anyhow::Result<()> {
         let controller = gs.get_controller();
         let config = controller.get_cfg();
         let ra = RequestAuthGS::new(&config)?;

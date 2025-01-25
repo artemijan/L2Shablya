@@ -3,4 +3,4 @@ mod gs_management;
 mod player_management;
 mod security;
 
-pub use data::Login;
+pub use data::LoginController;

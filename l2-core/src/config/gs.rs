@@ -44,7 +44,7 @@ pub struct GSServer {
 }
 
 fn default_chars_on_acc() -> u8 {
-    5
+    7
 }
 
 fn deserialize_hex_to_bigint<'de, D>(deserializer: D) -> Result<BigInt, D::Error>

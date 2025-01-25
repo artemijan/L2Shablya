@@ -2,8 +2,9 @@ use l2_core::shared_packets::{
     common::{LoginServerOpcodes, SendablePacket},
     write::SendablePacketBuffer,
 };
+use macro_common::SendablePacketImpl;
 
-#[derive(Debug)]
+#[derive(Debug, SendablePacketImpl)]
 pub struct AuthGG {
     pub buffer: SendablePacketBuffer,
     session_id: i32,
@@ -26,11 +27,5 @@ impl AuthGG {
         self.buffer.write_i32(0)?;
         self.buffer.write_i32(0)?;
         Ok(())
-    }
-}
-
-impl SendablePacket for AuthGG {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

@@ -1,9 +1,10 @@
+use macro_common::SendablePacketImpl;
 use crate::config::gs::GSServer;
 use crate::shared_packets::common::{GSStatus, ReadablePacket, SendablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, SendablePacketImpl)]
 pub struct GSStatusUpdate {
     buffer: SendablePacketBuffer,
     pub status: GSStatus,
@@ -64,8 +65,9 @@ impl GSStatusUpdate {
 #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
 impl ReadablePacket for GSStatusUpdate {
     const PACKET_ID: u8 = 0x06;
+    const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte(); //packet id
         let size = buffer.read_i32() as usize;
@@ -95,12 +97,6 @@ impl ReadablePacket for GSStatusUpdate {
                 _ => {}
             };
         }
-        Some(instance)
-    }
-}
-
-impl SendablePacket for GSStatusUpdate {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
+        Ok(instance)
     }
 }

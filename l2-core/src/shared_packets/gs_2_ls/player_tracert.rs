@@ -15,8 +15,9 @@ pub struct PlayerTracert {
 #[async_trait]
 impl ReadablePacket for PlayerTracert {
     const PACKET_ID: u8 = 0x07;
+const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         let account_name = buffer.read_string();
@@ -25,7 +26,7 @@ impl ReadablePacket for PlayerTracert {
         let hop2 = buffer.read_string();
         let hop3 = buffer.read_string();
         let hop4 = buffer.read_string();
-        Some(Self {
+        Ok(Self {
             account: account_name,
             pc_ip,
             hop1,

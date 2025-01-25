@@ -105,14 +105,8 @@ impl PacketHandler for LoginHandler {
         if !Encryption::verify_checksum(bytes) {
             bail!("Can not verify check sum.");
         }
-        let handler = build_ls_packet(bytes).ok_or_else(|| Packet::ClientPacketNotFound {
-            opcode: bytes[0] as usize,
-        })?;
-        if let Err(error) = handler.handle(self).await {
-            info!("Error handling packet: {:?}", error.msg);
-            return Err(error.into());
-        }
-        Ok(())
+        let handler = build_ls_packet(bytes)?;
+        handler.handle(self).await
     }
 }
 

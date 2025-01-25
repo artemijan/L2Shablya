@@ -34,8 +34,8 @@ pub trait PacketSender: Send + Sync + Debug {
     /// - when packet is too large
     fn add_padding(
         &self,
-        mut packet: Box<dyn SendablePacket>,
-    ) -> Result<Box<dyn SendablePacket>, Error> {
+        packet: &mut Box<dyn SendablePacket>,
+    ) -> Result<(), Error> {
         let buffer = packet.get_buffer_mut();
         buffer.write_i32(0)?;
         let padding = (buffer.get_size() - 2) % 8;
@@ -44,12 +44,12 @@ pub trait PacketSender: Send + Sync + Debug {
                 buffer.write_u8(0)?;
             }
         }
-        Ok(packet)
+        Ok(())
     }
     async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<(), Error> {
         if self.encryption().is_some() {
-            let mut pack = self.add_padding(packet)?;
-            let bytes = pack.get_bytes_mut();
+            self.add_padding(&mut packet)?;
+            let bytes = packet.get_bytes_mut();
             self.send_bytes(bytes).await?;
             Ok(())
         } else {

@@ -1,7 +1,7 @@
-use crate::controller::Login;
+use crate::controller::LoginController;
 use crate::packet::cp_factory::build_client_packet;
 use crate::packet::to_client::Init;
-use anyhow::{bail, Error};
+use anyhow::bail;
 use async_trait::async_trait;
 use entities::DBPool;
 use l2_core::config::login::LoginServer;
@@ -18,7 +18,7 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
-use tracing::{error, info, instrument};
+use tracing::{info, instrument};
 
 #[derive(Clone, Debug)]
 pub struct Client {
@@ -30,7 +30,7 @@ pub struct Client {
     db_pool: DBPool,
     session_id: i32,
     shutdown_notifier: Arc<Notify>,
-    pub lc: Arc<Login>, // login controller
+    lc: Arc<LoginController>,
     encryption: Encryption,
     timeout: u8,
     session_key: SessionKey,
@@ -85,7 +85,7 @@ impl Shutdown for Client {
 #[async_trait]
 impl PacketHandler for Client {
     type ConfigType = LoginServer;
-    type ControllerType = Login;
+    type ControllerType = LoginController;
     fn get_handler_name() -> &'static str {
         "Login client handler"
     }
@@ -97,7 +97,7 @@ impl PacketHandler for Client {
     fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self {
         let blowfish_key = generate_blowfish_key(None);
         let encryption = Encryption::new(&blowfish_key.clone());
-        let session_id = Login::generate_session_id();
+        let session_id = LoginController::generate_session_id();
         let timeout = lc.get_config().client.timeout;
         let ip = Self::get_ipv4_from_socket(&stream);
         let (tcp_reader, tcp_writer) = stream.into_split();
@@ -152,18 +152,10 @@ impl PacketHandler for Client {
     }
 
     #[instrument(skip(self, data))]
-    async fn on_receive_bytes(&mut self, _: usize, data: &mut [u8]) -> Result<(), Error> {
+    async fn on_receive_bytes(&mut self, _: usize, data: &mut [u8]) -> anyhow::Result<()> {
         self.encryption.decrypt(data)?;
-        let handler = build_client_packet(data, &self.rsa_key_pair).ok_or_else(|| {
-            Packet::ClientPacketNotFound {
-                opcode: data[0] as usize,
-            }
-        })?;
-        if let Err(err) = handler.handle(self).await {
-            error!("Client error: {err:?}");
-            return Err(err.into());
-        };
-        Ok(())
+        let handler = build_client_packet(data, &self.rsa_key_pair)?;
+        handler.handle(self).await
     }
 
 
@@ -204,7 +196,7 @@ mod test {
         let addr = listener.local_addr().unwrap();
         let db_pool = get_test_db().await;
         let cfg = LoginServer::from_string(include_str!("../test_data/test_config.yaml"));
-        let lc = Arc::new(Login::new(Arc::new(cfg)));
+        let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
         // Spawn a server task to handle a single connection
         tokio::spawn(async move {

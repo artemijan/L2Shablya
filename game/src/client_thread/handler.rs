@@ -2,6 +2,8 @@ use crate::controller::Controller;
 use crate::cp_factory::build_client_packet;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
+use entities::dao::char_info::CharacterInfo;
+use entities::entities::user;
 use entities::DBPool;
 use l2_core::config::gs::GSServer;
 use l2_core::crypt::generate_blowfish_key;
@@ -27,7 +29,7 @@ pub enum ClientStatus {
     Disconnected,
     InGame,
 }
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 #[allow(clippy::module_name_repetitions)]
 pub struct ClientHandler {
     tcp_reader: Arc<Mutex<OwnedReadHalf>>,
@@ -39,8 +41,9 @@ pub struct ClientHandler {
     blowfish: Option<Encryption>,
     protocol: Option<i32>,
     status: ClientStatus,
+    account_chars: Option<Vec<CharacterInfo>>,
     session_key: Option<SessionKey>,
-    pub account_name: Option<String>,
+    pub user: Option<user::Model>,
 }
 impl ClientHandler {
     pub fn get_protocol(&self) -> Option<i32> {
@@ -60,9 +63,32 @@ impl ClientHandler {
     pub fn set_session_key(&mut self, session_key: SessionKey) {
         self.session_key = Some(session_key);
     }
+
+    pub fn try_get_user(&self) -> anyhow::Result<&user::Model> {
+        self.user.as_ref().ok_or(anyhow::anyhow!("User not set"))
+    }
+
+    pub fn get_session_key(&self) -> Option<&SessionKey> {
+        self.session_key.as_ref()
+    }
     pub fn set_status(&mut self, status: ClientStatus) {
         self.status = status;
     }
+
+    pub fn set_account_chars(&mut self, chars: Vec<CharacterInfo>) {
+        self.account_chars = Some(chars);
+    }
+
+    pub fn get_account_chars(&self) -> Option<&Vec<CharacterInfo>> {
+        self.account_chars.as_ref()
+    }
+    
+    pub fn try_get_account_chars_mut(&mut self) -> anyhow::Result<&mut Vec<CharacterInfo>> {
+        self.account_chars.as_mut().ok_or(anyhow::anyhow!(
+            "Programming error, or possible cheating - missing characters."
+        ))
+    }
+
     pub fn set_encryption(&mut self, bf_key: Option<Encryption>) {
         self.blowfish = bf_key;
     }
@@ -119,10 +145,11 @@ impl PacketHandler for ClientHandler {
             controller,
             db_pool,
             blowfish: None,
+            account_chars: None,
             timeout: cfg.client.timeout,
             protocol: None,
             status: ClientStatus::Connected,
-            account_name: None,
+            user: None,
             session_key: None,
         }
     }
@@ -158,14 +185,8 @@ impl PacketHandler for ClientHandler {
             }
         }
 
-        let handler = build_client_packet(bytes).ok_or_else(|| Packet::ClientPacketNotFound {
-            opcode: bytes[0] as usize,
-        })?;
-        if let Err(error) = handler.handle(self).await {
-            info!("Error handling packet: {:?}", error.msg);
-            return Err(error.into());
-        }
-        Ok(())
+        let handler = build_client_packet(bytes)?;
+        handler.handle(self).await
     }
 }
 

@@ -1,15 +1,14 @@
 use crate::controller::Controller;
-use async_trait::async_trait;
-use entities::dao::char_info::PaperDoll;
-use entities::dao::item::LocType;
-use entities::entities::character;
-use entities::DBPool;
+use entities::dao::char_info::{CharacterInfo, PaperDoll};
+use entities::entities::item;
 use l2_core::shared_packets::common::SendablePacket;
 use l2_core::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacketImpl;
 use std::sync::Arc;
+use tracing::info;
 
-#[derive(Debug, Clone)]
 #[allow(unused)]
+#[derive(Debug, Clone, Default, SendablePacketImpl)]
 pub struct CharSelectionInfo {
     buffer: SendablePacketBuffer,
     session_id: i32,
@@ -17,22 +16,18 @@ pub struct CharSelectionInfo {
 }
 
 impl CharSelectionInfo {
-    const PACKET_ID: u8 = 0x09;
-
+    pub const PACKET_ID: u8 = 0x09;
     #[allow(clippy::cast_possible_truncation)]
     #[allow(clippy::cast_possible_wrap)]
     #[allow(clippy::too_many_lines)]
-    pub async fn new(
+    pub fn new(
         account_name: &str,
         session_id: i32,
-        controller: Arc<Controller>,
-        db_pool: &mut DBPool,
+        controller: &Arc<Controller>,
+        chars: &[CharacterInfo],
     ) -> anyhow::Result<Self> {
         let mut buffer = SendablePacketBuffer::new();
         buffer.write(Self::PACKET_ID)?;
-        let chars =
-            character::Model::get_with_items_and_vars(db_pool, account_name, LocType::Paperdoll)
-                .await?;
         let char_len = chars.len() as u32;
         buffer.write_u32(char_len)?;
         let cfg = controller.get_cfg();
@@ -57,7 +52,8 @@ impl CharSelectionInfo {
             buffer.write_i32(0)?; // clan id
             buffer.write_i32(0)?; // Builder level
             buffer.write_i32(i32::from(char.sex))?;
-            buffer.write_i32(i32::from(char.race_id))?;
+            info!("Race id: {}", char.race_id);
+            buffer.write_i32(i32::from(char.race_id))?; 
             buffer.write_i32(i32::from(char.base_class_id))?;
             buffer.write_i32(1)?; // GameServerName
             buffer.write_i32(char.x)?;
@@ -105,14 +101,16 @@ impl CharSelectionInfo {
             #[allow(clippy::cast_lossless)]
             buffer.write_i32((index as i32 == active_id) as i32)?; // is_active
             buffer.write(char_info.get_enchant_effect_as_byte(PaperDoll::RHand))?;
-            if let Some(weapon) = char_info.get_weapon() {
-                if let Some(augmentation) = weapon.get_augmentation() {
-                    buffer.write_i32(augmentation.1)?;
-                    buffer.write_i32(augmentation.2)?;
-                }
+            let aug = char_info
+                .get_weapon()
+                .and_then(item::Model::get_augmentation);
+            if let Some(augmentation) = aug {
+                buffer.write_i32(augmentation.1)?;
+                buffer.write_i32(augmentation.2)?;
             } else {
                 buffer.write_i32(0)?;
-            }
+                buffer.write_i32(0)?;
+            };
             buffer.write_i32(char_info.get_transform_id())?;
             buffer.write_i32(0)?; // Pet NpcId
             buffer.write_i32(0)?; // Pet level
@@ -139,12 +137,5 @@ impl CharSelectionInfo {
             session_id,
             active_id,
         })
-    }
-}
-
-#[async_trait]
-impl SendablePacket for CharSelectionInfo {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

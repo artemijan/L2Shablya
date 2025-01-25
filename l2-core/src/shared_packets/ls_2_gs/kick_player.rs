@@ -1,10 +1,11 @@
+use macro_common::SendablePacketImpl;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::{
     common::{ReadablePacket, SendablePacket},
     write::SendablePacketBuffer,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct KickPlayer {
     pub buffer: SendablePacketBuffer,
     pub account_name: String,
@@ -28,19 +29,15 @@ impl KickPlayer {
     }
 }
 
-impl SendablePacket for KickPlayer {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
-    }
-}
 impl ReadablePacket for KickPlayer {
     const PACKET_ID: u8 = 0x04;
+const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         let account_name = buffer.read_string();
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             account_name,
         })

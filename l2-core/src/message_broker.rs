@@ -4,7 +4,6 @@ use anyhow::Error;
 use dashmap::DashMap;
 use futures::future::join_all;
 use log::error;
-use sea_orm::prelude::Uuid;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::sync::Arc;
@@ -12,6 +11,7 @@ use std::time::{Duration, SystemTime};
 use tokio::sync::mpsc::Sender;
 use tokio::sync::{mpsc, oneshot};
 use tokio::time::timeout;
+use uuid::Uuid;
 
 #[derive(Debug)]
 pub struct Request<K, V> {

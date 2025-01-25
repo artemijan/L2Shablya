@@ -2,8 +2,9 @@ use l2_core::shared_packets::{
     common::{LoginServerOpcodes, SendablePacket},
     write::SendablePacketBuffer,
 };
+use macro_common::SendablePacketImpl;
 
-#[derive(Debug)]
+#[derive(Debug, SendablePacketImpl)]
 pub struct Init {
     pub buffer: SendablePacketBuffer,
     session_id: i32,
@@ -36,11 +37,5 @@ impl Init {
         self.buffer.write_bytes(self.blowfish_key.as_slice())?; // BlowFish key
         self.buffer.write(0)?; // null termination ;)
         Ok(())
-    }
-}
-
-impl SendablePacket for Init {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

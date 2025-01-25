@@ -3,9 +3,10 @@ use crate::{
     dto::game_server::GSInfo,
     gs_thread::{enums, GSHandler},
 };
+use anyhow::bail;
 use async_trait::async_trait;
 use l2_core::constants::get_server_name_by_id;
-use l2_core::shared_packets::error::PacketRun;
+use l2_core::traits::handlers::PacketSender;
 use l2_core::{
     shared_packets::{
         common::{GSLoginFail, GSLoginFailReasons},
@@ -14,12 +15,11 @@ use l2_core::{
     },
     traits::handlers::PacketHandler,
 };
-use l2_core::traits::handlers::PacketSender;
 
 #[async_trait]
 impl HandleablePacket for RequestAuthGS {
     type HandlerType = GSHandler;
-    async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
+    async fn handle(&self, gs: &mut Self::HandlerType) -> anyhow::Result<()> {
         let gsi = GSInfo::new(
             self.desired_id,
             self.accept_alternative_id,
@@ -55,7 +55,7 @@ impl HandleablePacket for RequestAuthGS {
                     self.desired_id, e
                 );
                 gs.send_packet(Box::new(GSLoginFail::new(e))).await?;
-                Err(PacketRun { msg: Some(err_msg) })
+                bail!(err_msg)
             }
         }
     }

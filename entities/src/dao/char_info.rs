@@ -95,7 +95,7 @@ impl PaperDoll {
         ]
     }
 }
-
+#[derive(Debug, Clone)]
 pub struct CharacterInfo {
     pub char_model: character::Model,
     pub items: Vec<item::Model>,

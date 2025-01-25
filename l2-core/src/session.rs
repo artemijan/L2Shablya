@@ -33,6 +33,10 @@ impl SessionKey {
             is_play_ok
         }
     }
+    #[must_use]
+    pub fn get_play_session_id(&self) -> i32 {
+        self.play_ok1
+    }
 }
 
 #[cfg(test)]

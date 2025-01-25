@@ -6,12 +6,12 @@ use l2_core::traits::handlers::PacketSender;
 use l2_core::{
     shared_packets::{
         common::{PlayerLoginFail, PlayerLoginFailReasons},
-        error::PacketRun,
         gs_2_ls::GSStatusUpdate,
     },
     traits::handlers::PacketHandler,
 };
 use std::sync::Arc;
+use anyhow::bail;
 use tracing::{info, instrument};
 
 #[async_trait]
@@ -19,7 +19,7 @@ impl HandleablePacket for GSStatusUpdate {
     type HandlerType = GSHandler;
 
     #[instrument(skip_all)]
-    async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
+    async fn handle(&self, gs: &mut Self::HandlerType) -> anyhow::Result<()> {
         let lc = gs.get_controller();
         let mut updated = false;
         if let Some(server_id) = gs.server_id {
@@ -40,9 +40,7 @@ impl HandleablePacket for GSStatusUpdate {
                 PlayerLoginFailReasons::ReasonAccessFailed,
             )))
             .await?;
-            return Err(PacketRun {
-                msg: Some(format!("Server was not found, GS id {:?}", gs.server_id)),
-            });
+            bail!("Server was not found, GS id {:?}", gs.server_id);
         }
         lc.message_broker
             .register_packet_handler(gs.server_id.unwrap(), Arc::new(gs.clone()));

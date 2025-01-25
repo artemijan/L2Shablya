@@ -1,19 +1,17 @@
-use l2_core::traits::handlers::PacketSender;
+use crate::gs_thread::{enums, GSHandler};
+use crate::packet::HandleablePacket;
+use anyhow::bail;
 use async_trait::async_trait;
 use l2_core::shared_packets::{
     common::{PlayerLoginFail, PlayerLoginFailReasons},
-    error::PacketRun,
     gs_2_ls::BlowFish,
 };
-use crate::{
-    gs_thread::{enums, GSHandler},
-};
-use crate::packet::HandleablePacket;
+use l2_core::traits::handlers::PacketSender;
 
 #[async_trait]
 impl HandleablePacket for BlowFish {
     type HandlerType = GSHandler;
-    async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
+    async fn handle(&self, gs: &mut Self::HandlerType) -> anyhow::Result<()> {
         let mut key = self.encrypted_key.clone();
         if let Ok(mut decrypted) = gs.decrypt_rsa(&mut key) {
             // there are nulls before the key we must remove them
@@ -27,9 +25,7 @@ impl HandleablePacket for BlowFish {
                 PlayerLoginFailReasons::ReasonNotAuthed,
             )))
             .await?;
-            return Err(PacketRun {
-                msg: Some("Unable to decrypt GS blowfish key".to_string()),
-            });
+            bail!("Unable to decrypt GS blowfish key");
         }
         Ok(())
     }

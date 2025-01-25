@@ -11,7 +11,7 @@ use std::time::Duration;
 use tracing::info;
 
 #[derive(Debug)]
-pub struct Login {
+pub struct LoginController {
     key_pairs: Vec<ScrambledRSAKeyPair>,
     pub(super) config: Arc<login::LoginServer>,
     pub(super) game_servers: DashMap<u8, GSInfo>,
@@ -20,14 +20,14 @@ pub struct Login {
     pub message_broker: Arc<MessageBroker<u8, PacketType>>,
 }
 
-impl Login {
+impl LoginController {
   
-    pub fn new(config: Arc<login::LoginServer>) -> Login {
+    pub fn new(config: Arc<login::LoginServer>) -> Self {
         info!("Loading LoginController...");
         let threshold =
             Duration::from_secs(u64::from(config.listeners.game_servers.messages.timeout));
-        Login {
-            key_pairs: Login::generate_rsa_key_pairs(10),
+        Self {
+            key_pairs: Self::generate_rsa_key_pairs(10),
             config,
             ip_ban_list: DashMap::new(),
             players: DashMap::new(),

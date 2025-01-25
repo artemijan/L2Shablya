@@ -9,11 +9,12 @@ pub struct ChangeAL {
 
 impl ReadablePacket for ChangeAL {
     const PACKET_ID: u8 = 0x04;
+const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
-        Some(Self {
+        Ok(Self {
             level: buffer.read_i32(),
             account: buffer.read_string(),
         })

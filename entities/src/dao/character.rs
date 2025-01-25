@@ -1,12 +1,30 @@
+use chrono::Utc;
 use crate::dao::char_info::CharacterInfo;
 use crate::dao::item::LocType;
 use crate::entities::{character, item, user};
 use crate::DBPool;
 use sea_orm::entity::prelude::*;
-use sea_orm::{DbErr, JoinType, Order, QueryOrder, QuerySelect};
+use sea_orm::{ActiveValue, DbErr, JoinType, Order, QueryOrder, QuerySelect};
 
 #[allow(clippy::missing_errors_doc)]
 impl character::Model {
+    pub async fn char_exists(db_pool: &DBPool, name: &str) -> Result<bool, DbErr> {
+        Ok(character::Entity::find()
+            .filter(character::Column::Name.eq(name))
+            .one(db_pool)
+            .await?
+            .is_some())
+    }
+
+    pub async fn create_char(
+        db_pool: &DBPool,
+        c: character::Model,
+    ) -> Result<character::Model, DbErr> {
+        let mut active_model: character::ActiveModel = c.into();
+        active_model.id = ActiveValue::NotSet;
+        active_model.last_access = ActiveValue::Set(Some(Utc::now().into()));
+        active_model.insert(db_pool).await
+    }
     pub async fn find_by_username(
         db_pool: &DBPool,
         username: &str,
@@ -29,19 +47,21 @@ impl character::Model {
     ) -> Result<Vec<CharacterInfo>, DbErr> {
         let characters = character::Entity::find()
             .order_by(character::Column::CreatedAt, Order::Asc)
-            .join(
-                JoinType::InnerJoin,
-                character::Entity::has_many(user::Entity).into(),
-            )
+            .join(JoinType::InnerJoin, character::Relation::User.def())
             .filter(user::Column::Username.eq(username))
             .find_with_related(item::Entity)
-            .filter(item::Column::Loc.eq(loc_type))
             .all(db_pool)
             .await?;
 
         characters
             .into_iter()
-            .map(|(char, items)| CharacterInfo::new(char, items))
+            .map(|(char, items)| {
+                CharacterInfo::new(
+                    char,
+                    //todo optimize query maybe there is a way to do filtering on DB level for items
+                    items.into_iter().filter(|i| i.loc == loc_type).collect(),
+                )
+            })
             .collect()
     }
 

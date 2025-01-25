@@ -10,11 +10,12 @@ pub struct RequestTempBan {
 
 impl ReadablePacket for RequestTempBan {
     const PACKET_ID: u8 = 0x0A;
+const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
-        Some(Self {
+        Ok(Self {
             account: buffer.read_string(),
             ip: buffer.read_string(),
             ban_duration: buffer.read_i64(),

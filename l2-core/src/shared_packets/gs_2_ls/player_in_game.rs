@@ -1,8 +1,9 @@
 use crate::shared_packets::common::{ReadablePacket, SendablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacketImpl)]
 pub struct PlayerInGame {
     buffer: SendablePacketBuffer,
     pub accounts: Vec<String>,
@@ -35,8 +36,9 @@ impl PlayerInGame {
 
 impl ReadablePacket for PlayerInGame {
     const PACKET_ID: u8 = 0x02;
+    const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> Option<Self> {
+    fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         let size = buffer.read_i16();
@@ -45,15 +47,9 @@ impl ReadablePacket for PlayerInGame {
             let st = buffer.read_string();
             accounts.push(st);
         }
-        Some(Self {
+        Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             accounts,
         })
-    }
-}
-
-impl SendablePacket for PlayerInGame {
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer {
-        &mut self.buffer
     }
 }

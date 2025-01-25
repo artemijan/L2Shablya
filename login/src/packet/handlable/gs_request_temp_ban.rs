@@ -1,4 +1,3 @@
-use l2_core::shared_packets::error::PacketRun;
 use entities::entities::user;
 use l2_core::{
     shared_packets::gs_2_ls::RequestTempBan,
@@ -16,7 +15,7 @@ use crate::packet::HandleablePacket;
 impl HandleablePacket for RequestTempBan {
     type HandlerType = GSHandler;
     #[instrument(skip(self, gs))]
-    async fn handle(&self, gs: &mut Self::HandlerType) -> Result<(), PacketRun> {
+    async fn handle(&self, gs: &mut Self::HandlerType) -> anyhow::Result<()> {
         let db_pool = gs.get_db_pool();
         //ignore error updating an account
         let user_model = user::Model::find_by_username(db_pool, &self.account).await?;
