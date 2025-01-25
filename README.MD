@@ -23,7 +23,7 @@ Ready features:
 - [x] Game server
     - [x] register o login server
     - [x] player can select game server
-    - [ ] player can create char
+    - [x] player can create char
     - [ ] player can delete char
     - [ ] player can enter the game world
 
