@@ -1,8 +1,9 @@
 use macro_common::SendablePacketImpl;
 use crate::config::gs::GSServer;
-use crate::shared_packets::common::{GSStatus, ReadablePacket, SendablePacket};
+use crate::shared_packets::common::{GSStatus, ReadablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
+use crate as l2_core;
 
 #[derive(Clone, Debug, Default, SendablePacketImpl)]
 pub struct GSStatusUpdate {

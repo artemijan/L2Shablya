@@ -115,7 +115,7 @@ impl PacketHandler for GameServer {
         Ok(())
     }
 
-    fn on_disconnect(&mut self) {
+    async fn on_disconnect(&mut self) {
         info!(
             "Game server disconnected: ID ({:})",
             self.server_id.unwrap_or_default()
@@ -138,7 +138,7 @@ impl PacketHandler for GameServer {
     fn get_db_pool(&self) -> &DBPool {
         &self.db_pool
     }
-    
+
     #[instrument(skip(self, bytes))]
     async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
         self.blowfish.decrypt(bytes)?;

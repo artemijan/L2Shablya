@@ -1,12 +1,16 @@
+use macro_common::SendablePacketImpl;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
+use crate as l2_core;
+use crate::shared_packets::write::SendablePacketBuffer;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacketImpl)]
 pub struct ChangePassword {
     pub account: String,
     pub char_name: String,
     pub current_password: String,
     pub new_password: String,
+    buffer: SendablePacketBuffer,
 }
 
 impl ReadablePacket for ChangePassword {
@@ -17,6 +21,7 @@ const EX_PACKET_ID: Option<u16> = None;
         let mut buffer = ReadablePacketBuffer::new(data.to_vec());
         buffer.read_byte();
         Ok(Self {
+            buffer: SendablePacketBuffer::empty(),
             account: buffer.read_string(),
             char_name: buffer.read_string(),
             current_password: buffer.read_string(),

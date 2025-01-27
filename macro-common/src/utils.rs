@@ -1,7 +1,7 @@
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::{quote, ToTokens};
 use syn::meta::ParseNestedMeta;
-use syn::parse::{Parser, Result};
+use syn::parse::Result;
 use syn::LitStr;
 
 pub struct ConfigAttributes {

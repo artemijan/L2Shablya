@@ -136,7 +136,7 @@ impl PacketHandler for Client {
         Ok(())
     }
 
-    fn on_disconnect(&mut self) {
+    async fn on_disconnect(&mut self) {
         info!("Player disconnected: {:?}", self.session_id);
     }
     fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {

@@ -2,6 +2,7 @@ use crate::shared_packets::common::{ReadablePacket, SendablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
+use crate as l2_core;
 
 #[derive(Clone, Debug, SendablePacketImpl)]
 pub struct PlayerInGame {

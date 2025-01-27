@@ -9,7 +9,7 @@ impl HandleablePacket for KickPlayer {
     type HandlerType = LoginHandler;
     async fn handle(&self, ph: &mut Self::HandlerType) -> anyhow::Result<()> {
         let controller = ph.get_controller();
-        controller.remove_online_account(&self.account_name);
+        controller.logout_account(&self.account_name);
         Ok(())
     }
 }

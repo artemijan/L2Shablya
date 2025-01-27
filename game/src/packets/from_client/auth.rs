@@ -112,12 +112,12 @@ impl HandleablePacket for AuthLogin {
                                 PlayerLoginResponse::SYSTEM_ERROR_LOGIN_LATER,
                             )?))
                             .await?;
-                        controller.remove_online_account(&self.login_name);
+                        controller.logout_account(&self.login_name);
                         bail!("Login failed {}", self.login_name);
                     }
                 }
             } else {
-                controller.remove_online_account(&self.login_name);
+                controller.logout_account(&self.login_name);
                 bail!("Account already in game {}", self.login_name);
             }
         }

@@ -82,7 +82,7 @@ impl PacketHandler for LoginHandler {
         Ok(())
     }
 
-    fn on_disconnect(&mut self) {
+    async fn on_disconnect(&mut self){
         self.controller.message_broker.unregister_packet_handler(Self::HANDLER_ID);
         info!("Login server disconnected");
     }

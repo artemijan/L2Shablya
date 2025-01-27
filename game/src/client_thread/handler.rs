@@ -1,5 +1,6 @@
 use crate::controller::Controller;
 use crate::cp_factory::build_client_packet;
+use crate::ls_thread::LoginHandler;
 use anyhow::{bail, Error};
 use async_trait::async_trait;
 use entities::dao::char_info::CharacterInfo;
@@ -11,13 +12,14 @@ use l2_core::crypt::login::Encryption;
 use l2_core::dto::InboundConnection;
 use l2_core::errors::Packet;
 use l2_core::session::SessionKey;
+use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
 use std::sync::Arc;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
-use tracing::{info, instrument};
+use tracing::{error, info, instrument};
 
 #[derive(Debug, Clone, PartialEq)]
 #[allow(unused)]
@@ -45,6 +47,7 @@ pub struct ClientHandler {
     session_key: Option<SessionKey>,
     pub user: Option<user::Model>,
 }
+
 impl ClientHandler {
     pub fn get_protocol(&self) -> Option<i32> {
         self.protocol
@@ -82,7 +85,7 @@ impl ClientHandler {
     pub fn get_account_chars(&self) -> Option<&Vec<CharacterInfo>> {
         self.account_chars.as_ref()
     }
-    
+
     pub fn try_get_account_chars_mut(&mut self) -> anyhow::Result<&mut Vec<CharacterInfo>> {
         self.account_chars.as_mut().ok_or(anyhow::anyhow!(
             "Programming error, or possible cheating - missing characters."
@@ -160,8 +163,32 @@ impl PacketHandler for ClientHandler {
         Ok(())
     }
 
-    fn on_disconnect(&mut self) {
-        info!("Client disconnected");
+    async fn on_disconnect(&mut self) {
+        info!("Disconnecting Client...");
+        let Some(user) = self.user.as_ref() else {
+            return;
+        };
+        self.controller.logout_account(&user.username);
+        let packet = match PlayerLogout::new(&user.username) {
+            Err(e) => {
+                error!("Cannot build logout packet: {}", e);
+                //exit function
+                return;
+            }
+            Ok(p) => p,
+        };
+
+        if let Err(err) = self
+            .controller
+            .message_broker
+            .notify(LoginHandler::HANDLER_ID, Box::new(packet))
+            .await
+        {
+            error!(
+                "Error while sending logout to login server, cause: {:?}",
+                err
+            );
+        }
     }
 
     fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {

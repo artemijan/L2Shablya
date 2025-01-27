@@ -3,6 +3,7 @@ use crate::shared_packets::common::{LoginServerOpcodes, ReadablePacket, Sendable
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
+use crate as l2_core;
 
 #[derive(Debug, Clone, SendablePacketImpl)]
 pub struct InitLS {

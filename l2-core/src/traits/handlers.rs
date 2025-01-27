@@ -1,10 +1,12 @@
-use std::fmt::Debug;
+use crate::crypt::login::Encryption;
 use crate::dto;
 use crate::errors::Packet;
 use crate::shared_packets::common::SendablePacket;
 use crate::traits::Shutdown;
-use anyhow::{Error};
+use anyhow::Error;
 use async_trait::async_trait;
+use entities::DBPool;
+use std::fmt::Debug;
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -13,8 +15,6 @@ use tokio::net::TcpStream;
 use tokio::sync::Mutex;
 use tokio::time::sleep;
 use tracing::{error, info, instrument};
-use entities::DBPool;
-use crate::crypt::login::Encryption;
 
 pub const PACKET_SIZE_BYTES: usize = 2;
 
@@ -32,10 +32,7 @@ pub trait PacketSender: Send + Sync + Debug {
     ///
     /// # Errors
     /// - when packet is too large
-    fn add_padding(
-        &self,
-        packet: &mut Box<dyn SendablePacket>,
-    ) -> Result<(), Error> {
+    fn add_padding(&self, packet: &mut Box<dyn SendablePacket>) -> Result<(), Error> {
         let buffer = packet.get_buffer_mut();
         buffer.write_i32(0)?;
         let padding = (buffer.get_size() - 2) % 8;
@@ -85,16 +82,16 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
     fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self;
 
     async fn on_connect(&mut self) -> Result<(), Packet>;
-    fn on_disconnect(&mut self);
+    async fn on_disconnect(&mut self);
     fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>>;
-    
+
     fn get_timeout(&self) -> Option<u64>;
 
     fn get_db_pool(&self) -> &DBPool;
-    
+
     async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8])
         -> Result<(), Error>;
-    
+
     #[instrument(skip(self))]
     async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
         let mut size_buf = [0; PACKET_SIZE_BYTES];
@@ -109,7 +106,7 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
         socket.read_exact(&mut body).await?;
         Ok((size, body))
     }
-    
+
     #[instrument(skip(self))]
     async fn handle_client(&mut self) {
         let client_addr = self
@@ -124,7 +121,7 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
                 Self::get_handler_name(),
                 e
             );
-            self.on_disconnect();
+            self.on_disconnect().await;
             return;
         }
         let shutdown_listener = self.get_shutdown_listener(); //shutdown listener must be cloned only once before the loop
@@ -139,7 +136,7 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
                 read_result = read_future =>{
                     match read_result {
                         Ok((0, _)) => {
-                            self.on_disconnect();
+                            self.on_disconnect().await;
                             break;
                         }
                         Ok((bytes_read, mut data)) => {
@@ -150,13 +147,13 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
                                     client_addr,
                                     e
                                 );
-                                self.on_disconnect();
+                                self.on_disconnect().await;
                                 break;
                             }
                         }
                         Err(e) => {
                             error!("{}: Failed to read data from client: {}", Self::get_handler_name(), e);
-                            self.on_disconnect();
+                            self.on_disconnect().await;
                             break;
                         }
                     }
@@ -167,13 +164,13 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
                         "{}: No data received within timeout. Dropping connection.",
                         Self::get_handler_name()
                     );
-                    self.on_disconnect();
+                    self.on_disconnect().await;
                     break;
                 }
                 // Handle shutdown notification (or other task notifications)
                 () = shutdown_listener.notified() => {
                     info!("{}: Received shutdown notification. Dropping connection.", Self::get_handler_name());
-                    self.on_disconnect();
+                    self.on_disconnect().await;
                     break;
                 }
             }

@@ -11,6 +11,7 @@ use l2_core::shared_packets::common::PacketType;
 use l2_core::traits::IpBan;
 use std::sync::Arc;
 use std::time::Duration;
+use tracing::info;
 
 #[derive(Clone, Debug)]
 pub struct Controller {
@@ -58,8 +59,9 @@ impl Controller {
             },
         )
     }
-    pub fn remove_online_account(&self, account: &str) {
+    pub fn logout_account(&self, account: &str) {
         self.online_accounts.remove(account);
+        info!("Logged out online account: {}", account);
     }
 }
 

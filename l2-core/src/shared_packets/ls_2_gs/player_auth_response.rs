@@ -1,9 +1,10 @@
 use crate::shared_packets::{
-    common::{ReadablePacket, SendablePacket},
+    common::{ReadablePacket},
     read::ReadablePacketBuffer,
     write::SendablePacketBuffer,
 };
 use macro_common::SendablePacketImpl;
+use crate as l2_core;
 
 #[derive(Debug, Clone, SendablePacketImpl)]
 pub struct PlayerAuthResponse {

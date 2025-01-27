@@ -1,9 +1,10 @@
 use macro_common::SendablePacketImpl;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::{
-    common::{ReadablePacket, SendablePacket},
+    common::ReadablePacket,
     write::SendablePacketBuffer,
 };
+use crate as l2_core;
 
 #[derive(Debug, Clone, SendablePacketImpl)]
 pub struct KickPlayer {

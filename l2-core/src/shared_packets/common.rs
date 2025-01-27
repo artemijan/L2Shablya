@@ -6,6 +6,7 @@ use macro_common::SendablePacketImpl;
 use num_enum::TryFromPrimitive;
 use std::str::FromStr;
 use std::{fmt::Debug, net::Ipv4Addr};
+use crate as l2_core;
 
 pub trait SendablePacket: Debug + Send + Sync {
     fn get_bytes_mut(&mut self) -> &mut [u8] {
