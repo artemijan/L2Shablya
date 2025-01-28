@@ -5,6 +5,7 @@ mod new_char_response;
 pub mod extended;
 mod char_create_fail;
 mod char_create_ok;
+mod char_delete_fail;
 
 pub use protocol_response::*;
 pub use login_response::*;

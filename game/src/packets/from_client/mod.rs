@@ -6,3 +6,4 @@ pub mod extended;
 pub mod char_create;
 pub mod logout;
 pub mod delete_char;
+pub mod char_restore;

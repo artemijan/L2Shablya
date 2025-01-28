@@ -115,6 +115,20 @@ impl ClientHandler {
         }
         Ok(())
     }
+    #[allow(clippy::cast_sign_loss)]
+    pub async fn restore_char_by_slot_id(&mut self, slot_id: i32) -> anyhow::Result<()> {
+        if let Some(chars) = self.account_chars.as_mut() {
+            if slot_id >= i32::try_from(chars.len())? || slot_id < 0 {
+                bail!("Missing character at slot: {slot_id}")
+            }
+            let mut char_info: CharacterInfo = chars.remove(slot_id as usize);
+            let model = char_info.char_model.clone();
+            let updated_char = character::Model::restore_char(&self.db_pool, model).await?;
+            char_info.char_model = updated_char;
+            chars.insert(slot_id as usize, char_info);
+        }
+        Ok(())
+    }
 
     pub fn set_encryption(&mut self, bf_key: Option<Encryption>) {
         self.blowfish = bf_key;

@@ -19,6 +19,7 @@ pub mod shared_packets;
 pub mod str;
 pub mod tests;
 pub mod traits;
+pub mod enums;
 
 #[allow(clippy::missing_errors_doc, clippy::missing_panics_doc)]
 pub async fn hash_password(password: &str) -> anyhow::Result<String> {

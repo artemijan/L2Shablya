@@ -33,6 +33,14 @@ impl character::Model {
         active_model.delete_at = ActiveValue::Set(Some((Utc::now() + Duration::days(7)).into()));
         active_model.update(db_pool).await
     }
+    pub async fn restore_char(
+        db_pool: &DBPool,
+        c: character::Model,
+    ) -> Result<character::Model, DbErr> {
+        let mut active_model: character::ActiveModel = c.into();
+        active_model.delete_at = ActiveValue::Set(None);
+        active_model.update(db_pool).await
+    }
     pub async fn find_by_username(
         db_pool: &DBPool,
         username: &str,
