@@ -1,5 +1,5 @@
 use l2_core::session::SessionKey;
-use l2_core::shared_packets::common::{LoginServerOpcodes, SendablePacket};
+use l2_core::shared_packets::common::LoginServerOpcodes;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
 

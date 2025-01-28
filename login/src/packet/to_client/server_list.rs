@@ -1,5 +1,5 @@
 use l2_core::shared_packets::common::{
-    LoginServerOpcodes, SendablePacket, ServerData, ServerStatus,
+    LoginServerOpcodes, ServerData, ServerStatus,
 };
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use l2_core::traits::handlers::PacketHandler;

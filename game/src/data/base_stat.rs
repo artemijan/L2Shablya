@@ -1,15 +1,17 @@
 use macro_common::config_file;
 use serde::Deserialize;
 
+#[allow(unused)]
 #[derive(Clone, Debug)]
 pub enum CreatureStat {
-    CON,
-    DEX,
-    WIT,
-    MEN,
-    STR,
-    INT,
+    Con,
+    Dex,
+    Wit,
+    Men,
+    Str,
+    Int,
 }
+
 #[derive(Clone, Debug)]
 pub enum CreatureParameter {
     HP,
@@ -18,7 +20,7 @@ pub enum CreatureParameter {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-struct StatData {
+pub struct StatData {
     value: u8,
     bonus: f64,
 }

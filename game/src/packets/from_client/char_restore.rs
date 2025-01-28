@@ -1,14 +1,11 @@
 use crate::client_thread::ClientHandler;
 use crate::packets::to_client::CharSelectionInfo;
 use crate::packets::HandleablePacket;
-use anyhow::{anyhow, bail};
 use async_trait::async_trait;
 use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
-use sea_orm::DbErr;
-use tracing::info;
 
 #[derive(Debug, Clone)]
 pub struct RestoreChar {

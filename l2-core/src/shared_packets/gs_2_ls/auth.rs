@@ -1,5 +1,5 @@
 use crate::config::gs::GSServer;
-use crate::shared_packets::common::{ReadablePacket, SendablePacket};
+use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use num_traits::ToBytes;

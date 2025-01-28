@@ -1,5 +1,5 @@
 use crate::constants;
-use crate::shared_packets::common::{LoginServerOpcodes, ReadablePacket, SendablePacket};
+use crate::shared_packets::common::{LoginServerOpcodes, ReadablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;

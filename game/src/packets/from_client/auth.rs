@@ -4,7 +4,6 @@ use crate::packets::to_client::{CharSelectionInfo, PlayerLoginResponse};
 use crate::packets::HandleablePacket;
 use anyhow::bail;
 use async_trait::async_trait;
-use tracing::info;
 use entities::dao::item::LocType;
 use entities::entities::{character, user};
 use l2_core::session::SessionKey;

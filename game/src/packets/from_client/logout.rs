@@ -1,10 +1,7 @@
 use crate::client_thread::ClientHandler;
-use crate::ls_thread::LoginHandler;
 use crate::packets::HandleablePacket;
 use async_trait::async_trait;
 use l2_core::shared_packets::common::ReadablePacket;
-use l2_core::shared_packets::gs_2_ls::PlayerLogout;
-use l2_core::traits::handlers::PacketHandler;
 use l2_core::traits::Shutdown;
 use tracing::info;
 

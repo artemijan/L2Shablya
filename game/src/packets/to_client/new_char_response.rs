@@ -1,5 +1,4 @@
 use crate::controller::Controller;
-use l2_core::shared_packets::common::SendablePacket;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
 

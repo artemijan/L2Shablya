@@ -1,5 +1,5 @@
 use l2_core::shared_packets::{
-    common::{LoginServerOpcodes, SendablePacket},
+    common::LoginServerOpcodes,
     write::SendablePacketBuffer,
 };
 use macro_common::SendablePacketImpl;

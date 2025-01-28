@@ -1,11 +1,9 @@
 use crate::controller::Controller;
 use entities::dao::char_info::{CharacterInfo, PaperDoll};
 use entities::entities::item;
-use l2_core::shared_packets::common::SendablePacket;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
 use std::sync::Arc;
-use tracing::info;
 
 #[allow(unused)]
 #[derive(Debug, Clone, Default, SendablePacketImpl)]

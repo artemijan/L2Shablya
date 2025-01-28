@@ -1,9 +1,7 @@
-use std::future::Future;
-use std::pin::Pin;
 use crate::controller::Controller;
 use crate::cp_factory::build_client_packet;
 use crate::ls_thread::LoginHandler;
-use anyhow::{anyhow, bail, Error};
+use anyhow::{bail, Error};
 use async_trait::async_trait;
 use entities::dao::char_info::CharacterInfo;
 use entities::entities::{character, user};
@@ -17,8 +15,9 @@ use l2_core::session::SessionKey;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
-use std::sync::Arc;
 use sea_orm::DbErr;
+use std::future::Future;
+use std::sync::Arc;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
@@ -89,11 +88,6 @@ impl ClientHandler {
         self.account_chars.as_ref()
     }
 
-    pub fn try_get_account_chars_mut(&mut self) -> anyhow::Result<&mut Vec<CharacterInfo>> {
-        self.account_chars.as_mut().ok_or(anyhow::anyhow!(
-            "Programming error, or possible cheating - missing characters."
-        ))
-    }
     pub fn add_character(&mut self, character: CharacterInfo) -> anyhow::Result<()> {
         self.account_chars
             .as_mut()
@@ -105,10 +99,14 @@ impl ClientHandler {
     }
 
     #[allow(clippy::cast_sign_loss)]
-    pub async fn with_char_by_slot_id<F, Fut>(&mut self, slot_id: i32, modify_fn: F) -> anyhow::Result<()>
+    pub async fn with_char_by_slot_id<F, Fut>(
+        &mut self,
+        slot_id: i32,
+        modify_fn: F,
+    ) -> anyhow::Result<()>
     where
         F: FnOnce(character::Model) -> Fut,
-        Fut: Future<Output = anyhow::Result<character::Model, DbErr>> + Send + 'static
+        Fut: Future<Output = anyhow::Result<character::Model, DbErr>> + Send,
     {
         if let Some(chars) = self.account_chars.as_mut() {
             if slot_id >= i32::try_from(chars.len())? || slot_id < 0 {
