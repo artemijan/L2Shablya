@@ -1,11 +1,14 @@
 use crate::client_thread::ClientHandler;
 use crate::packets::to_client::CharSelectionInfo;
 use crate::packets::HandleablePacket;
+use anyhow::{anyhow, bail};
 use async_trait::async_trait;
-use tracing::info;
+use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use sea_orm::DbErr;
+use tracing::info;
 
 #[derive(Debug, Clone)]
 pub struct RestoreChar {
@@ -28,8 +31,12 @@ impl HandleablePacket for RestoreChar {
     type HandlerType = ClientHandler;
     async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
         //todo flood protection
-        info!("Restore slot: {}", self.char_slot);
-        handler.restore_char_by_slot_id(self.char_slot).await?;
+        let db_pool = handler.get_db_pool().clone();
+        handler
+            .with_char_by_slot_id(self.char_slot, |model| async move {
+                character::Model::restore_char(&db_pool, model).await
+            })
+            .await?;
         let sk = handler.get_session_key().ok_or(anyhow::anyhow!(
             "Error after char restoration, Session is missing"
         ))?;

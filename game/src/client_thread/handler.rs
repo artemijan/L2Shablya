@@ -1,3 +1,5 @@
+use std::future::Future;
+use std::pin::Pin;
 use crate::controller::Controller;
 use crate::cp_factory::build_client_packet;
 use crate::ls_thread::LoginHandler;
@@ -16,6 +18,7 @@ use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
 use std::sync::Arc;
+use sea_orm::DbErr;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::{Mutex, Notify};
@@ -102,28 +105,18 @@ impl ClientHandler {
     }
 
     #[allow(clippy::cast_sign_loss)]
-    pub async fn delete_char_by_slot_id(&mut self, slot_id: i32) -> anyhow::Result<()> {
+    pub async fn with_char_by_slot_id<F, Fut>(&mut self, slot_id: i32, modify_fn: F) -> anyhow::Result<()>
+    where
+        F: FnOnce(character::Model) -> Fut,
+        Fut: Future<Output = anyhow::Result<character::Model, DbErr>> + Send + 'static
+    {
         if let Some(chars) = self.account_chars.as_mut() {
             if slot_id >= i32::try_from(chars.len())? || slot_id < 0 {
                 bail!("Missing character at slot: {slot_id}")
             }
             let mut char_info: CharacterInfo = chars.remove(slot_id as usize);
             let model = char_info.char_model.clone();
-            let updated_char = character::Model::delete_char(&self.db_pool, model).await?;
-            char_info.char_model = updated_char;
-            chars.push(char_info);
-        }
-        Ok(())
-    }
-    #[allow(clippy::cast_sign_loss)]
-    pub async fn restore_char_by_slot_id(&mut self, slot_id: i32) -> anyhow::Result<()> {
-        if let Some(chars) = self.account_chars.as_mut() {
-            if slot_id >= i32::try_from(chars.len())? || slot_id < 0 {
-                bail!("Missing character at slot: {slot_id}")
-            }
-            let mut char_info: CharacterInfo = chars.remove(slot_id as usize);
-            let model = char_info.char_model.clone();
-            let updated_char = character::Model::restore_char(&self.db_pool, model).await?;
+            let updated_char = modify_fn(model).await?;
             char_info.char_model = updated_char;
             chars.insert(slot_id as usize, char_info);
         }

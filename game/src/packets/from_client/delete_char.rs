@@ -2,6 +2,7 @@ use crate::client_thread::ClientHandler;
 use crate::packets::to_client::CharSelectionInfo;
 use crate::packets::HandleablePacket;
 use async_trait::async_trait;
+use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
@@ -27,7 +28,12 @@ impl HandleablePacket for DeleteChar {
     type HandlerType = ClientHandler;
     async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
         //todo handle proper deletion checks, e.g. check in clan, war, and so on
-        handler.delete_char_by_slot_id(self.char_slot).await?;
+        let db_pool = handler.get_db_pool().clone();
+        handler
+            .with_char_by_slot_id(self.char_slot, |model| async move {
+                character::Model::delete_char(&db_pool, model).await
+            })
+            .await?;
         let sk = handler.get_session_key().ok_or(anyhow::anyhow!(
             "Error after char deletion, Session is missing"
         ))?;
