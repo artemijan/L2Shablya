@@ -1,10 +1,10 @@
 use crate::controller::Controller;
 use crate::cp_factory::build_client_packet;
 use crate::ls_thread::LoginHandler;
-use anyhow::{bail, Error};
+use anyhow::{anyhow, bail, Error};
 use async_trait::async_trait;
 use entities::dao::char_info::CharacterInfo;
-use entities::entities::user;
+use entities::entities::{character, user};
 use entities::DBPool;
 use l2_core::config::gs::GSServer;
 use l2_core::crypt::generate_blowfish_key;
@@ -90,6 +90,30 @@ impl ClientHandler {
         self.account_chars.as_mut().ok_or(anyhow::anyhow!(
             "Programming error, or possible cheating - missing characters."
         ))
+    }
+    pub fn add_character(&mut self, character: CharacterInfo) -> anyhow::Result<()> {
+        self.account_chars
+            .as_mut()
+            .ok_or(anyhow::anyhow!(
+                "Programming error, or possible cheating - missing characters."
+            ))?
+            .push(character);
+        Ok(())
+    }
+
+    #[allow(clippy::cast_sign_loss)]
+    pub async fn delete_char_by_slot_id(&mut self, slot_id: i32) -> anyhow::Result<()> {
+        if let Some(chars) = self.account_chars.as_mut() {
+            if slot_id >= i32::try_from(chars.len())? || slot_id < 0 {
+                bail!("Missing character at slot: {slot_id}")
+            }
+            let mut char_info: CharacterInfo = chars.remove(slot_id as usize);
+            let model = char_info.char_model.clone();
+            let updated_char = character::Model::delete_char(&self.db_pool, model).await?;
+            char_info.char_model = updated_char;
+            chars.push(char_info);
+        }
+        Ok(())
     }
 
     pub fn set_encryption(&mut self, bf_key: Option<Encryption>) {

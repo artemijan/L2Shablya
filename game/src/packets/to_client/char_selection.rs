@@ -41,7 +41,7 @@ impl CharSelectionInfo {
         let mut active_id = -1;
         for (index, char_info) in chars.iter().enumerate() {
             let char = &char_info.char_model;
-            if char.last_access > last_access {
+            if char.last_access > last_access && char.delete_at.is_none() {
                 last_access = char.last_access;
                 active_id = index as i32;
             }

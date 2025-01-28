@@ -1,8 +1,8 @@
-use chrono::Utc;
 use crate::dao::char_info::CharacterInfo;
 use crate::dao::item::LocType;
 use crate::entities::{character, item, user};
 use crate::DBPool;
+use chrono::{Duration, Utc};
 use sea_orm::entity::prelude::*;
 use sea_orm::{ActiveValue, DbErr, JoinType, Order, QueryOrder, QuerySelect};
 
@@ -25,6 +25,14 @@ impl character::Model {
         active_model.last_access = ActiveValue::Set(Some(Utc::now().into()));
         active_model.insert(db_pool).await
     }
+    pub async fn delete_char(
+        db_pool: &DBPool,
+        c: character::Model,
+    ) -> Result<character::Model, DbErr> {
+        let mut active_model: character::ActiveModel = c.into();
+        active_model.delete_at = ActiveValue::Set(Some((Utc::now() + Duration::days(7)).into()));
+        active_model.update(db_pool).await
+    }
     pub async fn find_by_username(
         db_pool: &DBPool,
         username: &str,
@@ -46,6 +54,7 @@ impl character::Model {
         loc_type: LocType,
     ) -> Result<Vec<CharacterInfo>, DbErr> {
         let characters = character::Entity::find()
+            .order_by(character::Column::DeleteAt, Order::Asc)
             .order_by(character::Column::CreatedAt, Order::Asc)
             .join(JoinType::InnerJoin, character::Relation::User.def())
             .filter(user::Column::Username.eq(username))
@@ -83,7 +92,7 @@ impl character::Model {
                 result[slot as usize][0] = item.id;
                 result[slot as usize][1] = item.item_id;
                 result[slot as usize][2] = item.enchant_level;
-                // result[slot as usize][3] = vars
+                // todo: result[slot as usize][3] = vars
                 //     .get(item_variable::Model::VISUAL_ID)
                 //     .unwrap_or(&"0".to_string())
                 //     .parse()

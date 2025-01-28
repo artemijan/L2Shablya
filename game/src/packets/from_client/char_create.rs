@@ -107,8 +107,7 @@ impl HandleablePacket for CreateCharRequest {
             template.initialize_character(&mut char, &controller.base_stats_table)?;
             match character::Model::create_char(db_pool, char).await {
                 Ok(inst) => {
-                    let chars = handler.try_get_account_chars_mut()?;
-                    chars.push(CharacterInfo::new(inst, vec![])?); //todo initial items
+                    handler.add_character(CharacterInfo::new(inst, vec![])?)?;
                     handler.send_packet(Box::new(CreateCharOk::new()?)).await
                 }
                 Err(DbErr::RecordNotInserted) => {

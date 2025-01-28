@@ -11,6 +11,7 @@ use crate::packets::HandleablePacket;
 use anyhow::bail;
 use l2_core::shared_packets::common::ReadablePacket;
 use tracing::error;
+use crate::packets::from_client::delete_char::DeleteChar;
 use crate::packets::from_client::logout::Logout;
 
 pub fn build_client_packet(
@@ -26,6 +27,7 @@ pub fn build_client_packet(
         NewCharacterRequest::PACKET_ID => Ok(Box::new(NewCharacterRequest::read(packet_body)?)),
         CreateCharRequest::PACKET_ID => Ok(Box::new(CreateCharRequest::read(packet_body)?)),
         Logout::PACKET_ID => Ok(Box::new(Logout::read(packet_body)?)),
+        DeleteChar::PACKET_ID => Ok(Box::new(DeleteChar::read(packet_body)?)),
         0xD0 => build_ex_client_packet(packet_body),
         _ => {
             error!("Unknown GS packet ID:0x{:02X}", data[0]);
