@@ -1,7 +1,7 @@
 use crate::client_thread::ClientHandler;
 use crate::data::char_template::CharTemplate;
 use crate::data::classes::mapping::Class;
-use crate::data::classes::Race;
+use entities::dao::char_info::Race;
 use crate::packets::enums::CharNameResponseVariant;
 use crate::packets::to_client::{CreateCharFailed, CreateCharOk};
 use crate::packets::utils::validate_can_create_char;
@@ -96,10 +96,10 @@ impl HandleablePacket for CreateCharRequest {
             let mut char = character::Model {
                 name: self.name.clone(),
                 level: 1,
-                face: Some(i16::from(self.face)),
-                hair_style: Some(i16::from(self.hair_style)),
-                hair_color: Some(i16::from(self.hair_color)),
-                sex: i16::from(self.is_female),
+                face: self.face,
+                hair_style: self.hair_style,
+                hair_color: self.hair_color,
+                is_female: self.is_female,
                 delete_at: None,
                 user_id: handler.try_get_user()?.id,
                 ..Default::default()

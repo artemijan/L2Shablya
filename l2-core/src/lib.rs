@@ -46,7 +46,7 @@ pub async fn new_db_pool(db_config: &DBConfig) -> DatabaseConnection {
         .connect_timeout(Duration::from_secs(db_config.connect_timeout))
         .idle_timeout(Duration::from_secs(db_config.idle_timeout))
         .max_lifetime(Duration::from_secs(db_config.max_lifetime))
-        .sqlx_logging(true);
+        .sqlx_logging(false);
 
     Database::connect(opt)
         .await

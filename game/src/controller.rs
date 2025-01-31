@@ -43,7 +43,10 @@ impl Controller {
     pub fn get_cfg(&self) -> Arc<GSServer> {
         self.cfg.clone()
     }
-
+    pub fn get_game_time(&self) -> i32 {
+        //todo game time
+        9999
+    }
     pub fn get_online_accounts(&self) -> Vec<String> {
         self.online_accounts
             .iter()

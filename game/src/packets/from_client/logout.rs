@@ -22,7 +22,7 @@ impl HandleablePacket for Logout {
     async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
         //todo handle proper logout mechanism: olympiad,
         // in battle state, on RB and so on, offline trade, etc...
-        info!("Player logged out: {:?}", handler.user);
+        info!("Player logged out: {:?}", handler.try_get_user()?);
         handler.get_shutdown_listener().notify_one();
         Ok(())
     }

@@ -1,4 +1,4 @@
-use crate::data::classes::Race;
+use entities::dao::char_info::Race;
 use anyhow::bail;
 use serde::{Deserialize, Deserializer};
 

@@ -1,9 +1,13 @@
 use crate::client_thread::ClientHandler;
 use crate::packets::from_client::auth::AuthLogin;
 use crate::packets::from_client::char_create::CreateCharRequest;
+use crate::packets::from_client::char_restore::RestoreChar;
+use crate::packets::from_client::char_select::SelectChar;
+use crate::packets::from_client::delete_char::DeleteChar;
 use crate::packets::from_client::extended::{
     CheckCharName, GoLobby, RequestUserBanInfo, SendClientIni,
 };
+use crate::packets::from_client::logout::Logout;
 use crate::packets::from_client::new_char_request::NewCharacterRequest;
 use crate::packets::from_client::noop::NoOp;
 use crate::packets::from_client::protocol::ProtocolVersion;
@@ -11,9 +15,6 @@ use crate::packets::HandleablePacket;
 use anyhow::bail;
 use l2_core::shared_packets::common::ReadablePacket;
 use tracing::error;
-use crate::packets::from_client::char_restore::RestoreChar;
-use crate::packets::from_client::delete_char::DeleteChar;
-use crate::packets::from_client::logout::Logout;
 
 pub fn build_client_packet(
     data: &[u8],
@@ -30,6 +31,7 @@ pub fn build_client_packet(
         Logout::PACKET_ID => Ok(Box::new(Logout::read(packet_body)?)),
         DeleteChar::PACKET_ID => Ok(Box::new(DeleteChar::read(packet_body)?)),
         RestoreChar::PACKET_ID => Ok(Box::new(RestoreChar::read(packet_body)?)),
+        SelectChar::PACKET_ID => Ok(Box::new(SelectChar::read(packet_body)?)),
         0xD0 => build_ex_client_packet(packet_body),
         _ => {
             error!("Unknown GS packet ID:0x{:02X}", data[0]);

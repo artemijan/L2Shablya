@@ -1,6 +1,7 @@
 use crate::client_thread::ClientHandler;
 use crate::packets::to_client::CharSelectionInfo;
 use crate::packets::HandleablePacket;
+use anyhow::bail;
 use async_trait::async_trait;
 use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
@@ -31,23 +32,17 @@ impl HandleablePacket for RestoreChar {
         let db_pool = handler.get_db_pool().clone();
         handler
             .with_char_by_slot_id(self.char_slot, |model| async move {
-                character::Model::restore_char(&db_pool, model).await
+                if model.delete_at.is_none() {
+                    bail!("Possible cheat: The char can't be restored as it is not deleted");
+                }
+                let new_char = character::Model::restore_char(&db_pool, model).await?;
+                Ok(new_char)
             })
             .await?;
-        let sk = handler.get_session_key().ok_or(anyhow::anyhow!(
-            "Error after char restoration, Session is missing"
-        ))?;
-        let chars = handler.get_account_chars().ok_or(anyhow::anyhow!(
-            "Programming error, seems like all chars dropped from the list during restoration"
-        ))?;
+        let sk = handler.try_get_session_key()?;
+        let chars = handler.try_get_account_chars()?;
         let controller = handler.get_controller();
-        let user_name = &handler
-            .user
-            .as_ref()
-            .ok_or(anyhow::anyhow!(
-                "Programming error, or possible cheating: missing user in handler for char restoration"
-            ))?
-            .username;
+        let user_name = &handler.try_get_user()?.username;
         let p = CharSelectionInfo::new(user_name, sk.get_play_session_id(), controller, chars)?;
         handler.send_packet(Box::new(p)).await?;
         Ok(())

@@ -3,6 +3,22 @@ use chrono::Utc;
 use sea_orm::DbErr;
 use serde_json::Value;
 
+#[derive(Debug, Clone)]
+pub enum CharVariables {
+    VisualHairId,
+    VisualHairColorId,
+    VisualFaceId,
+}
+impl CharVariables {
+    pub fn as_key(&self) -> &'static str {
+        match self {
+            CharVariables::VisualHairId => "visualHairId",
+            CharVariables::VisualHairColorId => "visualHairColorId",
+            CharVariables::VisualFaceId => "visualFaceId",
+        }
+    }
+}
+
 #[repr(i32)]
 pub enum PaperDoll {
     Under = 0,
@@ -132,6 +148,9 @@ impl CharacterInfo {
         }
         None
     }
+    pub fn try_get_race(&self)-> anyhow::Result<Race> {
+        Race::try_from(self.char_model.race_id)
+    }
 
     #[must_use]
     pub fn get_paper_doll_object_id(&self, slot: PaperDoll) -> i32 {
@@ -163,23 +182,25 @@ impl CharacterInfo {
     pub fn get_hair_style(&self) -> i32 {
         self.char_model
             .variables
-            .get("visualHairId")
+            .get(CharVariables::VisualHairId.as_key())
             .and_then(Value::as_i64) // Convert to i64 (Json numbers are i64 in Serde)
             .and_then(|v| v.try_into().ok()) // Convert to i32 safely
             .unwrap_or(0)
     }
+
     pub fn get_hair_color(&self) -> i32 {
         self.char_model
             .variables
-            .get("visualHairColorId")
+            .get(CharVariables::VisualHairColorId.as_key())
             .and_then(Value::as_i64) // Convert to i64 (Json numbers are i64 in Serde)
             .and_then(|v| v.try_into().ok()) // Convert to i32 safely
             .unwrap_or(0)
     }
+
     pub fn get_face(&self) -> i32 {
         self.char_model
             .variables
-            .get("visualFaceId")
+            .get(CharVariables::VisualFaceId.as_key())
             .and_then(Value::as_i64) // Convert to i64 (Json numbers are i64 in Serde)
             .and_then(|v| v.try_into().ok()) // Convert to i32 safely
             .unwrap_or(0)
@@ -224,5 +245,91 @@ impl CharacterInfo {
     #[must_use]
     pub fn get_transform_id(&self) -> i32 {
         i32::from(self.char_model.transform_id)
+    }
+}
+
+#[repr(i32)]
+#[derive(Clone, Debug, Copy, Hash, PartialOrd, Ord, Eq, PartialEq)]
+pub enum Race {
+    Human,
+    Elf,
+    DarkElf,
+    Orc,
+    Dwarf,
+    Kamael,
+    Ertheia,
+    Animal,
+    Beast,
+    Bug,
+    CastleGuard,
+    Construct,
+    Demonic,
+    Divine,
+    Dragon,
+    Elemental,
+    Etc,
+    Fairy,
+    Giant,
+    Humanoid,
+    Mercenary,
+    None,
+    Plant,
+    SiegeWeapon,
+    Undead,
+    Friend,
+}
+
+fn try_from(value: i32) -> anyhow::Result<Race> {
+    use anyhow::bail;
+    #[allow(clippy::enum_glob_use)]
+    use Race::*;
+    match value {
+        0 => Ok(Human),
+        1 => Ok(Elf),
+        2 => Ok(DarkElf),
+        3 => Ok(Orc),
+        4 => Ok(Dwarf),
+        5 => Ok(Kamael),
+        6 => Ok(Ertheia),
+        7 => Ok(Animal),
+        8 => Ok(Beast),
+        9 => Ok(Bug),
+        10 => Ok(CastleGuard),
+        11 => Ok(Construct),
+        12 => Ok(Demonic),
+        13 => Ok(Divine),
+        14 => Ok(Dragon),
+        15 => Ok(Elemental),
+        16 => Ok(Etc),
+        17 => Ok(Fairy),
+        18 => Ok(Giant),
+        19 => Ok(Humanoid),
+        20 => Ok(Mercenary),
+        21 => Ok(None),
+        22 => Ok(Plant),
+        23 => Ok(SiegeWeapon),
+        24 => Ok(Undead),
+        _ => bail!("Unknown race value: {}", value),
+    }
+}
+
+impl TryFrom<i32> for Race {
+    type Error = anyhow::Error;
+    fn try_from(value: i32) -> anyhow::Result<Self> {
+        try_from(value)
+    }
+}
+
+impl TryFrom<i8> for Race {
+    type Error = anyhow::Error;
+    fn try_from(value: i8) -> anyhow::Result<Self> {
+        try_from(value.into())
+    }
+}
+
+impl TryFrom<u8> for Race {
+    type Error = anyhow::Error;
+    fn try_from(value: u8) -> anyhow::Result<Self> {
+        try_from(value.into())
     }
 }

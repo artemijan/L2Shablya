@@ -12,7 +12,7 @@ mod cp_factory;
 mod lsp_factory;
 mod packets;
 mod ls_thread;
-mod data;
+pub mod data;
 
 pub struct GameServer;
 

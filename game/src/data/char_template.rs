@@ -1,12 +1,14 @@
 use crate::data::base_stat::{BaseStat, CreatureParameter};
 use crate::data::classes::mapping::Class;
 use anyhow::bail;
+use entities::dao::char_info::CharVariables;
 use entities::entities::character;
 use l2_core::config::traits::{LoadFileHandler, Loadable};
 use macro_common::config_dir;
 use rand::prelude::SliceRandom;
 use rand::thread_rng;
 use serde::{Deserialize, Deserializer};
+use serde_json::json;
 use std::collections::HashMap;
 use tracing::info;
 
@@ -111,9 +113,12 @@ impl CharTemplate {
         target.base_class_id = self.class_id as i8;
         target.access_level = 0;
         target.race_id = self.class_id.get_class().race as i8;
-        let base_max_hp = self.get_base_max_parameter(target.level as u8, &CreatureParameter::HP)?;
-        let base_max_mp = self.get_base_max_parameter(target.level as u8, &CreatureParameter::MP)?;
-        let base_max_cp = self.get_base_max_parameter(target.level as u8, &CreatureParameter::CP)?;
+        let base_max_hp =
+            self.get_base_max_parameter(target.level as u8, &CreatureParameter::HP)?;
+        let base_max_mp =
+            self.get_base_max_parameter(target.level as u8, &CreatureParameter::MP)?;
+        let base_max_cp =
+            self.get_base_max_parameter(target.level as u8, &CreatureParameter::CP)?;
         let base_con = base_stats.con_bonus(u8::try_from(self.static_data.base_con)?);
         let base_men = base_stats.con_bonus(u8::try_from(self.static_data.base_men)?);
         target.max_hp = f64::from(base_max_hp) * base_con;
@@ -122,6 +127,11 @@ impl CharTemplate {
         target.cur_hp = target.max_hp;
         target.cur_mp = target.max_mp;
         target.cur_cp = target.max_cp;
+        target.variables = json!({
+            CharVariables::VisualHairId.as_key(): target.hair_style,
+            CharVariables::VisualHairColorId.as_key(): target.hair_color,
+            CharVariables::VisualFaceId.as_key(): target.face
+        });
         //todo skill tree
         //todo shortcut panel initialization
         //todo initial items

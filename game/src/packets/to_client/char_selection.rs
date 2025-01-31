@@ -49,7 +49,7 @@ impl CharSelectionInfo {
             buffer.write_i32(session_id)?;
             buffer.write_i32(0)?; // clan id
             buffer.write_i32(0)?; // Builder level
-            buffer.write_i32(i32::from(char.sex))?;
+            buffer.write_i32(i32::from(char.is_female))?;
             buffer.write_i32(i32::from(char.race_id))?; 
             buffer.write_i32(i32::from(char.base_class_id))?;
             buffer.write_i32(1)?; // GameServerName

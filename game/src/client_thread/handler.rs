@@ -15,7 +15,6 @@ use l2_core::session::SessionKey;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
-use sea_orm::DbErr;
 use std::future::Future;
 use std::sync::Arc;
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
@@ -46,8 +45,9 @@ pub struct ClientHandler {
     protocol: Option<i32>,
     status: ClientStatus,
     account_chars: Option<Vec<CharacterInfo>>,
+    selected_char: Option<i32>,
     session_key: Option<SessionKey>,
-    pub user: Option<user::Model>,
+    user: Option<user::Model>,
 }
 
 impl ClientHandler {
@@ -72,9 +72,20 @@ impl ClientHandler {
     pub fn try_get_user(&self) -> anyhow::Result<&user::Model> {
         self.user.as_ref().ok_or(anyhow::anyhow!("User not set"))
     }
+    pub fn get_user(&self) -> Option<&user::Model> {
+        self.user.as_ref()
+    }
+    pub fn set_user(&mut self, user: user::Model) {
+        self.user = Some(user);
+    }
 
     pub fn get_session_key(&self) -> Option<&SessionKey> {
         self.session_key.as_ref()
+    }
+    pub fn try_get_session_key(&self) -> anyhow::Result<&SessionKey> {
+        self.session_key
+            .as_ref()
+            .ok_or(anyhow::anyhow!("Programming error - Session is missing"))
     }
     pub fn set_status(&mut self, status: ClientStatus) {
         self.status = status;
@@ -87,7 +98,20 @@ impl ClientHandler {
     pub fn get_account_chars(&self) -> Option<&Vec<CharacterInfo>> {
         self.account_chars.as_ref()
     }
+    pub fn try_get_account_chars(&self) -> anyhow::Result<&Vec<CharacterInfo>> {
+        self.account_chars.as_ref().ok_or(anyhow::anyhow!(
+            "Programming error, missing account characters"
+        ))
+    }
 
+    pub fn select_char(&mut self, char_slot: i32) {
+        self.selected_char = Some(char_slot);
+    }
+
+    pub fn get_selected_char_slot(&self) -> Option<i32> {
+        self.selected_char
+    }
+    
     pub fn add_character(&mut self, character: CharacterInfo) -> anyhow::Result<()> {
         self.account_chars
             .as_mut()
@@ -106,7 +130,7 @@ impl ClientHandler {
     ) -> anyhow::Result<()>
     where
         F: FnOnce(character::Model) -> Fut,
-        Fut: Future<Output = anyhow::Result<character::Model, DbErr>> + Send,
+        Fut: Future<Output = anyhow::Result<character::Model>> + Send,
     {
         if let Some(chars) = self.account_chars.as_mut() {
             if slot_id >= i32::try_from(chars.len())? || slot_id < 0 {
@@ -119,6 +143,15 @@ impl ClientHandler {
             chars.insert(slot_id as usize, char_info);
         }
         Ok(())
+    }
+    pub fn try_get_char_by_slot_id(&self, slot_id: i32) -> anyhow::Result<&CharacterInfo> {
+        self.account_chars
+            .as_ref()
+            .ok_or(anyhow::anyhow!(
+                "Possible programming error or cheating: Characters not set"
+            ))?
+            .get(slot_id as usize)
+            .ok_or(anyhow::anyhow!("Missing character at slot {slot_id}"))
     }
 
     pub fn set_encryption(&mut self, bf_key: Option<Encryption>) {
@@ -174,15 +207,16 @@ impl PacketHandler for ClientHandler {
             tcp_reader: Arc::new(Mutex::new(tcp_reader)),
             tcp_writer: Arc::new(Mutex::new(tcp_writer)),
             shutdown_notifier: Arc::new(Notify::new()),
+            timeout: cfg.client.timeout,
+            status: ClientStatus::Connected,
             controller,
             db_pool,
             blowfish: None,
             account_chars: None,
-            timeout: cfg.client.timeout,
             protocol: None,
-            status: ClientStatus::Connected,
             user: None,
             session_key: None,
+            selected_char: None,
         }
     }
 

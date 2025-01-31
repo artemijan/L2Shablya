@@ -1,6 +1,6 @@
 use sea_orm::JsonValue;
 use crate::m20220101_000001_create_user as previous;
-use sea_orm_migration::schema::{big_unsigned, big_unsigned_null, boolean, double, integer_null, json_binary, small_unsigned, small_unsigned_null, string_len_null, timestamp_with_time_zone_null, tiny_unsigned, tiny_unsigned_null, unsigned, unsigned_null};
+use sea_orm_migration::schema::{big_unsigned, big_unsigned_null, boolean, boolean_null, double, integer_null, json_binary, small_unsigned, small_unsigned_null, string_len_null, timestamp_with_time_zone_null, tiny_unsigned, tiny_unsigned_null, unsigned, unsigned_null};
 use sea_orm_migration::{
     prelude::*,
     schema::{integer, pk_auto, string},
@@ -29,10 +29,10 @@ impl MigrationTrait for Migration {
                     .col(double(Character::CurCP).default(0))
                     .col(double(Character::CurMP).default(0))
                     .col(double(Character::MaxMP).default(0))
-                    .col(small_unsigned_null(Character::Face))
-                    .col(small_unsigned_null(Character::HairStyle))
-                    .col(small_unsigned_null(Character::HairColor))
-                    .col(small_unsigned(Character::Sex))
+                    .col(tiny_unsigned(Character::Face))
+                    .col(tiny_unsigned(Character::HairStyle))
+                    .col(tiny_unsigned(Character::HairColor))
+                    .col(boolean(Character::IsFemale))
                     .col(integer_null(Character::Heading))
                     .col(integer(Character::X))
                     .col(integer(Character::Y))
@@ -49,7 +49,7 @@ impl MigrationTrait for Migration {
                     .col(tiny_unsigned(Character::ClassId).default(0))
                     .col(tiny_unsigned(Character::BaseClassId).default(0))
                     .col(small_unsigned(Character::TransformId))
-                    .col(tiny_unsigned_null(Character::CanCraft))
+                    .col(boolean_null(Character::CanCraft))
                     .col(string_len_null(Character::Title, 21))
                     .col(unsigned_null(Character::TitleColor).default(15_530_402))
                     .col(unsigned(Character::AccessLevel).default(0))
@@ -119,7 +119,7 @@ pub enum Character {
     Face,
     HairStyle,
     HairColor,
-    Sex,
+    IsFemale,
     Heading,
     X,
     Y,

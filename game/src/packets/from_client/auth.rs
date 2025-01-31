@@ -50,7 +50,7 @@ impl HandleablePacket for AuthLogin {
         if handler.get_protocol().is_none() || self.login_name.is_empty() {
             bail!("Protocol version not set");
         }
-        if handler.user.is_none() {
+        if handler.get_user().is_none() {
             if controller
                 .add_online_account(self.login_name.clone())
                 .is_none()
@@ -102,7 +102,7 @@ impl HandleablePacket for AuthLogin {
                         handler.set_account_chars(chars);
                         let user =
                             user::Model::find_by_username(&db_pool, &self.login_name).await?;
-                        handler.user = Some(user);
+                        handler.set_user(user);
                         handler.send_packet(Box::new(p)).await?;
                     }
                     _ => {
