@@ -27,7 +27,7 @@ impl ReadablePacket for PlayerLogout {
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
-        let acc = buffer.read_string()?;
+        let acc = buffer.read_c_utf16le_string()?;
         Ok(Self {
             acc,
             buffer: SendablePacketBuffer::empty(),

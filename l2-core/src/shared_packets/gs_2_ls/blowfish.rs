@@ -41,7 +41,7 @@ impl ReadablePacket for BlowFish {
         let size = buffer.read_i32()?;
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),
-            encrypted_key: buffer.read_bytes(size as usize)?,
+            encrypted_key: buffer.read_bytes(size as usize)?.to_vec(),
         })
     }
 }

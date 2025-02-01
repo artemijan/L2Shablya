@@ -45,7 +45,7 @@ impl ReadablePacket for PlayerInGame {
         let size = buffer.read_i16()?;
         let mut accounts: Vec<String> = vec![];
         for _ in 0..size {
-            let st = buffer.read_string()?;
+            let st = buffer.read_c_utf16le_string()?;
             accounts.push(st);
         }
         Ok(Self {

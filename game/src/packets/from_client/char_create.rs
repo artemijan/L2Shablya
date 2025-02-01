@@ -59,7 +59,7 @@ impl ReadablePacket for CreateCharRequest {
         let mut buffer = ReadablePacketBuffer::new(data);
 
         let inst = Self {
-            name: buffer.read_string()?,
+            name: buffer.read_c_utf16le_string()?,
             race: buffer.read_i32()? as u8, //ignored
             is_female: buffer.read_u32()? != 0,
             class_id: Class::try_from(u8::try_from(buffer.read_i32()?)?)?,

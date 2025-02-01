@@ -19,7 +19,7 @@ impl ReadablePacket for CheckCharName {
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buff = ReadablePacketBuffer::new(data);
         Ok(Self {
-            name: buff.read_string()?,
+            name: buff.read_c_utf16le_string()?,
         })
     }
 }

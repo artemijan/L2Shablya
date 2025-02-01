@@ -16,7 +16,7 @@ const EX_PACKET_ID: Option<u16> = None;
         buffer.read_byte()?;
         Ok(Self {
             level: buffer.read_i32()?,
-            account: buffer.read_string()?,
+            account: buffer.read_c_utf16le_string()?,
         })
     }
 }

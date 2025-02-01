@@ -40,7 +40,7 @@ impl ReadablePacket for AuthGS {
         let mut buffer = ReadablePacketBuffer::new(data);
         let _packet_id = buffer.read_byte()?;
         let server_id = buffer.read_byte()?;
-        let server_name = buffer.read_string()?;
+        let server_name = buffer.read_c_utf16le_string()?;
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             server_id,

@@ -39,7 +39,7 @@ impl ReadablePacket for PlayerAuthResponse {
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         let _packet_id = buffer.read_byte()?;
-        let account = buffer.read_string()?;
+        let account = buffer.read_c_utf16le_string()?;
         let is_ok = buffer.read_boolean()?;
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),

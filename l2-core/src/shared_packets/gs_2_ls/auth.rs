@@ -68,7 +68,7 @@ impl ReadablePacket for RequestAuthGS {
         let port = buffer.read_u16()?;
         let max_players = buffer.read_u32()?;
         let mut size = buffer.read_u32()?;
-        let hex_id = buffer.read_bytes(size as usize)?;
+        let hex_id = buffer.read_bytes(size as usize)?.to_vec();
         size = buffer.read_u32()? * 2;
         let hosts = buffer.read_n_strings(size as usize)?;
         Ok(Self {

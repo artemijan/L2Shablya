@@ -16,8 +16,8 @@ const EX_PACKET_ID: Option<u16> = None;
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         Ok(Self {
-            account: buffer.read_string()?,
-            ip: buffer.read_string()?,
+            account: buffer.read_c_utf16le_string()?,
+            ip: buffer.read_c_utf16le_string()?,
             ban_duration: buffer.read_i64()?,
         })
     }
