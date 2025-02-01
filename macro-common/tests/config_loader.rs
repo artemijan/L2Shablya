@@ -31,6 +31,7 @@ mod test {
         One,
         Two,
     }
+
     #[test]
     fn case_struct() {
         let k = TestLoader { h: 1 };
@@ -40,9 +41,9 @@ mod test {
     }
     #[test]
     fn case_enum() {
-        let k = TestLoader { h: 1 };
+        let k = ConfigLoader::One;
+        let l = ConfigLoader::Two;
         k.load();
-        assert_eq!(k.test(), 1);
-        assert_eq!(TestLoader::DATA_FILE, "different_path");
+        l.load();
     }
 }

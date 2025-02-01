@@ -33,7 +33,7 @@ impl ReplyChars {
             char_deletion_timestamps: chars_to_del_list,
         };
         inst.buffer.write(0x08).unwrap();
-        inst.buffer.write_string(Some(&inst.account_name)).unwrap();
+        inst.buffer.write_c_utf16le_string(Some(&inst.account_name)).unwrap();
         inst.buffer.write(inst.chars).unwrap();
         inst.buffer.write(inst.delete_chars_len).unwrap();
         for ch in &inst.char_deletion_timestamps {

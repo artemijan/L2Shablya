@@ -22,7 +22,7 @@ impl PlayerAuthRequest {
             buffer: SendablePacketBuffer::new(),
         };
         inst.buffer.write(0x05)?;
-        inst.buffer.write_string(Some(&inst.account_name))?;
+        inst.buffer.write_c_utf16le_string(Some(&inst.account_name))?;
         inst.buffer.write_i32(inst.session.play_ok1)?;
         inst.buffer.write_i32(inst.session.play_ok2)?;
         inst.buffer.write_i32(inst.session.login_ok1)?;

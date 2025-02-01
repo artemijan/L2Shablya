@@ -71,7 +71,7 @@ impl<'a> ReadablePacketBuffer<'a> {
     }
 
     pub fn read_i16(&mut self) -> anyhow::Result<i16> {
-        if (self.position + 1 >= self.bytes.len()) {
+        if (self.position + 1 > self.bytes.len()) {
             bail!("read i16 out of range");
         }
         let short = i16::from_le_bytes([self.bytes[self.position], self.bytes[self.position + 1]]);
@@ -80,7 +80,7 @@ impl<'a> ReadablePacketBuffer<'a> {
     }
 
     pub fn read_u16(&mut self) -> anyhow::Result<u16> {
-        if (self.position + 1 >= self.bytes.len()) {
+        if (self.position + 1 > self.bytes.len()) {
             bail!("read u16 out of range");
         }
         let short = u16::from_le_bytes([self.bytes[self.position], self.bytes[self.position + 1]]);
@@ -89,7 +89,7 @@ impl<'a> ReadablePacketBuffer<'a> {
     }
 
     pub fn read_i32(&mut self) -> anyhow::Result<i32> {
-        if (self.position + 3 >= self.bytes.len()) {
+        if (self.position + 3 > self.bytes.len()) {
             bail!("read i32 out of range");
         }
         let int = i32::from_le_bytes([
@@ -103,7 +103,7 @@ impl<'a> ReadablePacketBuffer<'a> {
     }
 
     pub fn read_u32(&mut self) -> anyhow::Result<u32> {
-        if (self.position + 4 >= self.bytes.len()) {
+        if (self.position + 4 > self.bytes.len()) {
             bail!("read u32 out of range");
         }
         let int = u32::from_le_bytes([
@@ -117,7 +117,7 @@ impl<'a> ReadablePacketBuffer<'a> {
     }
 
     pub fn read_i64(&mut self) -> anyhow::Result<i64> {
-        if (self.position + 8 >= self.bytes.len()) {
+        if (self.position + 8 > self.bytes.len()) {
             bail!("read i64 out of range");
         }
         let long = i64::from_le_bytes([

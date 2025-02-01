@@ -1,4 +1,5 @@
 use super::{gs_2_ls::ReplyChars, read::ReadablePacketBuffer};
+use crate as l2_core;
 use crate::shared_packets::ls_2_gs::PlayerAuthResponse;
 use crate::shared_packets::write::SendablePacketBuffer;
 use anyhow::bail;
@@ -6,15 +7,9 @@ use macro_common::SendablePacketImpl;
 use num_enum::TryFromPrimitive;
 use std::str::FromStr;
 use std::{fmt::Debug, net::Ipv4Addr};
-use crate as l2_core;
 
 pub trait SendablePacket: Debug + Send + Sync {
-    fn get_bytes_mut(&mut self) -> &mut [u8] {
-        let buff = self.get_buffer_mut();
-        buff.get_data_mut()
-    }
-    fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer;
-    fn get_buffer(&self) -> &SendablePacketBuffer;
+    fn get_bytes(&mut self, with_padding: bool) -> &mut [u8];
 }
 
 pub trait ReadablePacket: Debug + Send + Sync {

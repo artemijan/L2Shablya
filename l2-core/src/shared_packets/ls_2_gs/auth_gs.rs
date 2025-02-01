@@ -27,7 +27,7 @@ impl AuthGS {
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write_u8(0x02)?;
         self.buffer.write_u8(self.server_id)?;
-        self.buffer.write_string(Some(&self.server_name))?;
+        self.buffer.write_c_utf16le_string(Some(&self.server_name))?;
         Ok(())
     }
 }

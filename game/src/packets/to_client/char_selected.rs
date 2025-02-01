@@ -18,10 +18,10 @@ impl CharSelected {
             buffer: SendablePacketBuffer::new(),
         };
         inst.buffer.write(Self::PACKET_ID)?;
-        inst.buffer.write_string(Some(&char_info.char_model.name))?;
+        inst.buffer.write_c_utf16le_string(Some(&char_info.char_model.name))?;
         inst.buffer.write_i32(char_info.char_model.id)?;
         inst.buffer
-            .write_string(char_info.char_model.title.as_deref())?;
+            .write_c_utf16le_string(char_info.char_model.title.as_deref())?;
         inst.buffer.write_i32(session_id)?;
         inst.buffer.write_i32(0)?; //todo clan_id
         inst.buffer.write_i32(0)?; //???

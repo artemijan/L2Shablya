@@ -48,7 +48,7 @@ impl RequestAuthGS {
         self.buffer.write_bytes(&self.hex_id)?;
         self.buffer.write_u32((self.hosts.len() / 2) as u32)?; // we cut it by half because it's actually a pair of network/ip
         for h in &self.hosts {
-            self.buffer.write_string(Some(h))?;
+            self.buffer.write_c_utf16le_string(Some(h))?;
         }
         Ok(())
     }

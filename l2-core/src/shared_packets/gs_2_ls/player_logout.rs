@@ -16,7 +16,7 @@ impl PlayerLogout {
             buffer: SendablePacketBuffer::new(),
         };
         inst.buffer.write(Self::PACKET_ID)?;
-        inst.buffer.write_string(Some(acc))?;
+        inst.buffer.write_c_utf16le_string(Some(acc))?;
         Ok(inst)
     }
 }

@@ -29,31 +29,9 @@ pub trait OutboundHandler {
 }
 #[async_trait]
 pub trait PacketSender: Send + Sync + Debug {
-    ///
-    /// # Errors
-    /// - when packet is too large
-    fn add_padding(&self, packet: &mut Box<dyn SendablePacket>) -> Result<(), Error> {
-        let buffer = packet.get_buffer_mut();
-        buffer.write_i32(0)?;
-        let padding = (buffer.get_size() - 2) % 8;
-        if padding != 0 {
-            for _ in padding..8 {
-                buffer.write_u8(0)?;
-            }
-        }
-        Ok(())
-    }
     async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<(), Error> {
-        if self.encryption().is_some() {
-            self.add_padding(&mut packet)?;
-            let bytes = packet.get_bytes_mut();
-            self.send_bytes(bytes).await?;
-            Ok(())
-        } else {
-            let bytes = packet.get_bytes_mut();
-            self.send_bytes(bytes).await?;
-            Ok(())
-        }
+        self.send_bytes(packet.get_bytes(self.encryption().is_some())).await?;
+        Ok(())
     }
     async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
         let size = bytes.len();

@@ -24,7 +24,7 @@ impl RequestChars {
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write_u8(0x05)?;
-        self.buffer.write_string(Some(&self.account_name))?;
+        self.buffer.write_c_utf16le_string(Some(&self.account_name))?;
         Ok(())
     }
 }

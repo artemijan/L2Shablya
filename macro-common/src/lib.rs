@@ -94,11 +94,8 @@ pub fn derive_sendable(input: TokenStream) -> TokenStream {
     // Generate the implementation
     let expanded = quote! {
         impl l2_core::shared_packets::common::SendablePacket for #name {
-            fn get_buffer_mut(&mut self) -> &mut l2_core::shared_packets::write::SendablePacketBuffer {
-                &mut self.buffer
-            }
-            fn get_buffer(&self) -> &l2_core::shared_packets::write::SendablePacketBuffer {
-                &self.buffer
+            fn get_bytes(&mut self, with_padding:bool) -> &mut [u8] {
+                self.buffer.get_data_mut(with_padding)
             }
         }
     };

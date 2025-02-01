@@ -29,7 +29,7 @@ impl PlayerInGame {
         self.buffer.write(0x02)?;
         self.buffer.write_i16(self.accounts.len() as i16)?;
         for acc in &self.accounts {
-            self.buffer.write_string(Some(acc))?;
+            self.buffer.write_c_utf16le_string(Some(acc))?;
         }
         Ok(())
     }

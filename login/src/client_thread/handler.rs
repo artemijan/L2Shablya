@@ -130,7 +130,7 @@ impl PacketHandler for Client {
         self.tcp_writer
             .lock()
             .await
-            .write_all(init.buffer.get_data_mut())
+            .write_all(init.buffer.get_data_mut(false))
             .await
             .map_err(|_| Packet::UnableToSendInit)?;
         Ok(())

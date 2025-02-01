@@ -2,16 +2,27 @@
 pub mod l2_core {
     pub mod shared_packets {
         pub mod common {
-            use crate::l2_core::shared_packets::write::SendablePacketBuffer;
-
             pub trait SendablePacket {
-                fn get_buffer_mut(&mut self) -> &mut SendablePacketBuffer;
-                fn get_buffer(&self) -> &SendablePacketBuffer;
+                fn get_bytes(&mut self, with_padding: bool) -> &mut [u8];
             }
         }
         pub mod write {
-            #[derive(Debug)]
-            pub struct SendablePacketBuffer;
+            use bytes::BytesMut;
+
+            #[derive(Debug, Default)]
+            pub struct SendablePacketBuffer {
+                buffer: BytesMut,
+            }
+            impl SendablePacketBuffer {
+                pub fn new() -> Self {
+                    Self {
+                        buffer: BytesMut::new(),
+                    }
+                }
+                pub fn get_data_mut(&mut self, _: bool) -> &mut [u8] {
+                    self.buffer.as_mut()
+                }
+            }
         }
     }
 }
@@ -21,7 +32,6 @@ mod tests {
     use crate::l2_core::shared_packets::common::SendablePacket;
     use crate::l2_core::shared_packets::write::SendablePacketBuffer;
     use macro_common::SendablePacketImpl;
-    use std::ptr;
 
     #[derive(SendablePacketImpl, Debug)]
     struct PacketA {
@@ -33,16 +43,18 @@ mod tests {
     }
     #[test]
     fn packet_a() {
-        let a = PacketA {
-            buffer: SendablePacketBuffer {},
+        let mut a = PacketA {
+            buffer: SendablePacketBuffer::new(),
         };
-        assert!(ptr::eq(&a.buffer, a.get_buffer()));
+        let p = a.get_bytes(false);
+        assert_eq!(p, &[0u8; 0]);
     }
     #[test]
     fn packet_b() {
         let mut b = PacketB {
-            buffer: SendablePacketBuffer {},
+            buffer: SendablePacketBuffer::new(),
         };
-        assert!(ptr::eq(&b.buffer, b.get_buffer_mut()));
+        let p = b.get_bytes(false);
+        assert_eq!(p, &[0u8; 0]);
     }
 }

@@ -43,9 +43,9 @@ impl CharSelectionInfo {
                 last_access = char.last_access;
                 active_id = index as i32;
             }
-            buffer.write_string(Some(&char.name))?;
+            buffer.write_c_utf16le_string(Some(&char.name))?;
             buffer.write_i32(char.id)?;
-            buffer.write_string(Some(account_name))?;
+            buffer.write_c_utf16le_string(Some(account_name))?;
             buffer.write_i32(session_id)?;
             buffer.write_i32(0)?; // clan id
             buffer.write_i32(0)?; // Builder level

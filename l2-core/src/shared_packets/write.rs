@@ -1,12 +1,12 @@
 use crate::errors::Packet;
 use anyhow::Result as Res;
+use bytes::{BufMut, BytesMut};
 use encoding::all::UTF_16LE;
 use encoding::{EncoderTrap, Encoding};
 
 #[derive(Debug, Clone, Default)]
 pub struct SendablePacketBuffer {
-    data: Vec<u8>,
-    position: usize,
+    data: BytesMut,
 }
 
 #[allow(unused, clippy::cast_possible_truncation, clippy::missing_errors_doc)]
@@ -14,42 +14,25 @@ impl SendablePacketBuffer {
     #[must_use]
     pub fn empty() -> Self {
         Self {
-            data: vec![0; 2],
-            position: 2,
+            data: BytesMut::with_capacity(2),
         }
     }
     #[must_use]
     pub fn new() -> Self {
-        Self {
-            data: vec![0; 512],
-            position: 2,
-        }
+        let mut data = BytesMut::with_capacity(256);
+        data.put_i16_le(0); // first 2 bytes are reserved for storing packet length
+        Self { data }
     }
-    
-    pub fn write(&mut self, value: u8) -> Res<(), Packet> {
-        if self.position < Self::get_max_size() {
-            self.data.insert(self.position, value);
-            self.position += 1;
-            Ok(())
-        } else {
-            Err(Packet::Write {
-                max_size: Self::get_max_size(),
-            })
-        }
-    }
-    pub fn write_bytes(&mut self, value: &[u8]) -> anyhow::Result<(), Packet> {
-        for v in value {
-            self.write(*v)?;
-        }
+
+    pub fn write(&mut self, value: u8) -> Res<()> {
+        self.data.put_u8(value);
         Ok(())
     }
-    pub fn write_i8_bytes(&mut self, value: &[i8]) -> anyhow::Result<(), Packet> {
-        for v in value {
-            self.write_i8(*v)?;
-        }
+    pub fn write_bytes(&mut self, value: &[u8]) -> Res<()> {
+        self.data.put_slice(value);
         Ok(())
     }
-    pub fn write_string(&mut self, value: Option<&str>) -> Res<(), Packet> {
+    pub fn write_c_utf16le_string(&mut self, value: Option<&str>) -> Res<()> {
         if let Some(st) = value {
             self.write_bytes(
                 &UTF_16LE
@@ -57,10 +40,10 @@ impl SendablePacketBuffer {
                     .map_err(|_| Packet::Encode("UTF_16LE".to_owned()))?,
             )?;
         }
-        self.write_i16(0)
+        self.write_i16(0) //null char for C-like strings
     }
     #[allow(clippy::cast_possible_wrap, clippy::cast_possible_truncation)]
-    pub fn write_sized_string(&mut self, value: Option<&str>) -> Res<(), Packet> {
+    pub fn write_sized_c_utf16le_string(&mut self, value: Option<&str>) -> Res<()> {
         if let Some(st) = value {
             self.write_i16((st.len() & 0xff) as i16)?;
             self.write_bytes(
@@ -69,124 +52,97 @@ impl SendablePacketBuffer {
                     .map_err(|_| Packet::Encode("UTF_16LE".to_owned()))?,
             )?;
         } else {
-            self.write_i16(0)?;
+            self.write_i16(0)?; // null char for C-like strings
         }
         Ok(())
     }
 
     #[allow(clippy::cast_sign_loss)]
-    pub fn write_i8(&mut self, value: i8) -> Res<(), Packet> {
+    pub fn write_i8(&mut self, value: i8) -> Res<()> {
         self.write(value as u8)
     }
 
-    pub fn write_u8(&mut self, value: u8) -> Res<(), Packet> {
+    pub fn write_u8(&mut self, value: u8) -> Res<()> {
         self.write(value)
     }
 
-    pub fn write_bool(&mut self, value: bool) -> Res<(), Packet> {
+    pub fn write_bool(&mut self, value: bool) -> Res<()> {
         self.write_u8(u8::from(value))
     }
-    #[allow(clippy::cast_sign_loss)]
-    pub fn write_i16(&mut self, value: i16) -> Res<(), Packet> {
-        self.write((value & 0xff) as u8)?;
-        self.write(((value >> 8) & 0xff) as u8)
+
+    pub fn write_i16(&mut self, value: i16) -> Res<()> {
+        self.data.put_i16_le(value);
+        Ok(())
     }
 
-    pub fn write_u16(&mut self, value: u16) -> Res<(), Packet> {
-        self.write((value & 0xff) as u8)?;
-        self.write(((value >> 8) & 0xff) as u8)
+    pub fn write_u16(&mut self, value: u16) -> Res<()> {
+        self.data.put_u16_le(value);
+        Ok(())
     }
-    pub fn write_i16_from_bool(&mut self, value: bool) -> Res<(), Packet> {
+    pub fn write_i16_from_bool(&mut self, value: bool) -> Res<()> {
         self.write_i16(i16::from(value))
     }
-    #[allow(clippy::cast_sign_loss)]
-    pub fn write_i32(&mut self, value: i32) -> Res<(), Packet> {
-        self.write((value & 0xff) as u8)?;
-        self.write(((value >> 8) & 0xff) as u8)?;
-        self.write(((value >> 16) & 0xff) as u8)?;
-        self.write(((value >> 24) & 0xff) as u8)?;
+
+    pub fn write_i32(&mut self, value: i32) -> Res<()> {
+        self.data.put_i32_le(value);
         Ok(())
     }
 
-    pub fn write_u32(&mut self, value: u32) -> Res<(), Packet> {
-        self.write((value & 0xff) as u8)?;
-        self.write(((value >> 8) & 0xff) as u8)?;
-        self.write(((value >> 16) & 0xff) as u8)?;
-        self.write(((value >> 24) & 0xff) as u8)?;
+    pub fn write_u32(&mut self, value: u32) -> Res<()> {
+        self.data.put_u32_le(value);
         Ok(())
     }
-    pub fn write_i32_from_bool(&mut self, value: bool) -> Res<(), Packet> {
+    pub fn write_i32_from_bool(&mut self, value: bool) -> Res<()> {
         self.write_i32(i32::from(value))
     }
 
     #[allow(clippy::cast_sign_loss)]
-    pub fn write_i64(&mut self, value: i64) -> Res<(), Packet> {
-        self.write((value & 0xff) as u8)?;
-        self.write(((value >> 8) & 0xff) as u8)?;
-        self.write(((value >> 16) & 0xff) as u8)?;
-        self.write(((value >> 24) & 0xff) as u8)?;
-        self.write(((value >> 32) & 0xff) as u8)?;
-        self.write(((value >> 40) & 0xff) as u8)?;
-        self.write(((value >> 48) & 0xff) as u8)?;
-        self.write(((value >> 56) & 0xff) as u8)?;
+    pub fn write_i64(&mut self, value: i64) -> Res<()> {
+        self.data.put_i64_le(value);
         Ok(())
     }
-    pub fn write_i64_from_bool(&mut self, value: bool) -> Res<(), Packet> {
+    pub fn write_i64_from_bool(&mut self, value: bool) -> Res<()> {
         self.write_i64(i64::from(value))
     }
-    #[allow(clippy::cast_possible_wrap)]
-    pub fn write_f32(&mut self, value: f32) -> Res<(), Packet> {
-        self.write_i32(value.to_bits() as i32)
+
+    pub fn write_f32(&mut self, value: f32) -> Res<()> {
+        self.data.put_f32_le(value);
+        Ok(())
     }
-    #[allow(clippy::cast_possible_wrap)]
-    pub fn write_f64(&mut self, value: f64) -> Res<(), Packet> {
-        self.write_i64(value.to_bits() as i64)
+
+    pub fn write_f64(&mut self, value: f64) -> Res<()> {
+        self.data.put_f64_le(value);
+        Ok(())
     }
-    #[must_use]
-    pub fn get_cursor_position(&self) -> usize {
-        self.position
-    }
+
     #[must_use]
     pub fn get_size(&self) -> usize {
-        self.position
+        self.data.len() // also substract first 2 bytes to store the length
     }
 
-    pub fn get_data_mut(&mut self) -> &mut [u8] {
+    pub fn get_data_mut(&mut self, with_padding: bool) -> &mut [u8] {
         // Add size info at start (unsigned short - max size 65535).
+        if with_padding {
+            self.write_padding();
+        }
         self.write_packet_size();
-        &mut self.data[0..self.position]
-    }
-
-    pub fn get_data(&mut self) -> Vec<u8> {
-        // Add size info at start (unsigned short - max size 65535).
-        self.write_packet_size();
-        self.data[0..self.position].to_vec()
+        self.data.as_mut()
     }
 
     pub fn write_packet_size(&mut self) {
-        self.data[0] = (self.position & 0xff) as u8;
-        self.data[1] = ((self.position >> 8) & 0xffff) as u8;
+        let size = self.get_size();
+        self.data[0] = (size & 0xff) as u8;
+        self.data[1] = ((size >> 8) & 0xffff) as u8;
     }
 
-    pub fn write_padding(&mut self) -> Res<(), Packet> {
+    pub fn write_padding(&mut self) -> Res<()> {
         self.write_i32(0)?;
-        let padding = (self.get_size() - 2) % 8;
+        let padding = (self.data.len() - 2) % 8;
         if padding != 0 {
             for _ in padding..8 {
                 self.write_u8(0)?;
             }
         }
-        self.write_packet_size();
         Ok(())
-    }
-
-    pub fn resize_buffer(&mut self, size: usize) {
-        self.data.reserve(size);
-        self.data.resize(size, 0);
-    }
-
-    #[must_use]
-    pub fn get_max_size() -> usize {
-        65535
     }
 }

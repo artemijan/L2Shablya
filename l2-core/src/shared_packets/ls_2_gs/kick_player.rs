@@ -25,7 +25,7 @@ impl KickPlayer {
 
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write(0x04)?;
-        self.buffer.write_string(Some(&self.account_name))?;
+        self.buffer.write_c_utf16le_string(Some(&self.account_name))?;
         Ok(())
     }
 }
