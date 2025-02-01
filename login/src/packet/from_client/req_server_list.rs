@@ -21,8 +21,8 @@ impl ReadablePacket for RequestServerList {
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         Ok(Self {
-            login_ok_1: buffer.read_i32(),
-            login_ok_2: buffer.read_i32(),
+            login_ok_1: buffer.read_i32()?,
+            login_ok_2: buffer.read_i32()?,
         })
     }
 }

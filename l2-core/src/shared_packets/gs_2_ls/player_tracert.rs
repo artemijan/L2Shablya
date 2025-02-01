@@ -19,13 +19,13 @@ const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
-        buffer.read_byte();
-        let account_name = buffer.read_string();
-        let pc_ip = buffer.read_string();
-        let hop1 = buffer.read_string();
-        let hop2 = buffer.read_string();
-        let hop3 = buffer.read_string();
-        let hop4 = buffer.read_string();
+        buffer.read_byte()?;
+        let account_name = buffer.read_string()?;
+        let pc_ip = buffer.read_string()?;
+        let hop1 = buffer.read_string()?;
+        let hop2 = buffer.read_string()?;
+        let hop3 = buffer.read_string()?;
+        let hop4 = buffer.read_string()?;
         Ok(Self {
             account: account_name,
             pc_ip,

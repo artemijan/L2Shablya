@@ -14,11 +14,11 @@ const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
-        buffer.read_byte();
+        buffer.read_byte()?;
         Ok(Self {
-            account: buffer.read_string(),
-            ip: buffer.read_string(),
-            ban_duration: buffer.read_i64(),
+            account: buffer.read_string()?,
+            ip: buffer.read_string()?,
+            ban_duration: buffer.read_i64()?,
         })
     }
 }

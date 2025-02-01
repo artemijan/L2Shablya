@@ -204,8 +204,8 @@ impl ReadablePacket for GSLoginFail {
         Self: Sized + ReadablePacket,
     {
         let mut buffer = ReadablePacketBuffer::new(data);
-        buffer.read_byte(); //packet id
-        let reason = buffer.read_byte();
+        buffer.read_byte()?; //packet id
+        let reason = buffer.read_byte()?;
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             reason: GSLoginFailReasons::from_u8(reason)?,

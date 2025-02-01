@@ -8,7 +8,6 @@ use crate::packets::HandleablePacket;
 use anyhow::bail;
 use async_trait::async_trait;
 use entities::dao::char_info::CharacterInfo;
-use entities::dao::char_info::Race;
 use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
@@ -31,10 +30,10 @@ pub struct CreateCharRequest {
     dex: u8,
     wit: u8,
     face: u8,
-    race: Race,
+    race: u8,
 }
 impl CreateCharRequest {
-    pub fn validate(&self, template: &CharTemplate) -> anyhow::Result<()> {
+    pub fn validate(&self, _: &CharTemplate) -> anyhow::Result<()> {
         if !(0..=2).contains(&self.face) {
             bail!("Invalid face value: {}.", self.face);
         }
@@ -48,9 +47,6 @@ impl CreateCharRequest {
         if self.hair_color > 3 {
             bail!("Invalid hair color value: {}.", self.hair_color);
         }
-        if template.class_id.get_class().race != self.race {
-            bail!("Invalid race value: {:?}.", self.race);
-        }
         Ok(())
     }
 }
@@ -63,19 +59,19 @@ impl ReadablePacket for CreateCharRequest {
         let mut buffer = ReadablePacketBuffer::new(data);
 
         let inst = Self {
-            name: buffer.read_string(),
-            race: Race::try_from(buffer.read_i32())?,
-            is_female: buffer.read_u32() != 0,
-            class_id: Class::try_from(u8::try_from(buffer.read_i32())?)?,
-            int: u8::try_from(buffer.read_u32())?,
-            str: u8::try_from(buffer.read_u32())?,
-            con: u8::try_from(buffer.read_u32())?,
-            men: u8::try_from(buffer.read_u32())?,
-            dex: u8::try_from(buffer.read_u32())?,
-            wit: u8::try_from(buffer.read_u32())?,
-            hair_style: u8::try_from(buffer.read_u32())?,
-            hair_color: u8::try_from(buffer.read_u32())?,
-            face: u8::try_from(buffer.read_u32())?,
+            name: buffer.read_string()?,
+            race: buffer.read_i32()? as u8, //ignored
+            is_female: buffer.read_u32()? != 0,
+            class_id: Class::try_from(u8::try_from(buffer.read_i32()?)?)?,
+            int: buffer.read_u32()? as u8, //ignored
+            str: buffer.read_u32()? as u8, //ignored
+            con: buffer.read_u32()? as u8, //ignored
+            men: buffer.read_u32()? as u8, //ignored
+            dex: buffer.read_u32()? as u8, //ignored
+            wit: buffer.read_u32()? as u8, //ignored
+            hair_style: u8::try_from(buffer.read_u32()?)?,
+            hair_color: u8::try_from(buffer.read_u32()?)?,
+            face: u8::try_from(buffer.read_u32()?)?,
         };
         Ok(inst)
     }

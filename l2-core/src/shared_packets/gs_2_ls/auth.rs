@@ -61,16 +61,16 @@ impl ReadablePacket for RequestAuthGS {
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer: ReadablePacketBuffer = ReadablePacketBuffer::new(data);
-        buffer.read_byte();
-        let desired_id = buffer.read_byte();
-        let accept_alternative_id = buffer.read_boolean();
-        let host_reserved = buffer.read_boolean();
-        let port = buffer.read_u16();
-        let max_players = buffer.read_u32();
-        let mut size = buffer.read_u32();
-        let hex_id = buffer.read_bytes(size as usize);
-        size = buffer.read_u32() * 2;
-        let hosts = buffer.read_n_strings(size as usize);
+        buffer.read_byte()?;
+        let desired_id = buffer.read_byte()?;
+        let accept_alternative_id = buffer.read_boolean()?;
+        let host_reserved = buffer.read_boolean()?;
+        let port = buffer.read_u16()?;
+        let max_players = buffer.read_u32()?;
+        let mut size = buffer.read_u32()?;
+        let hex_id = buffer.read_bytes(size as usize)?;
+        size = buffer.read_u32()? * 2;
+        let hosts = buffer.read_n_strings(size as usize)?;
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             desired_id,

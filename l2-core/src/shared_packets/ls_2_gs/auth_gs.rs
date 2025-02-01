@@ -38,9 +38,9 @@ impl ReadablePacket for AuthGS {
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
-        let _packet_id = buffer.read_byte();
-        let server_id = buffer.read_byte();
-        let server_name = buffer.read_string();
+        let _packet_id = buffer.read_byte()?;
+        let server_id = buffer.read_byte()?;
+        let server_name = buffer.read_string()?;
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             server_id,

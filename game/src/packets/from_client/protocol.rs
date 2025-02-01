@@ -18,7 +18,7 @@ impl ReadablePacket for ProtocolVersion {
     const EX_PACKET_ID: Option<u16> = None;
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
-        let version = buffer.read_i32();
+        let version = buffer.read_i32()?;
         Ok(Self { version })
     }
 }

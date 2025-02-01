@@ -36,12 +36,12 @@ impl ReadablePacket for PlayerAuthRequest {
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
-        buffer.read_byte();
-        let account_name = buffer.read_string();
-        let play_ok1 = buffer.read_i32();
-        let play_ok2 = buffer.read_i32();
-        let login_ok1 = buffer.read_i32();
-        let login_ok2 = buffer.read_i32();
+        buffer.read_byte()?;
+        let account_name = buffer.read_string()?;
+        let play_ok1 = buffer.read_i32()?;
+        let play_ok2 = buffer.read_i32()?;
+        let login_ok1 = buffer.read_i32()?;
+        let login_ok2 = buffer.read_i32()?;
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             account_name,

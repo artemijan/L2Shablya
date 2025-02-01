@@ -40,11 +40,11 @@ impl ReadablePacket for InitLS {
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
-        let _packet_id = buffer.read_byte();
-        let revision = buffer.read_i32(); // LS protocol revision
-        let key_size = buffer.read_i32(); // key length
+        let _packet_id = buffer.read_byte()?;
+        let revision = buffer.read_i32()?; // LS protocol revision
+        let key_size = buffer.read_i32()?; // key length
         #[allow(clippy::cast_sign_loss)]
-        let public_key = buffer.read_bytes(key_size as usize); // RSA Public Key
+        let public_key = buffer.read_bytes(key_size as usize)?; // RSA Public Key
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),
             revision,

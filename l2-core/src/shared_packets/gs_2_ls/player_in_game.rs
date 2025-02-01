@@ -41,11 +41,11 @@ impl ReadablePacket for PlayerInGame {
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
-        buffer.read_byte();
-        let size = buffer.read_i16();
+        buffer.read_byte()?;
+        let size = buffer.read_i16()?;
         let mut accounts: Vec<String> = vec![];
         for _ in 0..size {
-            let st = buffer.read_string();
+            let st = buffer.read_string()?;
             accounts.push(st);
         }
         Ok(Self {

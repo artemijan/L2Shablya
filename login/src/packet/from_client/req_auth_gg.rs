@@ -24,11 +24,11 @@ impl ReadablePacket for RequestAuthGG {
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         if buffer.get_remaining_length() > 20 {
-            let session_id = buffer.read_i32();
-            let data1 = buffer.read_i32();
-            let data2 = buffer.read_i32();
-            let data3 = buffer.read_i32();
-            let data4 = buffer.read_i32();
+            let session_id = buffer.read_i32()?;
+            let data1 = buffer.read_i32()?;
+            let data2 = buffer.read_i32()?;
+            let data3 = buffer.read_i32()?;
+            let data4 = buffer.read_i32()?;
             return Ok(Self {
                 session_id,
                 _data1: data1,

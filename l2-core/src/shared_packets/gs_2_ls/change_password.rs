@@ -19,13 +19,13 @@ const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
-        buffer.read_byte();
+        buffer.read_byte()?;
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),
-            account: buffer.read_string(),
-            char_name: buffer.read_string(),
-            current_password: buffer.read_string(),
-            new_password: buffer.read_string(),
+            account: buffer.read_string()?,
+            char_name: buffer.read_string()?,
+            current_password: buffer.read_string()?,
+            new_password: buffer.read_string()?,
         })
     }
 }

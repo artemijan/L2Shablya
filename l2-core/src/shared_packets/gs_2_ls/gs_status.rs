@@ -70,12 +70,12 @@ impl ReadablePacket for GSStatusUpdate {
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
-        buffer.read_byte(); //packet id
-        let size = buffer.read_i32() as usize;
+        buffer.read_byte()?; //packet id
+        let size = buffer.read_i32()? as usize;
         let mut instance = Self::default();
         for _ in 0..size {
-            let gs_type = buffer.read_i32();
-            let value = buffer.read_i32();
+            let gs_type = buffer.read_i32()?;
+            let value = buffer.read_i32()?;
 
             match gs_type {
                 Self::SERVER_LIST_STATUS => {

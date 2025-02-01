@@ -19,7 +19,7 @@ impl ReadablePacket for RestoreChar {
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         Ok(Self {
-            char_slot: buffer.read_i32(),
+            char_slot: buffer.read_i32()?,
         })
     }
 }
