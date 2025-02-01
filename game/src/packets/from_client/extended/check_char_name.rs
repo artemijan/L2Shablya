@@ -17,7 +17,7 @@ impl ReadablePacket for CheckCharName {
     const EX_PACKET_ID: Option<u16> = Some(0xA9);
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buff = ReadablePacketBuffer::new(data.to_vec());
+        let mut buff = ReadablePacketBuffer::new(data);
         Ok(Self {
             name: buff.read_string(),
         })

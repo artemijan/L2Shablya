@@ -19,7 +19,7 @@ impl ReadablePacket for RequestGSLogin {
 const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
         Ok(Self {
             s_key_1: buffer.read_i32(),
             s_key_2: buffer.read_i32(),

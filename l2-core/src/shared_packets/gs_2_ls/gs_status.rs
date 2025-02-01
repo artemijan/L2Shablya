@@ -69,7 +69,7 @@ impl ReadablePacket for GSStatusUpdate {
     const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte(); //packet id
         let size = buffer.read_i32() as usize;
         let mut instance = Self::default();

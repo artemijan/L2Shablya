@@ -25,13 +25,7 @@ impl SendablePacketBuffer {
             position: 2,
         }
     }
-    #[must_use]
-    pub fn from_bytes(data: &[u8]) -> Self {
-        Self {
-            data: data.to_vec(),
-            position: data.len(),
-        }
-    }
+    
     pub fn write(&mut self, value: u8) -> Res<(), Packet> {
         if self.position < Self::get_max_size() {
             self.data.insert(self.position, value);

@@ -36,7 +36,7 @@ impl ReadablePacket for BlowFish {
 
     #[allow(clippy::cast_sign_loss)]
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte();
         let size = buffer.read_i32();
         Ok(Self {

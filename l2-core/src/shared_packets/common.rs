@@ -203,7 +203,7 @@ impl ReadablePacket for GSLoginFail {
     where
         Self: Sized + ReadablePacket,
     {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte(); //packet id
         let reason = buffer.read_byte();
         Ok(Self {

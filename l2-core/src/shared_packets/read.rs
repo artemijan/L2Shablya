@@ -2,15 +2,15 @@ use encoding::all::UTF_16LE;
 use encoding::{DecoderTrap, Encoding};
 
 #[derive(Debug, Clone)]
-pub struct ReadablePacketBuffer {
-    bytes: Vec<u8>,
+pub struct ReadablePacketBuffer<'a> {
+    bytes: &'a [u8],
     position: usize,
 }
 
 #[allow(unused)]
-impl ReadablePacketBuffer {
+impl<'a> ReadablePacketBuffer<'a> {
     #[must_use]
-    pub fn new(bytes: Vec<u8>) -> Self {
+    pub fn new(bytes: &'a [u8]) -> Self {
         ReadablePacketBuffer { bytes, position: 0 }
     }
 
@@ -138,14 +138,16 @@ mod test {
 
     #[test]
     fn test_read_bool_false() {
-        let mut buff = ReadablePacketBuffer::new(vec![0]);
+        let arr = &[0];
+        let mut buff = ReadablePacketBuffer::new(arr);
         let value = buff.read_boolean();
         assert!(!value, "Should be false");
     }
 
     #[test]
     fn test_read_bool_true() {
-        let mut buff = ReadablePacketBuffer::new(vec![1]);
+        let arr = &[1];
+        let mut buff = ReadablePacketBuffer::new(arr);
         let value = buff.read_boolean();
         assert!(value, "Should be true");
     }
@@ -153,7 +155,7 @@ mod test {
     #[test]
     fn test_read_string() {
         let bytes = encode_str("test me");
-        let mut buff = ReadablePacketBuffer::new(bytes);
+        let mut buff = ReadablePacketBuffer::new(&bytes);
         let value = buff.read_string();
         assert_eq!(value, "test me");
     }
@@ -166,7 +168,7 @@ mod test {
         for v in &expected_data {
             bytes.extend(encode_str(v));
         }
-        let mut buff = ReadablePacketBuffer::new(bytes);
+        let mut buff = ReadablePacketBuffer::new(&bytes);
         let value = buff.read_n_strings(data_len);
         assert_eq!(value, expected_data);
     }
@@ -175,7 +177,7 @@ mod test {
     fn test_read_sized_string() {
         let mut bytes: Vec<u8> = vec![7, 0]; // length of the string is 7 chars in Little Endian
         bytes.extend(encode_str("test me"));
-        let mut buff = ReadablePacketBuffer::new(bytes);
+        let mut buff = ReadablePacketBuffer::new(&bytes);
         let value = buff.read_sized_string();
         assert_eq!(value, "test me");
     }
@@ -183,7 +185,7 @@ mod test {
     #[test]
     fn test_read_bytes() {
         let bytes: Vec<u8> = vec![7, 0, 89, 76, 65, 78, 98];
-        let mut buff = ReadablePacketBuffer::new(bytes);
+        let mut buff = ReadablePacketBuffer::new(&bytes);
         let value = buff.read_bytes(3);
         assert_eq!(value, vec![7, 0, 89]);
     }
@@ -191,14 +193,14 @@ mod test {
     #[test]
     fn test_read_byte() {
         let bytes: Vec<u8> = vec![9, 0, 89, 76];
-        let mut buff = ReadablePacketBuffer::new(bytes);
+        let mut buff = ReadablePacketBuffer::new(&bytes);
         let value = buff.read_byte();
         assert_eq!(value, 9);
     }
     #[test]
     fn test_read_i16() {
         let bytes: Vec<u8> = vec![11, 0, 89, 76];
-        let mut buff = ReadablePacketBuffer::new(bytes);
+        let mut buff = ReadablePacketBuffer::new(&bytes);
         let value = buff.read_i16();
         assert_eq!(value, 11);
     }
@@ -207,7 +209,7 @@ mod test {
     fn test_read_i32() {
         let val: i32 = 789_876;
         let bytes = val.to_le_bytes();
-        let mut buff = ReadablePacketBuffer::new(bytes.to_vec());
+        let mut buff = ReadablePacketBuffer::new(&bytes);
         let value = buff.read_i32();
         assert_eq!(value, val);
     }
@@ -216,7 +218,7 @@ mod test {
     fn test_read_i64() {
         let val: i64 = 78_987_678;
         let bytes = val.to_le_bytes();
-        let mut buff = ReadablePacketBuffer::new(bytes.to_vec());
+        let mut buff = ReadablePacketBuffer::new(&bytes);
         let value = buff.read_i64();
         assert_eq!(value, val);
     }

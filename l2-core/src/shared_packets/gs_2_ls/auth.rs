@@ -60,7 +60,7 @@ impl ReadablePacket for RequestAuthGS {
     const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer: ReadablePacketBuffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer: ReadablePacketBuffer = ReadablePacketBuffer::new(data);
         buffer.read_byte();
         let desired_id = buffer.read_byte();
         let accept_alternative_id = buffer.read_boolean();

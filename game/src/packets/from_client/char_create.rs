@@ -1,7 +1,6 @@
 use crate::client_thread::ClientHandler;
 use crate::data::char_template::CharTemplate;
 use crate::data::classes::mapping::Class;
-use entities::dao::char_info::Race;
 use crate::packets::enums::CharNameResponseVariant;
 use crate::packets::to_client::{CreateCharFailed, CreateCharOk};
 use crate::packets::utils::validate_can_create_char;
@@ -9,6 +8,7 @@ use crate::packets::HandleablePacket;
 use anyhow::bail;
 use async_trait::async_trait;
 use entities::dao::char_info::CharacterInfo;
+use entities::dao::char_info::Race;
 use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
@@ -32,7 +32,6 @@ pub struct CreateCharRequest {
     wit: u8,
     face: u8,
     race: Race,
-    buffer: ReadablePacketBuffer,
 }
 impl CreateCharRequest {
     pub fn validate(&self, template: &CharTemplate) -> anyhow::Result<()> {
@@ -61,7 +60,7 @@ impl ReadablePacket for CreateCharRequest {
     const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
 
         let inst = Self {
             name: buffer.read_string(),
@@ -77,7 +76,6 @@ impl ReadablePacket for CreateCharRequest {
             hair_style: u8::try_from(buffer.read_u32())?,
             hair_color: u8::try_from(buffer.read_u32())?,
             face: u8::try_from(buffer.read_u32())?,
-            buffer,
         };
         Ok(inst)
     }

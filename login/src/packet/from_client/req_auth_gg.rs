@@ -22,7 +22,7 @@ impl ReadablePacket for RequestAuthGG {
     const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
         if buffer.get_remaining_length() > 20 {
             let session_id = buffer.read_i32();
             let data1 = buffer.read_i32();

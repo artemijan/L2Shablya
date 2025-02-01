@@ -39,7 +39,7 @@ impl ReadablePacket for InitLS {
     const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
         let _packet_id = buffer.read_byte();
         let revision = buffer.read_i32(); // LS protocol revision
         let key_size = buffer.read_i32(); // key length

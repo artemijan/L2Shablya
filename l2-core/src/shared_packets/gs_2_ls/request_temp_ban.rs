@@ -13,7 +13,7 @@ impl ReadablePacket for RequestTempBan {
 const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte();
         Ok(Self {
             account: buffer.read_string(),

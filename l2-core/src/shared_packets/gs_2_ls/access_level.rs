@@ -12,7 +12,7 @@ impl ReadablePacket for ChangeAL {
 const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte();
         Ok(Self {
             level: buffer.read_i32(),

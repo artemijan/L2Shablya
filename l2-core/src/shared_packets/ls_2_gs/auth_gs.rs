@@ -37,7 +37,7 @@ impl ReadablePacket for AuthGS {
     const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let mut buffer = ReadablePacketBuffer::new(data.to_vec());
+        let mut buffer = ReadablePacketBuffer::new(data);
         let _packet_id = buffer.read_byte();
         let server_id = buffer.read_byte();
         let server_name = buffer.read_string();
