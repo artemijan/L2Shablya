@@ -1,14 +1,13 @@
 use crate::controller::LoginController;
 use crate::gs_thread::enums;
 use crate::packet::gs_factory::build_gs_packet;
-use anyhow::{bail, Error};
+use anyhow::{anyhow, bail, Error};
 use async_trait::async_trait;
 use entities::DBPool;
 use l2_core::config::login::LoginServer;
 use l2_core::crypt::login::Encryption;
 use l2_core::crypt::rsa::ScrambledRSAKeyPair;
 use l2_core::dto::InboundConnection;
-use l2_core::errors::Packet;
 use l2_core::shared_packets::common::GSLoginFail;
 use l2_core::shared_packets::ls_2_gs::InitLS;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
@@ -42,11 +41,14 @@ impl GameServer {
     pub fn set_blowfish_key(&mut self, new_bf_key: &[u8]) {
         self.blowfish = Encryption::from_u8_key(new_bf_key);
     }
-
+    pub fn try_get_server_id(&self) -> anyhow::Result<u8> {
+        self.server_id
+            .ok_or_else(|| anyhow!("Possible cheating: No server ID set"))
+    }
     pub async fn set_connection_state(&mut self, state: &enums::GS) -> anyhow::Result<()> {
         if let Err(err) = self.connection_state.transition_to(state) {
             let err_msg = format!("Connection state transition failed {err:?}");
-            self.send_packet(Box::new(GSLoginFail::new(err))).await?;
+            self.send_packet(Box::new(GSLoginFail::new(err)?)).await?;
             bail!(err_msg);
         }
         Ok(())
@@ -104,10 +106,10 @@ impl PacketHandler for GameServer {
     }
 
     #[instrument(skip(self))]
-    async fn on_connect(&mut self) -> Result<(), Packet> {
+    async fn on_connect(&mut self) -> anyhow::Result<()> {
         info!(
             "Game server connected: {:?}",
-            self.tcp_reader.lock().await.peer_addr().unwrap()
+            self.tcp_reader.lock().await.peer_addr()?
         );
         self.connection_state = enums::GS::Connected;
         let init_packet = Box::new(InitLS::new(self.key_pair.get_modulus()));

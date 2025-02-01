@@ -48,7 +48,7 @@ impl HandleablePacket for RequestAuthGG {
         if self.session_id != ch.get_session_id() {
             ch.send_packet(Box::new(PlayerLoginFail::new(
                 PlayerLoginFailReasons::ReasonAccessFailed,
-            )))
+            )?))
             .await?;
             bail!(format!("Wrong session id {}", self.session_id));
         }

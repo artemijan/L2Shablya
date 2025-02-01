@@ -1,9 +1,10 @@
 use crate::network::bind_addr;
+use crate::new_db_pool;
 use crate::traits::handlers::{InboundHandler, OutboundHandler, PacketHandler};
 use crate::traits::{IpBan, ServerConfig};
-use crate::new_db_pool;
 use async_trait::async_trait;
 use dotenvy::dotenv;
+use entities::DBPool;
 use sqlx::any::install_default_drivers;
 use std::future::Future;
 use std::num::NonZero;
@@ -12,7 +13,6 @@ use std::thread;
 use tokio::net::TcpStream;
 use tokio::task::JoinHandle;
 use tracing::{error, info, instrument};
-use entities::DBPool;
 
 #[async_trait]
 pub trait Server {
@@ -59,12 +59,12 @@ pub trait Server {
     {
         tokio::spawn(async move {
             let conn_cfg = T::get_connection_config(&config);
-            let listener =
-                bind_addr(conn_cfg).unwrap_or_else(|e| panic!("{e}:Can not bind socket {conn_cfg:?}"));
+            let listener = bind_addr(conn_cfg)
+                .unwrap_or_else(|e| panic!("{e}:Can not bind socket {conn_cfg:?}"));
             info!(
                 "{} listening on {}",
                 T::get_handler_name(),
-                &listener.local_addr().unwrap()
+                &listener.local_addr().expect("Cannot get socket local address"),
             );
             loop {
                 match listener.accept().await {
@@ -80,7 +80,14 @@ pub trait Server {
                             //todo: maybe use EBPF?
                             } else {
                                 let mut handler = T::new(stream, pool.clone(), controller.clone());
-                                tokio::spawn(async move { handler.handle_client().await });
+                                tokio::spawn(async move {
+                                    if let Err(err) = handler.handle_client().await {
+                                        error!(
+                                            "Closing handler {} with error: {err}",
+                                            T::get_handler_name()
+                                        );
+                                    }
+                                });
                             }
                         }
                     }
@@ -125,7 +132,12 @@ pub trait Server {
                     .set_nodelay(conn_cfg.no_delay)
                     .expect("Set nodelay failed");
                 let mut handler = T::new(stream, pool.clone(), controller.clone());
-                handler.handle_client().await;
+                if let Err(err) = handler.handle_client().await {
+                    error!(
+                        "Closing handler {}, with error: {err}",
+                        T::get_handler_name()
+                    );
+                }
                 error!("Lost connection to login server, trying again in 5 seconds...");
                 tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
             }

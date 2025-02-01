@@ -65,10 +65,19 @@ impl ClassTemplates {
             Class::DwarvenFighter,
         ]
     }
-    pub fn get_available_templates_for_registration(&self) -> Vec<CharTemplate> {
+    /// # Panics
+    /// - when registration classes mismatch with available classes
+    #[must_use]
+    pub fn get_available_templates_for_registration(&self) -> Vec<&CharTemplate> {
         Self::registration_classes()
             .iter()
-            .map(|i| self.templates.get(i).unwrap().clone())
+            .map(|i| {
+                self.templates.get(i).expect(
+                    r"
+                         It seems like you misconfigured registration templates,
+                         so they contain classes that are not available at all.",
+                )
+            })
             .collect()
     }
 }

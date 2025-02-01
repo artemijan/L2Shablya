@@ -6,7 +6,6 @@ use entities::DBPool;
 use l2_core::config::gs::GSServer;
 use l2_core::crypt::login::Encryption;
 use l2_core::dto::OutboundConnection;
-use l2_core::errors::Packet;
 use l2_core::traits::handlers::{OutboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
 use std::sync::Arc;
@@ -77,7 +76,7 @@ impl PacketHandler for LoginHandler {
     }
 
     #[instrument(skip(self))]
-    async fn on_connect(&mut self) -> Result<(), Packet> {
+    async fn on_connect(&mut self) -> anyhow::Result<()> {
         info!("Connected to Login server. Trying to Authenticate.");
         Ok(())
     }

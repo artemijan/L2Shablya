@@ -38,7 +38,7 @@ impl HandleablePacket for RequestServerList {
         } else {
             ch.send_packet(Box::new(PlayerLoginFail::new(
                 PlayerLoginFailReasons::ReasonUserOrPassWrong,
-            )))
+            )?))
             .await?;
             bail!(format!("Login Fail, tried user: {:?}", ch.account_name));
         }

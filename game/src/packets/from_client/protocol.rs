@@ -6,11 +6,14 @@ use async_trait::async_trait;
 use l2_core::crypt::login::Encryption;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
+use l2_core::shared_packets::write::SendablePacketBuffer;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct ProtocolVersion {
     pub version: i32,
+    pub buffer: SendablePacketBuffer,
 }
 
 impl ReadablePacket for ProtocolVersion {
@@ -19,7 +22,10 @@ impl ReadablePacket for ProtocolVersion {
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         let version = buffer.read_i32()?;
-        Ok(Self { version })
+        Ok(Self {
+            version,
+            buffer: SendablePacketBuffer::empty(),
+        })
     }
 }
 

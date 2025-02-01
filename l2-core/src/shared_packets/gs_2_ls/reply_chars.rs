@@ -1,10 +1,10 @@
+use crate as l2_core;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use async_trait::async_trait;
 use entities::entities::character;
 use macro_common::SendablePacketImpl;
-use crate as l2_core;
 
 #[derive(Clone, Debug, SendablePacketImpl)]
 pub struct ReplyChars {
@@ -16,9 +16,8 @@ pub struct ReplyChars {
 }
 
 impl ReplyChars {
-    #[must_use]
-    #[allow(clippy::cast_possible_truncation, clippy::missing_panics_doc)]
-    pub fn new(account_name: String, chars: &[character::Model]) -> ReplyChars {
+    #[allow(clippy::cast_possible_truncation, clippy::missing_errors_doc)]
+    pub fn new(account_name: String, chars: &[character::Model]) -> anyhow::Result<ReplyChars> {
         let mut chars_to_del_list = vec![];
         for ch in chars {
             if let Some(del_at) = ch.delete_at {
@@ -32,14 +31,15 @@ impl ReplyChars {
             delete_chars_len: 0,
             char_deletion_timestamps: chars_to_del_list,
         };
-        inst.buffer.write(0x08).unwrap();
-        inst.buffer.write_c_utf16le_string(Some(&inst.account_name)).unwrap();
-        inst.buffer.write(inst.chars).unwrap();
-        inst.buffer.write(inst.delete_chars_len).unwrap();
+        inst.buffer.write(0x08)?;
+        inst.buffer
+            .write_c_utf16le_string(Some(&inst.account_name))?;
+        inst.buffer.write(inst.chars)?;
+        inst.buffer.write(inst.delete_chars_len)?;
         for ch in &inst.char_deletion_timestamps {
-            inst.buffer.write_i64(*ch).unwrap();
+            inst.buffer.write_i64(*ch)?;
         }
-        inst
+        Ok(inst)
     }
 }
 

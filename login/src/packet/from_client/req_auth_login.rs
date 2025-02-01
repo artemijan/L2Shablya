@@ -66,7 +66,7 @@ impl HandleablePacket for RequestAuthLogin {
             if !user.verify_password(&self.password).await {
                 ch.send_packet(Box::new(PlayerLoginFail::new(
                     PlayerLoginFailReasons::ReasonUserOrPassWrong,
-                )))
+                )?))
                 .await?;
                 bail!(format!("Login Fail, tried user: {}", self.username));
             }
@@ -92,7 +92,7 @@ impl HandleablePacket for RequestAuthLogin {
         let lc = ch.get_controller();
         if let Err(err) = lc.on_player_login(player_info).await {
             let err_msg = format!("Player login failed: {err:?}");
-            ch.send_packet(Box::new(PlayerLoginFail::new(err))).await?;
+            ch.send_packet(Box::new(PlayerLoginFail::new(err)?)).await?;
             bail!(err_msg);
         }
         if show_license {

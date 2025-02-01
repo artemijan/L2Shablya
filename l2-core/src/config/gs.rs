@@ -97,7 +97,9 @@ impl GSServer {
         if let Ok(ip) = Ipv4Addr::from_str(external_ip.trim()) {
             self.ip_config.push(ServerHost {
                 ip,
-                subnet: "0.0.0.0/0".parse().unwrap(),
+                subnet: "0.0.0.0/0"
+                    .parse()
+                    .expect("WTF: can not parse statically defined ip address"),
             });
         } else {
             error!("Failed to parse external IP address: {}", external_ip);

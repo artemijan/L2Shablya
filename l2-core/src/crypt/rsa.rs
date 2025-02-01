@@ -139,7 +139,8 @@ impl ScrambledRSAKeyPair {
 pub fn generate_rsa_key_pair() -> (rsa::RsaPrivateKey, rsa::RsaPublicKey) {
     let bits: usize = 1024;
     let mut rng = rand::thread_rng();
-    let private_key = rsa::RsaPrivateKey::new(&mut rng, bits).unwrap();
+    let private_key =
+        rsa::RsaPrivateKey::new(&mut rng, bits).expect("Failed to generate RSA private key");
     let public_key = rsa::RsaPublicKey::from(&private_key);
     (private_key, public_key)
 }

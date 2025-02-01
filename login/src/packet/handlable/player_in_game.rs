@@ -9,7 +9,7 @@ impl HandleablePacket for PlayerInGame {
     type HandlerType = GSHandler;
     async fn handle(&self, gs: &mut Self::HandlerType) -> anyhow::Result<()> {
         let lc = gs.get_controller();
-        lc.on_players_in_game(gs.server_id.unwrap(), &self.accounts);
+        lc.on_players_in_game(gs.try_get_server_id()?, &self.accounts);
         Ok(())
     }
 }

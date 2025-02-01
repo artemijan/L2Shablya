@@ -119,8 +119,8 @@ impl PacketHandler for Client {
     }
 
     #[instrument(skip(self))]
-    async fn on_connect(&mut self) -> Result<(), Packet> {
-        let addr = self.tcp_reader.lock().await.peer_addr().unwrap();
+    async fn on_connect(&mut self) -> anyhow::Result<()> {
+        let addr = self.tcp_reader.lock().await.peer_addr()?;
         info!("Client connected: {:?}", addr);
         let mut init = Init::new(
             self.session_id,
@@ -157,8 +157,6 @@ impl PacketHandler for Client {
         let handler = build_client_packet(data, &self.rsa_key_pair)?;
         handler.handle(self).await
     }
-
-
 }
 
 #[async_trait]
@@ -188,6 +186,7 @@ mod test {
     use l2_core::traits::ServerConfig;
     use tokio::io::AsyncReadExt;
     use tokio::net::TcpListener;
+    use tracing::error;
 
     #[tokio::test]
     async fn test_init_packet_sent() {
@@ -202,7 +201,12 @@ mod test {
         tokio::spawn(async move {
             let (socket, _) = listener.accept().await.unwrap();
             let mut ch = Client::new(socket, db_pool, cloned_lc);
-            ch.handle_client().await;
+            if let Err(err) = ch.handle_client().await {
+                error!(
+                    "Closed client {} with error: {err:?}",
+                    Client::get_handler_name()
+                );
+            }
         });
         // Create a client to connect to the server
         let mut client = TcpStream::connect(addr).await.unwrap();

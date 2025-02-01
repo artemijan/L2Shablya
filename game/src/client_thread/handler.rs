@@ -10,7 +10,6 @@ use l2_core::config::gs::GSServer;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::dto::InboundConnection;
-use l2_core::errors::Packet;
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
@@ -111,7 +110,7 @@ impl ClientHandler {
     pub fn get_selected_char_slot(&self) -> Option<i32> {
         self.selected_char
     }
-    
+
     pub fn add_character(&mut self, character: CharacterInfo) -> anyhow::Result<()> {
         self.account_chars
             .as_mut()
@@ -221,7 +220,7 @@ impl PacketHandler for ClientHandler {
     }
 
     #[instrument(skip(self))]
-    async fn on_connect(&mut self) -> Result<(), Packet> {
+    async fn on_connect(&mut self) -> anyhow::Result<()> {
         info!("Client connected.");
         Ok(())
     }
@@ -285,5 +284,94 @@ impl InboundHandler for ClientHandler {
 
     fn get_connection_config(cfg: &Self::ConfigType) -> &InboundConnection {
         &cfg.listeners.clients.connection
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::packets::from_client::protocol::ProtocolVersion;
+    use l2_core::shared_packets::common::SendablePacket;
+    use l2_core::tests::get_test_db;
+    use l2_core::traits::ServerConfig;
+    use std::net::SocketAddr;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    use tokio::io::AsyncWriteExt;
+    use tokio::net::TcpListener;
+    use tokio::task::JoinHandle;
+    use l2_core::shared_packets::write::SendablePacketBuffer;
+
+    static PORT_COUNTER: AtomicUsize = AtomicUsize::new(3000);
+    
+    impl ProtocolVersion {
+        pub fn new(version: i32) -> anyhow::Result<Self> {
+            let mut inst = Self {
+                version,
+                buffer: SendablePacketBuffer::new(),
+            };
+            inst.buffer.write_i32(inst.version)?;
+            Ok(inst)
+        }
+    }
+    
+    #[allow(clippy::cast_possible_truncation)]
+    fn get_next_port() -> u16 {
+        // Atomically increment the port counter for each test
+        PORT_COUNTER.fetch_add(1, Ordering::SeqCst) as u16
+    }
+    
+    async fn build_client_handler() -> (JoinHandle<anyhow::Result<()>>, SocketAddr) {
+        let port = get_next_port();
+        let listener = TcpListener::bind(format!("127.0.0.1:{port}"))
+            .await
+            .unwrap();
+        let addr = listener.local_addr().unwrap();
+        let cfg = Arc::new(GSServer::from_string(include_str!(
+            "../../test_data/game.yaml"
+        )));
+        let controller = Arc::new(Controller::new(cfg));
+        let cloned_controller = controller.clone();
+        // Spawn a server task to handle a single connection
+        (
+            tokio::spawn(async move {
+                let db_pool = get_test_db().await;
+                let (socket, _) = listener.accept().await.unwrap();
+                let mut ch = ClientHandler::new(socket, db_pool, cloned_controller);
+                ch.handle_client().await
+            }),
+            addr,
+        )
+    }
+    #[tokio::test]
+    async fn test_protocol_version_fail() {
+        // Create a listener on a local port
+        let (h, addr) = build_client_handler().await;
+        // Create a client to connect to the server
+        let mut client = TcpStream::connect(addr).await.unwrap();
+        // Read the response from the server
+        let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
+        let bytes = login_packet.get_bytes(false);
+        bytes[0] = 1;
+        bytes[1] = 2;
+        let _ = client.write(bytes).await.unwrap();
+        client.flush().await.unwrap();
+        client.shutdown().await.unwrap();
+        let err = h.await.unwrap();
+        assert!(err.is_err());
+    }
+    #[tokio::test]
+    async fn test_protocol_version_success() {
+        // Create a listener on a local port
+        let (h, addr) = build_client_handler().await;
+        // Create a client to connect to the server
+        let mut client = TcpStream::connect(addr).await.unwrap();
+        // Read the response from the server
+        let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
+        let bytes = login_packet.get_bytes(false);
+        let _ = client.write(bytes).await.unwrap();
+        client.flush().await.unwrap();
+        client.shutdown().await.unwrap();
+        let err = h.await.unwrap();
+        assert!(err.is_ok());
     }
 }

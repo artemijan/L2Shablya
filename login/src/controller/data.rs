@@ -21,7 +21,6 @@ pub struct LoginController {
 }
 
 impl LoginController {
-  
     pub fn new(config: Arc<login::LoginServer>) -> Self {
         info!("Loading LoginController...");
         let threshold =
@@ -44,7 +43,11 @@ impl LoginController {
     pub fn get_random_rsa_key_pair(&self) -> ScrambledRSAKeyPair {
         let mut rng = rand::thread_rng();
         let random_number: usize = rng.gen_range(0..=9);
-        self.key_pairs.get(random_number).unwrap().clone()
+        // safe to unwrap as we 100% sure that we load all keys when booting the application
+        self.key_pairs
+            .get(random_number)
+            .expect("Can't access generated keys, seems like app is not properly booted")
+            .clone()
     }
 
     fn generate_rsa_key_pairs(count: u8) -> Vec<ScrambledRSAKeyPair> {

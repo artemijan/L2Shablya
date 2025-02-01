@@ -1,7 +1,8 @@
 use crate::gs_thread::GSHandler;
 use crate::packet::HandleablePacket;
+use anyhow::bail;
 use async_trait::async_trait;
-use l2_core::constants::get_server_name_by_id;
+use l2_core::constants::try_get_server_name_by_id;
 use l2_core::traits::handlers::PacketSender;
 use l2_core::{
     shared_packets::{
@@ -11,7 +12,6 @@ use l2_core::{
     traits::handlers::PacketHandler,
 };
 use std::sync::Arc;
-use anyhow::bail;
 use tracing::{info, instrument};
 
 #[async_trait]
@@ -32,18 +32,18 @@ impl HandleablePacket for GSStatusUpdate {
             });
             info!(
                 "Game server registered: {:}({server_id})",
-                get_server_name_by_id(server_id).unwrap()
+                try_get_server_name_by_id(server_id)?
             );
         }
         if !updated {
             gs.send_packet(Box::new(PlayerLoginFail::new(
                 PlayerLoginFailReasons::ReasonAccessFailed,
-            )))
+            )?))
             .await?;
             bail!("Server was not found, GS id {:?}", gs.server_id);
         }
         lc.message_broker
-            .register_packet_handler(gs.server_id.unwrap(), Arc::new(gs.clone()));
+            .register_packet_handler(gs.try_get_server_id()?, Arc::new(gs.clone()));
         Ok(())
     }
 }

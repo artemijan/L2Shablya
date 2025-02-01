@@ -23,7 +23,7 @@ impl HandleablePacket for BlowFish {
         } else {
             gs.send_packet(Box::new(PlayerLoginFail::new(
                 PlayerLoginFailReasons::ReasonNotAuthed,
-            )))
+            )?))
             .await?;
             bail!("Unable to decrypt GS blowfish key");
         }

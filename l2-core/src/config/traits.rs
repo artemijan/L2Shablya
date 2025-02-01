@@ -1,10 +1,11 @@
 use serde::de::DeserializeOwned;
 use std::any::type_name;
 use std::fmt::Debug;
-use std::fs;
+use std::path::PathBuf;
+use std::{env, fs};
 
 pub trait Loadable: Sized + Debug + Clone {
-    fn load(){}
+    fn load() {}
     fn post_load(&self) {}
 }
 
@@ -12,15 +13,41 @@ pub trait ConfigFileLoader: DeserializeOwned + Loadable {
     const DATA_FILE: &'static str;
     #[must_use]
     fn load() -> Self {
-        let file_content = fs::read_to_string(Self::DATA_FILE).unwrap_or_else(|e| {
+        let mut full_path = PathBuf::from(Self::DATA_FILE);
+        let mut visited_paths = Vec::new(); // Track visited symlinks to prevent loops
+
+        // Resolve symlinks manually to avoid infinite loops
+        while full_path.is_symlink() {
+            assert!(
+                !visited_paths.contains(&full_path),
+                "Symlink loop detected: {full_path:?}"
+            );
+            visited_paths.push(full_path.clone());
+
+            full_path = fs::read_link(&full_path).unwrap_or_else(|e| {
+                panic!("Failed to resolve symlink {}: {e}", full_path.display())
+            });
+        }
+
+        // Ensure we get an absolute path
+        full_path = full_path
+            .canonicalize()
+            .unwrap_or_else(|_| env::current_dir().unwrap().join(Self::DATA_FILE));
+
+        println!("Loading config file from: {}", full_path.display());
+
+        let file_content = fs::read_to_string(&full_path).unwrap_or_else(|e| {
             panic!(
-                "Can't read config file {}, because of: {e}",
-                Self::DATA_FILE
+                "Can't read config file {} (resolved path: {}), because of: {e}",
+                Self::DATA_FILE,
+                full_path.display()
             )
         });
+
         let config_name = type_name::<Self>();
         let inst: Self = serde_yaml::from_str(&file_content)
-            .unwrap_or_else(|e| panic!("Can't read {config_name}, because of: {e}"));
+            .unwrap_or_else(|e| panic!("Can't parse {config_name}, because of: {e}"));
+
         inst.post_load();
         inst
     }

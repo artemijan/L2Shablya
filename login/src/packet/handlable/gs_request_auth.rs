@@ -5,11 +5,11 @@ use crate::{
 };
 use anyhow::bail;
 use async_trait::async_trait;
-use l2_core::constants::get_server_name_by_id;
+use l2_core::constants::try_get_server_name_by_id;
 use l2_core::traits::handlers::PacketSender;
 use l2_core::{
     shared_packets::{
-        common::{GSLoginFail, GSLoginFailReasons},
+        common::GSLoginFail,
         gs_2_ls::RequestAuthGS,
         ls_2_gs::AuthGS,
     },
@@ -38,23 +38,17 @@ impl HandleablePacket for RequestAuthGS {
         match gs.get_controller().register_gs(gsi) {
             Ok(desired_id) => {
                 gs.set_connection_state(&enums::GS::Authed).await?;
-                let server_name = get_server_name_by_id(desired_id);
-                if let Some(server_name) = server_name {
-                    gs.server_id = Some(desired_id);
-                    gs.send_packet(Box::new(AuthGS::new(desired_id, server_name)))
-                        .await?;
-                } else {
-                    gs.send_packet(Box::new(GSLoginFail::new(GSLoginFailReasons::None)))
-                        .await?;
-                }
-                Ok(())
+                let server_name = try_get_server_name_by_id(desired_id)?;
+                gs.server_id = Some(desired_id);
+                gs.send_packet(Box::new(AuthGS::new(desired_id, server_name)))
+                    .await
             }
             Err(e) => {
                 let err_msg = format!(
                     "Failed to register game server with id {:}, fail reason {:?}",
                     self.desired_id, e
                 );
-                gs.send_packet(Box::new(GSLoginFail::new(e))).await?;
+                gs.send_packet(Box::new(GSLoginFail::new(e)?)).await?;
                 bail!(err_msg)
             }
         }

@@ -18,7 +18,7 @@ impl HandleablePacket for RequestChars {
         let db_pool = gs.get_db_pool();
         let chars =
             character::Model::find_by_username(db_pool, &self.account_name).await?;
-        let pack = ReplyChars::new(self.account_name.clone(), &chars);
+        let pack = ReplyChars::new(self.account_name.clone(), &chars)?;
         gs.send_packet(Box::new(pack)).await?;
         Ok(())
     }

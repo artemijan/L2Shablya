@@ -209,16 +209,14 @@ impl ReadablePacket for GSLoginFail {
 }
 
 impl GSLoginFail {
-    /// # Panics
-    /// - never
-    #[must_use]
-    pub fn new(reason: GSLoginFailReasons) -> Self {
+    #[allow(clippy::missing_errors_doc)]
+    pub fn new(reason: GSLoginFailReasons) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
             reason,
         };
-        inst.write_all().unwrap();
-        inst
+        inst.write_all()?;
+        Ok(inst)
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write(GSLoginFailReasons::NotAuthed as u8)?;
@@ -234,17 +232,14 @@ pub struct PlayerLoginFail {
 }
 
 impl PlayerLoginFail {
-    ///
-    /// # Panics
-    /// - never
-    #[must_use]
-    pub fn new(reason: PlayerLoginFailReasons) -> Self {
+    #[allow(clippy::missing_errors_doc)]
+    pub fn new(reason: PlayerLoginFailReasons) -> anyhow::Result<Self> {
         let mut login_ok = Self {
             buffer: SendablePacketBuffer::new(),
             reason,
         };
-        login_ok.write_all().unwrap();
-        login_ok
+        login_ok.write_all()?;
+        Ok(login_ok)
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write(LoginServerOpcodes::LoginFail as u8)?;

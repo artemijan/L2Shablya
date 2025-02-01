@@ -1,10 +1,13 @@
+use anyhow::bail;
+
 pub const PROTOCOL_REVISION: i32 = 0x0106;
-#[must_use]
-pub fn get_server_name_by_id(server_id: u8) -> Option<String> {
+/// # Errors
+/// - when server id is not in the list
+pub fn try_get_server_name_by_id(server_id: u8) -> anyhow::Result<String> {
     if (0..127).contains(&server_id) {
-        return Some(SERVER_NAMES[server_id as usize - 1].to_owned());
+        return Ok(SERVER_NAMES[server_id as usize - 1].to_owned());
     }
-    None
+    bail!("Server ID out of range: {}", server_id);
 }
 pub const SERVER_NAMES: &[&str; 127] = &[
     "Bartz",
