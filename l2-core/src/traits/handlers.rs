@@ -1,4 +1,3 @@
-use crate::crypt::login::Encryption;
 use crate::dto;
 use crate::shared_packets::common::SendablePacket;
 use crate::traits::Shutdown;
@@ -28,15 +27,13 @@ pub trait OutboundHandler {
 #[async_trait]
 pub trait PacketSender: Send + Sync + Debug {
     async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<(), Error> {
-        self.send_bytes(packet.get_bytes(self.encryption().is_some()))
+        self.send_bytes(packet.get_bytes(self.is_encryption_enabled()))
             .await?;
         Ok(())
     }
     async fn send_bytes(&self, bytes: &mut [u8]) -> Result<(), Error> {
-        let size = bytes.len();
-        if let Some(blowfish) = self.encryption() {
-            Encryption::append_checksum(&mut bytes[2..size]);
-            blowfish.encrypt(&mut bytes[2..size]);
+        if self.is_encryption_enabled() {
+            self.encrypt(bytes).await?;
         }
         self.get_stream_writer_mut()
             .await
@@ -46,7 +43,10 @@ pub trait PacketSender: Send + Sync + Debug {
             .await?;
         Ok(())
     }
-    fn encryption(&self) -> Option<&Encryption>;
+
+    #[allow(clippy::missing_errors_doc)]
+    async fn encrypt(&self, bytes: &mut [u8]) -> anyhow::Result<()>;
+    fn is_encryption_enabled(&self) -> bool;
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>>;
 }
 #[async_trait]
@@ -109,7 +109,8 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
                     match read_result {
                         Ok((0, _)) => {
                             self.on_disconnect().await;
-                            bail!("No bytes received.");
+                            // it's okay that we received 0 bytes, client wants to close socket
+                            break;
                         }
                         Ok((bytes_read, mut data)) => {
                             if let Err(e) = self.on_receive_bytes(bytes_read, &mut data).await {

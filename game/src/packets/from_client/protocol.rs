@@ -3,7 +3,7 @@ use crate::packets::to_client::ProtocolResponse;
 use crate::packets::HandleablePacket;
 use anyhow::bail;
 use async_trait::async_trait;
-use l2_core::crypt::login::Encryption;
+use l2_core::crypt::game::GameClientEncryption;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
@@ -33,7 +33,7 @@ impl ReadablePacket for ProtocolVersion {
 impl HandleablePacket for ProtocolVersion {
     type HandlerType = ClientHandler;
     async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
-        let controller = handler.get_controller();
+        let controller = handler.get_controller().clone();
         let cfg = controller.get_cfg();
         if let Err(e) = handler.set_protocol(self.version) {
             handler
@@ -44,7 +44,7 @@ impl HandleablePacket for ProtocolVersion {
 
         let key_bytes = ClientHandler::generate_key();
         if cfg.enable_encryption {
-            let key = Encryption::from_u8_key(&key_bytes);
+            let key = GameClientEncryption::new(&key_bytes)?;
             handler.set_encryption(Some(key));
         }
         handler

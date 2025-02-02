@@ -9,7 +9,7 @@ iconic Kozak weapon. It is used here metaphorically and holds no association wit
 
 Current state: `Under development`
 
-About: This implementation is based on L2J, e.g. I reimplement everything in rust from java + I optimize things, 
+About: This implementation is based on L2J, e.g. I reimplement everything in rust from java + I optimize things,
 like DB denormalization for performance boost, removing unnecessary operations and so on.
 
 Ready features:
@@ -18,13 +18,16 @@ Ready features:
     - [x] Login process + auto create accounts
     - [x] Game server registration
     - [x] Kicking player
-    - [ ] CMD login
+    - [x] CMD login
     - [ ] EBPF filtering of banned IPs
 - [x] Game server
     - [x] register o login server
+    - [x] player packet encryption support (shifting key)
     - [x] player can select game server
     - [x] player can create char
-    - [ ] player can delete char
+    - [x] player can delete char
+    - [x] player can restore char
+    - [x] player can select char
     - [ ] player can enter the game world
 
 ## The client

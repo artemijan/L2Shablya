@@ -34,7 +34,7 @@ pub fn build_client_packet(
         SelectChar::PACKET_ID => Ok(Box::new(SelectChar::read(packet_body)?)),
         0xD0 => build_ex_client_packet(packet_body),
         _ => {
-            error!("Unknown GS packet ID:0x{:02X}", data[0]);
+            error!("Unknown GS packet ID: 0x{:02X}", data[0]);
             Ok(Box::new(NoOp::read(data)?))
         }
     }

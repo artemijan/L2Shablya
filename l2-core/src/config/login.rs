@@ -12,7 +12,6 @@ pub struct LoginServer {
     pub name: String,
     pub blowfish_key: String,
     pub runtime: Option<Runtime>,
-    pub auto_registration: bool,
     #[serde(deserialize_with = "validate_allowed_gs_keys")]
     pub allowed_gs: Option<Vec<BigInt>>,
     pub listeners: Listeners,
@@ -93,6 +92,7 @@ pub struct Client {
     pub timeout: u8,
     pub show_licence: bool,
     pub enable_cmdline_login: bool,
+    pub auto_create_accounts: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]

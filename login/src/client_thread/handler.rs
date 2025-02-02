@@ -166,8 +166,11 @@ impl PacketHandler for Client {
 
 #[async_trait]
 impl PacketSender for Client {
-    fn encryption(&self) -> Option<&Encryption> {
-        None
+    async fn encrypt(&self, _: &mut [u8]) -> anyhow::Result<()> {
+        Ok(())
+    }
+    fn is_encryption_enabled(&self) -> bool {
+        false
     }
 
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {

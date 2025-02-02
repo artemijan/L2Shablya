@@ -7,6 +7,7 @@ use entities::dao::char_info::CharacterInfo;
 use entities::entities::{character, user};
 use entities::DBPool;
 use l2_core::config::gs::GSServer;
+use l2_core::crypt::game::GameClientEncryption;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::dto::InboundConnection;
@@ -41,7 +42,7 @@ pub struct ClientHandler {
     shutdown_notifier: Arc<Notify>,
     timeout: u8,
     ip: Ipv4Addr,
-    blowfish: Option<Encryption>,
+    blowfish: Option<Arc<Mutex<GameClientEncryption>>>,
     protocol: Option<i32>,
     status: ClientStatus,
     account_chars: Option<Vec<CharacterInfo>>,
@@ -167,8 +168,12 @@ impl ClientHandler {
             .ok_or(anyhow::anyhow!("Missing character at slot {slot_id}"))
     }
 
-    pub fn set_encryption(&mut self, bf_key: Option<Encryption>) {
-        self.blowfish = bf_key;
+    pub fn set_encryption(&mut self, bf_key: Option<GameClientEncryption>) {
+        if let Some(key) = bf_key {
+            self.blowfish = Some(Arc::new(Mutex::new(key)));
+        } else {
+            self.blowfish = None;
+        }
     }
     pub fn generate_key() -> Vec<u8> {
         let mut key = generate_blowfish_key(None);
@@ -191,8 +196,17 @@ impl Shutdown for ClientHandler {
 
 #[async_trait]
 impl PacketSender for ClientHandler {
-    fn encryption(&self) -> Option<&Encryption> {
-        self.blowfish.as_ref()
+    async fn encrypt(&self, bytes: &mut [u8]) -> anyhow::Result<()> {
+        if let Some(bf) = self.blowfish.as_ref() {
+            let size = bytes.len();
+            Encryption::append_checksum(&mut bytes[2..size]);
+            bf.lock().await.encrypt(&mut bytes[2..size]);
+        }
+        Ok(())
+    }
+
+    fn is_encryption_enabled(&self) -> bool {
+        self.blowfish.is_some()
     }
 
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Unpin + Send>> {
@@ -291,13 +305,9 @@ impl PacketHandler for ClientHandler {
 
     #[instrument(skip(self, bytes))]
     async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
-        if let Some(blowfish) = self.encryption() {
-            blowfish.decrypt(bytes)?;
-            if !Encryption::verify_checksum(bytes) {
-                bail!("Can not verify check sum.");
-            }
+        if let Some(blowfish) = self.blowfish.as_ref() {
+            blowfish.lock().await.decrypt(bytes)?;
         }
-
         let handler = build_client_packet(bytes)?;
         handler.handle(self).await
     }
@@ -443,8 +453,12 @@ mod tests {
 
     #[async_trait]
     impl PacketSender for TestPacketSender {
-        fn encryption(&self) -> Option<&Encryption> {
-            None
+        async fn encrypt(&self, _: &mut [u8]) -> anyhow::Result<()> {
+            Ok(())
+        }
+
+        fn is_encryption_enabled(&self) -> bool {
+            false
         }
 
         async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {

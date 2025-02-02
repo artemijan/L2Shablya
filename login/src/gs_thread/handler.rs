@@ -77,8 +77,15 @@ impl Shutdown for GameServer {
 
 #[async_trait]
 impl PacketSender for GameServer {
-    fn encryption(&self) -> Option<&Encryption> {
-        Some(&self.blowfish)
+    async fn encrypt(&self, bytes: &mut [u8]) -> anyhow::Result<()> {
+        let size = bytes.len();
+        Encryption::append_checksum(&mut bytes[2..size]);
+        self.blowfish.encrypt(&mut bytes[2..size]);
+        Ok(())
+    }
+
+    fn is_encryption_enabled(&self) -> bool {
+        true
     }
 
     async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
