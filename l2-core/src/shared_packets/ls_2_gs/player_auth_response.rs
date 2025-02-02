@@ -1,5 +1,5 @@
 use crate::shared_packets::{
-    common::{ReadablePacket},
+    common::ReadablePacket,
     read::ReadablePacketBuffer,
     write::SendablePacketBuffer,
 };

@@ -316,12 +316,16 @@ mod tests {
     use super::*;
     use crate::packets::from_client::auth::AuthLogin;
     use crate::packets::from_client::protocol::ProtocolVersion;
-    use l2_core::shared_packets::common::{ReadablePacket, SendablePacket};
-    use l2_core::shared_packets::gs_2_ls::PlayerAuthRequest;
+    use crate::packets::to_client::PlayerLoginResponse;
+    use l2_core::shared_packets::common::{PacketType, ReadablePacket, SendablePacket};
+    use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
+    use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
+    use l2_core::shared_packets::read::ReadablePacketBuffer;
     use l2_core::shared_packets::write::SendablePacketBuffer;
     use l2_core::tests::get_test_db;
     use l2_core::traits::ServerConfig;
     use ntest::timeout;
+    use sea_orm::{ActiveModelTrait, ActiveValue, TryIntoModel};
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt, DuplexStream};
     use tokio::task::JoinHandle;
 
@@ -447,27 +451,43 @@ mod tests {
             &self.writer
         }
     }
+
+    /// This test is testing whole logic for authenticating user from Protocol version
+    /// and authenticating on login server.
+    /// I decided to do integration test instead of small unit tests just to be able to change
+    /// internals while still not braking functionality.
     #[tokio::test]
     #[timeout(2000)]
     async fn test_integration_auth_ok() {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(1024);
         let (login_client, mut login_server) = tokio::io::duplex(1024);
-
         let cfg = Arc::new(GSServer::from_string(include_str!(
             "../../test_data/game.yaml"
         )));
-        let controller = Controller::new(cfg);
+        let user_record = user::ActiveModel {
+            id: ActiveValue::NotSet,
+            username: ActiveValue::Set("test".to_string()),
+            password: ActiveValue::Set("password_hash".to_string()),
+            access_level: ActiveValue::Set(0),
+            ban_duration: ActiveValue::NotSet,
+            ban_ip: ActiveValue::NotSet,
+        };
+        let user_model = user_record.save(&get_test_db().await).await.unwrap();
+        let controller = Arc::new(Controller::new(cfg));
         let test_packet_sender = Arc::new(TestPacketSender {
             writer: Arc::new(Mutex::new(login_client)),
         });
         controller
             .message_broker
             .register_packet_handler(LoginHandler::HANDLER_ID, test_packet_sender.clone());
-        build_client_handler(server, Some(Arc::new(controller)));
+        let handle = build_client_handler(server, Some(controller.clone()));
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
         client.write_all(bytes).await.unwrap();
+        let mut protocol_response = [0; 26];
+        client.read_exact(&mut protocol_response).await.unwrap();
+        assert_eq!(protocol_response[0], 26);
         let mut auth = AuthLogin::new().unwrap();
         client.write_all(auth.get_bytes(false)).await.unwrap();
         let mut auth_login_packet = [0; 29];
@@ -475,13 +495,36 @@ mod tests {
             .read_exact(&mut auth_login_packet)
             .await
             .unwrap();
-        println!("Auth success: {auth_login_packet:?}");
         let p = PlayerAuthRequest::read(&auth_login_packet[2..]).unwrap();
-        client.shutdown().await.unwrap();
         assert_eq!(p.account_name, "test");
         assert_eq!(p.session.play_ok1, 1); //it should be vice versa
         assert_eq!(p.session.play_ok2, 0);
         assert_eq!(p.session.login_ok1, 2);
         assert_eq!(p.session.login_ok2, 3);
+        let auth_ok_packet = PlayerAuthResponse::new("test", true);
+        //login ok
+        controller.message_broker.respond_to_message(
+            Some(LoginHandler::HANDLER_ID),
+            "test",
+            PacketType::PlayerAuthResp(auth_ok_packet),
+        );
+        let mut player_in_game = [0; 15];
+        login_server.read_exact(&mut player_in_game).await.unwrap();
+        let pig = PlayerInGame::read(&player_in_game[2..]).unwrap();
+        assert_eq!(pig.accounts, ["test"]);
+        let mut auth_ok_resp = [0; 11];
+        client.read_exact(&mut auth_ok_resp).await.unwrap();
+        let mut buffer = ReadablePacketBuffer::new(&auth_ok_resp[2..]);
+        let p_id = buffer.read_byte().unwrap();
+        let is_ok = buffer.read_i32().unwrap();
+        let reason = buffer.read_u32().unwrap();
+        assert_eq!(PlayerLoginResponse::PACKET_ID, p_id);
+        assert_eq!(is_ok, -1);
+        assert_eq!(reason, 0);
+        client.shutdown().await.unwrap();
+        let (ch, _) = handle.await.unwrap();
+        assert_eq!(ch.protocol, Some(6_553_697));
+        assert_eq!(ch.session_key.unwrap(), p.session);
+        assert_eq!(ch.user.unwrap(), user_model.try_into_model().unwrap());
     }
 }

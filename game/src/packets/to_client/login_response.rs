@@ -10,7 +10,7 @@ pub struct PlayerLoginResponse {
 }
 
 impl PlayerLoginResponse {
-    const PACKET_ID: u8 = 0x0A;
+    pub const PACKET_ID: u8 = 0x0A;
     pub const SYSTEM_ERROR_LOGIN_LATER: u32 = 1;
     pub fn ok() -> anyhow::Result<Self> {
         let mut buffer = SendablePacketBuffer::new();
