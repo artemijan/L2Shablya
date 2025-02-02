@@ -10,15 +10,18 @@ use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::{PacketType, ReadablePacket};
 use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
 use l2_core::shared_packets::read::ReadablePacketBuffer;
+use l2_core::shared_packets::write::SendablePacketBuffer;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacketImpl)]
 pub struct AuthLogin {
     pub login_name: String,
     pub play_key_1: i32,
     pub play_key_2: i32,
     pub login_key_1: i32,
     pub login_key_2: i32,
+    pub buffer: SendablePacketBuffer,
 }
 
 impl ReadablePacket for AuthLogin {
@@ -37,6 +40,7 @@ impl ReadablePacket for AuthLogin {
             play_key_2,
             login_key_1,
             login_key_2,
+            buffer: SendablePacketBuffer::empty(),
         })
     }
 }

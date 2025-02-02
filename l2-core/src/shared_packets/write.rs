@@ -14,7 +14,7 @@ impl SendablePacketBuffer {
     #[must_use]
     pub fn empty() -> Self {
         Self {
-            data: BytesMut::with_capacity(2),
+            data: BytesMut::with_capacity(0),
         }
     }
     #[must_use]
