@@ -1,10 +1,10 @@
+use crate as l2_core;
 use crate::config::gs::GSServer;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use num_traits::ToBytes;
 use macro_common::SendablePacketImpl;
-use crate as l2_core;
+use num_traits::ToBytes;
 
 #[derive(Clone, Debug, Default, SendablePacketImpl)]
 pub struct RequestAuthGS {
@@ -81,5 +81,50 @@ impl ReadablePacket for RequestAuthGS {
             hex_id,
             hosts,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::shared_packets::common::{ReadablePacket, SendablePacket};
+    use crate::shared_packets::gs_2_ls::RequestAuthGS;
+    use crate::shared_packets::write::SendablePacketBuffer;
+    fn get_bytes() -> [u8; 74] {
+        [
+            74, 0, 1, 3, 1, 0, 58, 8, 57, 27, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 49, 0, 50, 0, 55, 0,
+            46, 0, 48, 0, 46, 0, 48, 0, 46, 0, 48, 0, 47, 0, 48, 0, 0, 0, 49, 0, 50, 0, 55, 0, 46,
+            0, 48, 0, 46, 0, 48, 0, 46, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        ]
+    }
+    #[test]
+    fn test_instantiate() {
+        let mut p = RequestAuthGS {
+            buffer: SendablePacketBuffer::new(),
+            desired_id: 3,
+            accept_alternative_id: true,
+            host_reserved: false,
+            port: 2106,
+            max_players: 6969,
+            hex_id: vec![],
+            hosts: vec!["127.0.0.0/0".to_string(), "127.0.0.1".to_string()],
+        };
+        p.write_all().unwrap();
+        let bytes = p.get_bytes(true).to_vec();
+        assert_eq!(bytes.len(), 74);
+        assert_eq!(bytes, get_bytes());
+    }
+    #[test]
+    fn test_read() {
+        let p = RequestAuthGS::read(&get_bytes()[2..]).unwrap();
+        assert_eq!(p.desired_id, 3);
+        assert!(p.accept_alternative_id);
+        assert!(!p.host_reserved);
+        assert_eq!(p.port, 2106);
+        assert_eq!(p.max_players, 6969);
+        assert!(p.hex_id.is_empty());
+        assert_eq!(
+            p.hosts,
+            vec!["127.0.0.0/0".to_string(), "127.0.0.1".to_string()]
+        );
     }
 }
