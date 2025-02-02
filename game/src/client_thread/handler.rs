@@ -354,7 +354,9 @@ mod tests {
         }
     }
 
-    fn build_client_handler(server: DuplexStream) -> JoinHandle<anyhow::Result<ClientHandler>> {
+    fn build_client_handler(
+        server: DuplexStream,
+    ) -> JoinHandle<(ClientHandler, anyhow::Result<()>)> {
         let cfg = Arc::new(GSServer::from_string(include_str!(
             "../../test_data/game.yaml"
         )));
@@ -366,13 +368,8 @@ mod tests {
             let ip = Ipv4Addr::new(127, 0, 0, 1);
             let (r, w) = split(server);
             let mut ch = ClientHandler::new(r, w, ip, db_pool, cloned_controller);
-            if let Err(e) = ch.handle_client().await {
-                if e.to_string().contains("No bytes received.") {
-                    return Ok(ch);
-                }
-                return Err(e);
-            }
-            Ok(ch)
+            let r = ch.handle_client().await;
+            (ch, r)
         })
     }
 
@@ -387,7 +384,7 @@ mod tests {
         bytes[4] = 2;
         client.write_all(bytes).await.unwrap();
         client.shutdown().await.unwrap();
-        let err = h.await.unwrap();
+        let (_, err) = h.await.unwrap();
         assert!(err.is_err());
         let err_str = err.err().unwrap().to_string();
         assert!(err_str.contains("Invalid protocol version"));
@@ -405,7 +402,7 @@ mod tests {
         // Read the response from the server
         client.read_exact(&mut resp).await.unwrap();
         client.shutdown().await.unwrap();
-        let ch = h.await.unwrap().unwrap();
+        let (ch, _) = h.await.unwrap();
         assert_eq!(ch.protocol, Some(6_553_697));
         assert_eq!(resp[0..4], [26, 0, 46, 1]);
     }
@@ -418,7 +415,7 @@ mod tests {
         let mut auth = AuthLogin::new().unwrap();
         client.write_all(auth.get_bytes(false)).await.unwrap();
         client.shutdown().await.unwrap();
-        let err = h.await.unwrap();
+        let (_, err) = h.await.unwrap();
         assert!(err.is_err());
         let err_str = err.err().unwrap().to_string();
         assert!(err_str.contains("Protocol version not set"));
@@ -434,7 +431,7 @@ mod tests {
         let mut auth = AuthLogin::new().unwrap();
         client.write_all(auth.get_bytes(false)).await.unwrap();
         client.shutdown().await.unwrap();
-        let err = h.await.unwrap();
+        let (_, err) = h.await.unwrap();
         assert!(err.is_err());
         let err_str = err.err().unwrap().to_string();
         //this means that we succeeded to bypass validation on GameServer
