@@ -317,9 +317,11 @@ mod tests {
     use crate::packets::from_client::auth::AuthLogin;
     use crate::packets::from_client::protocol::ProtocolVersion;
     use l2_core::shared_packets::common::{ReadablePacket, SendablePacket};
+    use l2_core::shared_packets::gs_2_ls::PlayerAuthRequest;
     use l2_core::shared_packets::write::SendablePacketBuffer;
     use l2_core::tests::get_test_db;
     use l2_core::traits::ServerConfig;
+    use ntest::timeout;
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt, DuplexStream};
     use tokio::task::JoinHandle;
 
@@ -339,9 +341,9 @@ mod tests {
             let mut inst = Self {
                 login_name: "test".to_string(),
                 play_key_1: 0,
-                play_key_2: 0,
-                login_key_1: 0,
-                login_key_2: 0,
+                play_key_2: 1,
+                login_key_1: 2,
+                login_key_2: 3,
                 buffer: SendablePacketBuffer::new(),
             };
             inst.buffer.write(Self::PACKET_ID)?;
@@ -356,11 +358,14 @@ mod tests {
 
     fn build_client_handler(
         server: DuplexStream,
+        controller_opt: Option<Arc<Controller>>,
     ) -> JoinHandle<(ClientHandler, anyhow::Result<()>)> {
-        let cfg = Arc::new(GSServer::from_string(include_str!(
-            "../../test_data/game.yaml"
-        )));
-        let controller = Arc::new(Controller::new(cfg));
+        let controller = controller_opt.unwrap_or_else(|| {
+            let cfg = Arc::new(GSServer::from_string(include_str!(
+                "../../test_data/game.yaml"
+            )));
+            Arc::new(Controller::new(cfg))
+        });
         let cloned_controller = controller.clone();
         // Spawn a server task to handle a single connection
         tokio::spawn(async move {
@@ -374,10 +379,11 @@ mod tests {
     }
 
     #[tokio::test]
+    #[timeout(2000)]
     async fn test_protocol_version_fail() {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(1024);
-        let h = build_client_handler(server);
+        let h = build_client_handler(server, None);
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
         bytes[3] = 1;
@@ -391,10 +397,11 @@ mod tests {
     }
 
     #[tokio::test]
+    #[timeout(2000)]
     async fn test_protocol_version_success() {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(2024);
-        let h = build_client_handler(server);
+        let h = build_client_handler(server, None);
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
         client.write_all(bytes).await.unwrap();
@@ -408,10 +415,11 @@ mod tests {
     }
 
     #[tokio::test]
+    #[timeout(2000)]
     async fn test_auth_fail() {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(2024);
-        let h = build_client_handler(server);
+        let h = build_client_handler(server, None);
         let mut auth = AuthLogin::new().unwrap();
         client.write_all(auth.get_bytes(false)).await.unwrap();
         client.shutdown().await.unwrap();
@@ -420,21 +428,60 @@ mod tests {
         let err_str = err.err().unwrap().to_string();
         assert!(err_str.contains("Protocol version not set"));
     }
+    struct TestPacketSender {
+        writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
+    }
+    impl fmt::Debug for TestPacketSender {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "TestPacketSender")
+        }
+    }
+
+    #[async_trait]
+    impl PacketSender for TestPacketSender {
+        fn encryption(&self) -> Option<&Encryption> {
+            None
+        }
+
+        async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
+            &self.writer
+        }
+    }
     #[tokio::test]
-    async fn test_auth_ok() {
+    #[timeout(2000)]
+    async fn test_integration_auth_ok() {
         // Create a listener on a local port
-        let (mut client, server) = tokio::io::duplex(2024);
-        let h = build_client_handler(server);
+        let (mut client, server) = tokio::io::duplex(1024);
+        let (login_client, mut login_server) = tokio::io::duplex(1024);
+
+        let cfg = Arc::new(GSServer::from_string(include_str!(
+            "../../test_data/game.yaml"
+        )));
+        let controller = Controller::new(cfg);
+        let test_packet_sender = Arc::new(TestPacketSender {
+            writer: Arc::new(Mutex::new(login_client)),
+        });
+        controller
+            .message_broker
+            .register_packet_handler(LoginHandler::HANDLER_ID, test_packet_sender.clone());
+        build_client_handler(server, Some(Arc::new(controller)));
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
         client.write_all(bytes).await.unwrap();
         let mut auth = AuthLogin::new().unwrap();
         client.write_all(auth.get_bytes(false)).await.unwrap();
+        let mut auth_login_packet = [0; 29];
+        login_server
+            .read_exact(&mut auth_login_packet)
+            .await
+            .unwrap();
+        println!("Auth success: {auth_login_packet:?}");
+        let p = PlayerAuthRequest::read(&auth_login_packet[2..]).unwrap();
         client.shutdown().await.unwrap();
-        let (_, err) = h.await.unwrap();
-        assert!(err.is_err());
-        let err_str = err.err().unwrap().to_string();
-        //this means that we succeeded to bypass validation on GameServer
-        assert_eq!(err_str, "Error receiving packet: channel closed");
+        assert_eq!(p.account_name, "test");
+        assert_eq!(p.session.play_ok1, 1); //it should be vice versa
+        assert_eq!(p.session.play_ok2, 0);
+        assert_eq!(p.session.login_ok1, 2);
+        assert_eq!(p.session.login_ok2, 3);
     }
 }

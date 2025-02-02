@@ -189,10 +189,12 @@ mod test {
     use l2_core::config::login::LoginServer;
     use l2_core::tests::get_test_db;
     use l2_core::traits::ServerConfig;
+    use ntest::timeout;
     use tokio::io::{split, AsyncReadExt};
     use tracing::error;
 
     #[tokio::test]
+    #[timeout(2000)]
     async fn test_init_packet_sent() {
         // Create a listener on a local port
         let db_pool = get_test_db().await;
