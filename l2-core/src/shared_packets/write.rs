@@ -146,3 +146,39 @@ impl SendablePacketBuffer {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_write_packet() {
+        let mut packet = SendablePacketBuffer::new();
+        packet.write_c_utf16le_string(Some("Test")).unwrap();
+        packet.write_sized_c_utf16le_string(Some("Test")).unwrap();
+        packet.write(0).unwrap();
+        packet.write_bool(true).unwrap();
+        packet.write_i8(11).unwrap();
+        packet.write_i16(11).unwrap();
+        packet.write_i32(11).unwrap();
+        packet.write_i64(11).unwrap();
+        packet.write_i16_from_bool(true).unwrap();
+        packet.write_i32_from_bool(true).unwrap();
+        packet.write_i64_from_bool(true).unwrap();
+        packet.write_u8(0).unwrap();
+        packet.write_u16(0).unwrap();
+        packet.write_u32(0).unwrap();
+        packet.write_bytes(&[0, 1, 2, 3]).unwrap();
+        packet.write_f32(3.45).unwrap();
+        packet.write_f64(3.45).unwrap();
+        let bytes = packet.get_data_mut(true);
+        assert_eq!(
+            bytes,
+            &[
+                82, 0, 84, 0, 101, 0, 115, 0, 116, 0, 0, 0, 4, 0, 84, 0, 101, 0, 115, 0, 116, 0, 0,
+                1, 11, 11, 0, 11, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 205, 204, 92, 64, 154, 153, 153, 153,
+                153, 153, 11, 64, 0, 0, 0, 0, 0, 0
+            ]
+        );
+    }
+}

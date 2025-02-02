@@ -154,14 +154,14 @@ impl<'a> ReadablePacketBuffer<'a> {
     /// # Errors
     /// - it's not enough bytes
     #[allow(clippy::cast_sign_loss)]
-    pub fn read_float(&mut self) -> Result<f32> {
+    pub fn read_f32(&mut self) -> Result<f32> {
         Ok(f32::from_bits(self.read_i32()? as u32))
     }
 
     /// # Errors
     /// - it's not enough bytes
     #[allow(clippy::cast_sign_loss)]
-    pub fn read_double(&mut self) -> Result<f64> {
+    pub fn read_f64(&mut self) -> Result<f64> {
         Ok(f64::from_bits(self.read_i64()? as u64))
     }
 
@@ -181,20 +181,47 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_read_bool_false() {
-        let arr = &[0];
-        let mut buff = ReadablePacketBuffer::new(arr);
-        let value = buff.read_boolean().unwrap();
-        assert!(!value);
+    fn test_all() {
+        let bytes = [
+            84, 0, 101, 0, 115, 0, 116, 0, 0, 0, 4, 0, 84, 0, 101, 0, 115, 0, 116, 0, 0, 1, 11, 11,
+            0, 11, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 205, 204, 92, 64, 154, 153, 153, 153, 153, 153, 11, 64,
+            0, 0, 0, 0, 0, 0,
+        ];
+        let mut packet = ReadablePacketBuffer::new(&bytes);
+        let s1 = packet.read_c_utf16le_string().unwrap();
+        let s2 = packet.read_sized_string().unwrap();
+        let s3 = packet.read_byte().unwrap();
+        let s4 = packet.read_boolean().unwrap();
+        let s5 = packet.read_byte().unwrap(); //this was actually i8
+        let s6 = packet.read_i16().unwrap();
+        let s7 = packet.read_i32().unwrap();
+        let s8 = packet.read_i64().unwrap();
+        let s9 = packet.read_i16().unwrap();
+        let s10 = packet.read_i32().unwrap();
+        let s11 = packet.read_i64().unwrap();
+        let s12 = packet.read_byte().unwrap();
+        let s13 = packet.read_u16().unwrap();
+        let s14 = packet.read_u32().unwrap();
+        let s15 = packet.read_bytes(4).unwrap().to_vec();
+        let s16 = packet.read_f32().unwrap();
+        let s17 = packet.read_f64().unwrap();
+        assert_eq!(s1, "Test");
+        assert_eq!(s2, "Test");
+        assert_eq!(s3, 0);
+        assert!(s4);
+        assert_eq!(s5, 11);
+        assert_eq!(s6, 11);
+        assert_eq!(s7, 11);
+        assert_eq!(s8, 11);
+        assert_eq!(s9, 1);
+        assert_eq!(s10, 1);
+        assert_eq!(s11, 1);
+        assert_eq!(s12, 0);
+        assert_eq!(s13, 0);
+        assert_eq!(s14, 0);
+        assert_eq!(s15, [0, 1, 2, 3]);
+        assert_eq!(s16.to_bits(), 3.45f32.to_bits());
+        assert_eq!(s17.to_bits(), 3.45f64.to_bits());
     }
-
-    #[test]
-    fn test_read_bool_true() {
-        let arr = &[1];
-        let mut buff = ReadablePacketBuffer::new(arr);
-        let value = buff.read_boolean().unwrap();
-        assert!(value);
-    }
-
-    // Add more tests for other methods...
 }
