@@ -1,8 +1,8 @@
+use crate as l2_core;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
-use crate as l2_core;
 
 #[derive(Clone, Debug, SendablePacketImpl)]
 pub struct BlowFish {
@@ -43,5 +43,24 @@ impl ReadablePacket for BlowFish {
             buffer: SendablePacketBuffer::empty(),
             encrypted_key: buffer.read_bytes(size as usize)?.to_vec(),
         })
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::shared_packets::common::SendablePacket;
+    fn get_bytes() -> [u8; 34] {
+        [
+            34, 0, 0, 16, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+        ]
+    }
+    #[test]
+    fn blowfish_write_and_read() {
+        let mut buffer = BlowFish::new(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+
+        let bytes = buffer.get_bytes(true);
+        assert_eq!(bytes.len(), 34);
+        assert_eq!(bytes, get_bytes());
     }
 }
