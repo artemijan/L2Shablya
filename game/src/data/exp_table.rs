@@ -66,18 +66,21 @@ impl<'de> Deserialize<'de> for ExpTable {
 }
 
 impl ExpTable {
+    #[must_use]
     pub fn get_exp(&self, level: u8) -> i64 {
         if level > self.max_level {
             return *self.exp_data.get(&self.max_level).unwrap_or(&0);
         }
         *self.exp_data.get(&level).unwrap_or(&0)
     }
+    #[must_use]
     pub fn get_exp_for_next_lvl(&self, level: u8) -> i64 {
         if level == u8::MAX {
             return self.get_exp(level);
         }
         self.get_exp(level + 1)
     }
+    #[must_use]
     pub fn get_training_exp(&self, level: u8) -> f64 {
         if level > self.max_level {
             return *self

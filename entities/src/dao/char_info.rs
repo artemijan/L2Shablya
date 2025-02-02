@@ -10,6 +10,7 @@ pub enum CharVariables {
     VisualFaceId,
 }
 impl CharVariables {
+    #[must_use]
     pub fn as_key(&self) -> &'static str {
         match self {
             CharVariables::VisualHairId => "visualHairId",

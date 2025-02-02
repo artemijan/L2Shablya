@@ -29,7 +29,7 @@ impl ConfigAttributes {
             quote! {}
         }
     }
-    pub fn parse(&mut self, meta: ParseNestedMeta) -> Result<()> {
+    pub fn parse(&mut self, meta: &ParseNestedMeta) -> Result<()> {
         if meta.path.is_ident("path") {
             self.path = meta.value()?.parse()?;
             if self.path.value().is_empty() {

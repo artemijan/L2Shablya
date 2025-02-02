@@ -15,6 +15,7 @@ pub trait SendablePacket: Debug + Send + Sync {
 pub trait ReadablePacket: Debug + Send + Sync {
     const PACKET_ID: u8;
     const EX_PACKET_ID: Option<u16>;
+    #[allow(clippy::missing_errors_doc)]
     fn read(data: &[u8]) -> anyhow::Result<Self>
     where
         Self: Sized + ReadablePacket;

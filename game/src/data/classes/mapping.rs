@@ -1,5 +1,5 @@
-use entities::dao::char_info::Race;
 use anyhow::bail;
+use entities::dao::char_info::Race;
 use serde::{Deserialize, Deserializer};
 
 #[derive(Clone, Debug, Copy, Eq, PartialEq)]
@@ -12,6 +12,7 @@ pub struct CharClass {
 }
 
 impl CharClass {
+    #[must_use]
     pub const fn new(
         id: Class,
         is_mage: bool,
@@ -27,6 +28,7 @@ impl CharClass {
             race,
         }
     }
+    #[must_use]
     pub const fn mage(id: Class, race: Race, parent: Option<Class>) -> Self {
         Self {
             id,
@@ -36,6 +38,7 @@ impl CharClass {
             parent,
         }
     }
+    #[must_use]
     pub const fn summoner(id: Class, race: Race, parent: Option<Class>) -> Self {
         Self {
             id,
@@ -45,6 +48,7 @@ impl CharClass {
             parent,
         }
     }
+    #[must_use]
     pub const fn fighter(id: Class, race: Race, parent: Option<Class>) -> Self {
         Self {
             id,
@@ -280,6 +284,7 @@ impl TryFrom<u8> for Class {
 }
 
 impl Class {
+    #[must_use]
     #[allow(clippy::too_many_lines)]
     pub fn get_class(self) -> CharClass {
         #[allow(clippy::enum_glob_use)]

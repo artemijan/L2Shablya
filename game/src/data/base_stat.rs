@@ -1,3 +1,4 @@
+use anyhow::anyhow;
 use macro_common::config_file;
 use serde::Deserialize;
 
@@ -19,6 +20,7 @@ pub enum CreatureParameter {
     CP,
 }
 
+#[allow(unused)]
 #[derive(Debug, Clone, Deserialize)]
 pub struct StatData {
     value: u8,
@@ -38,9 +40,13 @@ pub struct BaseStat {
 }
 
 impl BaseStat {
-    pub fn con_bonus(&self, con_lvl: u8) -> f64 {
-        let con_stat = &self.con[con_lvl as usize];
-        assert_eq!(con_stat.value, con_lvl);
-        con_stat.bonus
+    /// # Errors
+    /// - when con lvl is too big
+    pub fn con_bonus(&self, con_lvl: u8) -> anyhow::Result<f64> {
+        let con_stat = &self
+            .con
+            .get(con_lvl as usize)
+            .ok_or(anyhow!("Con lvl is out of static data range {con_lvl}"))?;
+        Ok(con_stat.bonus)
     }
 }

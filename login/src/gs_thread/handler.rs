@@ -12,31 +12,41 @@ use l2_core::shared_packets::common::GSLoginFail;
 use l2_core::shared_packets::ls_2_gs::InitLS;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
+use std::fmt;
+use std::net::Ipv4Addr;
 use std::sync::Arc;
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
-use tokio::net::TcpStream;
+use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::{Mutex, Notify};
 use tracing::{info, instrument};
 
 #[allow(clippy::module_name_repetitions)]
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct GameServer {
     ///
     /// `tcp_reader` and `tcp_writer` are wrapped into Arc<Mutex> because we need to share the handler
     /// across two tokio threads:
     /// 1. Main thread to accept and answer `shared_packets`
     /// 2. Listen for messages from Client login thread if we need info about logging in Player
-    tcp_reader: Arc<Mutex<OwnedReadHalf>>,
-    tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
+    tcp_reader: Arc<Mutex<dyn AsyncRead + Send + Unpin>>,
+    tcp_writer: Arc<Mutex<dyn AsyncWrite + Send + Unpin>>,
     shutdown_listener: Arc<Notify>,
     lc: Arc<LoginController>,
     db_pool: DBPool,
+    ip: Ipv4Addr,
     key_pair: ScrambledRSAKeyPair,
     blowfish: Encryption,
     connection_state: enums::GS,
     pub server_id: Option<u8>,
 }
-
+impl fmt::Debug for GameServer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Client")
+            .field("ip", &self.ip)
+            .field("connection_state", &self.connection_state)
+            .field("server_id", &self.server_id)
+            .finish_non_exhaustive()
+    }
+}
 impl GameServer {
     pub fn set_blowfish_key(&mut self, new_bf_key: &[u8]) {
         self.blowfish = Encryption::from_u8_key(new_bf_key);
@@ -71,7 +81,7 @@ impl PacketSender for GameServer {
         Some(&self.blowfish)
     }
 
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
+    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
         &self.tcp_writer
     }
 }
@@ -87,15 +97,17 @@ impl PacketHandler for GameServer {
         &self.lc
     }
 
-    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self {
-        let (tcp_reader, tcp_writer) = stream.into_split();
-        let writer = Arc::new(Mutex::new(tcp_writer));
-        let reader = Arc::new(Mutex::new(tcp_reader));
+    fn new<R, W>(r: R, w: W, ip: Ipv4Addr, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self
+    where
+        R: AsyncRead + Unpin + Send + 'static,
+        W: AsyncWrite + Unpin + Send + 'static,
+    {
         let cfg = lc.get_config();
         Self {
-            tcp_reader: reader,
-            tcp_writer: writer,
+            tcp_reader: Arc::new(Mutex::new(r)),
+            tcp_writer: Arc::new(Mutex::new(w)),
             db_pool,
+            ip,
             shutdown_listener: Arc::new(Notify::new()),
             key_pair: lc.get_random_rsa_key_pair(),
             blowfish: Encryption::from_u8_key(cfg.blowfish_key.as_bytes()),
@@ -107,10 +119,7 @@ impl PacketHandler for GameServer {
 
     #[instrument(skip(self))]
     async fn on_connect(&mut self) -> anyhow::Result<()> {
-        info!(
-            "Game server connected: {:?}",
-            self.tcp_reader.lock().await.peer_addr()?
-        );
+        info!("Game server connected: {:?}", self.ip);
         self.connection_state = enums::GS::Connected;
         let init_packet = Box::new(InitLS::new(self.key_pair.get_modulus()));
         self.send_packet(init_packet).await?;
@@ -130,7 +139,7 @@ impl PacketHandler for GameServer {
         }
     }
 
-    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {
+    fn get_stream_reader_mut(&self) -> &Arc<Mutex<dyn AsyncRead + Send + Unpin>> {
         &self.tcp_reader
     }
 

@@ -12,20 +12,19 @@ use l2_core::errors::Packet;
 use l2_core::session::SessionKey;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
-use std::net::{IpAddr, Ipv4Addr};
+use std::fmt;
+use std::net::Ipv4Addr;
 use std::sync::Arc;
-use tokio::io::AsyncWriteExt;
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
-use tokio::net::TcpStream;
+use tokio::io::{AsyncRead, AsyncWrite, AsyncWriteExt};
 use tokio::sync::{Mutex, Notify};
 use tracing::{info, instrument};
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct Client {
     blowfish_key: Vec<u8>,
     pub ip: Ipv4Addr,
-    tcp_reader: Arc<Mutex<OwnedReadHalf>>,
-    tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
+    tcp_reader: Arc<Mutex<dyn AsyncRead + Send + Unpin>>,
+    tcp_writer: Arc<Mutex<dyn AsyncWrite + Send + Unpin>>,
     pub account_name: Option<String>,
     db_pool: DBPool,
     session_id: i32,
@@ -35,6 +34,14 @@ pub struct Client {
     timeout: u8,
     session_key: SessionKey,
     rsa_key_pair: rsa::ScrambledRSAKeyPair,
+}
+impl fmt::Debug for Client {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Client")
+            .field("ip", &self.ip)
+            .field("session_id", &self.session_id)
+            .finish_non_exhaustive()
+    }
 }
 
 /// # This function called each time when there is a new connection.
@@ -64,16 +71,6 @@ impl Client {
     pub fn get_session_key(&self) -> &SessionKey {
         &self.session_key
     }
-    fn get_ipv4_from_socket(socket: &TcpStream) -> Ipv4Addr {
-        let default = Ipv4Addr::new(127, 0, 0, 1);
-        match socket.peer_addr() {
-            Ok(addr) => match addr.ip() {
-                IpAddr::V4(ipv4) => ipv4,
-                IpAddr::V6(_) => default,
-            },
-            _ => default,
-        }
-    }
 }
 
 impl Shutdown for Client {
@@ -94,16 +91,24 @@ impl PacketHandler for Client {
         &self.lc
     }
 
-    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self {
+    fn new<R, W>(
+        reader: R,
+        writer: W,
+        ip: Ipv4Addr,
+        db_pool: DBPool,
+        lc: Arc<Self::ControllerType>,
+    ) -> Self
+    where
+        R: AsyncRead + Unpin + Send + 'static,
+        W: AsyncWrite + Unpin + Send + 'static,
+    {
         let blowfish_key = generate_blowfish_key(None);
         let encryption = Encryption::new(&blowfish_key.clone());
         let session_id = LoginController::generate_session_id();
         let timeout = lc.get_config().client.timeout;
-        let ip = Self::get_ipv4_from_socket(&stream);
-        let (tcp_reader, tcp_writer) = stream.into_split();
         Self {
-            tcp_reader: Arc::new(Mutex::new(tcp_reader)),
-            tcp_writer: Arc::new(Mutex::new(tcp_writer)),
+            tcp_reader: Arc::new(Mutex::new(reader)),
+            tcp_writer: Arc::new(Mutex::new(writer)),
             db_pool,
             ip,
             shutdown_notifier: Arc::new(Notify::new()),
@@ -120,13 +125,12 @@ impl PacketHandler for Client {
 
     #[instrument(skip(self))]
     async fn on_connect(&mut self) -> anyhow::Result<()> {
-        let addr = self.tcp_reader.lock().await.peer_addr()?;
-        info!("Client connected: {:?}", addr);
+        info!("Client connected: {:?}", self.ip);
         let mut init = Init::new(
             self.session_id,
             self.rsa_key_pair.get_scrambled_modulus(),
             self.blowfish_key.clone(),
-        );
+        )?;
         self.tcp_writer
             .lock()
             .await
@@ -139,7 +143,8 @@ impl PacketHandler for Client {
     async fn on_disconnect(&mut self) {
         info!("Player disconnected: {:?}", self.session_id);
     }
-    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {
+
+    fn get_stream_reader_mut(&self) -> &Arc<Mutex<dyn AsyncRead + Send + Unpin>> {
         &self.tcp_reader
     }
 
@@ -165,7 +170,7 @@ impl PacketSender for Client {
         None
     }
 
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
+    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
         &self.tcp_writer
     }
 }
@@ -184,23 +189,22 @@ mod test {
     use l2_core::config::login::LoginServer;
     use l2_core::tests::get_test_db;
     use l2_core::traits::ServerConfig;
-    use tokio::io::AsyncReadExt;
-    use tokio::net::TcpListener;
+    use tokio::io::{split, AsyncReadExt};
     use tracing::error;
 
     #[tokio::test]
     async fn test_init_packet_sent() {
         // Create a listener on a local port
-        let listener = TcpListener::bind("127.0.0.1:3333").await.unwrap();
-        let addr = listener.local_addr().unwrap();
         let db_pool = get_test_db().await;
+        let (mut client, server) = tokio::io::duplex(1024);
         let cfg = LoginServer::from_string(include_str!("../test_data/test_config.yaml"));
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
         // Spawn a server task to handle a single connection
         tokio::spawn(async move {
-            let (socket, _) = listener.accept().await.unwrap();
-            let mut ch = Client::new(socket, db_pool, cloned_lc);
+            let ip = Ipv4Addr::new(127, 0, 0, 1);
+            let (r, w) = split(server);
+            let mut ch = Client::new(r, w, ip, db_pool, cloned_lc);
             if let Err(err) = ch.handle_client().await {
                 error!(
                     "Closed client {} with error: {err:?}",
@@ -209,7 +213,6 @@ mod test {
             }
         });
         // Create a client to connect to the server
-        let mut client = TcpStream::connect(addr).await.unwrap();
         // Read the response from the server
         let mut init_packet = vec![0; 1024];
         let _ = client.read(&mut init_packet).await.unwrap();

@@ -11,7 +11,7 @@ use syn::{parse_macro_input, DeriveInput, Item, ItemStruct};
 pub fn config_file(attr: TokenStream, item: TokenStream) -> TokenStream {
     // Parse the attribute argument (e.g., a `&'static str`)
     let mut attrs = ConfigAttributes::new();
-    let parser = syn::meta::parser(|meta| attrs.parse(meta));
+    let parser = syn::meta::parser(|meta| attrs.parse(&meta));
     // Parse the item (e.g., a struct)
     let item = parse_macro_input!(item as Item);
     parse_macro_input!(attr with parser);
@@ -48,7 +48,7 @@ pub fn config_file(attr: TokenStream, item: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn config_dir(attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut attrs = ConfigAttributes::new();
-    let parser = syn::meta::parser(|meta| attrs.parse(meta));
+    let parser = syn::meta::parser(|meta| attrs.parse(&meta));
     // Parse the item (e.g., a struct)
     parse_macro_input!(attr with parser);
     // Generate the `post_load` method if `post_load_message` is provided

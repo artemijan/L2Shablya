@@ -55,6 +55,7 @@ impl ReadablePacket for CreateCharRequest {
     const PACKET_ID: u8 = 0x0C;
     const EX_PACKET_ID: Option<u16> = None;
 
+    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
 

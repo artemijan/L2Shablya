@@ -39,15 +39,20 @@ impl LoadFileHandler for ClassTemplates {
     }
 }
 impl ClassTemplates {
+    #[must_use]
     pub fn get_template(&self, template_id: Class) -> Option<&CharTemplate> {
         self.templates.get(&template_id)
     }
+
+    /// # Errors
+    /// - when template is not found
     pub fn try_get_template(&self, template_id: Class) -> anyhow::Result<&CharTemplate> {
         self.templates.get(&template_id).ok_or(anyhow::anyhow!(
             "Invalid class template: {:?}.",
             template_id
         ))
     }
+    #[must_use]
     pub fn has_template(&self, template_id: Class) -> bool {
         self.templates.contains_key(&template_id)
     }
@@ -107,7 +112,9 @@ where
 }
 
 impl CharTemplate {
-    #[allow(clippy::cast_sign_loss)]
+    /// # Errors
+    /// - when something wrong with templates
+    #[allow(clippy::cast_sign_loss, clippy::similar_names)]
     pub fn initialize_character(
         &self,
         target: &mut character::Model,
@@ -128,8 +135,8 @@ impl CharTemplate {
             self.get_base_max_parameter(target.level as u8, &CreatureParameter::MP)?;
         let base_max_cp =
             self.get_base_max_parameter(target.level as u8, &CreatureParameter::CP)?;
-        let base_con = base_stats.con_bonus(u8::try_from(self.static_data.base_con)?);
-        let base_men = base_stats.con_bonus(u8::try_from(self.static_data.base_men)?);
+        let base_con = base_stats.con_bonus(u8::try_from(self.static_data.base_con)?)?;
+        let base_men = base_stats.con_bonus(u8::try_from(self.static_data.base_men)?)?;
         target.max_hp = f64::from(base_max_hp) * base_con;
         target.max_mp = f64::from(base_max_mp) * base_men;
         target.max_cp = f64::from(base_max_cp) * base_con;
@@ -149,6 +156,8 @@ impl CharTemplate {
         //todo starting adena
         Ok(())
     }
+    /// # Errors
+    /// - when lvl is higher than we have data for it in th template.
     pub fn get_base_max_parameter(
         &self,
         lvl: u8,
@@ -163,6 +172,8 @@ impl CharTemplate {
         }
         bail!("No max {:?} found for lvl {lvl}", parameter);
     }
+    /// # Errors
+    /// - when no creation points are specified in the template
     pub fn get_random_loc(&self) -> anyhow::Result<&Point> {
         let mut rng = thread_rng();
         if let Some(random_item) = self.static_data.creation_points.choose(&mut rng) {
@@ -256,12 +267,14 @@ pub struct BasePDef {
 }
 
 impl BasePDef {
+    #[must_use]
     pub fn total(&self) -> i32 {
         self.chest + self.legs + self.head + self.feet + self.gloves + self.underwear + self.cloak
     }
 }
 
 impl BaseMDef {
+    #[must_use]
     pub fn total(&self) -> i32 {
         self.r_ear + self.l_ear + self.l_finger + self.neck
     }

@@ -14,10 +14,11 @@ use l2_core::session::SessionKey;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
+use std::fmt;
 use std::future::Future;
+use std::net::Ipv4Addr;
 use std::sync::Arc;
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
-use tokio::net::TcpStream;
+use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::{Mutex, Notify};
 use tracing::{error, info, instrument};
 
@@ -31,15 +32,15 @@ pub enum ClientStatus {
     Disconnected,
     InGame,
 }
-#[derive(Debug)]
 #[allow(clippy::module_name_repetitions)]
 pub struct ClientHandler {
-    tcp_reader: Arc<Mutex<OwnedReadHalf>>,
-    tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
+    tcp_reader: Arc<Mutex<dyn AsyncRead + Unpin + Send>>,
+    tcp_writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
     db_pool: DBPool,
     controller: Arc<Controller>,
     shutdown_notifier: Arc<Notify>,
     timeout: u8,
+    ip: Ipv4Addr,
     blowfish: Option<Encryption>,
     protocol: Option<i32>,
     status: ClientStatus,
@@ -47,6 +48,17 @@ pub struct ClientHandler {
     selected_char: Option<i32>,
     session_key: Option<SessionKey>,
     user: Option<user::Model>,
+}
+impl fmt::Debug for ClientHandler {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Client")
+            .field("ip", &self.ip)
+            .field("protocol", &self.protocol)
+            .field("status", &self.status)
+            .field("selected_char", &self.selected_char)
+            .field("user", &self.user)
+            .finish_non_exhaustive()
+    }
 }
 
 impl ClientHandler {
@@ -143,6 +155,8 @@ impl ClientHandler {
         }
         Ok(())
     }
+
+    #[allow(clippy::cast_sign_loss)]
     pub fn try_get_char_by_slot_id(&self, slot_id: i32) -> anyhow::Result<&CharacterInfo> {
         self.account_chars
             .as_ref()
@@ -181,7 +195,7 @@ impl PacketSender for ClientHandler {
         self.blowfish.as_ref()
     }
 
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
+    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Unpin + Send>> {
         &self.tcp_writer
     }
 }
@@ -199,17 +213,27 @@ impl PacketHandler for ClientHandler {
         &self.controller
     }
 
-    fn new(stream: TcpStream, db_pool: DBPool, controller: Arc<Self::ControllerType>) -> Self {
-        let (tcp_reader, tcp_writer) = stream.into_split();
+    fn new<R, W>(
+        r: R,
+        w: W,
+        ip: Ipv4Addr,
+        db_pool: DBPool,
+        controller: Arc<Self::ControllerType>,
+    ) -> Self
+    where
+        R: AsyncRead + Unpin + Send + 'static,
+        W: AsyncWrite + Unpin + Send + 'static,
+    {
         let cfg = controller.get_cfg();
         Self {
-            tcp_reader: Arc::new(Mutex::new(tcp_reader)),
-            tcp_writer: Arc::new(Mutex::new(tcp_writer)),
+            tcp_reader: Arc::new(Mutex::new(r)),
+            tcp_writer: Arc::new(Mutex::new(w)),
             shutdown_notifier: Arc::new(Notify::new()),
             timeout: cfg.client.timeout,
             status: ClientStatus::Connected,
             controller,
             db_pool,
+            ip,
             blowfish: None,
             account_chars: None,
             protocol: None,
@@ -253,7 +277,7 @@ impl PacketHandler for ClientHandler {
         }
     }
 
-    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {
+    fn get_stream_reader_mut(&self) -> &Arc<Mutex<dyn AsyncRead + Send + Unpin>> {
         &self.tcp_reader
     }
 
@@ -291,87 +315,77 @@ impl InboundHandler for ClientHandler {
 mod tests {
     use super::*;
     use crate::packets::from_client::protocol::ProtocolVersion;
-    use l2_core::shared_packets::common::SendablePacket;
+    use l2_core::shared_packets::common::{ReadablePacket, SendablePacket};
+    use l2_core::shared_packets::write::SendablePacketBuffer;
     use l2_core::tests::get_test_db;
     use l2_core::traits::ServerConfig;
-    use std::net::SocketAddr;
-    use std::sync::atomic::{AtomicUsize, Ordering};
-    use tokio::io::AsyncWriteExt;
-    use tokio::net::TcpListener;
+    use tokio::io::{split, AsyncReadExt, AsyncWriteExt, DuplexStream};
     use tokio::task::JoinHandle;
-    use l2_core::shared_packets::write::SendablePacketBuffer;
 
-    static PORT_COUNTER: AtomicUsize = AtomicUsize::new(3000);
-    
     impl ProtocolVersion {
         pub fn new(version: i32) -> anyhow::Result<Self> {
             let mut inst = Self {
                 version,
                 buffer: SendablePacketBuffer::new(),
             };
+            inst.buffer.write(Self::PACKET_ID)?;
             inst.buffer.write_i32(inst.version)?;
             Ok(inst)
         }
     }
-    
-    #[allow(clippy::cast_possible_truncation)]
-    fn get_next_port() -> u16 {
-        // Atomically increment the port counter for each test
-        PORT_COUNTER.fetch_add(1, Ordering::SeqCst) as u16
-    }
-    
-    async fn build_client_handler() -> (JoinHandle<anyhow::Result<()>>, SocketAddr) {
-        let port = get_next_port();
-        let listener = TcpListener::bind(format!("127.0.0.1:{port}"))
-            .await
-            .unwrap();
-        let addr = listener.local_addr().unwrap();
+
+    fn build_client_handler(server: DuplexStream) -> JoinHandle<anyhow::Result<()>> {
         let cfg = Arc::new(GSServer::from_string(include_str!(
             "../../test_data/game.yaml"
         )));
         let controller = Arc::new(Controller::new(cfg));
         let cloned_controller = controller.clone();
         // Spawn a server task to handle a single connection
-        (
-            tokio::spawn(async move {
-                let db_pool = get_test_db().await;
-                let (socket, _) = listener.accept().await.unwrap();
-                let mut ch = ClientHandler::new(socket, db_pool, cloned_controller);
-                ch.handle_client().await
-            }),
-            addr,
-        )
+        tokio::spawn(async move {
+            let db_pool = get_test_db().await;
+            let ip = Ipv4Addr::new(127, 0, 0, 1);
+            let (r, w) = split(server);
+            let mut ch = ClientHandler::new(r, w, ip, db_pool, cloned_controller);
+            ch.handle_client().await
+        })
     }
+
     #[tokio::test]
     async fn test_protocol_version_fail() {
         // Create a listener on a local port
-        let (h, addr) = build_client_handler().await;
-        // Create a client to connect to the server
-        let mut client = TcpStream::connect(addr).await.unwrap();
-        // Read the response from the server
+        let (mut client, server) = tokio::io::duplex(1024);
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
-        bytes[0] = 1;
-        bytes[1] = 2;
+        bytes[3] = 1;
+        bytes[4] = 2;
         let _ = client.write(bytes).await.unwrap();
-        client.flush().await.unwrap();
+        let h = build_client_handler(server);
         client.shutdown().await.unwrap();
         let err = h.await.unwrap();
         assert!(err.is_err());
+        let err_str = err.err().unwrap().to_string();
+        println!("{err_str}");
+        assert!(err_str.contains("Invalid protocol version"));
     }
+
     #[tokio::test]
     async fn test_protocol_version_success() {
         // Create a listener on a local port
-        let (h, addr) = build_client_handler().await;
-        // Create a client to connect to the server
-        let mut client = TcpStream::connect(addr).await.unwrap();
+        let (mut client, server) = tokio::io::duplex(2024);
         // Read the response from the server
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
         let _ = client.write(bytes).await.unwrap();
         client.flush().await.unwrap();
+        let h = build_client_handler(server);
+        let mut resp = [0; 4];
+        client.read_exact(&mut resp).await.unwrap();
+        println!("{resp:?}");
         client.shutdown().await.unwrap();
-        let err = h.await.unwrap();
-        assert!(err.is_ok());
+        let _ = h.await.unwrap();
+        assert_eq!(
+            resp,
+            [26, 0, 46, 1]
+        );
     }
 }

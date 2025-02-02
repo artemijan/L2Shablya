@@ -43,6 +43,7 @@ impl Controller {
     pub fn get_cfg(&self) -> Arc<GSServer> {
         self.cfg.clone()
     }
+    #[allow(clippy::unused_self)]
     pub fn get_game_time(&self) -> i32 {
         //todo game time
         9999

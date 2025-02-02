@@ -13,15 +13,15 @@ pub struct Init {
 }
 
 impl Init {
-    pub fn new(session_id: i32, public_key: Vec<u8>, blowfish_key: Vec<u8>) -> Init {
+    pub fn new(session_id: i32, public_key: Vec<u8>, blowfish_key: Vec<u8>) -> anyhow::Result<Init> {
         let mut init = Init {
             buffer: SendablePacketBuffer::new(),
             session_id,
             public_key,
             blowfish_key,
         };
-        let _ = init.write_all();
-        init
+        init.write_all()?;
+        Ok(init)
     }
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write_i8(LoginServerOpcodes::Init as i8)?;

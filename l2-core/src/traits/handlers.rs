@@ -2,15 +2,14 @@ use crate::crypt::login::Encryption;
 use crate::dto;
 use crate::shared_packets::common::SendablePacket;
 use crate::traits::Shutdown;
-use anyhow::Error;
+use anyhow::{bail, Error};
 use async_trait::async_trait;
 use entities::DBPool;
 use std::fmt::Debug;
+use std::net::Ipv4Addr;
 use std::sync::Arc;
 use std::time::Duration;
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
-use tokio::net::TcpStream;
+use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 use tokio::sync::Mutex;
 use tokio::time::sleep;
 use tracing::{info, instrument};
@@ -48,7 +47,7 @@ pub trait PacketSender: Send + Sync + Debug {
         Ok(())
     }
     fn encryption(&self) -> Option<&Encryption>;
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>>;
+    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>>;
 }
 #[async_trait]
 pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
@@ -57,11 +56,20 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
 
     fn get_handler_name() -> &'static str;
     fn get_controller(&self) -> &Arc<Self::ControllerType>;
-    fn new(stream: TcpStream, db_pool: DBPool, lc: Arc<Self::ControllerType>) -> Self;
+    fn new<R, W>(
+        read: R,
+        write: W,
+        ip: Ipv4Addr,
+        db_pool: DBPool,
+        lc: Arc<Self::ControllerType>,
+    ) -> Self
+    where
+        R: AsyncRead + Unpin + Send + 'static,
+        W: AsyncWrite + Unpin + Send + 'static;
 
     async fn on_connect(&mut self) -> anyhow::Result<()>;
     async fn on_disconnect(&mut self);
-    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>>;
+    fn get_stream_reader_mut(&self) -> &Arc<Mutex<dyn AsyncRead + Send + Unpin>>;
 
     fn get_timeout(&self) -> Option<u64>;
 
@@ -101,17 +109,17 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
                     match read_result {
                         Ok((0, _)) => {
                             self.on_disconnect().await;
-                            break;
+                            bail!("No bytes received.");
                         }
                         Ok((bytes_read, mut data)) => {
                             if let Err(e) = self.on_receive_bytes(bytes_read, &mut data).await {
                                 self.on_disconnect().await;
-                                return Err(e);
+                                bail!("Error receiving packet: {}", e);
                             }
                         }
                         Err(e) => {
                             self.on_disconnect().await;
-                            return Err(e);
+                            bail!("Error receiving packet: {}", e);
                         }
                     }
                 }

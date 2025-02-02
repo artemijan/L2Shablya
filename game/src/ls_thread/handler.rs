@@ -8,22 +8,31 @@ use l2_core::crypt::login::Encryption;
 use l2_core::dto::OutboundConnection;
 use l2_core::traits::handlers::{OutboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
+use std::fmt;
+use std::net::Ipv4Addr;
 use std::sync::Arc;
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
-use tokio::net::TcpStream;
+use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::{Mutex, Notify};
 use tracing::{info, instrument};
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 #[allow(clippy::module_name_repetitions, unused)]
 pub struct LoginHandler {
-    tcp_reader: Arc<Mutex<OwnedReadHalf>>,
-    tcp_writer: Arc<Mutex<OwnedWriteHalf>>,
+    tcp_reader: Arc<Mutex<dyn AsyncRead + Unpin + Send>>,
+    tcp_writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
     db_pool: DBPool,
+    ip: Ipv4Addr,
     controller: Arc<Controller>,
     shutdown_notifier: Arc<Notify>,
     timeout: u8,
     blowfish: Encryption,
+}
+impl fmt::Debug for LoginHandler {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Client")
+            .field("ip", &self.ip)
+            .finish_non_exhaustive()
+    }
 }
 impl LoginHandler {
     pub const HANDLER_ID: u8 = 1;
@@ -43,7 +52,7 @@ impl PacketSender for LoginHandler {
         Some(&self.blowfish)
     }
 
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<OwnedWriteHalf>> {
+    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Unpin + Send>> {
         &self.tcp_writer
     }
 }
@@ -61,14 +70,24 @@ impl PacketHandler for LoginHandler {
         &self.controller
     }
 
-    fn new(stream: TcpStream, db_pool: DBPool, controller: Arc<Self::ControllerType>) -> Self {
-        let (tcp_reader, tcp_writer) = stream.into_split();
+    fn new<R, W>(
+        r: R,
+        w: W,
+        ip: Ipv4Addr,
+        db_pool: DBPool,
+        controller: Arc<Self::ControllerType>,
+    ) -> Self
+    where
+        R: AsyncRead + Unpin + Send + 'static,
+        W: AsyncWrite + Unpin + Send + 'static,
+    {
         let cfg = controller.get_cfg();
         Self {
-            tcp_reader: Arc::new(Mutex::new(tcp_reader)),
-            tcp_writer: Arc::new(Mutex::new(tcp_writer)),
+            tcp_reader: Arc::new(Mutex::new(r)),
+            tcp_writer: Arc::new(Mutex::new(w)),
             shutdown_notifier: Arc::new(Notify::new()),
             controller,
+            ip,
             db_pool,
             blowfish: Encryption::from_u8_key(cfg.blowfish_key.as_bytes()),
             timeout: cfg.client.timeout,
@@ -81,12 +100,14 @@ impl PacketHandler for LoginHandler {
         Ok(())
     }
 
-    async fn on_disconnect(&mut self){
-        self.controller.message_broker.unregister_packet_handler(Self::HANDLER_ID);
+    async fn on_disconnect(&mut self) {
+        self.controller
+            .message_broker
+            .unregister_packet_handler(Self::HANDLER_ID);
         info!("Login server disconnected");
     }
 
-    fn get_stream_reader_mut(&self) -> &Arc<Mutex<OwnedReadHalf>> {
+    fn get_stream_reader_mut(&self) -> &Arc<Mutex<dyn AsyncRead + Unpin + Send>> {
         &self.tcp_reader
     }
 

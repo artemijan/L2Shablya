@@ -33,9 +33,6 @@ pub trait ConfigFileLoader: DeserializeOwned + Loadable {
         full_path = full_path
             .canonicalize()
             .unwrap_or_else(|_| env::current_dir().unwrap().join(Self::DATA_FILE));
-
-        println!("Loading config file from: {}", full_path.display());
-
         let file_content = fs::read_to_string(&full_path).unwrap_or_else(|e| {
             panic!(
                 "Can't read config file {} (resolved path: {}), because of: {e}",

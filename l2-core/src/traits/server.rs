@@ -7,6 +7,7 @@ use dotenvy::dotenv;
 use entities::DBPool;
 use sqlx::any::install_default_drivers;
 use std::future::Future;
+use std::net::IpAddr;
 use std::num::NonZero;
 use std::sync::Arc;
 use std::thread;
@@ -64,22 +65,30 @@ pub trait Server {
             info!(
                 "{} listening on {}",
                 T::get_handler_name(),
-                &listener.local_addr().expect("Cannot get socket local address"),
+                &listener
+                    .local_addr()
+                    .expect("Cannot get socket local address"),
             );
             loop {
                 match listener.accept().await {
-                    Ok((stream, _)) => {
-                        if let Ok(addr) = stream.peer_addr() {
-                            info!(
-                                "Incoming connection from {:?} ({:})",
-                                addr.ip(),
-                                T::get_handler_name()
-                            );
-                            if controller.is_ip_banned(&addr.ip().to_string()) {
-                                error!("Ip is banned, skipping connection: {addr}");
-                            //todo: maybe use EBPF?
-                            } else {
-                                let mut handler = T::new(stream, pool.clone(), controller.clone());
+                    Ok((socket, addr)) => {
+                        match addr.ip() {
+                            IpAddr::V4(ipv4_addr) => {
+                                // Skip banned IP addresses
+                                if controller.is_ip_banned(&ipv4_addr.to_string()) {
+                                    error!("IP is banned, skipping connection from {:?}", addr);
+                                    continue;
+                                }
+
+                                info!(
+                                    "Incoming connection from {:?} ({})",
+                                    ipv4_addr,
+                                    T::get_handler_name()
+                                );
+
+                                let (r, w) = socket.into_split();
+                                let mut handler =
+                                    T::new(r, w, ipv4_addr, pool.clone(), controller.clone());
                                 tokio::spawn(async move {
                                     if let Err(err) = handler.handle_client().await {
                                         error!(
@@ -89,10 +98,15 @@ pub trait Server {
                                     }
                                 });
                             }
+                            IpAddr::V6(ip) => {
+                                error!("IPv6 connections are not supported, skipping connection from {ip:?}");
+                                continue;
+                            }
                         }
                     }
                     Err(e) => {
                         error!("Failed to accept connection: {e}");
+                        continue;
                     }
                 }
             }
@@ -131,7 +145,13 @@ pub trait Server {
                 stream
                     .set_nodelay(conn_cfg.no_delay)
                     .expect("Set nodelay failed");
-                let mut handler = T::new(stream, pool.clone(), controller.clone());
+                let IpAddr::V4(ip) = stream.peer_addr().expect("Cannot get peer address").ip()
+                else {
+                    error!("IP v6 is not supported");
+                    break;
+                };
+                let (r, w) = stream.into_split();
+                let mut handler = T::new(r, w, ip, pool.clone(), controller.clone());
                 if let Err(err) = handler.handle_client().await {
                     error!(
                         "Closing handler {}, with error: {err}",
