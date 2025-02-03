@@ -200,7 +200,7 @@ impl PacketSender for ClientHandler {
         if let Some(bf) = self.blowfish.as_ref() {
             let size = bytes.len();
             Encryption::append_checksum(&mut bytes[2..size]);
-            bf.lock().await.encrypt(&mut bytes[2..size]);
+            bf.lock().await.encrypt(&mut bytes[2..size])?;
         }
         Ok(())
     }
