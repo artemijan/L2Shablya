@@ -1,0 +1,39 @@
+[package]
+name = "l2-core"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+entities = { path = "../entities" }
+macro-common = { path = "../macro-common" }
+encoding.workspace = true
+rand.workspace = true
+rand_core.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+log.workspace = true
+serde.workspace = true
+num.workspace = true
+num-traits.workspace = true
+tokio.workspace = true
+sqlx.workspace = true
+async-trait.workspace = true
+argon2.workspace = true
+serde_yaml.workspace = true
+dotenvy.workspace = true
+blowfish.workspace = true
+num_enum.workspace = true
+pnet.workspace = true
+reqwest.workspace = true
+tracing.workspace = true
+sea-orm.workspace = true
+dashmap.workspace = true
+futures.workspace = true
+rsa.workspace = true
+pem.workspace = true
+uuid.workspace = true
+bytes.workspace = true
+
+[dev-dependencies]
+test-utils = {path = "../test-utils"}

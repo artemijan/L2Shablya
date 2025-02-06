@@ -1,0 +1,35 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "Level Data Schema"
+type: "object"
+properties:
+  max_level:
+    type: "integer"
+    minimum: 1
+    description: "The maximum level achievable."
+  data:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        level:
+          type: "integer"
+          minimum: 1
+          description: "The level number."
+        exp:
+          type: "integer"
+          minimum: 0
+          description: "The experience points required to reach this level."
+        training_rate:
+          type: "number"
+          minimum: 0.0
+          maximum: 1.0
+          description: "The training rate at this level."
+      required:
+        - level
+        - exp
+        - training_rate
+    minItems: 1
+    description: "A list of levels with their corresponding experience points and training rates."
+required:
+  - max_level
+  - data

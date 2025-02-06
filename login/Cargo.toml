@@ -1,0 +1,27 @@
+[package]
+name = "login"
+version = "0.1.0"
+edition = "2021"
+publish = false
+[[bin]]
+name = "login"
+path = "src/main.rs"
+[dependencies]
+entities = { path = "../entities" }
+l2-core = { path = "../l2-core" }
+macro-common = { path = "../macro-common" }
+rand.workspace = true
+anyhow.workspace = true
+num.workspace = true
+tokio.workspace = true
+async-trait.workspace = true
+strum.workspace = true
+dashmap.workspace = true
+chrono.workspace = true
+pnet.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+sea-orm.workspace = true
+ntest.workspace = true
+[dev-dependencies]
+test-utils= {path = "../test-utils"}

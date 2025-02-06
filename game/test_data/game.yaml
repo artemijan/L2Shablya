@@ -1,0 +1,49 @@
+name: Game server
+blowfish_key: "_;v.]05-31!|+-%xT!^[$\0"
+runtime:
+  worker_threads: 10
+client:
+  timeout: 150
+allowed_revisions:
+  - 110
+  - 6553697
+server_id: 1
+hex_id: -2ad66b3f483c22be097019f55c8abdf0
+accept_alternative_id: true
+use_brackets: false
+server_age: 12
+gm_only: false
+host_reserved: false
+server_type: Normal
+max_players: 5000
+rates:
+  vitality_exp_multiplier: 2
+enable_encryption: false
+#ip_config:
+#  - subnet: 192.168.0.0/0
+#    ip: 192.168.0.16
+#  - subnet: 127.0.0.0/8
+#    ip: 127.0.0.1
+#  - subnet: 192.168.64.0/24
+#    ip: 192.168.64.1
+#  - subnet: 192.168.20.0/24
+#    ip: 192.168.20.103
+listeners:
+  login_server:
+    messages:
+      timeout: 3
+    connection:
+      ip: 127.0.0.1
+      port: 9014
+      no_delay: true
+  clients:
+    connection:
+      ip: 0.0.0.0
+      port: 7777
+      reuse_port: true
+      reuse_addr: true
+      no_delay: true
+database:
+  url: sqlite://local.sqlite?mode=rwc
+  max_connections: 10
+  min_connections: 5
