@@ -33,7 +33,7 @@ jobs:
       - name: Install Tarpaulin
         run: cargo install cargo-tarpaulin
       - name: Generate LCOV coverage report
-        run: cargo tarpaulin --out Lcov --verbose
+        run: cargo tarpaulin --all --out Lcov --verbose
       - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v4
         with:
