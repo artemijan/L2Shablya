@@ -3,13 +3,17 @@ on:
   push:
     branches: [ "master" ]
     paths-ignore:
-      - "README.md"
-      - "docs/**"
+      - "README.MD"
+      - "LiCENSE.MD"
+      - "*.svg"
+      - ".env"
   pull_request:
     branches: [ "master" ]
     paths-ignore:
-      - "README.md"
-      - "docs/**"
+      - "README.MD"
+      - "LiCENSE.MD"
+      - "*.svg"
+      - ".env"
 env:
   CARGO_TERM_COLOR: always
 
