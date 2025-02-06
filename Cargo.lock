@@ -1061,7 +1061,7 @@ dependencies = [
  "sea-orm",
  "serde",
  "serde_json",
- "serde_yaml",
+ "test-utils",
  "tokio",
  "tracing",
  "tracing-subscriber",
@@ -1544,7 +1544,6 @@ dependencies = [
  "futures",
  "log",
  "macro-common",
- "migration",
  "num",
  "num-traits",
  "num_enum",
@@ -1558,6 +1557,7 @@ dependencies = [
  "serde",
  "serde_yaml",
  "sqlx",
+ "test-utils",
  "thiserror 2.0.6",
  "tokio",
  "tracing",
@@ -1644,6 +1644,7 @@ dependencies = [
  "rand",
  "sea-orm",
  "strum",
+ "test-utils",
  "tokio",
  "tracing",
  "tracing-subscriber",
@@ -3245,6 +3246,15 @@ dependencies = [
  "once_cell",
  "rustix",
  "windows-sys 0.59.0",
+]
+
+[[package]]
+name = "test-utils"
+version = "0.1.0"
+dependencies = [
+ "migration",
+ "sea-orm",
+ "tokio",
 ]
 
 [[package]]

@@ -102,3 +102,33 @@ pub fn derive_sendable(input: TokenStream) -> TokenStream {
 
     TokenStream::from(expanded)
 }
+
+#[proc_macro_derive(LoginPacketSenderImpl)]
+pub fn derive_login_packet_sender(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+
+    let name = &input.ident;
+
+    // Generate the implementation
+    let expanded = quote! {
+        #[async_trait]
+        impl l2_core::traits::handlers::PacketSender for #name {
+            async fn encrypt(&self, bytes: &mut [u8]) -> anyhow::Result<()> {
+                let size = bytes.len();
+                l2_core::crypt::login::Encryption::append_checksum(&mut bytes[2..size]);
+                self.blowfish.encrypt(&mut bytes[2..size]);
+                Ok(())
+            }
+        
+            fn is_encryption_enabled(&self) -> bool {
+                true
+            }
+        
+            async fn get_stream_writer_mut(&self) -> &std::sync::Arc<tokio::sync::Mutex<dyn tokio::io::AsyncWrite + Send + Unpin>> {
+                &self.tcp_writer
+            }
+        }
+    };
+
+    TokenStream::from(expanded)
+}

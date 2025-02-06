@@ -6,7 +6,7 @@ use entities::DBPool;
 use l2_core::config::gs::GSServer;
 use l2_core::crypt::login::Encryption;
 use l2_core::dto::OutboundConnection;
-use l2_core::traits::handlers::{OutboundHandler, PacketHandler, PacketSender};
+use l2_core::traits::handlers::{OutboundHandler, PacketHandler};
 use l2_core::traits::Shutdown;
 use std::fmt;
 use std::net::Ipv4Addr;
@@ -14,8 +14,9 @@ use std::sync::Arc;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::{Mutex, Notify};
 use tracing::{info, instrument};
+use macro_common::LoginPacketSenderImpl;
 
-#[derive(Clone)]
+#[derive(Clone, LoginPacketSenderImpl)]
 #[allow(clippy::module_name_repetitions, unused)]
 pub struct LoginHandler {
     tcp_reader: Arc<Mutex<dyn AsyncRead + Unpin + Send>>,
@@ -46,23 +47,6 @@ impl Shutdown for LoginHandler {
     }
 }
 
-#[async_trait]
-impl PacketSender for LoginHandler {
-    async fn encrypt(&self, bytes: &mut [u8]) -> anyhow::Result<()> {
-        let size = bytes.len();
-        Encryption::append_checksum(&mut bytes[2..size]);
-        self.blowfish.encrypt(&mut bytes[2..size]);
-        Ok(())
-    }
-
-    fn is_encryption_enabled(&self) -> bool {
-        true
-    }
-
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Unpin + Send>> {
-        &self.tcp_writer
-    }
-}
 
 #[async_trait::async_trait]
 impl PacketHandler for LoginHandler {

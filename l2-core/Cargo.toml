@@ -5,7 +5,6 @@ edition = "2021"
 publish = false
 
 [dependencies]
-migration = { path = "../migration" }
 entities = { path = "../entities" }
 macro-common = { path = "../macro-common" }
 encoding.workspace = true
@@ -35,3 +34,6 @@ rsa.workspace = true
 pem.workspace = true
 uuid.workspace = true
 bytes.workspace = true
+
+[dev-dependencies]
+test-utils = {path = "../test-utils"}

@@ -14,6 +14,7 @@ pub mod l2_core {
                 buffer: BytesMut,
             }
             impl SendablePacketBuffer {
+                #[must_use]
                 pub fn new() -> Self {
                     Self {
                         buffer: BytesMut::new(),

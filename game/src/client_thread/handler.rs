@@ -332,12 +332,35 @@ mod tests {
     use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
     use l2_core::shared_packets::read::ReadablePacketBuffer;
     use l2_core::shared_packets::write::SendablePacketBuffer;
-    use l2_core::tests::get_test_db;
     use l2_core::traits::ServerConfig;
     use ntest::timeout;
     use sea_orm::{ActiveModelTrait, ActiveValue, TryIntoModel};
+    use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt, DuplexStream};
     use tokio::task::JoinHandle;
+    struct TestPacketSender {
+        writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
+    }
+    impl fmt::Debug for TestPacketSender {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "TestPacketSender")
+        }
+    }
+
+    #[async_trait]
+    impl PacketSender for TestPacketSender {
+        async fn encrypt(&self, _: &mut [u8]) -> anyhow::Result<()> {
+            Ok(())
+        }
+
+        fn is_encryption_enabled(&self) -> bool {
+            false
+        }
+
+        async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
+            &self.writer
+        }
+    }
 
     impl ProtocolVersion {
         pub fn new(version: i32) -> anyhow::Result<Self> {
@@ -372,6 +395,7 @@ mod tests {
 
     fn build_client_handler(
         server: DuplexStream,
+        db_pool: DBPool,
         controller_opt: Option<Arc<Controller>>,
     ) -> JoinHandle<(ClientHandler, anyhow::Result<()>)> {
         let controller = controller_opt.unwrap_or_else(|| {
@@ -383,7 +407,6 @@ mod tests {
         let cloned_controller = controller.clone();
         // Spawn a server task to handle a single connection
         tokio::spawn(async move {
-            let db_pool = get_test_db().await;
             let ip = Ipv4Addr::new(127, 0, 0, 1);
             let (r, w) = split(server);
             let mut ch = ClientHandler::new(r, w, ip, db_pool, cloned_controller);
@@ -397,7 +420,8 @@ mod tests {
     async fn test_protocol_version_fail() {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(1024);
-        let h = build_client_handler(server, None);
+        let pool = get_test_db().await;
+        let h = build_client_handler(server, pool, None);
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
         bytes[3] = 1;
@@ -415,7 +439,8 @@ mod tests {
     async fn test_protocol_version_success() {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(2024);
-        let h = build_client_handler(server, None);
+        let pool = get_test_db().await;
+        let h = build_client_handler(server, pool, None);
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
         client.write_all(bytes).await.unwrap();
@@ -433,7 +458,8 @@ mod tests {
     async fn test_auth_fail() {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(2024);
-        let h = build_client_handler(server, None);
+        let pool = get_test_db().await;
+        let h = build_client_handler(server, pool, None);
         let mut auth = AuthLogin::new().unwrap();
         client.write_all(auth.get_bytes(false)).await.unwrap();
         client.shutdown().await.unwrap();
@@ -442,30 +468,6 @@ mod tests {
         let err_str = err.err().unwrap().to_string();
         assert!(err_str.contains("Protocol version not set"));
     }
-    struct TestPacketSender {
-        writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
-    }
-    impl fmt::Debug for TestPacketSender {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "TestPacketSender")
-        }
-    }
-
-    #[async_trait]
-    impl PacketSender for TestPacketSender {
-        async fn encrypt(&self, _: &mut [u8]) -> anyhow::Result<()> {
-            Ok(())
-        }
-
-        fn is_encryption_enabled(&self) -> bool {
-            false
-        }
-
-        async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
-            &self.writer
-        }
-    }
-
     /// This test is testing whole logic for authenticating user from Protocol version
     /// and authenticating on login server.
     /// I decided to do integration test instead of small unit tests just to be able to change
@@ -487,7 +489,8 @@ mod tests {
             ban_duration: ActiveValue::NotSet,
             ban_ip: ActiveValue::NotSet,
         };
-        let user_model = user_record.save(&get_test_db().await).await.unwrap();
+        let pool = get_test_db().await;
+        let user_model = user_record.save(&pool).await.unwrap();
         let controller = Arc::new(Controller::new(cfg));
         let test_packet_sender = Arc::new(TestPacketSender {
             writer: Arc::new(Mutex::new(login_client)),
@@ -495,7 +498,7 @@ mod tests {
         controller
             .message_broker
             .register_packet_handler(LoginHandler::HANDLER_ID, test_packet_sender.clone());
-        let handle = build_client_handler(server, Some(controller.clone()));
+        let handle = build_client_handler(server, pool, Some(controller.clone()));
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
         client.write_all(bytes).await.unwrap();

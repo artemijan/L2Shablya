@@ -18,9 +18,10 @@ use std::sync::Arc;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::{Mutex, Notify};
 use tracing::{info, instrument};
+use macro_common::LoginPacketSenderImpl;
 
 #[allow(clippy::module_name_repetitions)]
-#[derive(Clone)]
+#[derive(Clone, LoginPacketSenderImpl)]
 pub struct GameServer {
     ///
     /// `tcp_reader` and `tcp_writer` are wrapped into Arc<Mutex> because we need to share the handler
@@ -72,24 +73,6 @@ impl GameServer {
 impl Shutdown for GameServer {
     fn get_shutdown_listener(&self) -> Arc<Notify> {
         self.shutdown_listener.clone()
-    }
-}
-
-#[async_trait]
-impl PacketSender for GameServer {
-    async fn encrypt(&self, bytes: &mut [u8]) -> anyhow::Result<()> {
-        let size = bytes.len();
-        Encryption::append_checksum(&mut bytes[2..size]);
-        self.blowfish.encrypt(&mut bytes[2..size]);
-        Ok(())
-    }
-
-    fn is_encryption_enabled(&self) -> bool {
-        true
-    }
-
-    async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
-        &self.tcp_writer
     }
 }
 

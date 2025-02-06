@@ -190,7 +190,7 @@ impl InboundHandler for Client {
 mod test {
     use super::*;
     use l2_core::config::login::LoginServer;
-    use l2_core::tests::get_test_db;
+    use test_utils::utils::get_test_db;
     use l2_core::traits::ServerConfig;
     use ntest::timeout;
     use tokio::io::{split, AsyncReadExt};
