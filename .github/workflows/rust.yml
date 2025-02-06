@@ -2,8 +2,14 @@ name: L2Shablya
 on:
   push:
     branches: [ "master" ]
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
   pull_request:
     branches: [ "master" ]
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
 env:
   CARGO_TERM_COLOR: always
 

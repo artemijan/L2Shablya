@@ -16,7 +16,8 @@ like DB denormalization for performance boost, removing unnecessary operations a
 
 [![codecov](https://codecov.io/gh/artemijan/L2Shablya/branch/master/graph/badge.svg)](https://codecov.io/gh/artemijan/L2Shablya)
 
-Ready features:
+
+## Ready features:
 
 - [x] Login server
     - [x] Login process + auto create accounts
@@ -33,6 +34,10 @@ Ready features:
     - [x] player can restore char
     - [x] player can select char
     - [ ] player can enter the game world
+    - [ ] player can move
+    - [ ] player can select target
+    - [ ] player can send chat messages
+    - ..... a lot more
 
 ## The client
 
