@@ -12,6 +12,10 @@ Current state: `Under development`
 About: This implementation is based on L2J, e.g. I reimplement everything in rust from java + I optimize things,
 like DB denormalization for performance boost, removing unnecessary operations and so on.
 
+## Test coverage
+
+[![codecov](https://codecov.io/gh/artemijan/L2Shablya/branch/master/graph/badge.svg)](https://codecov.io/gh/artemijan/L2Shablya)
+
 Ready features:
 
 - [x] Login server
