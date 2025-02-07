@@ -44,18 +44,30 @@ impl ItemVariations {
     #[must_use]
     pub fn as_key(&self) -> &'static str {
         match self {
-            ItemVariations::MineralId => "mineralId",
+            ItemVariations::MineralId => "mineral_id",
             ItemVariations::Option1 => "option1",
             ItemVariations::Option2 => "option2",
         }
     }
 }
-
+#[derive(Debug, Clone)]
+pub enum ItemVariables{
+    VisualId,
+    VisualAppearanceStoneId,
+    VisualAppearanceLifeTime
+}
+impl ItemVariables {
+    #[must_use]
+    pub fn as_key(&self) -> &'static str {
+        match self {
+            ItemVariables::VisualId => "visual_id",
+            ItemVariables::VisualAppearanceStoneId => "visual_appearance_stone_id",
+            ItemVariables::VisualAppearanceLifeTime => "visual_appearance_lifetime",
+        }
+    }
+}
 #[allow(clippy::missing_errors_doc)]
 impl item::Model {
-    pub const VISUAL_ID: &'static str = "visualId";
-    pub const VISUAL_APPEARANCE_STONE_ID: &'static str = "visualAppearanceStoneId";
-    pub const VISUAL_APPEARANCE_LIFE_TIME: &'static str = "visualAppearanceLifetime";
     ///
     /// # returns
     ///  tuple where:

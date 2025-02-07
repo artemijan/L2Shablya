@@ -1,6 +1,5 @@
 use crate::entities::{character, item};
 use chrono::Utc;
-use sea_orm::DbErr;
 use serde_json::Value;
 
 #[derive(Debug, Clone)]
@@ -128,7 +127,7 @@ pub struct CharacterInfo {
 
 #[allow(clippy::missing_errors_doc)]
 impl CharacterInfo {
-    pub fn new(char_model: character::Model, items: Vec<item::Model>) -> Result<Self, DbErr> {
+    pub fn new(char_model: character::Model, items: Vec<item::Model>) -> anyhow::Result<Self> {
         let paperdoll = char_model.restore_visible_inventory(&items)?;
         Ok(Self {
             char_model,
@@ -227,6 +226,11 @@ impl CharacterInfo {
     #[must_use]
     pub fn get_max_mp(&self) -> f64 {
         self.char_model.max_mp
+    }
+
+    #[must_use]
+    pub fn get_max_cp(&self) -> f64 {
+        self.char_model.max_cp
     }
     #[must_use]
     #[allow(clippy::cast_possible_truncation)]
@@ -353,7 +357,7 @@ impl TryFrom<u8> for Race {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::dao::item::{ItemVariations, LocType};
+    use crate::dao::item::{ItemVariables, ItemVariations, LocType};
     use crate::test_factories::factories::{char_factory, item_factory, user_factory};
     use serde_json::json;
     use test_utils::utils::get_test_db;
@@ -468,8 +472,12 @@ mod tests {
         let now = Utc::now();
         let char = char_factory(&db_pool, |mut ch| {
             ch.user_id = user.id;
+            ch.max_hp = 300f64;
+            ch.max_mp = 400f64;
+            ch.max_cp = 500f64;
             ch.variables = json!({
                 CharVariables::VitalityItemsUsed.as_key(): 10,
+                CharVariables::VisualFaceId.as_key(): 3,
                 CharVariables::HairAccessoryEnabled.as_key(): false,
                 CharVariables::VisualHairColorId.as_key(): 4,
                 CharVariables::VisualHairStyleId.as_key(): 3,
@@ -493,6 +501,9 @@ mod tests {
             it.item_id = 2;
             it.count = 1;
             it.enchant_level = 0;
+            it.variables = json!({
+               ItemVariables::VisualId.as_key(): 3
+            });
             it.time_of_use = 0;
             it.loc = LocType::Paperdoll;
             it.loc_data = PaperDoll::Hair as i32;
@@ -507,6 +518,13 @@ mod tests {
         assert_eq!(weapon.id, 1);
         assert!(!char_info.is_hair_accessory_enabled());
         assert_eq!(char_info.get_hair_color(), 4);
+        assert_eq!(char_info.get_face(), 3);
+        assert_eq!(char_info.get_max_hp().to_bits(), 300f64.to_bits());
+        assert_eq!(char_info.get_max_mp().to_bits(), 400f64.to_bits());
+        assert_eq!(char_info.get_max_cp().to_bits(), 500f64.to_bits());
+        assert_eq!(char_info.try_get_paper_doll_visual_id(PaperDoll::Hair).unwrap(), 3);
+        assert_eq!(char_info.try_get_paper_doll_item_id(PaperDoll::RHand).unwrap(), 2);
+        assert_eq!(char_info.get_enchant_effect(PaperDoll::RHand), 0);
         assert_eq!(char_info.get_hair_style(), 3);
         assert_eq!(char_info.get_transform_id(), 2);
         assert_eq!(char_info.get_delete_timer(), 0);
