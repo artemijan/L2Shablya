@@ -5,6 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
+test-utils = { path = "../test-utils" }
 sea-orm.workspace = true
 anyhow.workspace = true
 argon2.workspace = true
@@ -12,4 +13,4 @@ tokio.workspace = true
 tracing.workspace = true
 serde_json.workspace = true
 chrono.workspace = true
-serde = { version = "1.0.215", features = ["derive"] }
+serde.workspace = true

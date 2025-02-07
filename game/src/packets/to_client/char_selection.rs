@@ -50,7 +50,7 @@ impl CharSelectionInfo {
             buffer.write_i32(0)?; // clan id
             buffer.write_i32(0)?; // Builder level
             buffer.write_i32(i32::from(char.is_female))?;
-            buffer.write_i32(i32::from(char.race_id))?; 
+            buffer.write_i32(i32::from(char.race_id))?;
             buffer.write_i32(i32::from(char.base_class_id))?;
             buffer.write_i32(1)?; // GameServerName
             buffer.write_i32(char.x)?;
@@ -78,10 +78,10 @@ impl CharSelectionInfo {
             buffer.write_i32(0)?; // Ertheia
             buffer.write_i32(0)?; // Ertheia
             for slot in PaperDoll::ordered_ids() {
-                buffer.write_i32(char_info.paper_doll_item_id(slot))?;
+                buffer.write_i32(char_info.try_get_paper_doll_item_id(slot)?)?;
             }
             for v_slot in PaperDoll::visual_ids() {
-                buffer.write_i32(char_info.get_paper_doll_visual_id(v_slot))?;
+                buffer.write_i32(char_info.try_get_paper_doll_visual_id(v_slot)?)?;
             }
             buffer.write_i16(char_info.get_enchant_effect(PaperDoll::Chest))?; // Upper Body enchant level
             buffer.write_i16(char_info.get_enchant_effect(PaperDoll::Legs))?; // Lower Body enchant level

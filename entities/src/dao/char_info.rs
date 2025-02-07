@@ -9,6 +9,7 @@ pub enum CharVariables {
     VisualHairColorId,
     VisualFaceId,
 }
+
 impl CharVariables {
     #[must_use]
     pub fn as_key(&self) -> &'static str {
@@ -21,6 +22,7 @@ impl CharVariables {
 }
 
 #[repr(i32)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PaperDoll {
     Under = 0,
     Head = 1,
@@ -112,6 +114,7 @@ impl PaperDoll {
         ]
     }
 }
+
 #[derive(Debug, Clone)]
 pub struct CharacterInfo {
     pub char_model: character::Model,
@@ -132,35 +135,43 @@ impl CharacterInfo {
         })
     }
     #[must_use]
-    pub fn paper_doll_item_id(&self, slot: PaperDoll) -> i32 {
-        self.paperdoll[slot as usize][1]
+    pub fn paper_doll_item_id(&self, slot: PaperDoll) -> Option<i32> {
+        Some(self.paperdoll.get(slot as usize)?[1])
+    }
+
+    pub fn try_get_paper_doll_item_id(&self, slot: PaperDoll) -> anyhow::Result<i32> {
+        self.paper_doll_item_id(slot)
+            .ok_or(anyhow::anyhow!("No paper doll item id at slot {slot:?}"))
     }
 
     #[must_use]
-    pub fn get_item(&self, item_id: i32) -> Option<&item::Model> {
-        self.items.iter().find(|i| i.item_id == item_id)
+    pub fn get_item(&self, item_obj_id: i32) -> Option<&item::Model> {
+        self.items.iter().find(|i| i.id == item_obj_id)
     }
 
     #[must_use]
     pub fn get_weapon(&self) -> Option<&item::Model> {
-        let r_hand = self.get_paper_doll_object_id(PaperDoll::RHand);
-        if r_hand > 0 {
-            return self.get_item(r_hand);
+        if let Some(r_id) = self.get_paper_doll_object_id(PaperDoll::RHand) {
+            return self.get_item(r_id);
         }
         None
     }
-    pub fn try_get_race(&self)-> anyhow::Result<Race> {
+    pub fn try_get_race(&self) -> anyhow::Result<Race> {
         Race::try_from(self.char_model.race_id)
     }
 
     #[must_use]
-    pub fn get_paper_doll_object_id(&self, slot: PaperDoll) -> i32 {
-        self.paperdoll[slot as usize][0]
+    pub fn get_paper_doll_object_id(&self, slot: PaperDoll) -> Option<i32> {
+        Some(self.paperdoll.get(slot as usize)?[0])
     }
 
     #[must_use]
-    pub fn get_paper_doll_visual_id(&self, slot: PaperDoll) -> i32 {
-        self.paperdoll[slot as usize][3]
+    pub fn get_paper_doll_visual_id(&self, slot: PaperDoll) -> Option<i32> {
+        Some(self.paperdoll.get(slot as usize)?[3])
+    }
+    pub fn try_get_paper_doll_visual_id(&self, slot: PaperDoll) -> anyhow::Result<i32> {
+        self.get_paper_doll_visual_id(slot)
+            .ok_or(anyhow::anyhow!("No paperdoll at slot {slot:?}"))
     }
     #[must_use]
     #[allow(clippy::cast_sign_loss)]
@@ -332,5 +343,186 @@ impl TryFrom<u8> for Race {
     type Error = anyhow::Error;
     fn try_from(value: u8) -> anyhow::Result<Self> {
         try_from(value.into())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::dao::item::LocType;
+    use crate::entities::user;
+    use sea_orm::{ActiveModelTrait, ActiveValue, JsonValue, TryIntoModel};
+    use test_utils::utils::get_test_db;
+
+    #[test]
+    fn test_get_paperdoll_ordered_ids() {
+        let ids = PaperDoll::ordered_ids();
+        let expected_ids = [
+            PaperDoll::Under,
+            PaperDoll::Rear,
+            PaperDoll::Lear,
+            PaperDoll::Neck,
+            PaperDoll::RFinger,
+            PaperDoll::LFinger,
+            PaperDoll::Head,
+            PaperDoll::RHand,
+            PaperDoll::LHand,
+            PaperDoll::Gloves,
+            PaperDoll::Chest,
+            PaperDoll::Legs,
+            PaperDoll::Feet,
+            PaperDoll::Cloak,
+            PaperDoll::RHand,
+            PaperDoll::Hair,
+            PaperDoll::Hair2,
+            PaperDoll::RBracelet,
+            PaperDoll::LBracelet,
+            PaperDoll::Deco1,
+            PaperDoll::Deco2,
+            PaperDoll::Deco3,
+            PaperDoll::Deco4,
+            PaperDoll::Deco5,
+            PaperDoll::Deco6,
+            PaperDoll::Belt,
+            PaperDoll::Brooch,
+            PaperDoll::BroochJewel1,
+            PaperDoll::BroochJewel2,
+            PaperDoll::BroochJewel3,
+            PaperDoll::BroochJewel4,
+            PaperDoll::BroochJewel5,
+            PaperDoll::BroochJewel6,
+        ];
+        assert_eq!(ids, expected_ids);
+    }
+    #[test]
+    fn test_get_paperdoll_visual_ids() {
+        let ids = PaperDoll::visual_ids();
+        let expected_ids = [
+            PaperDoll::RHand,
+            PaperDoll::LHand,
+            PaperDoll::Gloves,
+            PaperDoll::Chest,
+            PaperDoll::Legs,
+            PaperDoll::Feet,
+            PaperDoll::RHand,
+            PaperDoll::Hair,
+            PaperDoll::Hair2,
+        ];
+        assert_eq!(ids, expected_ids);
+    }
+    #[test]
+    fn test_valid_race_values() {
+        use Race::*;
+        let test_cases = vec![
+            (0, Human),
+            (1, Elf),
+            (2, DarkElf),
+            (3, Orc),
+            (4, Dwarf),
+            (5, Kamael),
+            (6, Ertheia),
+            (7, Animal),
+            (8, Beast),
+            (9, Bug),
+            (10, CastleGuard),
+            (11, Construct),
+            (12, Demonic),
+            (13, Divine),
+            (14, Dragon),
+            (15, Elemental),
+            (16, Etc),
+            (17, Fairy),
+            (18, Giant),
+            (19, Humanoid),
+            (20, Mercenary),
+            (21, None),
+            (22, Plant),
+            (23, SiegeWeapon),
+            (24, Undead),
+        ];
+
+        for (input, expected) in test_cases {
+            assert_eq!(try_from(input).unwrap(), expected);
+        }
+    }
+    #[test]
+    fn test_invalid_race_values() {
+        let invalid_values = vec![-1, 25, 100, i32::MAX, i32::MIN];
+
+        for &value in &invalid_values {
+            assert!(
+                try_from(value).is_err(),
+                "Expected error for value: {value}"
+            );
+        }
+    }
+
+    #[tokio::test]
+    async fn test_get_char_info() {
+        let db_pool = get_test_db().await;
+        let user = user::ActiveModel {
+            id: ActiveValue::NotSet,
+            username: ActiveValue::Set("admin".to_string()),
+            access_level: ActiveValue::Set(0),
+            ban_ip: ActiveValue::NotSet,
+            password: ActiveValue::Set("hashed_pass".to_string()),
+            ban_duration: ActiveValue::NotSet,
+        }
+        .save(&db_pool)
+        .await
+        .unwrap()
+        .try_into_model()
+        .unwrap();
+        let char = character::ActiveModel {
+            name: ActiveValue::Set("Admin".to_string()),
+            level: ActiveValue::Set(1),
+            face: ActiveValue::Set(2),
+            hair_style: ActiveValue::Set(2),
+            x: ActiveValue::Set(0),
+            y: ActiveValue::Set(0),
+            z: ActiveValue::Set(0),
+            transform_id: ActiveValue::Set(0),
+            class_id: ActiveValue::Set(1),
+            race_id: ActiveValue::Set(Race::Human as i8),
+            hair_color: ActiveValue::Set(0),
+            is_female: ActiveValue::Set(false),
+            user_id: ActiveValue::Set(user.id),
+            ..Default::default()
+        }
+        .save(&db_pool)
+        .await
+        .unwrap()
+        .try_into_model()
+        .unwrap();
+        let items = vec![
+            item::Model {
+                id: 1,
+                owner: char.id,
+                item_id: 2,
+                count: 1,
+                enchant_level: 3,
+                loc: LocType::Paperdoll,
+                variables: JsonValue::default(),
+                variations: JsonValue::default(),
+                loc_data: PaperDoll::RHand as i32,
+                ..Default::default()
+            },
+            item::Model {
+                id: 2,
+                owner: char.id,
+                item_id: 2,
+                count: 1,
+                enchant_level: 0,
+                loc: LocType::Paperdoll,
+                variables: JsonValue::default(),
+                variations: JsonValue::default(),
+                loc_data: PaperDoll::Hair as i32,
+                ..Default::default()
+            },
+        ];
+        let char_info = CharacterInfo::new(char, items).unwrap();
+        let weapon = char_info.get_weapon().unwrap();
+        //todo more asserts
+        assert_eq!(weapon.id, 1);
     }
 }
