@@ -1,4 +1,4 @@
-#[cfg(feature = "test-utils")]
+#[cfg(feature = "test-factories")]
 pub mod factories {
     use crate::dao::char_info::{PaperDoll, Race};
     use crate::dao::item::LocType;

@@ -5,7 +5,9 @@ edition = "2021"
 publish = false
 
 [features]
-test-utils = []
+test-factories = []  # Define the feature
+
+
 
 [dependencies]
 test-utils = { path = "../test-utils" }
@@ -17,3 +19,5 @@ tracing.workspace = true
 serde_json.workspace = true
 chrono.workspace = true
 serde.workspace = true
+
+[build-dependencies]

@@ -115,38 +115,38 @@ impl character::Model {
     }
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//     use crate::dao::char_info::Race;
-//     use sea_orm::TryIntoModel;
-//     use test_utils::utils::get_test_db;
-//     use test_utils::test_factories::factories::user_factory;
-// 
-//     #[tokio::test]
-//     async fn test_works() {
-//         let db_pool = get_test_db().await;
-//         let user = user_factory(&db_pool, |u|u).await;
-//         let char = character::ActiveModel {
-//             name: ActiveValue::Set("Admin".to_string()),
-//             level: ActiveValue::Set(1),
-//             face: ActiveValue::Set(2),
-//             hair_style: ActiveValue::Set(2),
-//             x: ActiveValue::Set(0),
-//             y: ActiveValue::Set(0),
-//             z: ActiveValue::Set(0),
-//             transform_id: ActiveValue::Set(2),
-//             class_id: ActiveValue::Set(1),
-//             race_id: ActiveValue::Set(Race::Human as i8),
-//             hair_color: ActiveValue::Set(0),
-//             is_female: ActiveValue::Set(false),
-//             user_id: ActiveValue::Set(user.id),
-//             ..Default::default()
-//         }
-//         .save(&db_pool)
-//         .await
-//         .unwrap()
-//         .try_into_model()
-//         .unwrap();
-//     }
-// }
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::dao::char_info::PaperDoll;
+    use crate::test_factories::factories::{char_factory, item_factory, user_factory};
+    use test_utils::utils::get_test_db;
+
+    #[tokio::test]
+    async fn test_works() {
+        let db_pool = get_test_db().await;
+        let user = user_factory(&db_pool, |u| u).await;
+        let char = char_factory(&db_pool, |mut c| {
+            c.user_id = user.id;
+            c
+        })
+        .await;
+        let item = item_factory(&db_pool, |mut c| {
+            c.item_id = 10;
+            c.owner = char.id;
+            c.loc_data = PaperDoll::RHand as i32;
+            c
+        })
+        .await;
+
+        let chars =
+            character::Model::get_with_items_and_vars(&db_pool, "admin", LocType::Paperdoll)
+                .await
+                .unwrap();
+        assert_eq!(chars.len(), 1);
+        assert_eq!(chars[0].char_model.id, char.id);
+        assert_eq!(chars[0].items.len(), 1);
+        assert_eq!(chars[0].items[0].loc, LocType::Paperdoll);
+        assert_eq!(chars[0].items[0].item_id, item.item_id);
+    }
+}
