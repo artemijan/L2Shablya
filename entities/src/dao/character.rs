@@ -123,7 +123,7 @@ mod tests {
     use test_utils::utils::get_test_db;
 
     #[tokio::test]
-    async fn test_works() {
+    async fn test_get_items_and_vars() {
         let db_pool = get_test_db().await;
         let user = user_factory(&db_pool, |u| u).await;
         let char = char_factory(&db_pool, |mut c| {
@@ -148,5 +148,82 @@ mod tests {
         assert_eq!(chars[0].items.len(), 1);
         assert_eq!(chars[0].items[0].loc, LocType::Paperdoll);
         assert_eq!(chars[0].items[0].item_id, item.item_id);
+    }
+    #[tokio::test]
+    async fn test_find_by_username() {
+        let db_pool = get_test_db().await;
+        let user = user_factory(&db_pool, |u| u).await;
+        let char = char_factory(&db_pool, |mut c| {
+            c.user_id = user.id;
+            c
+        })
+        .await;
+
+        let chars = character::Model::find_by_username(&db_pool, "admin")
+            .await
+            .unwrap();
+        assert_eq!(chars.len(), 1);
+        assert_eq!(chars[0].user_id, user.id);
+        assert_eq!(chars[0].id, char.id);
+    }
+
+    #[tokio::test]
+    async fn test_delete_char() {
+        let db_pool = get_test_db().await;
+        let user = user_factory(&db_pool, |u| u).await;
+        let char = char_factory(&db_pool, |mut c| {
+            c.user_id = user.id;
+            c
+        })
+        .await;
+        let deleted_char = character::Model::delete_char(&db_pool, char).await.unwrap();
+        let expected_delete_at = Utc::now() + Duration::days(7);
+        let actual_delete_at = deleted_char.delete_at.unwrap().with_timezone(&Utc);
+        //char should be deleted in 7 days
+        assert_eq!((actual_delete_at - expected_delete_at).num_hours(), 0);
+    }
+    #[tokio::test]
+    async fn test_restore_char() {
+        let db_pool = get_test_db().await;
+        let user = user_factory(&db_pool, |u| u).await;
+        let char = char_factory(&db_pool, |mut c| {
+            c.user_id = user.id;
+            c.delete_at = Some((Utc::now() + Duration::days(3)).into());
+            c
+        })
+        .await;
+        let restored_char = character::Model::restore_char(&db_pool, char)
+            .await
+            .unwrap();
+        assert!(restored_char.delete_at.is_none());
+    }
+    #[tokio::test]
+    async fn test_char_exists() {
+        let db_pool = get_test_db().await;
+        let user = user_factory(&db_pool, |u| u).await;
+        let _ = char_factory(&db_pool, |mut c| {
+            c.user_id = user.id;
+            c
+        })
+        .await;
+        let exists = character::Model::char_exists(&db_pool, "Admin")
+            .await
+            .unwrap();
+        assert!(exists);
+    }
+    #[tokio::test]
+    async fn test_create_char() {
+        let db_pool = get_test_db().await;
+        let user = user_factory(&db_pool, |u| u).await;
+        let char = character::Model {
+            name: "Tester".to_string(),
+            level: 0,
+            user_id: user.id,
+            is_female: false,
+            ..Default::default()
+        };
+        let new_char = character::Model::create_char(&db_pool, char).await.unwrap();
+        assert_eq!(new_char.name, "Tester");
+        assert!(new_char.last_access.is_some());
     }
 }
