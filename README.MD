@@ -14,6 +14,9 @@ like DB denormalization for performance boost, removing unnecessary operations a
 
 ## Test coverage [![codecov](https://codecov.io/gh/artemijan/L2Shablya/branch/master/graph/badge.svg)](https://codecov.io/gh/artemijan/L2Shablya)
 
+Always remember "Having tests opens doors to refactoring! More tests - more doors are open."
+
+
 ## Ready features:
 
 - [x] Login server
