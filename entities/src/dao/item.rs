@@ -34,6 +34,23 @@ pub enum LocType {
     Commission,
 }
 
+#[derive(Debug, Clone)]
+pub enum ItemVariations {
+    MineralId,
+    Option1,
+    Option2,
+}
+impl ItemVariations {
+    #[must_use]
+    pub fn as_key(&self) -> &'static str {
+        match self {
+            ItemVariations::MineralId => "mineralId",
+            ItemVariations::Option1 => "option1",
+            ItemVariations::Option2 => "option2",
+        }
+    }
+}
+
 #[allow(clippy::missing_errors_doc)]
 impl item::Model {
     pub const VISUAL_ID: &'static str = "visualId";
@@ -47,11 +64,17 @@ impl item::Model {
     ///  3. option 2
     #[allow(clippy::cast_possible_truncation)]
     pub fn get_augmentation(&self) -> Option<(i32, i32, i32)> {
-        let option_1 = self.variations.get("option_1").and_then(Value::as_i64)?;
-        let option_2 = self.variations.get("option_2").and_then(Value::as_i64)?;
+        let option_1 = self
+            .variations
+            .get(ItemVariations::Option1.as_key())
+            .and_then(Value::as_i64)?;
+        let option_2 = self
+            .variations
+            .get(ItemVariations::Option2.as_key())
+            .and_then(Value::as_i64)?;
         let mineral_id = self
             .variations
-            .get("mineralId")
+            .get(ItemVariations::MineralId.as_key())
             .and_then(Value::as_i64)
             .unwrap_or(0) as i32;
         if option_1 > -1 && option_2 > -1 {

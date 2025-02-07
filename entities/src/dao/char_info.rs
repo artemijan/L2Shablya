@@ -9,7 +9,7 @@ pub enum CharVariables {
     VisualHairColorId,
     VisualFaceId,
     HairAccessoryEnabled,
-    VitalityItemsUsed
+    VitalityItemsUsed,
 }
 
 impl CharVariables {
@@ -20,7 +20,7 @@ impl CharVariables {
             CharVariables::VisualHairColorId => "visualHairColorId",
             CharVariables::VisualFaceId => "visualFaceId",
             CharVariables::HairAccessoryEnabled => "hairAccessoryEnabled",
-            CharVariables::VitalityItemsUsed => "vitalityItemsUsed"
+            CharVariables::VitalityItemsUsed => "vitalityItemsUsed",
         }
     }
 }
@@ -353,9 +353,8 @@ impl TryFrom<u8> for Race {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::dao::item::LocType;
-    use crate::entities::user;
-    use sea_orm::{ActiveModelTrait, ActiveValue, JsonValue, TryIntoModel};
+    use crate::dao::item::{ItemVariations, LocType};
+    use crate::test_factories::factories::{char_factory, item_factory, user_factory};
     use serde_json::json;
     use test_utils::utils::get_test_db;
 
@@ -465,81 +464,50 @@ mod tests {
     #[tokio::test]
     async fn test_get_char_info() {
         let db_pool = get_test_db().await;
-        let user = user::ActiveModel {
-            id: ActiveValue::NotSet,
-            username: ActiveValue::Set("admin".to_string()),
-            access_level: ActiveValue::Set(0),
-            ban_ip: ActiveValue::NotSet,
-            password: ActiveValue::Set("hashed_pass".to_string()),
-            ban_duration: ActiveValue::NotSet,
-        }
-        .save(&db_pool)
-        .await
-        .unwrap()
-        .try_into_model()
-        .unwrap();
+        let user = user_factory(&db_pool, |u| u).await;
         let now = Utc::now();
-        let char = character::ActiveModel {
-            name: ActiveValue::Set("Admin".to_string()),
-            level: ActiveValue::Set(1),
-            face: ActiveValue::Set(2),
-            hair_style: ActiveValue::Set(2),
-            x: ActiveValue::Set(0),
-            y: ActiveValue::Set(0),
-            z: ActiveValue::Set(0),
-            transform_id: ActiveValue::Set(2),
-            variables: ActiveValue::Set(json!({
+        let char = char_factory(&db_pool, |mut ch| {
+            ch.user_id = user.id;
+            ch.variables = json!({
                 CharVariables::VitalityItemsUsed.as_key(): 10,
                 CharVariables::HairAccessoryEnabled.as_key(): false,
                 CharVariables::VisualHairColorId.as_key(): 4,
                 CharVariables::VisualHairStyleId.as_key(): 3,
-            })),
-            delete_at: ActiveValue::Set(Some(now.into())),
-            class_id: ActiveValue::Set(1),
-            race_id: ActiveValue::Set(Race::Human as i8),
-            hair_color: ActiveValue::Set(0),
-            is_female: ActiveValue::Set(false),
-            user_id: ActiveValue::Set(user.id),
-            ..Default::default()
-        }
-        .save(&db_pool)
-        .await
-        .unwrap()
-        .try_into_model()
-        .unwrap();
-        let items = vec![
-            item::Model {
-                id: 1,
-                owner: char.id,
-                item_id: 2,
-                count: 1,
-                enchant_level: 3,
-                loc: LocType::Paperdoll,
-                variables: JsonValue::default(),
-                variations: JsonValue::default(),
-                loc_data: PaperDoll::RHand as i32,
-                ..Default::default()
-            },
-            item::Model {
-                id: 2,
-                owner: char.id,
-                item_id: 2,
-                count: 1,
-                enchant_level: 0,
-                loc: LocType::Paperdoll,
-                variables: JsonValue::default(),
-                variations: JsonValue::default(),
-                loc_data: PaperDoll::Hair as i32,
-                ..Default::default()
-            },
-        ];
+            });
+            ch.delete_at = Some(now.into());
+            ch
+        })
+        .await;
+        let item1 = item_factory(&db_pool, |mut it| {
+            it.owner = char.id;
+            it.variations = json!({
+                ItemVariations::MineralId.as_key(): 9,
+                ItemVariations::Option1.as_key(): 3,
+                ItemVariations::Option2.as_key(): 5,
+            });
+            it
+        })
+        .await;
+        let item2 = item_factory(&db_pool, |mut it| {
+            it.owner = char.id;
+            it.item_id = 2;
+            it.count = 1;
+            it.enchant_level = 0;
+            it.time_of_use = 0;
+            it.loc = LocType::Paperdoll;
+            it.loc_data = PaperDoll::Hair as i32;
+            it
+        })
+        .await;
+        let items = vec![item1, item2];
         let char_info = CharacterInfo::new(char, items).unwrap();
         let weapon = char_info.get_weapon().unwrap();
-        //todo more asserts
+        let augmentation = weapon.get_augmentation().unwrap();
+        assert_eq!((9, 3, 5), augmentation);
         assert_eq!(weapon.id, 1);
         assert!(!char_info.is_hair_accessory_enabled());
-        assert_eq!(char_info.get_hair_color(),4);
-        assert_eq!(char_info.get_hair_style(),3);
+        assert_eq!(char_info.get_hair_color(), 4);
+        assert_eq!(char_info.get_hair_style(), 3);
         assert_eq!(char_info.get_transform_id(), 2);
         assert_eq!(char_info.get_delete_timer(), 0);
         assert_eq!(char_info.get_vitality_used(), 10);

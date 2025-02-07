@@ -334,10 +334,12 @@ mod tests {
     use l2_core::shared_packets::write::SendablePacketBuffer;
     use l2_core::traits::ServerConfig;
     use ntest::timeout;
-    use sea_orm::{ActiveModelTrait, ActiveValue, TryIntoModel};
+    use sea_orm::TryIntoModel;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt, DuplexStream};
     use tokio::task::JoinHandle;
+    use entities::test_factories::factories::user_factory;
+
     struct TestPacketSender {
         writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
     }
@@ -481,16 +483,11 @@ mod tests {
         let cfg = Arc::new(GSServer::from_string(include_str!(
             "../../test_data/game.yaml"
         )));
-        let user_record = user::ActiveModel {
-            id: ActiveValue::NotSet,
-            username: ActiveValue::Set("test".to_string()),
-            password: ActiveValue::Set("password_hash".to_string()),
-            access_level: ActiveValue::Set(0),
-            ban_duration: ActiveValue::NotSet,
-            ban_ip: ActiveValue::NotSet,
-        };
         let pool = get_test_db().await;
-        let user_model = user_record.save(&pool).await.unwrap();
+        let user_model = user_factory(&pool, |mut u|{
+            u.username = "test".to_owned();
+            u
+        }).await;
         let controller = Arc::new(Controller::new(cfg));
         let test_packet_sender = Arc::new(TestPacketSender {
             writer: Arc::new(Mutex::new(login_client)),

@@ -114,3 +114,39 @@ impl character::Model {
         Ok(result)
     }
 }
+
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
+//     use crate::dao::char_info::Race;
+//     use sea_orm::TryIntoModel;
+//     use test_utils::utils::get_test_db;
+//     use test_utils::test_factories::factories::user_factory;
+// 
+//     #[tokio::test]
+//     async fn test_works() {
+//         let db_pool = get_test_db().await;
+//         let user = user_factory(&db_pool, |u|u).await;
+//         let char = character::ActiveModel {
+//             name: ActiveValue::Set("Admin".to_string()),
+//             level: ActiveValue::Set(1),
+//             face: ActiveValue::Set(2),
+//             hair_style: ActiveValue::Set(2),
+//             x: ActiveValue::Set(0),
+//             y: ActiveValue::Set(0),
+//             z: ActiveValue::Set(0),
+//             transform_id: ActiveValue::Set(2),
+//             class_id: ActiveValue::Set(1),
+//             race_id: ActiveValue::Set(Race::Human as i8),
+//             hair_color: ActiveValue::Set(0),
+//             is_female: ActiveValue::Set(false),
+//             user_id: ActiveValue::Set(user.id),
+//             ..Default::default()
+//         }
+//         .save(&db_pool)
+//         .await
+//         .unwrap()
+//         .try_into_model()
+//         .unwrap();
+//     }
+// }
