@@ -35,7 +35,10 @@ jobs:
             ${{ runner.os }}-cargo-
 
       - name: Install Tarpaulin
-        run: cargo install cargo-tarpaulin
+        run: |
+          if ! cargo tarpaulin --version &>/dev/null; then
+            cargo install cargo-tarpaulin
+          fi
       - name: Generate LCOV coverage report
         run: cargo tarpaulin --all --out Lcov --verbose
       - name: Upload coverage report to Codecov

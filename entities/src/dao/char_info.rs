@@ -5,18 +5,22 @@ use serde_json::Value;
 
 #[derive(Debug, Clone)]
 pub enum CharVariables {
-    VisualHairId,
+    VisualHairStyleId,
     VisualHairColorId,
     VisualFaceId,
+    HairAccessoryEnabled,
+    VitalityItemsUsed
 }
 
 impl CharVariables {
     #[must_use]
     pub fn as_key(&self) -> &'static str {
         match self {
-            CharVariables::VisualHairId => "visualHairId",
+            CharVariables::VisualHairStyleId => "visualHairStyleId",
             CharVariables::VisualHairColorId => "visualHairColorId",
             CharVariables::VisualFaceId => "visualFaceId",
+            CharVariables::HairAccessoryEnabled => "hairAccessoryEnabled",
+            CharVariables::VitalityItemsUsed => "vitalityItemsUsed"
         }
     }
 }
@@ -124,8 +128,6 @@ pub struct CharacterInfo {
 
 #[allow(clippy::missing_errors_doc)]
 impl CharacterInfo {
-    const VITALITY_ITEMS_USED_VARIABLE_NAME: &'static str = "VITALITY_ITEMS_USED";
-    const HAIR_ACCESSORY_VARIABLE_NAME: &'static str = "HAIR_ACCESSORY_ENABLED";
     pub fn new(char_model: character::Model, items: Vec<item::Model>) -> Result<Self, DbErr> {
         let paperdoll = char_model.restore_visible_inventory(&items)?;
         Ok(Self {
@@ -194,7 +196,7 @@ impl CharacterInfo {
     pub fn get_hair_style(&self) -> i32 {
         self.char_model
             .variables
-            .get(CharVariables::VisualHairId.as_key())
+            .get(CharVariables::VisualHairStyleId.as_key())
             .and_then(Value::as_i64) // Convert to i64 (Json numbers are i64 in Serde)
             .and_then(|v| v.try_into().ok()) // Convert to i32 safely
             .unwrap_or(0)
@@ -232,16 +234,18 @@ impl CharacterInfo {
         if let Some(delete_at) = self.char_model.delete_at {
             let now = Utc::now();
             let delta = delete_at.with_timezone(&Utc).signed_duration_since(now);
-            delta.num_seconds() as i32
-        } else {
-            0
+            let time_left = delta.num_seconds() as i32;
+            if time_left >= 0 {
+                return time_left;
+            }
         }
+        0
     }
     #[must_use]
     pub fn get_vitality_used(&self) -> i32 {
         self.char_model
             .variables
-            .get(Self::VITALITY_ITEMS_USED_VARIABLE_NAME)
+            .get(CharVariables::VitalityItemsUsed.as_key())
             .and_then(Value::as_i64)
             .and_then(|v| v.try_into().ok())
             .unwrap_or(0)
@@ -250,7 +254,7 @@ impl CharacterInfo {
     pub fn is_hair_accessory_enabled(&self) -> bool {
         self.char_model
             .variables
-            .get(Self::HAIR_ACCESSORY_VARIABLE_NAME)
+            .get(CharVariables::HairAccessoryEnabled.as_key())
             .and_then(Value::as_bool)
             .unwrap_or(true)
     }
@@ -352,6 +356,7 @@ mod tests {
     use crate::dao::item::LocType;
     use crate::entities::user;
     use sea_orm::{ActiveModelTrait, ActiveValue, JsonValue, TryIntoModel};
+    use serde_json::json;
     use test_utils::utils::get_test_db;
 
     #[test]
@@ -473,6 +478,7 @@ mod tests {
         .unwrap()
         .try_into_model()
         .unwrap();
+        let now = Utc::now();
         let char = character::ActiveModel {
             name: ActiveValue::Set("Admin".to_string()),
             level: ActiveValue::Set(1),
@@ -481,7 +487,14 @@ mod tests {
             x: ActiveValue::Set(0),
             y: ActiveValue::Set(0),
             z: ActiveValue::Set(0),
-            transform_id: ActiveValue::Set(0),
+            transform_id: ActiveValue::Set(2),
+            variables: ActiveValue::Set(json!({
+                CharVariables::VitalityItemsUsed.as_key(): 10,
+                CharVariables::HairAccessoryEnabled.as_key(): false,
+                CharVariables::VisualHairColorId.as_key(): 4,
+                CharVariables::VisualHairStyleId.as_key(): 3,
+            })),
+            delete_at: ActiveValue::Set(Some(now.into())),
             class_id: ActiveValue::Set(1),
             race_id: ActiveValue::Set(Race::Human as i8),
             hair_color: ActiveValue::Set(0),
@@ -524,5 +537,11 @@ mod tests {
         let weapon = char_info.get_weapon().unwrap();
         //todo more asserts
         assert_eq!(weapon.id, 1);
+        assert!(!char_info.is_hair_accessory_enabled());
+        assert_eq!(char_info.get_hair_color(),4);
+        assert_eq!(char_info.get_hair_style(),3);
+        assert_eq!(char_info.get_transform_id(), 2);
+        assert_eq!(char_info.get_delete_timer(), 0);
+        assert_eq!(char_info.get_vitality_used(), 10);
     }
 }

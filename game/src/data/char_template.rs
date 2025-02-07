@@ -144,7 +144,7 @@ impl CharTemplate {
         target.cur_mp = target.max_mp;
         target.cur_cp = target.max_cp;
         target.variables = json!({
-            CharVariables::VisualHairId.as_key(): target.hair_style,
+            CharVariables::VisualHairStyleId.as_key(): target.hair_style,
             CharVariables::VisualHairColorId.as_key(): target.hair_color,
             CharVariables::VisualFaceId.as_key(): target.face
         });
