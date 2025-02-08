@@ -522,15 +522,19 @@ mod tests {
             .message_broker
             .register_packet_handler(LoginHandler::HANDLER_ID, test_packet_sender.clone());
         let handle = build_client_handler(server, pool, Some(controller.clone()));
+        // --> protocol version
         let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
         let bytes = login_packet.get_bytes(false);
         client.write_all(bytes).await.unwrap();
+        // <-- protocol response
         let mut protocol_response = [0; 26];
         client.read_exact(&mut protocol_response).await.unwrap();
         assert_eq!(protocol_response[0], 26);
+        //--> auth login
         let mut auth = AuthLogin::new().unwrap();
         client.write_all(auth.get_bytes(false)).await.unwrap();
         let mut auth_login_packet = [0; 29];
+        // <-- Try login on login server
         login_server
             .read_exact(&mut auth_login_packet)
             .await
@@ -541,17 +545,20 @@ mod tests {
         assert_eq!(p.session.play_ok2, 0);
         assert_eq!(p.session.login_ok1, 2);
         assert_eq!(p.session.login_ok2, 3);
+
+        // --> login ok
         let auth_ok_packet = PlayerAuthResponse::new("test", true);
-        //login ok
         controller.message_broker.respond_to_message(
             Some(LoginHandler::HANDLER_ID),
             "test",
             PacketType::PlayerAuthResp(auth_ok_packet),
         );
+        // <-- Players in game (received by login server)
         let mut player_in_game = [0; 15];
         login_server.read_exact(&mut player_in_game).await.unwrap();
         let pig = PlayerInGame::read(&player_in_game[2..]).unwrap();
         assert_eq!(pig.accounts, ["test"]);
+        // <-- Player auth ok
         let mut auth_ok_resp = [0; 11];
         client.read_exact(&mut auth_ok_resp).await.unwrap();
         let mut buffer = ReadablePacketBuffer::new(&auth_ok_resp[2..]);
@@ -561,8 +568,10 @@ mod tests {
         assert_eq!(PlayerLoginResponse::PACKET_ID, p_id);
         assert_eq!(is_ok, -1);
         assert_eq!(reason, 0);
-        let mut char_list = [0;464];
+        // <-- Chars list
+        let mut char_list = [0; 464];
         client.read_exact(&mut char_list).await.unwrap();
+        //--> create char
         let char_name = "NewChar";
         let mut create_char_packet_buffer =
             build_create_char_packet(char_name, i32::from(char_model.class_id)).unwrap();
@@ -570,10 +579,36 @@ mod tests {
             .write_all(create_char_packet_buffer.get_data_mut(false))
             .await
             .unwrap();
-        let mut create_response =[0;7];
+        //<-- Char create OK
+        let mut create_response = [0; 7];
         client.read_exact(&mut create_response).await.unwrap();
         assert_eq!(create_response[2], 0x0F);
-        assert_eq!(i32::from_le_bytes(create_response[3..].try_into().unwrap()), 1);
+        assert_eq!(
+            i32::from_le_bytes(create_response[3..].try_into().unwrap()),
+            1
+        );
+        // --> Delete char
+        let mut delete_char_packet = SendablePacketBuffer::new();
+        delete_char_packet.write(0x0D).unwrap();
+        delete_char_packet.write_i32(1).unwrap();
+        client.write_all(delete_char_packet.get_data_mut(false)).await.unwrap();
+        // <-- New char list with 2 chars inside
+        let mut new_char_list =[0;908]; //now 2 chars
+        client.read_exact(&mut new_char_list).await.unwrap();
+        assert_eq!(new_char_list[2], 0x09); //char list packet id
+        assert_eq!(new_char_list[3], 2); // 2 characters
+        // --> Restore char
+        let mut restore_char_packet = SendablePacketBuffer::new();
+        restore_char_packet.write(0x7B).unwrap();
+        restore_char_packet.write_i32(1).unwrap();
+        client.write_all(restore_char_packet.get_data_mut(false)).await.unwrap();
+        // <-- New char list with 2 chars inside
+        let mut new_char_list =[0;908]; //now 2 chars
+        client.read_exact(&mut new_char_list).await.unwrap();
+        assert_eq!(new_char_list[2], 0x09); //char list packet id
+        assert_eq!(new_char_list[3], 2); // 2 characters
+
+        // cleanup
         client.shutdown().await.unwrap();
         let (ch, _) = handle.await.unwrap();
         assert_eq!(ch.protocol, Some(6_553_697));
