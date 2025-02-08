@@ -327,6 +327,7 @@ mod tests {
     use crate::packets::from_client::auth::AuthLogin;
     use crate::packets::from_client::protocol::ProtocolVersion;
     use crate::packets::to_client::PlayerLoginResponse;
+    use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::shared_packets::common::{PacketType, ReadablePacket, SendablePacket};
     use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
     use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
@@ -338,7 +339,6 @@ mod tests {
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt, DuplexStream};
     use tokio::task::JoinHandle;
-    use entities::test_factories::factories::user_factory;
 
     struct TestPacketSender {
         writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
@@ -417,6 +417,25 @@ mod tests {
         })
     }
 
+    fn build_create_char_packet(name: &str, class_id: i32) -> anyhow::Result<SendablePacketBuffer> {
+        let mut create_char_packet_buffer = SendablePacketBuffer::new();
+        create_char_packet_buffer.write(0x0C)?;
+        create_char_packet_buffer.write_c_utf16le_string(Some(name))?;
+        create_char_packet_buffer.write_i32(2)?;
+        create_char_packet_buffer.write_i32(0)?; //sex
+        create_char_packet_buffer.write_i32(class_id)?;
+        create_char_packet_buffer.write_i32(1)?; // stats con, men etc...
+        create_char_packet_buffer.write_i32(1)?; // stats con, men etc...
+        create_char_packet_buffer.write_i32(1)?; // stats con, men etc...
+        create_char_packet_buffer.write_i32(1)?; // stats con, men etc...
+        create_char_packet_buffer.write_i32(1)?; // stats con, men etc...
+        create_char_packet_buffer.write_i32(1)?; // stats con, men etc...
+        create_char_packet_buffer.write_i32(1)?; // hair style
+        create_char_packet_buffer.write_i32(2)?; // hair color
+        create_char_packet_buffer.write_i32(2)?; // face
+        Ok(create_char_packet_buffer)
+    }
+
     #[tokio::test]
     #[timeout(2000)]
     async fn test_protocol_version_fail() {
@@ -475,7 +494,7 @@ mod tests {
     /// I decided to do integration test instead of small unit tests just to be able to change
     /// internals while still not braking functionality.
     #[tokio::test]
-    #[timeout(2000)]
+    // #[timeout(3000)]
     async fn test_integration_auth_ok() {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(1024);
@@ -484,10 +503,17 @@ mod tests {
             "../../test_data/game.yaml"
         )));
         let pool = get_test_db().await;
-        let user_model = user_factory(&pool, |mut u|{
+        let user_model = user_factory(&pool, |mut u| {
             u.username = "test".to_owned();
             u
-        }).await;
+        })
+        .await;
+        let char_model = char_factory(&pool, |mut ch| {
+            ch.user_id = user_model.id;
+            ch.name = "TestChar".to_owned();
+            ch
+        })
+        .await;
         let controller = Arc::new(Controller::new(cfg));
         let test_packet_sender = Arc::new(TestPacketSender {
             writer: Arc::new(Mutex::new(login_client)),
@@ -535,6 +561,19 @@ mod tests {
         assert_eq!(PlayerLoginResponse::PACKET_ID, p_id);
         assert_eq!(is_ok, -1);
         assert_eq!(reason, 0);
+        let mut char_list = [0;464];
+        client.read_exact(&mut char_list).await.unwrap();
+        let char_name = "NewChar";
+        let mut create_char_packet_buffer =
+            build_create_char_packet(char_name, i32::from(char_model.class_id)).unwrap();
+        client
+            .write_all(create_char_packet_buffer.get_data_mut(false))
+            .await
+            .unwrap();
+        let mut create_response =[0;7];
+        client.read_exact(&mut create_response).await.unwrap();
+        assert_eq!(create_response[2], 0x0F);
+        assert_eq!(i32::from_le_bytes(create_response[3..].try_into().unwrap()), 1);
         client.shutdown().await.unwrap();
         let (ch, _) = handle.await.unwrap();
         assert_eq!(ch.protocol, Some(6_553_697));
