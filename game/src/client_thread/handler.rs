@@ -494,7 +494,7 @@ mod tests {
     /// I decided to do integration test instead of small unit tests just to be able to change
     /// internals while still not braking functionality.
     #[tokio::test]
-    // #[timeout(3000)]
+    #[timeout(3000)]
     async fn test_integration_auth_ok() {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(1024);
