@@ -57,7 +57,6 @@ impl fmt::Debug for ClientHandler {
             .field("protocol", &self.protocol)
             .field("status", &self.status)
             .field("selected_char", &self.selected_char)
-            .field("user", &self.user)
             .finish_non_exhaustive()
     }
 }
@@ -523,7 +522,7 @@ mod tests {
             .register_packet_handler(LoginHandler::HANDLER_ID, test_packet_sender.clone());
         let handle = build_client_handler(server, pool, Some(controller.clone()));
         // --> protocol version
-        let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
+        let mut login_packet = ProtocolVersion::new(110).unwrap();
         let bytes = login_packet.get_bytes(false);
         client.write_all(bytes).await.unwrap();
         // <-- protocol response
@@ -591,19 +590,25 @@ mod tests {
         let mut delete_char_packet = SendablePacketBuffer::new();
         delete_char_packet.write(0x0D).unwrap();
         delete_char_packet.write_i32(1).unwrap();
-        client.write_all(delete_char_packet.get_data_mut(false)).await.unwrap();
+        client
+            .write_all(delete_char_packet.get_data_mut(false))
+            .await
+            .unwrap();
         // <-- New char list with 2 chars inside
-        let mut new_char_list =[0;908]; //now 2 chars
+        let mut new_char_list = [0; 908]; //now 2 chars
         client.read_exact(&mut new_char_list).await.unwrap();
         assert_eq!(new_char_list[2], 0x09); //char list packet id
         assert_eq!(new_char_list[3], 2); // 2 characters
-        // --> Restore char
+                                         // --> Restore char
         let mut restore_char_packet = SendablePacketBuffer::new();
         restore_char_packet.write(0x7B).unwrap();
         restore_char_packet.write_i32(1).unwrap();
-        client.write_all(restore_char_packet.get_data_mut(false)).await.unwrap();
+        client
+            .write_all(restore_char_packet.get_data_mut(false))
+            .await
+            .unwrap();
         // <-- New char list with 2 chars inside
-        let mut new_char_list =[0;908]; //now 2 chars
+        let mut new_char_list = [0; 908]; //now 2 chars
         client.read_exact(&mut new_char_list).await.unwrap();
         assert_eq!(new_char_list[2], 0x09); //char list packet id
         assert_eq!(new_char_list[3], 2); // 2 characters
@@ -611,7 +616,14 @@ mod tests {
         // cleanup
         client.shutdown().await.unwrap();
         let (ch, _) = handle.await.unwrap();
-        assert_eq!(ch.protocol, Some(6_553_697));
+        assert!(ch.get_session_key().is_some());
+        assert_eq!(ch.get_account_chars().unwrap().len(), 2);
+        assert_eq!(
+            ch.try_get_char_by_slot_id(1).unwrap().char_model.name,
+            "NewChar"
+        );
+        assert_eq!(format!("{ch:?}"), "Client { ip: 127.0.0.1, protocol: Some(110), status: Authenticated, selected_char: None, .. }");
+        assert_eq!(ch.protocol, Some(110));
         assert_eq!(ch.session_key.unwrap(), p.session);
         assert_eq!(ch.user.unwrap(), user_model.try_into_model().unwrap());
     }
