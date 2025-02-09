@@ -152,20 +152,6 @@ pub enum Class {
     Doomcryer = 116,
     FortuneSeeker = 117,
     Maestro = 118,
-    MaleSoldier = 123,
-    FemaleSoldier = 124,
-    Trooper = 125,
-    Warder = 126,
-    Berserker = 127,
-    MaleSoulbreaker = 128,
-    FemaleSoulbreaker = 129,
-    Arbalester = 130,
-    Doombringer = 131,
-    MaleSoulHound = 132,
-    FemaleSoulHound = 133,
-    Trickster = 134,
-    Inspector = 135,
-    Judicator = 136,
 }
 
 impl TryFrom<u8> for Class {
@@ -264,20 +250,6 @@ impl TryFrom<u8> for Class {
             116 => Ok(Doomcryer),
             117 => Ok(FortuneSeeker),
             118 => Ok(Maestro),
-            123 => Ok(MaleSoldier),
-            124 => Ok(FemaleSoldier),
-            125 => Ok(Trooper),
-            126 => Ok(Warder),
-            127 => Ok(Berserker),
-            128 => Ok(MaleSoulbreaker),
-            129 => Ok(FemaleSoulbreaker),
-            130 => Ok(Arbalester),
-            131 => Ok(Doombringer),
-            132 => Ok(MaleSoulHound),
-            133 => Ok(FemaleSoulHound),
-            134 => Ok(Trickster),
-            135 => Ok(Inspector),
-            136 => Ok(Judicator),
             _ => bail!("Invalid class ID"),
         }
     }
@@ -380,20 +352,6 @@ impl Class {
             Doomcryer => CharClass::mage(self, Race::Orc, Some(Warcryer)),
             FortuneSeeker => CharClass::fighter(self, Race::Dwarf, Some(BountyHunter)),
             Maestro => CharClass::fighter(self, Race::Dwarf, Some(Warsmith)),
-            MaleSoldier => CharClass::fighter(self, Race::Kamael, None),
-            FemaleSoldier => CharClass::fighter(self, Race::Kamael, None),
-            Trooper => CharClass::fighter(self, Race::Kamael, Some(MaleSoldier)),
-            Warder => CharClass::fighter(self, Race::Kamael, Some(FemaleSoldier)),
-            Berserker => CharClass::fighter(self, Race::Kamael, Some(Trooper)),
-            MaleSoulbreaker => CharClass::fighter(self, Race::Kamael, Some(Trooper)),
-            FemaleSoulbreaker => CharClass::fighter(self, Race::Kamael, Some(Warder)),
-            Arbalester => CharClass::fighter(self, Race::Kamael, Some(Warder)),
-            Doombringer => CharClass::fighter(self, Race::Kamael, Some(Berserker)),
-            MaleSoulHound => CharClass::fighter(self, Race::Kamael, Some(MaleSoulbreaker)),
-            FemaleSoulHound => CharClass::fighter(self, Race::Kamael, Some(FemaleSoulbreaker)),
-            Trickster => CharClass::fighter(self, Race::Kamael, Some(Arbalester)),
-            Inspector => CharClass::fighter(self, Race::Kamael, Some(Warder)),
-            Judicator => CharClass::fighter(self, Race::Kamael, Some(Inspector)),
         }
     }
 }
@@ -407,5 +365,19 @@ impl<'de> Deserialize<'de> for Class {
         Class::try_from(value).map_err(|_| {
             serde::de::Error::custom(format!("Invalid class ID: {value}, it is not implemented."))
         })
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_all_classes() {
+        for i in 1..=118u8 {
+            if (58..88).contains(&i) {
+                continue;
+            }
+            Class::try_from(i).unwrap_or_else(|_| panic!("Invalid class ID: {i}"));
+        }
     }
 }
