@@ -377,7 +377,8 @@ mod test {
             if (58..88).contains(&i) {
                 continue;
             }
-            Class::try_from(i).unwrap_or_else(|_| panic!("Invalid class ID: {i}"));
+            let cls = Class::try_from(i).unwrap_or_else(|_| panic!("Invalid class ID: {i}"));
+            let _ = cls.get_class();
         }
     }
 }
