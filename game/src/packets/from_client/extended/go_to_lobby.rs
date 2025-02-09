@@ -41,38 +41,47 @@ mod tests {
     use crate::packets::from_client::extended::GoLobby;
     use crate::packets::HandleablePacket;
     use entities::test_factories::factories::user_factory;
-    use l2_core::config::gs::GSServer;
     use l2_core::session::SessionKey;
     use l2_core::traits::handlers::PacketHandler;
-    use l2_core::traits::ServerConfig;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
+    use ntest::timeout;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt};
+    use crate::tests::get_gs_config;
 
     #[tokio::test]
+    #[timeout(2000)]
     pub async fn test_handle() {
         let pool = get_test_db().await;
         let pack = GoLobby;
         let user = user_factory(&pool, |u| u).await;
         let (mut client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
-        let cfg = Arc::new(GSServer::from_string(include_str!(
-            "../../../../test_data/game.yaml"
-        )));
+        let cfg = get_gs_config();
         let controller = Arc::new(Controller::new(cfg));
         let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool, controller);
+
+        let res = pack.handle(&mut ch).await;
+        assert!(matches!(res, Err(e) if e.to_string() == "User not set"));
         ch.set_user(user);
+        let res2 = pack.handle(&mut ch).await;
+        assert!(
+            matches!(res2, Err(e) if e.to_string() == "Can not go to lobby, Session is missing")
+        );
         ch.set_session_key(SessionKey::new());
+        let res3 = pack.handle(&mut ch).await;
+        assert!(
+            matches!(res3, Err(e) if e.to_string() == "Can not go to lobby, no chars were set")
+        );
         ch.set_account_chars(vec![]);
         pack.handle(&mut ch).await.unwrap();
         tokio::spawn(async move {
             ch.handle_client().await.unwrap();
         });
-        let mut resp = [0; 18];
-        client.read_exact(&mut resp).await.unwrap();
-        println!("{resp:?}");
-        assert_eq!(resp[2], 0x09);
-        assert_eq!(u32::from_le_bytes(resp[3..7].try_into().unwrap()), 0); //0 chars
+        let mut ok_resp = [0; 18];
+        client.read_exact(&mut ok_resp).await.unwrap();
+        assert_eq!(ok_resp[2], 0x09);
+        assert_eq!(u32::from_le_bytes(ok_resp[3..7].try_into().unwrap()), 0); //0 chars
     }
 }

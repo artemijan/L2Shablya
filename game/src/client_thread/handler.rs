@@ -23,7 +23,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::{Mutex, Notify};
 use tracing::{error, info, instrument};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(unused)]
 pub enum ClientStatus {
     Connected,
@@ -332,37 +332,13 @@ mod tests {
     use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
     use l2_core::shared_packets::read::ReadablePacketBuffer;
     use l2_core::shared_packets::write::SendablePacketBuffer;
-    use l2_core::traits::ServerConfig;
     use ntest::timeout;
     use sea_orm::TryIntoModel;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt, DuplexStream};
     use tokio::task::JoinHandle;
     use crate::packets::enums::CharNameResponseVariant;
-
-    struct TestPacketSender {
-        writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
-    }
-    impl fmt::Debug for TestPacketSender {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "TestPacketSender")
-        }
-    }
-
-    #[async_trait]
-    impl PacketSender for TestPacketSender {
-        async fn encrypt(&self, _: &mut [u8]) -> anyhow::Result<()> {
-            Ok(())
-        }
-
-        fn is_encryption_enabled(&self) -> bool {
-            false
-        }
-
-        async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
-            &self.writer
-        }
-    }
+    use crate::tests::{get_gs_config, TestPacketSender};
 
     impl ProtocolVersion {
         pub fn new(version: i32) -> anyhow::Result<Self> {
@@ -401,9 +377,7 @@ mod tests {
         controller_opt: Option<Arc<Controller>>,
     ) -> JoinHandle<(ClientHandler, anyhow::Result<()>)> {
         let controller = controller_opt.unwrap_or_else(|| {
-            let cfg = Arc::new(GSServer::from_string(include_str!(
-                "../../test_data/game.yaml"
-            )));
+            let cfg = get_gs_config();
             Arc::new(Controller::new(cfg))
         });
         let cloned_controller = controller.clone();
@@ -443,7 +417,7 @@ mod tests {
         let (mut client, server) = tokio::io::duplex(1024);
         let pool = get_test_db().await;
         let h = build_client_handler(server, pool, None);
-        let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
+        let mut login_packet = ProtocolVersion::new(110).unwrap();
         let bytes = login_packet.get_bytes(false);
         bytes[3] = 1;
         bytes[4] = 2;
@@ -499,9 +473,7 @@ mod tests {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(1024);
         let (login_client, mut login_server) = tokio::io::duplex(1024);
-        let cfg = Arc::new(GSServer::from_string(include_str!(
-            "../../test_data/game.yaml"
-        )));
+        let cfg = get_gs_config();
         let pool = get_test_db().await;
         let user_model = user_factory(&pool, |mut u| {
             u.username = "test".to_owned();
@@ -520,7 +492,7 @@ mod tests {
         });
         controller
             .message_broker
-            .register_packet_handler(LoginHandler::HANDLER_ID, test_packet_sender.clone());
+            .register_packet_handler(LoginHandler::HANDLER_ID, test_packet_sender);
         let handle = build_client_handler(server, pool, Some(controller.clone()));
         // --> protocol version
         let mut login_packet = ProtocolVersion::new(110).unwrap();
