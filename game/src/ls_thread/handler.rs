@@ -153,8 +153,8 @@ mod tests {
         let mut lh = LoginHandler::new(r, w, Ipv4Addr::LOCALHOST, db_pool, controller);
         assert_eq!(format!("{lh:?}"), "Client { ip: 127.0.0.1, .. }");
         let bf_encryptor = lh.blowfish.clone();
-        tokio::spawn(async move {
-            lh.handle_client().await.unwrap();
+        let res = tokio::spawn(async move {
+            lh.handle_client().await
         });
         assert_eq!(LoginHandler::get_handler_name(), "Login handler");
         let rsa_pair = generate_rsa_key_pair();
@@ -169,5 +169,7 @@ mod tests {
         client.read_exact(&mut bf).await.unwrap();
         let mut auth_gs = [0; 42];
         client.read_exact(&mut auth_gs).await.unwrap();
+        client.shutdown().await.unwrap();
+        res.await.unwrap().unwrap();
     }
 }

@@ -338,6 +338,7 @@ mod tests {
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt, DuplexStream};
     use tokio::task::JoinHandle;
+    use crate::packets::enums::CharNameResponseVariant;
 
     struct TestPacketSender {
         writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
@@ -612,7 +613,16 @@ mod tests {
         client.read_exact(&mut new_char_list).await.unwrap();
         assert_eq!(new_char_list[2], 0x09); //char list packet id
         assert_eq!(new_char_list[3], 2); // 2 characters
-
+        //--> create char again should fail
+        client
+            .write_all(create_char_packet_buffer.get_data_mut(false))
+            .await
+            .unwrap();
+        // --> create error
+        let mut error_resp = [0;7];
+        client.read_exact(&mut error_resp).await.unwrap();
+        assert_eq!(error_resp[2], 0x10);
+        assert_eq!(i32::from_le_bytes(error_resp[3..].try_into().unwrap()), CharNameResponseVariant::AlreadyExists as i32);
         // cleanup
         client.shutdown().await.unwrap();
         let (ch, _) = handle.await.unwrap();
