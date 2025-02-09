@@ -13,6 +13,7 @@ mod lsp_factory;
 mod packets;
 mod ls_thread;
 pub mod data;
+mod tests;
 
 pub struct GameServer;
 

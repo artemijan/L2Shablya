@@ -36,3 +36,38 @@ impl HandleablePacket for CheckCharName {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::net::Ipv4Addr;
+    use std::sync::Arc;
+    use super::*;
+    use test_utils::utils::get_test_db;
+    use tokio::io::{split, AsyncReadExt};
+    use l2_core::config::gs::GSServer;
+    use l2_core::traits::ServerConfig;
+    use crate::controller::Controller;
+
+    #[tokio::test]
+    pub async fn test_handle() {
+        let pool = get_test_db().await;
+        let pack = CheckCharName {
+            name: "Test".to_string(),
+        };
+        let (mut client, server) = tokio::io::duplex(1024);
+        let (r,w) = split(server);
+        let cfg = Arc::new(GSServer::from_string(include_str!(
+            "../../../../test_data/game.yaml"
+        )));
+        let controller = Arc::new(Controller::new(cfg));
+        let mut ch = ClientHandler::new(r,w, Ipv4Addr::LOCALHOST,pool, controller);
+        pack.handle(&mut ch).await.unwrap();
+        tokio::spawn(async move {
+            ch.handle_client().await.unwrap();
+        });
+        let mut resp = [0; 9];
+        client.read_exact(&mut resp).await.unwrap();
+        assert_eq!(resp[2], 0xFE);
+        assert_eq!(i16::from_le_bytes(resp[3..=4].try_into().unwrap()), 0x10B);
+    }
+}
