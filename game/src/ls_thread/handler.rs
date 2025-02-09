@@ -8,13 +8,13 @@ use l2_core::crypt::login::Encryption;
 use l2_core::dto::OutboundConnection;
 use l2_core::traits::handlers::{OutboundHandler, PacketHandler};
 use l2_core::traits::Shutdown;
+use macro_common::LoginPacketSenderImpl;
 use std::fmt;
 use std::net::Ipv4Addr;
 use std::sync::Arc;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::{Mutex, Notify};
 use tracing::{info, instrument};
-use macro_common::LoginPacketSenderImpl;
 
 #[derive(Clone, LoginPacketSenderImpl)]
 #[allow(clippy::module_name_repetitions, unused)]
@@ -46,7 +46,6 @@ impl Shutdown for LoginHandler {
         self.shutdown_notifier.clone()
     }
 }
-
 
 #[async_trait::async_trait]
 impl PacketHandler for LoginHandler {
@@ -126,5 +125,49 @@ impl OutboundHandler for LoginHandler {
 
     fn get_connection_config(cfg: &Self::ConfigType) -> &OutboundConnection {
         &cfg.listeners.login_server.connection
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use ntest::timeout;
+    use super::*;
+    use l2_core::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
+    use l2_core::shared_packets::common::SendablePacket;
+    use l2_core::shared_packets::ls_2_gs::InitLS;
+    use l2_core::traits::ServerConfig;
+    use test_utils::utils::get_test_db;
+    use tokio::io::{split, AsyncReadExt, AsyncWriteExt};
+
+    #[tokio::test]
+    #[timeout(2000)]
+    async fn test_ls_handler() {
+        let db_pool = get_test_db().await;
+        let (mut client, server) = tokio::io::duplex(1024);
+
+        let cfg = Arc::new(GSServer::from_string(include_str!(
+            "../../test_data/game.yaml"
+        )));
+        let controller = Arc::new(Controller::new(cfg));
+        let (r, w) = split(server);
+        let mut lh = LoginHandler::new(r, w, Ipv4Addr::LOCALHOST, db_pool, controller);
+        assert_eq!(format!("{lh:?}"), "Client { ip: 127.0.0.1, .. }");
+        let bf_encryptor = lh.blowfish.clone();
+        tokio::spawn(async move {
+            lh.handle_client().await.unwrap();
+        });
+        assert_eq!(LoginHandler::get_handler_name(), "Login handler");
+        let rsa_pair = generate_rsa_key_pair();
+        let scrumbled = ScrambledRSAKeyPair::new(rsa_pair);
+        let mut init = InitLS::new(scrumbled.get_modulus());
+        let bb = init.get_bytes(true);
+        let size = bb.len();
+        Encryption::append_checksum(&mut bb[2..size]);
+        bf_encryptor.encrypt(&mut bb[2..size]);
+        client.write_all(bb).await.unwrap();
+        let mut bf = [0; 146];
+        client.read_exact(&mut bf).await.unwrap();
+        let mut auth_gs = [0; 42];
+        client.read_exact(&mut auth_gs).await.unwrap();
     }
 }
