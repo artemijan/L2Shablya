@@ -101,6 +101,9 @@ impl ClientHandler {
     pub fn set_status(&mut self, status: ClientStatus) {
         self.status = status;
     }
+    pub fn get_status(&mut self, )->&ClientStatus {
+        &self.status
+    }
 
     pub fn set_account_chars(&mut self, chars: Vec<CharacterInfo>) {
         self.account_chars = Some(chars);

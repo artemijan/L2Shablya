@@ -1,4 +1,4 @@
-use crate::client_thread::ClientHandler;
+use crate::client_thread::{ClientHandler, ClientStatus};
 use crate::data::char_template::CharTemplate;
 use crate::data::classes::mapping::Class;
 use crate::packets::enums::CharNameResponseVariant;
@@ -82,6 +82,9 @@ impl ReadablePacket for CreateCharRequest {
 impl HandleablePacket for CreateCharRequest {
     type HandlerType = ClientHandler;
     async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
+        if &ClientStatus::Authenticated != handler.get_status() || handler.get_user().is_none() {
+            bail!("Not authenticated.");
+        }
         let controller = handler.get_controller().clone();
         let template = controller.class_templates.try_get_template(self.class_id)?;
         self.validate(template)?;

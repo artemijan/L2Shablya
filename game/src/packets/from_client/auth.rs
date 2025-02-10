@@ -127,3 +127,93 @@ impl HandleablePacket for AuthLogin {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::net::Ipv4Addr;
+    use std::sync::Arc;
+    use super::*;
+    use crate::packets::from_client::auth::AuthLogin;
+    use crate::packets::to_client::PlayerLoginResponse;
+    use crate::tests::{get_gs_config, TestPacketSender};
+    use entities::test_factories::factories::user_factory;
+    use l2_core::shared_packets::common::{PacketType, ReadablePacket, SendablePacket};
+    use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
+    use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
+    use l2_core::shared_packets::read::ReadablePacketBuffer;
+    use ntest::timeout;
+    use test_utils::utils::get_test_db;
+    use tokio::io::{split, AsyncReadExt, AsyncWriteExt};
+    use tokio::sync::Mutex;
+    use crate::controller::Controller;
+
+    #[tokio::test]
+    #[timeout(3000)]
+    async fn test_auth() {
+        // Create a listener on a local port
+        let (mut client, server) = tokio::io::duplex(1024);
+        let (login_client, mut login_server) = tokio::io::duplex(1024);
+        let cfg = get_gs_config();
+        let pool = get_test_db().await;
+        let _ = user_factory(&pool, |mut u| {
+            u.username = "test".to_owned();
+            u
+        })
+        .await;
+        let controller = Arc::new(Controller::new(cfg));
+        let test_packet_sender = Arc::new(TestPacketSender {
+            writer: Arc::new(Mutex::new(login_client)),
+        });
+        controller
+            .message_broker
+            .register_packet_handler(LoginHandler::HANDLER_ID, test_packet_sender);
+        let db_pool = pool.clone();
+        let contr = controller.clone();
+        tokio::spawn(async move {
+            let ip = Ipv4Addr::new(127, 0, 0, 1);
+            let (r, w) = split(server);
+            let mut ch = ClientHandler::new(r, w, ip, db_pool, contr);
+            ch.set_status(ClientStatus::Connected);
+            ch.set_protocol(110).unwrap();
+            ch.handle_client().await
+        });
+        //--> auth login
+        let mut auth = AuthLogin::new().unwrap();
+        client.write_all(auth.get_bytes(false)).await.unwrap();
+        let mut auth_login_packet = [0; 29];
+        // <-- Try login on login server
+        login_server
+            .read_exact(&mut auth_login_packet)
+            .await
+            .unwrap();
+        let p = PlayerAuthRequest::read(&auth_login_packet[2..]).unwrap();
+        assert_eq!(p.account_name, "test");
+        assert_eq!(p.session.play_ok1, 1); //it should be vice versa
+        assert_eq!(p.session.play_ok2, 0);
+        assert_eq!(p.session.login_ok1, 2);
+        assert_eq!(p.session.login_ok2, 3);
+
+        // --> login ok
+        let auth_ok_packet = PlayerAuthResponse::new("test", true);
+        controller.message_broker.respond_to_message(
+            Some(LoginHandler::HANDLER_ID),
+            "test",
+            PacketType::PlayerAuthResp(auth_ok_packet),
+        );
+        // <-- Players in game (received by login server)
+        let mut player_in_game = [0; 15];
+        login_server.read_exact(&mut player_in_game).await.unwrap();
+        let pig = PlayerInGame::read(&player_in_game[2..]).unwrap();
+        assert_eq!(pig.accounts, ["test"]);
+        // <-- Player auth ok
+        let mut auth_ok_resp = [0; 11];
+        client.read_exact(&mut auth_ok_resp).await.unwrap();
+        let mut buffer = ReadablePacketBuffer::new(&auth_ok_resp[2..]);
+        let p_id = buffer.read_byte().unwrap();
+        let is_ok = buffer.read_i32().unwrap();
+        let reason = buffer.read_u32().unwrap();
+        assert_eq!(PlayerLoginResponse::PACKET_ID, p_id);
+        assert_eq!(is_ok, -1);
+        assert_eq!(reason, 0);
+    }
+}
