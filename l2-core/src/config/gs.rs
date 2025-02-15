@@ -9,6 +9,7 @@ use pnet::datalink;
 use reqwest::blocking;
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
+use std::env;
 use std::fs::File;
 use std::io::BufReader;
 use std::net::Ipv4Addr;
@@ -109,8 +110,13 @@ impl GSServer {
 
 impl ServerConfig for GSServer {
     fn load(file_name: &str) -> Self {
-        let file = File::open(file_name)
-            .unwrap_or_else(|e| panic!("Failed to open config file: {file_name}. Error: {e}"));
+        let file = File::open(file_name).unwrap_or_else(|e| {
+            let cwd = env::current_dir().map_or_else(
+                |_| "unknown directory".to_string(),
+                |path| path.display().to_string(),
+            );
+            panic!("Failed to open config file: {file_name} (searched in {cwd}). Error: {e}");
+        });
         let reader = BufReader::new(file);
         let mut config: GSServer = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
             panic!("Unable to parse {file_name}, the format is incorrect, {e}")
@@ -161,4 +167,18 @@ pub struct Client {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Rates {
     pub vitality_exp_multiplier: i32,
+}
+
+#[cfg(test)]
+mod test {
+    use crate::traits::ServerConfig;
+
+    use super::GSServer;
+
+    #[test]
+    fn test_gs_config() {
+        let conf = GSServer::load("../config/game.yaml");
+        assert_eq!(conf.name, "Game server");
+        assert!(conf.get_hosts().len() > 1); //at least 127.0.0.1/8, 127.0.0.1
+    }
 }
