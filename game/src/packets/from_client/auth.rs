@@ -1,4 +1,7 @@
+use std::sync::Arc;
+
 use crate::client_thread::{ClientHandler, ClientStatus};
+use crate::controller::Controller;
 use crate::ls_thread::LoginHandler;
 use crate::packets::to_client::{CharSelectionInfo, PlayerLoginResponse};
 use crate::packets::HandleablePacket;
@@ -44,95 +47,124 @@ impl ReadablePacket for AuthLogin {
         })
     }
 }
+impl AuthLogin {
+    /// Finalizes authentication by updating user status and sending necessary packets.
+    async fn authenticate_user(
+        &self,
+        handler: &mut ClientHandler,
+        controller: &Arc<Controller>,
+        session_key: SessionKey,
+    ) -> anyhow::Result<()> {
+        // Notify that player is in-game
+        controller
+            .message_broker
+            .notify(
+                LoginHandler::HANDLER_ID,
+                Box::new(PlayerInGame::new(&[self.login_name.clone()])?),
+            )
+            .await?;
+
+        // Update handler status
+        handler.set_status(ClientStatus::Authenticated);
+        handler.set_session_key(session_key);
+
+        // Send success response
+        handler
+            .send_packet(Box::new(PlayerLoginResponse::ok()?))
+            .await?;
+
+        // Fetch user characters from the database
+        let db_pool = handler.get_db_pool().clone();
+        let characters = character::Model::get_with_items_and_vars(
+            &db_pool,
+            &self.login_name,
+            LocType::Paperdoll,
+        )
+        .await?;
+
+        // Prepare character selection packet
+        let char_selection =
+            CharSelectionInfo::new(&self.login_name, self.play_key_1, controller, &characters)?;
+
+        // Update handler with retrieved data
+        handler.set_account_chars(characters);
+        let user = user::Model::find_by_username(&db_pool, &self.login_name).await?;
+        handler.set_user(user);
+
+        // Send character selection info
+        handler.send_packet(Box::new(char_selection)).await?;
+
+        Ok(())
+    }
+}
 
 #[async_trait]
 impl HandleablePacket for AuthLogin {
     type HandlerType = ClientHandler;
     async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
+        // Check if user is already authenticated
+        if handler.get_user().is_some() {
+            return Ok(());
+        }
         let controller = handler.get_controller().clone();
         let _cfg = controller.get_cfg();
+
+        // Ensure protocol is set and login_name is not empty
         if handler.get_protocol().is_none() || self.login_name.is_empty() {
             bail!("Protocol version not set");
         }
-        if handler.get_user().is_none() {
-            if controller
-                .add_online_account(self.login_name.clone())
-                .is_none()
-            {
-                let _session_key = SessionKey {
-                    play_ok1: self.play_key_1,
-                    play_ok2: self.play_key_2,
-                    login_ok1: self.login_key_1,
-                    login_ok2: self.login_key_2,
-                };
-                let resp = controller
-                    .message_broker
-                    .send_message(
-                        LoginHandler::HANDLER_ID,
-                        &self.login_name,
-                        Box::new(PlayerAuthRequest::new(
-                            &self.login_name,
-                            _session_key.clone(),
-                        )?),
-                    )
-                    .await?;
-                match resp {
-                    Some((_, PacketType::PlayerAuthResp(p))) if p.is_ok => {
-                        controller
-                            .message_broker
-                            .notify(
-                                LoginHandler::HANDLER_ID,
-                                Box::new(PlayerInGame::new(&[self.login_name.clone()])?),
-                            )
-                            .await?;
-                        handler.set_status(ClientStatus::Authenticated);
-                        handler.set_session_key(_session_key);
-                        handler
-                            .send_packet(Box::new(PlayerLoginResponse::ok()?))
-                            .await?;
-                        let db_pool = handler.get_db_pool().clone();
-                        let chars = character::Model::get_with_items_and_vars(
-                            &db_pool,
-                            &self.login_name,
-                            LocType::Paperdoll,
-                        )
-                        .await?;
-                        let p = CharSelectionInfo::new(
-                            &self.login_name,
-                            self.play_key_1,
-                            &controller,
-                            &chars,
-                        )?;
-                        handler.set_account_chars(chars);
-                        let user =
-                            user::Model::find_by_username(&db_pool, &self.login_name).await?;
-                        handler.set_user(user);
-                        handler.send_packet(Box::new(p)).await?;
-                    }
-                    _ => {
-                        handler
-                            .send_packet(Box::new(PlayerLoginResponse::fail(
-                                PlayerLoginResponse::SYSTEM_ERROR_LOGIN_LATER,
-                            )?))
-                            .await?;
-                        controller.logout_account(&self.login_name);
-                        bail!("Login failed {}", self.login_name);
-                    }
-                }
-            } else {
-                controller.logout_account(&self.login_name);
-                bail!("Account already in game {}", self.login_name);
+
+        // Try to add the user to the online accounts
+        if controller
+            .add_online_account(self.login_name.clone())
+            .is_some()
+        {
+            controller.logout_account(&self.login_name);
+            bail!("Account already in game: {}", self.login_name);
+        }
+
+        let session_key = SessionKey {
+            play_ok1: self.play_key_1,
+            play_ok2: self.play_key_2,
+            login_ok1: self.login_key_1,
+            login_ok2: self.login_key_2,
+        };
+
+        // Send authentication request
+        let auth_request = PlayerAuthRequest::new(&self.login_name, session_key.clone())?;
+        let response = controller
+            .message_broker
+            .send_message(
+                LoginHandler::HANDLER_ID,
+                &self.login_name,
+                Box::new(auth_request),
+            )
+            .await?;
+
+        // Handle authentication response
+        if let Some((_, PacketType::PlayerAuthResp(p))) = response {
+            if p.is_ok {
+                return self
+                    .authenticate_user(handler, &controller, session_key)
+                    .await;
             }
         }
-        Ok(())
+
+        // Authentication failed
+        handler
+            .send_packet(Box::new(PlayerLoginResponse::fail(
+                PlayerLoginResponse::SYSTEM_ERROR_LOGIN_LATER,
+            )?))
+            .await?;
+        controller.logout_account(&self.login_name);
+        bail!("Login failed: {}", self.login_name);
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use std::net::Ipv4Addr;
-    use std::sync::Arc;
     use super::*;
+    use crate::controller::Controller;
     use crate::packets::from_client::auth::AuthLogin;
     use crate::packets::to_client::PlayerLoginResponse;
     use crate::tests::{get_gs_config, TestPacketSender};
@@ -142,10 +174,11 @@ mod tests {
     use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
     use l2_core::shared_packets::read::ReadablePacketBuffer;
     use ntest::timeout;
+    use std::net::Ipv4Addr;
+    use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt};
     use tokio::sync::Mutex;
-    use crate::controller::Controller;
 
     #[tokio::test]
     #[timeout(3000)]
