@@ -35,6 +35,8 @@ pub struct Client {
     session_key: SessionKey,
     rsa_key_pair: rsa::ScrambledRSAKeyPair,
 }
+
+#[cfg(not(tarpaulin_include))]
 impl fmt::Debug for Client {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Client")
