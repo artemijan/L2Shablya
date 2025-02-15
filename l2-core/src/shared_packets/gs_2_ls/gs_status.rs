@@ -1,9 +1,9 @@
-use macro_common::SendablePacketImpl;
+use crate as l2_core;
 use crate::config::gs::GSServer;
 use crate::shared_packets::common::{GSStatus, ReadablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use crate as l2_core;
+use macro_common::SendablePacketImpl;
 
 #[derive(Clone, Debug, Default, SendablePacketImpl)]
 pub struct GSStatusUpdate {
@@ -99,5 +99,42 @@ impl ReadablePacket for GSStatusUpdate {
             };
         }
         Ok(instance)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::traits::ServerConfig;
+
+    #[test]
+    fn gs_status_update_new() {
+        let cfg = GSServer::load("../config/game.yaml");
+        let mut pack = GSStatusUpdate::new(&cfg).unwrap();
+        assert!(!pack.use_square_brackets);
+        assert_eq!(pack.max_players, 5000);
+        assert_eq!(pack.server_type, 1);
+        assert_eq!(pack.server_age, 12);
+        assert_eq!(pack.status, GSStatus::Auto);
+        assert_eq!(
+            pack.buffer.get_data_mut(false),
+            [
+                47, 0, 6, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0,
+                0, 0, 0, 0, 4, 0, 0, 0, 136, 19, 0, 0, 6, 0, 0, 0, 12, 0, 0, 0
+            ]
+        );
+    }
+    #[test]
+    fn gs_status_update_read() {
+        let bytes = [
+            6, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0,
+            4, 0, 0, 0, 136, 19, 0, 0, 6, 0, 0, 0, 12, 0, 0, 0,
+        ];
+        let pack = GSStatusUpdate::read(&bytes).unwrap();
+        assert!(!pack.use_square_brackets);
+        assert_eq!(pack.max_players, 5000);
+        assert_eq!(pack.server_type, 1);
+        assert_eq!(pack.server_age, 12);
+        assert_eq!(pack.status, GSStatus::Auto);
     }
 }

@@ -56,11 +56,16 @@ mod tests {
         ]
     }
     #[test]
-    fn blowfish_write_and_read() {
+    fn blowfish_new() {
         let mut buffer = BlowFish::new(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
 
         let bytes = buffer.get_bytes(true);
         assert_eq!(bytes.len(), 34);
         assert_eq!(bytes, get_bytes());
+    }
+    #[test]
+    fn blowfish_read() {
+        let pack = BlowFish::read(&get_bytes()[2..]).unwrap();
+        assert_eq!(pack.encrypted_key, &get_bytes()[7..7 + 16]);
     }
 }

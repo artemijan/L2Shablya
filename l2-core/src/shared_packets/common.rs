@@ -250,7 +250,7 @@ impl PlayerLoginFail {
 }
 
 #[repr(i32)]
-#[derive(Clone, Debug, Default, Copy)]
+#[derive(Clone, Debug, Default, Copy, Eq, PartialEq)]
 pub enum GSStatus {
     Auto = 0x00,
     Good = 0x01,
