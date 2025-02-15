@@ -21,3 +21,22 @@ pub fn bind_addr(config: &InboundConnection) -> anyhow::Result<TcpListener> {
     let listener = socket.listen(1024)?;
     Ok(listener)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::dto::InboundConnection;
+
+    #[tokio::test]
+    async fn test_bind_addr() {
+        let config = InboundConnection {
+            ip: "127.0.0.1".to_string(),
+            port: 2106,
+            reuse_addr: true,
+            reuse_port: true,
+            no_delay: true,
+        };
+        let listener = bind_addr(&config).unwrap();
+        assert_eq!(listener.local_addr().unwrap().port(), 2106);
+    }
+}

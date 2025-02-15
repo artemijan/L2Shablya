@@ -37,3 +37,24 @@ impl Trim for str {
         self.trim_matches(|c: char| c.is_ascii_whitespace() || c == '\0')
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_string_trim() {
+        let mut s = " ggg \0\0\0".to_string();
+        s = s.trim_all();
+
+        assert_eq!(s, "ggg");
+    }
+
+    #[test]
+    fn test_str_trim() {
+        let mut s: &'static str = " ggg \0\0\0";
+        s = s.trim_all();
+
+        assert_eq!(s, "ggg");
+    }
+}

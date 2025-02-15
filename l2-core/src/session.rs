@@ -56,4 +56,9 @@ mod tests {
         assert!(session_key.equals(&other, false));
         assert!(session_key.equals(&other, true));
     }
+    #[test]
+    fn test_session_key_check_session() {
+        let session_key = SessionKey::new();
+        assert!(session_key.check_session(session_key.login_ok1, session_key.login_ok2));
+    }
 }
