@@ -192,11 +192,10 @@ impl InboundHandler for Client {
 mod test {
     use super::*;
     use l2_core::config::login::LoginServer;
-    use test_utils::utils::get_test_db;
     use l2_core::traits::ServerConfig;
     use ntest::timeout;
+    use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt};
-    use tracing::error;
 
     #[tokio::test]
     #[timeout(2000)]
@@ -208,22 +207,29 @@ mod test {
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
         // Spawn a server task to handle a single connection
-        tokio::spawn(async move {
+        let handle = tokio::spawn(async move {
             let ip = Ipv4Addr::new(127, 0, 0, 1);
             let (r, w) = split(server);
             let mut ch = Client::new(r, w, ip, db_pool, cloned_lc);
-            if let Err(err) = ch.handle_client().await {
-                error!(
-                    "Closed client {} with error: {err:?}",
-                    Client::get_handler_name()
-                );
-            }
+            let res = ch.handle_client().await;
+            (ch, res)
         });
         // Create a client to connect to the server
         // Read the response from the server
         let mut init_packet = vec![0; 1024];
         let _ = client.read(&mut init_packet).await.unwrap();
+        let bytes = [
+            22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        ];
+        client.write_all(&bytes).await.unwrap();
         client.shutdown().await.unwrap();
+        let (h, res) = handle.await.unwrap();
+        assert!(
+            matches!(res, Err(e) if e.to_string() == "Error receiving packet: Unable to decrypt client packet")
+        );
+        assert!(!h.is_encryption_enabled());
+        assert!(h.check_session(h.get_session_key().login_ok1, h.get_session_key().login_ok2).is_ok());
+        assert!(h.check_session(h.get_session_key().login_ok2, h.get_session_key().login_ok1).is_err());
         let packet_size = u16::from_le_bytes(init_packet[..2].try_into().unwrap());
         let packet_id = init_packet[2];
         let revision = i32::from_le_bytes(init_packet[7..11].try_into().unwrap());

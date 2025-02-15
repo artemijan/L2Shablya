@@ -10,11 +10,6 @@ use l2_core::traits::handlers::PacketSender;
 #[derive(Clone, Debug)]
 pub struct RequestAuthGG {
     pub session_id: i32,
-    ///unused data from the packet
-    _data1: i32,
-    _data2: i32,
-    _data3: i32,
-    _data4: i32,
 }
 
 impl ReadablePacket for RequestAuthGG {
@@ -25,17 +20,12 @@ impl ReadablePacket for RequestAuthGG {
         let mut buffer = ReadablePacketBuffer::new(data);
         if buffer.get_remaining_length() > 20 {
             let session_id = buffer.read_i32()?;
-            let data1 = buffer.read_i32()?;
-            let data2 = buffer.read_i32()?;
-            let data3 = buffer.read_i32()?;
-            let data4 = buffer.read_i32()?;
-            return Ok(Self {
-                session_id,
-                _data1: data1,
-                _data2: data2,
-                _data3: data3,
-                _data4: data4,
-            });
+            // todo I don't know what is th meaning of the data below
+            // let data1 = buffer.read_i32()?;
+            // let data2 = buffer.read_i32()?;
+            // let data3 = buffer.read_i32()?;
+            // let data4 = buffer.read_i32()?;
+            return Ok(Self { session_id });
         }
         bail!("Not enough data to read packet");
     }
@@ -55,5 +45,55 @@ impl HandleablePacket for RequestAuthGG {
         ch.send_packet(Box::new(AuthGG::new(ch.get_session_id())))
             .await?;
         Ok(())
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::controller::LoginController;
+    use l2_core::config::login::LoginServer;
+    use l2_core::traits::handlers::PacketHandler;
+    use l2_core::traits::ServerConfig;
+    use std::net::Ipv4Addr;
+    use std::sync::Arc;
+    use test_utils::utils::get_test_db;
+    use tokio::io::split;
+
+    #[test]
+    fn test_read() {
+        let bytes = [
+            1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0,
+        ];
+        let packet = RequestAuthGG::read(&bytes).expect("Read failed");
+        assert_eq!(packet.session_id, 1);
+    }
+    #[tokio::test]
+    async fn test_handle_ok() {
+        let mut packet = RequestAuthGG { session_id: 1 };
+        let db_pool = get_test_db().await;
+        let (_client, server) = tokio::io::duplex(1024);
+        let cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        let lc = Arc::new(LoginController::new(Arc::new(cfg)));
+        let cloned_lc = lc.clone();
+        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let (r, w) = split(server);
+        let mut ch = ClientHandler::new(r, w, ip, db_pool, cloned_lc);
+        packet.session_id = ch.get_session_id();
+        let res = packet.handle(&mut ch).await;
+        assert!(res.is_ok());
+    }
+    #[tokio::test]
+    async fn test_handle_err() {
+        let packet = RequestAuthGG { session_id: 1 };
+        let db_pool = get_test_db().await;
+        let (_, server) = tokio::io::duplex(1024);
+        let cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        let lc = Arc::new(LoginController::new(Arc::new(cfg)));
+        let cloned_lc = lc.clone();
+        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let (r, w) = split(server);
+        let mut ch = ClientHandler::new(r, w, ip, db_pool, cloned_lc);
+        let res = packet.handle(&mut ch).await;
+        assert!(res.is_err());
     }
 }
