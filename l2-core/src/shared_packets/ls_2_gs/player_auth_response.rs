@@ -1,10 +1,8 @@
+use crate as l2_core;
 use crate::shared_packets::{
-    common::ReadablePacket,
-    read::ReadablePacketBuffer,
-    write::SendablePacketBuffer,
+    common::ReadablePacket, read::ReadablePacketBuffer, write::SendablePacketBuffer,
 };
 use macro_common::SendablePacketImpl;
-use crate as l2_core;
 
 #[derive(Debug, Clone, SendablePacketImpl)]
 pub struct PlayerAuthResponse {
@@ -46,5 +44,24 @@ impl ReadablePacket for PlayerAuthResponse {
             is_ok,
             account,
         })
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_player_auth_response() {
+        let acc = "test";
+        let mut packet = PlayerAuthResponse::new(acc, true);
+        let data = packet.buffer.get_data_mut(false);
+        assert_eq!(data, [14, 0, 3, 116, 0, 101, 0, 115, 0, 116, 0, 0, 0, 1]);
+    }
+    #[test]
+    fn test_player_auth_response_read() {
+        let buff = [3, 116, 0, 101, 0, 115, 0, 116, 0, 1];
+        let packet = PlayerAuthResponse::read(&buff).unwrap();
+        assert_eq!(packet.account, "test");
+        assert!(packet.is_ok);
     }
 }

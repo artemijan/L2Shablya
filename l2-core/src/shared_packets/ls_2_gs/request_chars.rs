@@ -43,3 +43,21 @@ impl ReadablePacket for RequestChars {
         })
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_request_chars() {
+        let acc = "test";
+        let mut packet = RequestChars::new(acc);
+        let data = packet.buffer.get_data_mut(false);
+        assert_eq!(data, [13, 0, 5, 116, 0, 101, 0, 115, 0, 116, 0, 0, 0]);
+    }
+    #[test]
+    fn test_request_chars_read() {
+        let buff = [5, 116, 0, 101, 0, 115, 0, 116, 0, 0, 0];
+        let packet = RequestChars::read(&buff).unwrap();
+        assert_eq!(packet.account_name, "test");
+    }
+}
