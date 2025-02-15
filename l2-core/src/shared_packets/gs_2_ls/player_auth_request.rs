@@ -1,6 +1,6 @@
 use macro_common::SendablePacketImpl;
 use crate::session::SessionKey;
-use crate::shared_packets::common::{ReadablePacket};
+use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use crate as l2_core;

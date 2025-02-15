@@ -116,7 +116,7 @@ impl PacketHandler for Client {
             session_id,
             session_key: SessionKey::new(),
             account_name: None,
-            rsa_key_pair: lc.get_random_rsa_key_pair(),
+            rsa_key_pair: lc.get_random_rsa_key_pair().clone(),
             blowfish_key,
             timeout,
             lc,

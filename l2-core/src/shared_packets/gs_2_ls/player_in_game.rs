@@ -1,8 +1,8 @@
+use crate as l2_core;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
-use crate as l2_core;
 
 #[derive(Clone, Debug, SendablePacketImpl)]
 pub struct PlayerInGame {
@@ -52,5 +52,36 @@ impl ReadablePacket for PlayerInGame {
             buffer: SendablePacketBuffer::empty(),
             accounts,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::vec;
+
+    use super::*;
+    use crate::shared_packets::common::{ReadablePacket, SendablePacket};
+
+    #[test]
+    fn test_player_in_game_new() {
+        let accounts = vec!["admin".to_string(), "adm".to_string()];
+        let mut packet = PlayerInGame::new(&accounts).unwrap();
+        let data = packet.get_bytes(false);
+        assert_eq!(
+            data,
+            [
+                25, 0, 2, 2, 0, 97, 0, 100, 0, 109, 0, 105, 0, 110, 0, 0, 0, 97, 0, 100, 0, 109, 0,
+                0, 0
+            ]
+        );
+    }
+    #[test]
+    fn test_player_in_game_read() {
+        let expected_accounts = vec!["admin".to_string(), "adm".to_string()];
+        let packet = PlayerInGame::read(&[
+            2, 2, 0, 97, 0, 100, 0, 109, 0, 105, 0, 110, 0, 0, 0, 97, 0, 100, 0, 109, 0, 0, 0,
+        ])
+        .unwrap();
+        assert_eq!(packet.accounts, expected_accounts);
     }
 }

@@ -99,7 +99,7 @@ impl PacketHandler for GameServer {
             db_pool,
             ip,
             shutdown_listener: Arc::new(Notify::new()),
-            key_pair: lc.get_random_rsa_key_pair(),
+            key_pair: lc.get_random_rsa_key_pair().clone(), // we have to clone it as we need ownership
             blowfish: Encryption::from_u8_key(cfg.blowfish_key.as_bytes()),
             connection_state: enums::GS::Initial,
             lc,

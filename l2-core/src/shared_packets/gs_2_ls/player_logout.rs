@@ -35,3 +35,21 @@ impl ReadablePacket for PlayerLogout {
         })
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_player_logout() {
+        let acc = "test";
+        let mut packet = PlayerLogout::new(acc).unwrap();
+        let data = packet.buffer.get_data_mut(false);
+        assert_eq!(data, [13, 0, 3, 116, 0, 101, 0, 115, 0, 116, 0, 0, 0]);
+    }
+    #[test]
+    fn test_player_logout_read() {
+        let buff = [3, 116, 0, 101, 0, 115, 0, 116, 0, 0, 0];
+        let packet = PlayerLogout::read(&buff).unwrap();
+        assert_eq!(packet.acc, "test");
+    }
+}

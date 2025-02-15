@@ -27,8 +27,8 @@ impl ReplyChars {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
             account_name,
-            chars: 0,
-            delete_chars_len: 0,
+            chars: chars.len() as u8,
+            delete_chars_len: chars_to_del_list.len() as u8,
             char_deletion_timestamps: chars_to_del_list,
         };
         inst.buffer.write(0x08)?;
@@ -65,5 +65,59 @@ impl ReadablePacket for ReplyChars {
             delete_chars_len: chars_to_delete,
             char_deletion_timestamps: char_list,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use chrono::{DateTime, Utc};
+    use sqlx::types::chrono;
+
+    #[test]
+    fn test_reply_chars() {
+        let acc_name = [116, 0, 101, 0, 115, 0, 116, 0, 0, 0];
+        let chars = 2;
+        let del_chars = 1;
+        let del_char = Utc::now().timestamp();
+        let mut data = vec![0x08];
+        data.extend(&acc_name);
+        data.push(chars);
+        data.push(del_chars);
+        data.extend(&del_char.to_le_bytes());
+        let packet = ReplyChars::read(&data).unwrap();
+        assert_eq!(packet.account_name, "test");
+        assert_eq!(packet.chars, 2);
+        assert_eq!(packet.delete_chars_len, 1);
+        assert_eq!(packet.char_deletion_timestamps[0], del_char);
+    }
+    #[test]
+    fn test_reply_chars_new() {
+        let acc_name = "betterTest".to_string();
+        let chars = vec![
+            character::Model {
+                id: 1,
+                ..Default::default()
+            },
+            character::Model {
+                id: 2,
+                delete_at: Some(
+                    "2025-01-01T12:00:00Z"
+                        .parse::<DateTime<Utc>>()
+                        .unwrap()
+                        .into(),
+                ),
+                ..Default::default()
+            },
+        ];
+        let mut packet = ReplyChars::new(acc_name, &chars).unwrap();
+        let data = packet.buffer.get_data_mut(false);
+        assert_eq!(
+            data,
+            [
+                35, 0, 8, 98, 0, 101, 0, 116, 0, 116, 0, 101, 0, 114, 0, 84, 0, 101, 0, 115, 0,
+                116, 0, 0, 0, 2, 1, 64, 46, 117, 103, 0, 0, 0, 0
+            ]
+        );
     }
 }

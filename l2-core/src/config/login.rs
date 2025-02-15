@@ -3,6 +3,7 @@ use crate::traits::ServerConfig;
 use num::BigInt;
 use num_traits::Num;
 use serde::{Deserialize, Deserializer};
+use std::env;
 use std::fs::File;
 use std::io::BufReader;
 use tracing::info;
@@ -21,8 +22,11 @@ pub struct LoginServer {
 
 impl ServerConfig for LoginServer {
     fn load(file_name: &str) -> Self {
-        let file = File::open(file_name)
-            .unwrap_or_else(|e| panic!("Failed to open config file: {file_name}. Error: {e}"));
+        let file = File::open(file_name).unwrap_or_else(|e| {
+            let cwd = env::current_dir()
+                .map_or_else(|_| "unknown".to_string(), |path| path.display().to_string());
+            panic!("Failed to open config file: {file_name}. Error: {e}. Current directory: {cwd}");
+        });
         let reader = BufReader::new(file);
         let config: LoginServer = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
             panic!("Unable to parse {file_name}, the format is incorrect, {e}")
