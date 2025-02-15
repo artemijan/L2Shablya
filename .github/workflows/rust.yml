@@ -39,8 +39,10 @@ jobs:
           if ! cargo tarpaulin --version &>/dev/null; then
             cargo install cargo-tarpaulin
           fi
+      - name: Run tests for proc macro (it's ignored by tarpauiln)
+        run: cargo test -p macro-common --verbose
       - name: Generate LCOV coverage report
-        run: cargo tarpaulin --all --out Lcov --verbose
+        run: cargo tarpaulin --workspace --exclude test-utils --exclude macro-common --exclude migration --out Lcov --verbose
       - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v4
         with:
