@@ -44,3 +44,61 @@ impl HandleablePacket for RequestServerList {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::controller::LoginController;
+    use l2_core::config::login::LoginServer;
+    use l2_core::traits::ServerConfig;
+    use std::net::Ipv4Addr;
+    use std::sync::Arc;
+    use test_utils::utils::get_test_db;
+    use tokio::io::split;
+    use l2_core::traits::handlers::PacketHandler;
+
+    #[test]
+    fn test_read() {
+        let bytes = [1, 0, 0, 0, 2, 0, 0, 0];
+        let packet = RequestServerList::read(&bytes).unwrap();
+        assert_eq!(packet.login_ok_1, 1);
+        assert_eq!(packet.login_ok_2, 2);
+    }
+    #[tokio::test]
+    async fn test_handle() {
+        let packet = RequestServerList {
+            login_ok_1: 1,
+            login_ok_2: 2,
+        };
+        let db_pool = get_test_db().await;
+        let (_client, server) = tokio::io::duplex(1024);
+        let mut cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        cfg.client.auto_create_accounts = false;
+        let lc = Arc::new(LoginController::new(Arc::new(cfg)));
+        let cloned_lc = lc.clone();
+        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let (r, w) = split(server);
+        let mut ch = ClientHandler::new(r, w, ip, db_pool.clone(), cloned_lc);
+        ch.account_name = Some(String::from("admin"));
+        let res = packet.handle(&mut ch).await;
+        assert!(res.is_ok());
+    }
+    #[tokio::test]
+    async fn test_handle_err() {
+        let packet = RequestServerList {
+            login_ok_1: 1,
+            login_ok_2: 2,
+        };
+        let db_pool = get_test_db().await;
+        let (_client, server) = tokio::io::duplex(1024);
+        let mut cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        cfg.client.auto_create_accounts = false;
+        let lc = Arc::new(LoginController::new(Arc::new(cfg)));
+        let cloned_lc = lc.clone();
+        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let (r, w) = split(server);
+        let mut ch = ClientHandler::new(r, w, ip, db_pool.clone(), cloned_lc);
+        let res = packet.handle(&mut ch).await;
+        assert!(res.is_err());
+    }
+}

@@ -220,4 +220,32 @@ mod tests {
         assert!(res.is_err());
         assert!(user.is_none());
     }
+    #[tokio::test]
+    async fn test_handle_login_wrong_password() {
+        let packet = RequestAuthLogin {
+            username: "test".to_string(),
+            password: "test".to_string(),
+        };
+        let db_pool = get_test_db().await;
+        let (_client, server) = tokio::io::duplex(1024);
+        let mut cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        cfg.client.auto_create_accounts = false;
+        user_factory(&db_pool, |mut u| {
+            u.username = "admin".to_owned();
+            u.password = "$argon2id$v=19$m=19456,t=2,p=1$OnSjOZTt6Or9MxtqrcrGhw$GAY7oGKMMAQbd6tvWB96IjA6yxvZy2PMD2MEpHbmWS0".to_owned();
+            u
+        })
+            .await;
+        let lc = Arc::new(LoginController::new(Arc::new(cfg)));
+        let cloned_lc = lc.clone();
+        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let (r, w) = split(server);
+        let mut ch = ClientHandler::new(r, w, ip, db_pool.clone(), cloned_lc);
+        let res = packet.handle(&mut ch).await;
+        let user = user::Model::find_some_by_username(&db_pool, "test")
+            .await
+            .unwrap();
+        assert!(res.is_err());
+        assert!(user.is_none());
+    }
 }
