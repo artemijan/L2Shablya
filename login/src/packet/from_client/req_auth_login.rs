@@ -156,7 +156,7 @@ mod tests {
             password: "admin".to_string(),
         };
         let db_pool = get_test_db().await;
-        let user_model = user_factory(&db_pool, |mut u| {
+        user_factory(&db_pool, |mut u| {
             u.username = "admin".to_owned();
             u.password = "$argon2id$v=19$m=19456,t=2,p=1$OnSjOZTt6Or9MxtqrcrGhw$GAY7oGKMMAQbd6tvWB96IjA6yxvZy2PMD2MEpHbmWS0".to_owned();
             u
