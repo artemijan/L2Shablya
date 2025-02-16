@@ -13,38 +13,6 @@ use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use sea_orm::{ActiveModelTrait, ActiveValue};
 use std::fmt::Debug;
 
-trait AuthRequest: Debug {
-    fn username(&self) -> &str;
-    fn password(&self) -> &str;
-    fn is_cmd_login(&self) -> bool;
-}
-impl AuthRequest for RequestAuthLogin {
-    fn username(&self) -> &str {
-        &self.username
-    }
-
-    fn password(&self) -> &str {
-        &self.password
-    }
-
-    fn is_cmd_login(&self) -> bool {
-        self.is_cmd_login
-    }
-}
-
-impl AuthRequest for RequestAuthCMDLogin {
-    fn username(&self) -> &str {
-        &self.username
-    }
-
-    fn password(&self) -> &str {
-        &self.password
-    }
-
-    fn is_cmd_login(&self) -> bool {
-        self.is_cmd_login
-    }
-}
 
 #[derive(Clone, Debug)]
 #[allow(unused)]
@@ -55,36 +23,13 @@ pub struct RequestAuthLogin {
     pub is_cmd_login: bool,
 }
 
-#[derive(Clone, Debug)]
-#[allow(unused)]
-pub struct RequestAuthCMDLogin {
-    pub username: String,
-    pub password: String,
-    pub is_cmd_login: bool,
-}
-
-impl ReadablePacket for RequestAuthCMDLogin {
-    const PACKET_ID: u8 = 0x0B;
-    const EX_PACKET_ID: Option<u16> = None;
-
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let is_cmd_login = true;
-        let (username, password, _) = read_bytes(data, is_cmd_login)?;
-        Ok(Self {
-            username,
-            password,
-            is_cmd_login,
-        })
-    }
-}
-
 impl ReadablePacket for RequestAuthLogin {
     const PACKET_ID: u8 = 0x00;
     const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let is_cmd_login = false;
-        let (username, password, is_new_auth) = read_bytes(data, is_cmd_login)?;
+        let (username, password, is_new_auth) = read_bytes(data);
         Ok(Self {
             username,
             password,
@@ -94,29 +39,26 @@ impl ReadablePacket for RequestAuthLogin {
     }
 }
 #[async_trait]
-impl<T: AuthRequest + Send + Sync + 'static> HandleablePacket for T {
+impl HandleablePacket for RequestAuthLogin {
     type HandlerType = ClientHandler;
     async fn handle(&self, ch: &mut Self::HandlerType) -> anyhow::Result<()> {
         let cfg = ch.get_controller().get_config();
         let show_license = cfg.client.show_licence;
         let pool = ch.get_db_pool();
-        let user_option = user::Model::find_some_by_username(pool, self.username()).await?;
-        if self.is_cmd_login() && !cfg.client.enable_cmdline_login {
-            bail!("cmd_login disabled");
-        }
+        let user_option = user::Model::find_some_by_username(pool, &self.username).await?;
         if let Some(user) = user_option {
-            if !user.verify_password(self.password()).await {
+            if !user.verify_password(&self.password).await {
                 ch.send_packet(Box::new(PlayerLoginFail::new(
                     PlayerLoginFailReasons::ReasonUserOrPassWrong,
                 )?))
                 .await?;
-                bail!(format!("Login Fail, tried user: {}", self.username()));
+                bail!(format!("Login Fail, tried user: {}", &self.username));
             }
         } else if cfg.client.auto_create_accounts {
-            let password_hash = hash_password(self.password()).await?;
+            let password_hash = hash_password(&self.password).await?;
             let user_record = user::ActiveModel {
                 id: ActiveValue::NotSet,
-                username: ActiveValue::Set(self.username().to_string()),
+                username: ActiveValue::Set(self.username.to_string()),
                 password: ActiveValue::Set(password_hash),
                 access_level: ActiveValue::Set(0),
                 ban_duration: ActiveValue::NotSet,
@@ -125,11 +67,11 @@ impl<T: AuthRequest + Send + Sync + 'static> HandleablePacket for T {
             user_record.save(pool).await?;
         }
 
-        ch.account_name = Some(self.username().to_string());
+        ch.account_name = Some(self.username.to_string());
         let player_info = player::Info {
             is_authed: true,
             session: Some(ch.get_session_key().clone()),
-            account_name: self.username().to_string(),
+            account_name: self.username.to_string(),
             ..Default::default()
         };
 
@@ -144,31 +86,21 @@ impl<T: AuthRequest + Send + Sync + 'static> HandleablePacket for T {
             ch.send_packet(Box::new(LoginOk::new(ch.get_session_key())))
                 .await?;
         } else {
-            let s_list = ServerList::new(ch, self.username());
+            let s_list = ServerList::new(ch, &self.username);
             ch.send_packet(Box::new(s_list)).await?;
         }
         Ok(())
     }
 }
 
-pub fn read_bytes(data: &[u8], is_cmd_login: bool) -> anyhow::Result<(String, String, bool)> {
+pub fn read_bytes(data: &[u8]) -> (String, String, bool) {
     let mut is_new_auth = false;
     if data.len() >= 256 {
         is_new_auth = true;
     }
     let username: String;
     let password: String;
-    if is_cmd_login {
-        if data.len() < 128 {
-            bail!("Invalid length fot CMD login");
-        }
-        username = String::from_utf8_lossy(&data[0x44..0x44 + 14])
-            .trim_all()
-            .to_string();
-        password = String::from_utf8_lossy(&data[0x64..0x64 + 16])
-            .trim_all()
-            .to_string();
-    } else if is_new_auth {
+    if is_new_auth {
         let part1 = String::from_utf8_lossy(&data[0x4E..0x4E + 50]);
         let part2 = String::from_utf8_lossy(&data[0xCE..0xCE + 14]);
         username = format!("{}{}", part1.trim_all(), part2.trim_all());
@@ -183,5 +115,32 @@ pub fn read_bytes(data: &[u8], is_cmd_login: bool) -> anyhow::Result<(String, St
             .trim_all()
             .to_string();
     }
-    Ok((username, password, is_new_auth))
+    (username, password, is_new_auth)
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::packet::from_client::RequestAuthLogin;
+    use l2_core::shared_packets::common::ReadablePacket;
+
+    #[tokio::test]
+    async fn test_read_bytes_login() {
+        let login_bytes = [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 0, 0, 97, 100, 109, 105, 110, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 97, 100, 109, 105, 110, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1,
+        ];
+        let p1 = RequestAuthLogin::read(&login_bytes).unwrap();
+        assert!(!p1.is_cmd_login);
+        assert!(p1.is_new_auth);
+        assert_eq!(p1.username, "admin");
+        assert_eq!(p1.password, "admin");
+    }
 }

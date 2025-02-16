@@ -1,6 +1,6 @@
 use crate::client_thread::ClientHandler;
 use crate::packet::from_client::{
-    RequestAuthCMDLogin, RequestAuthGG, RequestAuthLogin, RequestGSLogin, RequestServerList,
+    RequestAuthGG, RequestAuthLogin, RequestGSLogin, RequestServerList,
 };
 use crate::packet::HandleablePacket;
 use anyhow::bail;
@@ -32,11 +32,8 @@ pub fn build_client_packet(
             Ok(Box::new(RequestAuthLogin::read(&decrypted)?))
         }
         RequestAuthGG::PACKET_ID => Ok(Box::new(RequestAuthGG::read(packet_body)?)),
-        RequestAuthCMDLogin::PACKET_ID => Ok(Box::new(RequestAuthLogin::read(packet_body)?)), //cmd login
         RequestGSLogin::PACKET_ID => Ok(Box::new(RequestGSLogin::read(packet_body)?)),
         RequestServerList::PACKET_ID => Ok(Box::new(RequestServerList::read(packet_body)?)),
-        // 0x0E => Some(LoginClientOpcodes::RequestPiAgreementCheck),
-        // 0x0F => Some(LoginClientOpcodes::RequestPiAgreement),
         _ => {
             bail!("Unknown Client packet ID:0x{:02X}", data[0]);
         }
