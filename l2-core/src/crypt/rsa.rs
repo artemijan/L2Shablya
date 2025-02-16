@@ -17,6 +17,9 @@ pub struct RSAPublicKey {
 }
 
 impl RSAPublicKey {
+    pub fn new(key: rsa::RsaPublicKey) -> Self {
+        Self { key }
+    }
     #[allow(clippy::missing_errors_doc)]
     pub fn from_modulus(modulus: &[u8]) -> anyhow::Result<RSAPublicKey> {
         let modulus = rsa::BigUint::from_bytes_be(modulus);

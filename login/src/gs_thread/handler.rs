@@ -12,13 +12,13 @@ use l2_core::shared_packets::common::GSLoginFail;
 use l2_core::shared_packets::ls_2_gs::InitLS;
 use l2_core::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
 use l2_core::traits::Shutdown;
+use macro_common::LoginPacketSenderImpl;
 use std::fmt;
 use std::net::Ipv4Addr;
 use std::sync::Arc;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::{Mutex, Notify};
 use tracing::{info, instrument};
-use macro_common::LoginPacketSenderImpl;
 
 #[allow(clippy::module_name_repetitions)]
 #[derive(Clone, LoginPacketSenderImpl)]
@@ -49,8 +49,12 @@ impl fmt::Debug for GameServer {
     }
 }
 impl GameServer {
-    pub fn set_blowfish_key(&mut self, new_bf_key: &[u8]) {
-        self.blowfish = Encryption::from_u8_key(new_bf_key);
+    pub fn set_blowfish_key(&mut self, new_bf_key: &[u8]) ->anyhow::Result<()> {
+        self.blowfish = Encryption::try_from_u8_key(new_bf_key)?;
+        Ok(())
+    }
+    pub fn set_rsa_key(&mut self, new_key: ScrambledRSAKeyPair) {
+        self.key_pair = new_key;
     }
     pub fn try_get_server_id(&self) -> anyhow::Result<u8> {
         self.server_id

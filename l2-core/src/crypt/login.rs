@@ -19,6 +19,12 @@ impl Encryption {
         let cipher = BlowfishLE::new_from_slice(key).expect("Received invalid blowfish key");
         Encryption { cipher }
     }
+    
+    #[allow(clippy::missing_panics_doc)]
+    pub fn try_from_u8_key(key: &[u8]) -> anyhow::Result<Self> {
+        let cipher = BlowfishLE::new_from_slice(key)?;
+        Ok(Encryption { cipher })
+    }
 
     fn calculate_checksum_block(raw: &[u8]) -> (u32, u32) {
         let mut checksum: u32 = 0;
