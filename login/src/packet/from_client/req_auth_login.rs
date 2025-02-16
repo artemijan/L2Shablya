@@ -13,14 +13,10 @@ use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use sea_orm::{ActiveModelTrait, ActiveValue};
 use std::fmt::Debug;
 
-
 #[derive(Clone, Debug)]
-#[allow(unused)]
 pub struct RequestAuthLogin {
     pub username: String,
     pub password: String,
-    is_new_auth: bool,
-    pub is_cmd_login: bool,
 }
 
 impl ReadablePacket for RequestAuthLogin {
@@ -28,14 +24,8 @@ impl ReadablePacket for RequestAuthLogin {
     const EX_PACKET_ID: Option<u16> = None;
 
     fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let is_cmd_login = false;
-        let (username, password, is_new_auth) = read_bytes(data);
-        Ok(Self {
-            username,
-            password,
-            is_new_auth,
-            is_cmd_login,
-        })
+        let (username, password) = read_bytes(data);
+        Ok(Self { username, password })
     }
 }
 #[async_trait]
@@ -93,7 +83,7 @@ impl HandleablePacket for RequestAuthLogin {
     }
 }
 
-pub fn read_bytes(data: &[u8]) -> (String, String, bool) {
+pub fn read_bytes(data: &[u8]) -> (String, String) {
     let mut is_new_auth = false;
     if data.len() >= 256 {
         is_new_auth = true;
@@ -115,7 +105,7 @@ pub fn read_bytes(data: &[u8]) -> (String, String, bool) {
             .trim_all()
             .to_string();
     }
-    (username, password, is_new_auth)
+    (username, password)
 }
 
 #[cfg(test)]
@@ -138,8 +128,6 @@ mod tests {
             0, 1,
         ];
         let p1 = RequestAuthLogin::read(&login_bytes).unwrap();
-        assert!(!p1.is_cmd_login);
-        assert!(p1.is_new_auth);
         assert_eq!(p1.username, "admin");
         assert_eq!(p1.password, "admin");
     }
