@@ -70,7 +70,7 @@ mod test {
     #[tokio::test]
     #[timeout(2000)]
     async fn test_login_controller() {
-        let config = Arc::new(LoginServer::load("src/test_data/test_config.yaml"));
+        let config = Arc::new(LoginServer::load("../test_data/test_config.yaml"));
         let controller = LoginController::new(config);
         let gs = controller.get_game_server(1);
         assert!(gs.is_none());

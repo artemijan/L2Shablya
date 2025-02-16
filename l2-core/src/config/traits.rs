@@ -87,7 +87,7 @@ mod test {
     use serde::Deserialize;
 
     #[derive(Debug, Clone, Deserialize)]
-    #[config_file(path = "src/test_data/test.yaml", msg = "Loaded")]
+    #[config_file(path = "../test_data/test.yaml", msg = "Loaded")]
     struct TestConf {
         name: String,
     }

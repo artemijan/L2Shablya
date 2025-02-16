@@ -203,7 +203,7 @@ mod test {
         // Create a listener on a local port
         let db_pool = get_test_db().await;
         let (mut client, server) = tokio::io::duplex(1024);
-        let cfg = LoginServer::from_string(include_str!("../test_data/test_config.yaml"));
+        let cfg = LoginServer::from_string(include_str!("../../../test_data/test_config.yaml"));
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
         // Spawn a server task to handle a single connection
@@ -228,8 +228,12 @@ mod test {
             matches!(res, Err(e) if e.to_string() == "Error receiving packet: Unable to decrypt client packet")
         );
         assert!(!h.is_encryption_enabled());
-        assert!(h.check_session(h.get_session_key().login_ok1, h.get_session_key().login_ok2).is_ok());
-        assert!(h.check_session(h.get_session_key().login_ok2, h.get_session_key().login_ok1).is_err());
+        assert!(h
+            .check_session(h.get_session_key().login_ok1, h.get_session_key().login_ok2)
+            .is_ok());
+        assert!(h
+            .check_session(h.get_session_key().login_ok2, h.get_session_key().login_ok1)
+            .is_err());
         let packet_size = u16::from_le_bytes(init_packet[..2].try_into().unwrap());
         let packet_id = init_packet[2];
         let revision = i32::from_le_bytes(init_packet[7..11].try_into().unwrap());
