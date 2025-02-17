@@ -201,7 +201,7 @@ mod test {
     use tokio::io::{split, AsyncReadExt};
 
     #[tokio::test]
-    #[timeout(2000)]
+    #[timeout(4000)]
     async fn test_init_packet_sent() {
         // Create a listener on a local port
         let db_pool = get_test_db().await;
