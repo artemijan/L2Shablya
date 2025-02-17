@@ -7,7 +7,7 @@ use macro_common::SendablePacketImpl;
 
 #[derive(Clone, Debug, Default, SendablePacketImpl)]
 pub struct GSStatusUpdate {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     pub status: GSStatus,
     pub use_square_brackets: bool,
     pub max_players: u32,

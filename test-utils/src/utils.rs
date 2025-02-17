@@ -18,3 +18,10 @@ async fn setup_test_db() -> DBPool {
 pub async fn get_test_db() -> DBPool {
     setup_test_db().await
 }
+
+pub fn test_hex_id() -> Vec<u8> {
+    i128::from_str_radix("-2ad66b3f483c22be097019f55c8abdf0", 16)
+        .unwrap()
+        .to_be_bytes()
+        .to_vec()
+}

@@ -55,7 +55,7 @@ mod tests {
     use l2_core::traits::ServerConfig;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
-    use test_utils::utils::get_test_db;
+    use test_utils::utils::{get_test_db, test_hex_id};
     use tokio::io::split;
 
     #[test]
@@ -89,10 +89,7 @@ mod tests {
                 0,
                 false,
                 5000,
-                i128::from_str_radix("-2ad66b3f483c22be097019f55c8abdf0", 16)
-                    .unwrap()
-                    .to_be_bytes()
-                    .to_vec(),
+                test_hex_id(),
                 &["192.168.0.100/8".to_string(), "192.168.0.0".to_string()],
             )
             .unwrap(),
