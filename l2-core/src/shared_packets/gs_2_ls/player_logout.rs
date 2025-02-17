@@ -13,7 +13,7 @@ impl PlayerLogout {
     #[allow(clippy::missing_errors_doc)]
     pub fn new(acc: &str) -> anyhow::Result<Self> {
         let mut inst = Self {
-            acc: String::new(),
+            acc: String::from(acc),
             buffer: SendablePacketBuffer::new(),
         };
         inst.buffer.write(Self::PACKET_ID)?;
