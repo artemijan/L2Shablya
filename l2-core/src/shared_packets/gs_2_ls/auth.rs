@@ -8,7 +8,7 @@ use num_traits::ToBytes;
 
 #[derive(Clone, Debug, Default, SendablePacketImpl)]
 pub struct RequestAuthGS {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     pub desired_id: u8,
     pub accept_alternative_id: bool,
     pub host_reserved: bool,
