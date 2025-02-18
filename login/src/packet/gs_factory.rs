@@ -25,10 +25,6 @@ pub fn build_gs_packet(data: &[u8]) -> anyhow::Result<Box<dyn HandleablePacket<H
         ReplyChars::PACKET_ID => Ok(Box::new(ReplyChars::read(data)?)),
         RequestTempBan::PACKET_ID => Ok(Box::new(RequestTempBan::read(data)?)),
         ChangePassword::PACKET_ID => Ok(Box::new(ChangePassword::read(data)?)),
-        // 0x0B => Some(), //cmd login
-        // 0x02 => Some(LoginClientOpcodes::RequestServerLogin),
-        // 0x0E => Some(LoginClientOpcodes::RequestPiAgreementCheck),
-        // 0x0F => Some(LoginClientOpcodes::RequestPiAgreement),
         _ => {
             bail!("Unknown GS packet ID:0x{:02X}", data[0]);
         }
