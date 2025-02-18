@@ -70,6 +70,7 @@ impl Client {
     pub fn get_session_id(&self) -> i32 {
         self.session_id
     }
+    #[cfg(test)]
     pub fn set_session_key(&mut self, key: SessionKey) {
         self.session_key = key;
     }

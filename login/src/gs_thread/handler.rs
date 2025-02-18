@@ -53,6 +53,8 @@ impl GameServer {
         self.blowfish = Encryption::try_from_u8_key(new_bf_key)?;
         Ok(())
     }
+    
+    #[cfg(test)]
     pub fn set_rsa_key(&mut self, new_key: ScrambledRSAKeyPair) {
         self.key_pair = new_key;
     }
