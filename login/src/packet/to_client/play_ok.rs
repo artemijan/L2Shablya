@@ -27,3 +27,23 @@ impl PlayOk {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::packet::to_client::PlayOk;
+    use l2_core::session::SessionKey;
+    use l2_core::shared_packets::common::SendablePacket;
+
+    #[test]
+    fn test_play_ok() {
+        let sk = SessionKey {
+            login_ok1: 9,
+            login_ok2: 8,
+            play_ok1: 7,
+            play_ok2: 6,
+        };
+        let mut packet = PlayOk::new(&sk).unwrap();
+        let bytes = packet.get_bytes(false);
+        assert_eq!(bytes, [11, 0, 7, 7, 0, 0, 0, 6, 0, 0, 0]);
+    }
+}

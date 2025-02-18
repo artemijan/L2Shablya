@@ -1,7 +1,4 @@
-use l2_core::shared_packets::{
-    common::LoginServerOpcodes,
-    write::SendablePacketBuffer,
-};
+use l2_core::shared_packets::{common::LoginServerOpcodes, write::SendablePacketBuffer};
 use macro_common::SendablePacketImpl;
 
 #[derive(Debug, SendablePacketImpl)]
@@ -27,5 +24,21 @@ impl AuthGG {
         self.buffer.write_i32(0)?;
         self.buffer.write_i32(0)?;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::packet::to_client::AuthGG;
+    use l2_core::shared_packets::common::SendablePacket;
+
+    #[test]
+    fn test_auth_gg() {
+        let mut packet = AuthGG::new(999);
+        let bytes = packet.get_bytes(false);
+        assert_eq!(
+            bytes,
+            [23, 0, 11, 231, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        );
     }
 }

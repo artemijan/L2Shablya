@@ -1,7 +1,4 @@
-use l2_core::shared_packets::{
-    common::LoginServerOpcodes,
-    write::SendablePacketBuffer,
-};
+use l2_core::shared_packets::{common::LoginServerOpcodes, write::SendablePacketBuffer};
 use macro_common::SendablePacketImpl;
 
 #[derive(Debug, SendablePacketImpl)]
@@ -13,7 +10,11 @@ pub struct Init {
 }
 
 impl Init {
-    pub fn new(session_id: i32, public_key: Vec<u8>, blowfish_key: Vec<u8>) -> anyhow::Result<Init> {
+    pub fn new(
+        session_id: i32,
+        public_key: Vec<u8>,
+        blowfish_key: Vec<u8>,
+    ) -> anyhow::Result<Init> {
         let mut init = Init {
             buffer: SendablePacketBuffer::new(),
             session_id,
@@ -37,5 +38,30 @@ impl Init {
         self.buffer.write_bytes(self.blowfish_key.as_slice())?; // BlowFish key
         self.buffer.write(0)?; // null termination ;)
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::packet::to_client::Init;
+    use l2_core::shared_packets::common::SendablePacket;
+
+    #[test]
+    fn test_init() {
+        let mut packet = Init::new(
+            999,
+            vec![9, 8, 7, 6, 9, 8, 7, 6],
+            vec![1, 2, 3, 4, 1, 2, 3, 4, 5],
+        )
+        .unwrap();
+        let bytes = packet.get_bytes(false);
+        assert_eq!(
+            bytes,
+            [
+                45, 0, 0, 231, 3, 0, 0, 33, 198, 0, 0, 9, 8, 7, 6, 9, 8, 7, 6, 78, 149, 221, 41,
+                252, 156, 195, 119, 32, 182, 173, 151, 247, 224, 189, 7, 1, 2, 3, 4, 1, 2, 3, 4, 5,
+                0
+            ]
+        );
     }
 }

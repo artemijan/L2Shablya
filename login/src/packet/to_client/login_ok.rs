@@ -35,3 +35,29 @@ impl LoginOk {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::packet::to_client::LoginOk;
+    use l2_core::session::SessionKey;
+    use l2_core::shared_packets::common::SendablePacket;
+
+    #[test]
+    fn test_login_ok() {
+        let sk = SessionKey {
+            login_ok1: 9,
+            login_ok2: 8,
+            play_ok1: 7,
+            play_ok2: 6,
+        };
+        let mut packet = LoginOk::new(&sk);
+        let bytes = packet.get_bytes(false);
+        assert_eq!(
+            bytes,
+            [
+                51, 0, 3, 9, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 234, 3, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        );
+    }
+}
