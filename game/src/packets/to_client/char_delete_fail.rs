@@ -22,3 +22,14 @@ impl CharDeleteFail {
         Ok(inst)
     }
 }
+#[cfg(test)]
+mod tests {
+    use l2_core::enums::CharDeletionFailReasons;
+    use crate::packets::to_client::CharDeleteFail;
+
+    #[test]
+    fn test_char_delete_fail() {
+        let mut delete_fail = CharDeleteFail::new(CharDeletionFailReasons::Mentor).unwrap();
+        assert_eq!([7, 0, 30, 6, 0, 0, 0], delete_fail.buffer.get_data_mut(false));
+    }
+}

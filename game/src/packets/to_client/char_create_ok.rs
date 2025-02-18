@@ -20,3 +20,14 @@ impl CreateCharOk {
         Ok(inst)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::packets::to_client::CreateCharOk;
+
+    #[test]
+    fn test_create_ok() {
+        let mut created = CreateCharOk::new().unwrap();
+        assert_eq!([7, 0, 15, 1, 0, 0, 0], created.buffer.get_data_mut(false));
+    }
+}

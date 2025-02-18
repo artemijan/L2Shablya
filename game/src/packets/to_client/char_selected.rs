@@ -18,7 +18,8 @@ impl CharSelected {
             buffer: SendablePacketBuffer::new(),
         };
         inst.buffer.write(Self::PACKET_ID)?;
-        inst.buffer.write_c_utf16le_string(Some(&char_info.char_model.name))?;
+        inst.buffer
+            .write_c_utf16le_string(Some(&char_info.char_model.name))?;
         inst.buffer.write_i32(char_info.char_model.id)?;
         inst.buffer
             .write_c_utf16le_string(char_info.char_model.title.as_deref())?;
@@ -52,5 +53,39 @@ impl CharSelected {
         inst.buffer.write_bytes(&[0; 28])?; //?
         inst.buffer.write_i32(0)?; // last 4 bytes
         Ok(inst)
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use entities::entities::character;
+    #[test]
+    fn test_char_selected() {
+        let inst = character::Model {
+            name: "test".to_string(),
+            level: 1,
+            face: 1,
+            hair_style: 2,
+            hair_color: 2,
+            is_female: false,
+            delete_at: None,
+            user_id: 1,
+            ..Default::default()
+        };
+        let char = CharacterInfo::new(inst, vec![]).unwrap();
+        let mut packet = CharSelected::new(&char, 1, 0).unwrap();
+        assert_eq!(
+            [
+                199, 0, 11, 116, 0, 101, 0, 115, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0
+            ],
+            packet.buffer.get_data_mut(false)
+        );
     }
 }

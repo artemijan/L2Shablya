@@ -23,3 +23,14 @@ impl CreateCharFailed {
         Ok(inst)
     }
 }
+#[cfg(test)]
+mod tests {
+    use crate::packets::enums::CharNameResponseVariant;
+    use crate::packets::to_client::CreateCharFailed;
+
+    #[test]
+    fn test_char_create_fail() {
+        let mut packet = CreateCharFailed::new(CharNameResponseVariant::InvalidName).unwrap();
+        assert_eq!([7, 0, 16, 4, 0, 0, 0], packet.buffer.get_data_mut(false));
+    }
+}
