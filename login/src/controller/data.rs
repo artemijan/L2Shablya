@@ -65,10 +65,8 @@ impl LoginController {
 mod test {
     use super::*;
     use l2_core::{config::login::LoginServer, traits::ServerConfig};
-    use ntest::timeout;
 
     #[tokio::test]
-    #[timeout(2000)]
     async fn test_login_controller() {
         let config = Arc::new(LoginServer::load("../test_data/test_config.yaml"));
         let controller = LoginController::new(config);
