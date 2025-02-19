@@ -13,6 +13,7 @@ use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use sea_orm::DbErr;
+use std::sync::Arc;
 use tracing::error;
 
 #[allow(unused)]
@@ -129,5 +130,117 @@ impl HandleablePacket for CreateCharRequest {
                 .send_packet(Box::new(CreateCharFailed::new(response)?))
                 .await
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::controller::Controller;
+    use entities::test_factories::factories::user_factory;
+    use l2_core::config::gs::GSServer;
+    use l2_core::traits::ServerConfig;
+    use ntest::timeout;
+    use std::net::Ipv4Addr;
+    use test_utils::utils::get_test_db;
+    use tokio::io::{split, AsyncWriteExt};
+    fn build_packet() -> CreateCharRequest {
+        let mut data = vec![];
+        data.extend_from_slice(&[116, 0, 101, 0, 115, 0, 116, 0, 0, 0]);
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        data.extend_from_slice(&i32::to_le_bytes(1));
+        CreateCharRequest::read(&data).unwrap()
+    }
+    #[tokio::test]
+    #[timeout(3000)]
+    async fn test_read_and_handle_fail_no_auth() {
+        let pool = get_test_db().await;
+        let pack = build_packet();
+        let (mut client, server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let cfg = Arc::new(GSServer::from_string(include_str!(
+            "../../../../test_data/game.yaml"
+        )));
+        let controller = Arc::new(Controller::new(cfg));
+        controller.add_online_account(String::from("test"));
+        let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
+        let res = pack.handle(&mut ch).await;
+        assert!(res.is_err());
+    }
+    #[tokio::test]
+    #[timeout(3000)]
+    async fn test_read_and_handle_fail_no_user() {
+        let pool = get_test_db().await;
+        let pack = build_packet();
+        let (mut client, server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let cfg = Arc::new(GSServer::from_string(include_str!(
+            "../../../../test_data/game.yaml"
+        )));
+        let controller = Arc::new(Controller::new(cfg));
+        controller.add_online_account(String::from("test"));
+        let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
+        ch.set_status(ClientStatus::Authenticated);
+        let res = pack.handle(&mut ch).await;
+        assert!(res.is_err());
+    }
+    #[tokio::test]
+    #[timeout(3000)]
+    async fn test_read_and_handle_fail_no_chars() {
+        let pool = get_test_db().await;
+        let pack = build_packet();
+        let (mut client, server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let cfg = Arc::new(GSServer::from_string(include_str!(
+            "../../../../test_data/game.yaml"
+        )));
+        let controller = Arc::new(Controller::new(cfg));
+        controller.add_online_account(String::from("test"));
+        let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
+        ch.set_status(ClientStatus::Authenticated);
+        let user = user_factory(&pool, |mut u| {
+            u.username = String::from("test");
+            u
+        })
+        .await;
+        ch.set_user(user);
+        let res = pack.handle(&mut ch).await;
+        assert!(res.is_err());
+    }
+    #[tokio::test]
+    #[timeout(3000)]
+    async fn test_read_and_handle_ok() {
+        let pool = get_test_db().await;
+        let pack = build_packet();
+        let (mut client, server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let cfg = Arc::new(GSServer::from_string(include_str!(
+            "../../../../test_data/game.yaml"
+        )));
+        let controller = Arc::new(Controller::new(cfg));
+        controller.add_online_account(String::from("test"));
+        let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
+        ch.set_status(ClientStatus::Authenticated);
+        let user = user_factory(&pool, |mut u| {
+            u.username = String::from("test");
+            u
+        })
+        .await;
+        ch.set_user(user);
+        ch.set_account_chars(vec![]);
+        let res = pack.handle(&mut ch).await;
+        assert!(res.is_ok());
+        assert_eq!(ch.get_account_chars().unwrap().len(), 1);
+        client.shutdown().await.unwrap();
     }
 }

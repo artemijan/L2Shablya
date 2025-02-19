@@ -8,16 +8,19 @@ use async_trait::async_trait;
 use l2_core::traits::handlers::PacketSender;
 
 #[allow(unused)]
+#[cfg(not(tarpaulin_include))]
 pub fn get_gs_config() ->Arc<GSServer>{
     Arc::new(GSServer::from_string(include_str!(
         "../../test_data/game.yaml"
     )))
 }
 
+#[cfg(not(tarpaulin_include))]
 pub struct TestPacketSender {
     pub writer: Arc<Mutex<dyn AsyncWrite + Unpin + Send>>,
 }
 
+#[cfg(not(tarpaulin_include))]
 impl fmt::Debug for TestPacketSender {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "TestPacketSender")
@@ -25,6 +28,7 @@ impl fmt::Debug for TestPacketSender {
 }
 
 #[async_trait]
+#[cfg(not(tarpaulin_include))]
 impl PacketSender for TestPacketSender {
     async fn encrypt(&self, _: &mut [u8]) -> anyhow::Result<()> {
         Ok(())
