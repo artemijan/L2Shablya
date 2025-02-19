@@ -189,12 +189,10 @@ mod tests {
         let (r, w) = split(server);
         let mut gs_handler = GSHandler::new(r, w, ip, db_pool.clone(), cloned_lc);
         gs_handler.server_id = Some(1);
-        let p_key =
+        let the_key =
             ScrambledRSAKeyPair::from_pem(include_str!("../../../test_data/test_private_key.pem"))
                 .unwrap();
-        let pub_key = p_key.to_public_key();
-        let scr = ScrambledRSAKeyPair::new((p_key, pub_key));
-        gs_handler.set_rsa_key(scr);
+        gs_handler.set_rsa_key(the_key);
         gs_handler.on_connect().await.unwrap();
         let mut p = [0u8; 146];
         client.read_exact(&mut p).await.unwrap();

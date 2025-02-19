@@ -121,7 +121,7 @@ impl ScrambledRSAKeyPair {
     }
 
     #[allow(clippy::missing_errors_doc)]
-    pub fn from_pem(private_key_pem: &str) -> anyhow::Result<rsa::RsaPrivateKey> {
+    pub fn from_pem_to_private(private_key_pem: &str) -> anyhow::Result<rsa::RsaPrivateKey> {
         // Parse the PEM string
         let pem = parse(private_key_pem).context("Failed to parse PEM string")?;
 
@@ -134,6 +134,12 @@ impl ScrambledRSAKeyPair {
             .context("Failed to parse DER-encoded PKCS#8 private key")?;
 
         Ok(private_key_der)
+    }
+    #[allow(clippy::missing_errors_doc)]
+    pub fn from_pem(private_key_pem: &str) -> anyhow::Result<Self> {
+        let private_key_der = Self::from_pem_to_private(private_key_pem)?;
+        let pub_key = private_key_der.to_public_key();
+        Ok(Self::new((private_key_der, pub_key)))
     }
 }
 
@@ -216,7 +222,6 @@ mod test {
         let packet_body = &packet_bytes[1..];
         let (raw1, rest1) = packet_body.split_at(128);
         let (raw2, _) = rest1.split_at(128);
-        let file_content = include_str!("../../../test_data/test_private_key.pem");
         let decr_expect = [
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -229,9 +234,9 @@ mod test {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0,
         ];
-        let p_key = ScrambledRSAKeyPair::from_pem(file_content).unwrap();
-        let pub_key = p_key.to_public_key();
-        let scrambl = ScrambledRSAKeyPair::new((p_key, pub_key));
+        let scrambl =
+            ScrambledRSAKeyPair::from_pem(include_str!("../../../test_data/test_private_key.pem"))
+                .unwrap();
         let decr_raw1 = scrambl.decrypt_data(raw1).unwrap();
         let decr_raw2 = scrambl.decrypt_data(raw2).unwrap();
         let decrypted = [decr_raw1, decr_raw2].concat();

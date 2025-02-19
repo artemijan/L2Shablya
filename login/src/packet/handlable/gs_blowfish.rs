@@ -49,9 +49,6 @@ mod tests {
             "../../../../test_data/test_private_key.pem"
         ))
         .unwrap();
-        let pub_key = p_key.to_public_key();
-        let scr = ScrambledRSAKeyPair::new((p_key, pub_key));
-
         let packet = BlowFish::new(KEY.to_vec());
         let db_pool = get_test_db().await;
         let (_client, server) = tokio::io::duplex(1024);
@@ -61,7 +58,7 @@ mod tests {
         let ip = Ipv4Addr::new(127, 0, 0, 1);
         let (r, w) = split(server);
         let mut ch = GSHandler::new(r, w, ip, db_pool, cloned_lc);
-        ch.set_rsa_key(scr);
+        ch.set_rsa_key(p_key);
         ch.set_connection_state(&GS::Connected).await.unwrap();
         let res = packet.handle(&mut ch).await;
         assert!(res.is_ok());
@@ -87,8 +84,6 @@ mod tests {
             "../../../../test_data/test_private_key.pem"
         ))
         .unwrap();
-        let pub_key = p_key.to_public_key();
-        let scr = ScrambledRSAKeyPair::new((p_key, pub_key));
         let packet = BlowFish::new(KEY.to_vec());
         let db_pool = get_test_db().await;
         let (_client, server) = tokio::io::duplex(1024);
@@ -98,7 +93,7 @@ mod tests {
         let ip = Ipv4Addr::new(127, 0, 0, 1);
         let (r, w) = split(server);
         let mut ch = GSHandler::new(r, w, ip, db_pool, cloned_lc);
-        ch.set_rsa_key(scr);
+        ch.set_rsa_key(p_key);
         let res = packet.handle(&mut ch).await;
         assert!(res.is_err());
     }
