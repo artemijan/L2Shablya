@@ -242,7 +242,7 @@ mod tests {
         assert!(res.is_ok());
         assert_eq!(ch.get_account_chars().unwrap().len(), 1);
         let res = pack.handle(&mut ch).await;
-        println!("{:?}", res.is_ok()); // there shouldn't be error
+        assert!(res.is_ok());
         assert_eq!(ch.get_account_chars().unwrap().len(), 1); // but char not created because it's duplicate
         client.shutdown().await.unwrap();
     }
