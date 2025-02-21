@@ -291,3 +291,14 @@ pub struct Point {
     pub y: i32,
     pub z: i32,
 }
+#[cfg(test)]
+mod test {
+    use l2_core::config::traits::ConfigDirLoader;
+    use crate::data::char_template::ClassTemplates;
+
+    #[test]
+    fn test(){
+        let temps = ClassTemplates::load();
+        assert_eq!(9, temps.get_available_templates_for_registration().len());
+    }
+}
