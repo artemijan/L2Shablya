@@ -96,6 +96,7 @@ mod tests {
         ch.set_account_chars(vec![]);
         let res = pack.handle(&mut ch).await;
         assert!(res.is_err());
+        client.shutdown().await.unwrap();
     }
     #[tokio::test]
     #[timeout(3000)]
