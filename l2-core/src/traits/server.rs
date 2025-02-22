@@ -176,8 +176,10 @@ mod tests {
     use std::fmt::{Debug, Formatter};
     use std::net::Ipv4Addr;
     use std::sync::Arc;
+    use std::time::Duration;
     use tokio::io::{AsyncRead, AsyncWrite};
     use tokio::sync::{Mutex, Notify};
+    use tokio::time::timeout;
 
     struct MockServer;
     struct MockController;
@@ -335,6 +337,7 @@ mod tests {
             assert!(pool.ping().await.is_ok());
         });
     }
+
     #[test]
     fn test_listener() {
         //this is just a simple check if we can bind to local host on port 2106
@@ -342,7 +345,11 @@ mod tests {
         MockServer::bootstrap("", |cfg, pool| async move {
             let l_loop =
                 MockServer::listener_loop::<MockHandler>(cfg, Arc::new(MockController), pool);
-            l_loop.abort();
+            let result = timeout(Duration::from_secs(1), l_loop).await;
+
+            if let Err(e) = result {
+                assert_eq!(e.to_string(), "deadline has elapsed");
+            }
         });
     }
 }
