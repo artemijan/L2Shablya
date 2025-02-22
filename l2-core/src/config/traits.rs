@@ -82,7 +82,8 @@ pub trait ConfigDirLoader: Loadable + Default + LoadFileHandler {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate as l2_core;
+    #[allow(unused_imports)]
+    use crate as l2_core; //hack to test l2_core crate
     use macro_common::config_file;
     use serde::Deserialize;
 
@@ -91,10 +92,20 @@ mod test {
     struct TestConf {
         name: String,
     }
+    #[derive(Debug, Clone, Deserialize)]
+    #[config_file(path = "config/game.yaml", msg = "Loaded")]
+    struct TestConf2 {
+        name: String,
+    }
 
     #[test]
     fn test_config_file_loader() {
         let conf = <TestConf as ConfigFileLoader>::load();
         assert_eq!(conf.name, "test config");
+    }
+    #[test]
+    fn test_config_file_load() {
+        let conf = <TestConf2 as ConfigFileLoader>::load();
+        assert_eq!(conf.name, "Game server");
     }
 }

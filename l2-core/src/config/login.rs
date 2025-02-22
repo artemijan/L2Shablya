@@ -102,3 +102,20 @@ pub struct Client {
 pub struct GSMessages {
     pub timeout: u8,
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::config::login::LoginServer;
+    use crate::traits::ServerConfig;
+
+    #[test]
+    fn test_config_load() {
+        let cfg = LoginServer::load("../config/login.yaml");
+        assert_eq!(cfg.name, "Login server");
+    }
+    #[test]
+    #[should_panic(expected = "Failed to open config file: ./login.yaml. Error: No such file or directory (os error 2).")]
+    fn test_config_load_err() {
+        LoginServer::load("./login.yaml");
+    }
+}

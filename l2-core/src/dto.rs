@@ -4,7 +4,7 @@ use serde::{Deserialize, Deserializer};
 use std::net::Ipv4Addr;
 use std::str::FromStr;
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Default)]
 pub struct Database {
     #[serde(rename = "url")]
     pub url: String,
@@ -30,7 +30,7 @@ fn default_timeout() -> u64 {
 fn default_max_lifetime() -> u64 {
     60 * 60
 }
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Default)]
 pub struct Runtime {
     pub worker_threads: usize,
 }

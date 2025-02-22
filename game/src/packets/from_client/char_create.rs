@@ -13,7 +13,6 @@ use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use sea_orm::DbErr;
-use std::sync::Arc;
 use tracing::error;
 
 #[allow(unused)]
@@ -142,6 +141,7 @@ mod tests {
     use l2_core::traits::ServerConfig;
     use ntest::timeout;
     use std::net::Ipv4Addr;
+    use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncWriteExt};
     fn build_packet() -> CreateCharRequest {

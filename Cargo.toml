@@ -1,6 +1,10 @@
+[workspace.package]
+edition = "2021"
+
 [workspace]
 members = ["entities", "game", "l2-core", "login", "macro-common", "migration", "test-utils"]
 resolver = "2"
+
 
 [profile.dev.package.num-bigint-dig]
 opt-level = 3
