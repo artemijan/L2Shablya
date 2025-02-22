@@ -114,7 +114,7 @@ mod tests {
         assert_eq!(cfg.name, "Login server");
     }
     #[test]
-    #[should_panic(expected = "Failed to open config file: ./login.yaml. Error: No such file or directory (os error 2). Current directory: /Users/artem/dev/rust/L2Shablya/l2-core")]
+    #[should_panic(expected = "Failed to open config file: ./login.yaml. Error: No such file or directory (os error 2).")]
     fn test_config_load_err() {
         LoginServer::load("./login.yaml");
     }
