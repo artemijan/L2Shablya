@@ -164,3 +164,185 @@ pub trait Server {
         })
     }
 }
+#[cfg(test)]
+mod tests {
+    use crate::dto::{Database, InboundConnection, Runtime};
+    use crate::traits::handlers::{InboundHandler, PacketHandler, PacketSender};
+    use crate::traits::server::Server;
+    use crate::traits::{IpBan, ServerConfig, Shutdown};
+    use anyhow::Error;
+    use async_trait::async_trait;
+    use entities::DBPool;
+    use std::fmt::{Debug, Formatter};
+    use std::net::Ipv4Addr;
+    use std::sync::Arc;
+    use tokio::io::{AsyncRead, AsyncWrite};
+    use tokio::sync::{Mutex, Notify};
+
+    struct MockServer;
+    struct MockController;
+
+    struct MockConfigType {
+        rt: Runtime,
+        db: Database,
+        inbound: InboundConnection,
+    }
+    impl MockConfigType {
+        fn default() -> Self {
+            Self {
+                rt: Runtime { worker_threads: 2 },
+                db: Database {
+                    url: "sqlite::memory:".to_string(),
+                    max_connections: 4,
+                    min_connections: 2,
+                    connect_timeout: 5,
+                    idle_timeout: 5,
+                    max_lifetime: 60,
+                },
+                inbound: InboundConnection {
+                    ip: "127.0.0.1".to_string(),
+                    port: 2106,
+                    reuse_addr: true,
+                    reuse_port: true,
+                    no_delay: true,
+                },
+            }
+        }
+    }
+
+    impl ServerConfig for MockConfigType {
+        fn load(_: &str) -> Self {
+            Self::default()
+        }
+
+        fn from_string(_: &str) -> Self {
+            Self::default()
+        }
+
+        fn runtime(&self) -> Option<&Runtime> {
+            Some(&self.rt)
+        }
+
+        fn database(&self) -> &Database {
+            &self.db
+        }
+    }
+    impl IpBan for MockController {
+        fn is_ip_banned(&self, _: &str) -> bool {
+            false
+        }
+    }
+    impl Server for MockServer {
+        type ConfigType = MockConfigType;
+        type ControllerType = MockController;
+    }
+
+    struct MockHandler;
+
+    #[async_trait]
+    impl PacketSender for MockHandler {
+        async fn encrypt(&self, bytes: &mut [u8]) -> anyhow::Result<()> {
+            todo!()
+        }
+
+        fn is_encryption_enabled(&self) -> bool {
+            todo!()
+        }
+
+        async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
+            todo!()
+        }
+    }
+
+    impl Debug for MockHandler {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            todo!()
+        }
+    }
+
+    impl Shutdown for MockHandler {
+        fn get_shutdown_listener(&self) -> Arc<Notify> {
+            todo!()
+        }
+    }
+
+    #[async_trait]
+    impl PacketHandler for MockHandler {
+        type ConfigType = MockConfigType;
+        type ControllerType = MockController;
+
+        fn get_handler_name() -> &'static str {
+            "Test handler"
+        }
+
+        fn get_controller(&self) -> &Arc<Self::ControllerType> {
+            todo!()
+        }
+
+        fn new<R, W>(_: R, _: W, _: Ipv4Addr, _: DBPool, _: Arc<Self::ControllerType>) -> Self
+        where
+            R: AsyncRead + Unpin + Send + 'static,
+            W: AsyncWrite + Unpin + Send + 'static,
+        {
+            todo!()
+        }
+
+        async fn on_connect(&mut self) -> anyhow::Result<()> {
+            todo!()
+        }
+
+        async fn on_disconnect(&mut self) {
+            todo!()
+        }
+
+        fn get_stream_reader_mut(&self) -> &Arc<Mutex<dyn AsyncRead + Send + Unpin>> {
+            todo!()
+        }
+
+        fn get_timeout(&self) -> Option<u64> {
+            todo!()
+        }
+
+        fn get_db_pool(&self) -> &DBPool {
+            todo!()
+        }
+
+        async fn on_receive_bytes(&mut self, _: usize, _: &mut [u8]) -> Result<(), Error> {
+            todo!()
+        }
+
+        async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
+            todo!()
+        }
+
+        async fn handle_client(&mut self) -> anyhow::Result<()> {
+            todo!()
+        }
+    }
+
+    impl InboundHandler for MockHandler {
+        type ConfigType = MockConfigType;
+
+        fn get_connection_config(cfg: &Self::ConfigType) -> &InboundConnection {
+            &cfg.inbound
+        }
+    }
+    #[test]
+    fn test_bootstrap() {
+        MockServer::bootstrap("", |cfg, pool| async move {
+            assert_eq!(cfg.db.max_connections, 4);
+            assert_eq!(cfg.rt.worker_threads, 2);
+            assert!(pool.ping().await.is_ok());
+        });
+    }
+    #[test]
+    fn test_listener() {
+        //this is just a simple check if we can bind to local host on port 2106
+        // after it's bind, we just simply abort the task.
+        MockServer::bootstrap("", |cfg, pool| async move {
+            let l_loop =
+                MockServer::listener_loop::<MockHandler>(cfg, Arc::new(MockController), pool);
+            l_loop.abort();
+        });
+    }
+}
