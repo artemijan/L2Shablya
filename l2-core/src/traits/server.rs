@@ -241,7 +241,7 @@ mod tests {
 
     #[async_trait]
     impl PacketSender for MockHandler {
-        async fn encrypt(&self, bytes: &mut [u8]) -> anyhow::Result<()> {
+        async fn encrypt(&self, _: &mut [u8]) -> anyhow::Result<()> {
             todo!()
         }
 
@@ -255,7 +255,7 @@ mod tests {
     }
 
     impl Debug for MockHandler {
-        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        fn fmt(&self, _: &mut Formatter<'_>) -> std::fmt::Result {
             todo!()
         }
     }
