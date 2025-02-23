@@ -177,9 +177,11 @@ mod tests {
     use std::net::Ipv4Addr;
     use std::sync::Arc;
     use std::time::Duration;
-    use tokio::io::{AsyncRead, AsyncWrite};
+    use test_utils::utils::get_test_db;
+    use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
+    use tokio::net::TcpStream;
     use tokio::sync::{Mutex, Notify};
-    use tokio::time::timeout;
+    use tokio::time::{sleep, timeout};
 
     struct MockServer;
     struct MockController;
@@ -203,7 +205,7 @@ mod tests {
                 },
                 inbound: InboundConnection {
                     ip: "127.0.0.1".to_string(),
-                    port: 2106,
+                    port: 15999,
                     reuse_addr: true,
                     reuse_port: true,
                     no_delay: true,
@@ -239,32 +241,59 @@ mod tests {
         type ControllerType = MockController;
     }
 
-    struct MockHandler;
+    struct MockHandler {
+        pool: DBPool,
+        on_connect_called: bool,
+        on_disconnect_called: bool,
+        received_bytes: Vec<Vec<u8>>,
+        read: Arc<Mutex<dyn AsyncRead + Unpin + Send + 'static>>,
+        write: Arc<Mutex<dyn AsyncWrite + Unpin + Send + 'static>>,
+    }
 
+    impl MockHandler {
+        fn new(
+            pool: DBPool,
+            read: Arc<Mutex<dyn AsyncRead + Unpin + Send + 'static>>,
+            write: Arc<Mutex<dyn AsyncWrite + Unpin + Send + 'static>>,
+        ) -> Self {
+            MockHandler {
+                pool,
+                read,
+                write,
+                received_bytes: Vec::new(),
+                on_connect_called: false,
+                on_disconnect_called: false,
+            }
+        }
+    }
     #[async_trait]
     impl PacketSender for MockHandler {
         async fn encrypt(&self, _: &mut [u8]) -> anyhow::Result<()> {
-            todo!()
+            Ok(())
         }
 
         fn is_encryption_enabled(&self) -> bool {
-            todo!()
+            false
         }
 
         async fn get_stream_writer_mut(&self) -> &Arc<Mutex<dyn AsyncWrite + Send + Unpin>> {
-            todo!()
+            &self.write
         }
     }
 
     impl Debug for MockHandler {
-        fn fmt(&self, _: &mut Formatter<'_>) -> std::fmt::Result {
-            todo!()
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            write!(
+                f,
+                "MockHandler {{ on_connect_called: {:?}, pool: {:?} }}",
+                self.on_connect_called, self.pool
+            )
         }
     }
 
     impl Shutdown for MockHandler {
         fn get_shutdown_listener(&self) -> Arc<Notify> {
-            todo!()
+            Arc::new(Notify::new())
         }
     }
 
@@ -281,44 +310,53 @@ mod tests {
             todo!()
         }
 
-        fn new<R, W>(_: R, _: W, _: Ipv4Addr, _: DBPool, _: Arc<Self::ControllerType>) -> Self
+        fn new<R, W>(
+            read: R,
+            write: W,
+            _: Ipv4Addr,
+            pool: DBPool,
+            _: Arc<Self::ControllerType>,
+        ) -> Self
         where
             R: AsyncRead + Unpin + Send + 'static,
             W: AsyncWrite + Unpin + Send + 'static,
         {
-            todo!()
+            MockHandler::new(
+                pool,
+                Arc::new(Mutex::new(read)),
+                Arc::new(Mutex::new(write)),
+            )
         }
 
         async fn on_connect(&mut self) -> anyhow::Result<()> {
-            todo!()
+            self.on_connect_called = true;
+            self.write
+                .lock()
+                .await
+                .write_all(&[1, 1, 1, 0, 1, 1, 1])
+                .await?;
+            Ok(())
         }
 
         async fn on_disconnect(&mut self) {
-            todo!()
+            self.on_disconnect_called = true;
         }
 
         fn get_stream_reader_mut(&self) -> &Arc<Mutex<dyn AsyncRead + Send + Unpin>> {
-            todo!()
+            &self.read
         }
 
         fn get_timeout(&self) -> Option<u64> {
-            todo!()
+            None
         }
 
         fn get_db_pool(&self) -> &DBPool {
-            todo!()
+            &self.pool
         }
 
-        async fn on_receive_bytes(&mut self, _: usize, _: &mut [u8]) -> Result<(), Error> {
-            todo!()
-        }
-
-        async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
-            todo!()
-        }
-
-        async fn handle_client(&mut self) -> anyhow::Result<()> {
-            todo!()
+        async fn on_receive_bytes(&mut self, _: usize, bytes: &mut [u8]) -> Result<(), Error> {
+            self.received_bytes.push(bytes.to_vec());
+            Ok(())
         }
     }
 
@@ -351,5 +389,26 @@ mod tests {
                 assert_eq!(e.to_string(), "deadline has elapsed");
             }
         });
+    }
+    #[tokio::test]
+    async fn test_loop() {
+        let cfg = Arc::new(MockConfigType::load(""));
+        let pool = get_test_db().await;
+        let l_loop = MockServer::listener_loop::<MockHandler>(cfg, Arc::new(MockController), pool);
+        let handle = tokio::spawn(async {
+            l_loop.await.unwrap();
+        });
+        sleep(Duration::from_secs(2)).await; //give it a time to establish socket listener
+        let mut stream = TcpStream::connect("127.0.0.1:15999")
+            .await
+            .expect("Failed to connect");
+        // Receive a response from the server
+        let mut buffer = [0; 7];
+        stream
+            .read_exact(&mut buffer)
+            .await
+            .expect("Failed to read from stream");
+        assert_eq!([1, 1, 1, 0, 1, 1, 1], buffer);
+        handle.abort();
     }
 }
