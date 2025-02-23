@@ -12,8 +12,10 @@ Current state: `Under development`
 About: This implementation is based on L2J, e.g. I reimplement everything in rust from java + I optimize things,
 like DB denormalization for performance boost, removing unnecessary operations and so on.
 
-## Test coverage [![codecov](https://codecov.io/gh/artemijan/L2Shablya/branch/master/graph/badge.svg)](https://codecov.io/gh/artemijan/L2Shablya)
-## [![Builds and tests](https://github.com/artemijan/L2Shablya/actions/workflows/rust.yml/badge.svg)](https://github.com/artemijan/L2Shablya/actions/workflows/rust.yml)
+## Status
+
+- [![codecov](https://codecov.io/gh/artemijan/L2Shablya/branch/master/graph/badge.svg)](https://codecov.io/gh/artemijan/L2Shablya) 
+- [![Builds and tests](https://github.com/artemijan/L2Shablya/actions/workflows/rust.yml/badge.svg)](https://github.com/artemijan/L2Shablya/actions/workflows/rust.yml)
 
 Always remember "Having tests opens doors to refactoring! More tests - more doors are open."
 
