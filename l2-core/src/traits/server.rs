@@ -19,6 +19,9 @@ use tracing::{error, info, instrument};
 pub trait Server {
     type ConfigType: ServerConfig + Send + Sync + 'static;
     type ControllerType: IpBan + Send + Sync + 'static;
+    /// This is a helper function for loading the server configuration from a file, creating DB pool,
+    /// and starting the server. It accepts a closure which is needed to create needed 
+    /// listeners/connectors. The closure is blocking, once it is finished server exits.
     fn bootstrap<F, Fut>(path: &str, start: F)
     where
         F: Fn(Arc<Self::ConfigType>, DBPool) -> Fut + Send + 'static,
@@ -45,7 +48,9 @@ pub trait Server {
             start(config, pool).await;
         });
     }
-
+    /// This is a helper function for establishing a listener loop and accepting new clients, 
+    /// for example listen for connections from game server, or listening for new connections from
+    /// players.
     fn listener_loop<T>(
         config: Arc<Self::ConfigType>,
         controller: Arc<Self::ControllerType>,
@@ -118,12 +123,16 @@ pub trait Server {
             match TcpStream::connect(address).await {
                 Ok(s) => break s, // Exit the loop when connection succeeds
                 Err(e) => {
-                    error!("Failed to connect: {e}. Retrying in 5 seconds...");
+                    error!("Failed to connect to {address}: {e}. Retrying in 5 seconds...");
                     tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
                 }
             }
         }
     }
+    ///
+    /// This is a helper function for establishing a connection to a remote, and if it fails retry
+    /// in N seconds. Currently, it is used for only game server which is trying to connect to 
+    /// a login server.   
     fn connector_loop<T>(
         config: Arc<Self::ConfigType>,
         controller: Arc<Self::ControllerType>,
@@ -158,7 +167,7 @@ pub trait Server {
                         T::get_handler_name()
                     );
                 }
-                error!("Lost connection to login server, trying again in 5 seconds...");
+                error!("{}: Lost connection to {ip}, trying again in 5 seconds...", T::get_handler_name());
                 tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
             }
         })
