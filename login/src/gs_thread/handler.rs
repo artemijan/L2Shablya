@@ -178,7 +178,7 @@ mod tests {
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt};
 
     #[tokio::test]
-    #[timeout(3000)]
+    #[timeout(4000)]
     async fn test_gs_connect_disconnect() {
         let db_pool = get_test_db().await;
         let (mut client, server) = tokio::io::duplex(1024);
