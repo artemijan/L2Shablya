@@ -116,6 +116,6 @@ impl LoginController {
         Standard: Distribution<T>,
     {
         let mut rng = rand::thread_rng();
-        rng.gen()
+        rng.r#gen()
     }
 }

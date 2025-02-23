@@ -14,10 +14,10 @@ impl SessionKey {
     pub fn new() -> Self {
         let mut rng = rand::thread_rng();
         SessionKey {
-            play_ok1: rng.gen(),
-            play_ok2: rng.gen(),
-            login_ok1: rng.gen(),
-            login_ok2: rng.gen(),
+            play_ok1: rng.r#gen(),
+            play_ok2: rng.r#gen(),
+            login_ok1: rng.r#gen(),
+            login_ok2: rng.r#gen(),
         }
     }
     #[must_use]

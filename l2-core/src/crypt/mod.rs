@@ -15,7 +15,7 @@ pub fn generate_blowfish_key(size: Option<usize>) -> Vec<u8> {
     let mut key = vec![0u8; the_size];
     let mut rng = thread_rng();
     for item in key.iter_mut().take(the_size) {
-        *item = rng.gen();
+        *item = rng.r#gen();
     }
     key
 }
