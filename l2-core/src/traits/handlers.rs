@@ -289,8 +289,8 @@ mod test {
         );
         client.write_all(&[0, 0, 0, 0, 0, 0, 0, 0]).await.unwrap();
         let err = handler.handle_client().await;
-        // assert!(handler.on_connect_called == 1);
-        // assert!(handler.on_disconnect_called == 1);
+        assert_eq!(handler.on_connect_called, 1);
+        assert_eq!(handler.on_disconnect_called, 1);
         assert!(err.is_err());
         assert!(
             matches!(err, Err(e) if e.to_string() == "Error receiving packet: Packet size is 0, it's not expected")
@@ -318,8 +318,8 @@ mod test {
         tokio::time::sleep(time::Duration::from_millis(500)).await;
         client.shutdown().await.unwrap();
         let handler = handle.await.unwrap();
-        assert!(handler.on_connect_called == 1);
-        assert!(handler.on_disconnect_called == 1);
+        assert_eq!(handler.on_connect_called, 1);
+        assert_eq!(handler.on_disconnect_called, 1);
         assert_eq!(handler.on_receive_bytes, vec![(6, vec![0, 0, 0, 0, 0, 0])]);
     }
 }
