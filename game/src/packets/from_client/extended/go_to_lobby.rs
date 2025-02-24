@@ -3,7 +3,7 @@ use crate::packets::to_client::CharSelectionInfo;
 use crate::packets::HandleablePacket;
 use async_trait::async_trait;
 use l2_core::shared_packets::common::ReadablePacket;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::handlers::PacketSender;
 
 #[derive(Debug, Clone)]
 pub struct GoLobby;
@@ -59,7 +59,7 @@ mod tests {
         let (mut client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let cfg = get_gs_config();
-        let controller = Arc::new(Controller::new(cfg));
+        let controller = Arc::new(Controller::new(Arc::new(cfg)));
         let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool, controller);
 
         let res = pack.handle(&mut ch).await;

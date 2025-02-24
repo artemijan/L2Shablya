@@ -14,7 +14,7 @@ use l2_core::shared_packets::common::{PacketType, ReadablePacket};
 use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::handlers::PacketSender;
 use macro_common::SendablePacketImpl;
 
 #[derive(Debug, Clone, SendablePacketImpl)]
@@ -179,6 +179,7 @@ mod tests {
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt};
     use tokio::sync::Mutex;
+    use l2_core::traits::handlers::PacketHandler;
 
     #[tokio::test]
     #[timeout(3000)]
@@ -193,7 +194,7 @@ mod tests {
             u
         })
         .await;
-        let controller = Arc::new(Controller::new(cfg));
+        let controller = Arc::new(Controller::new(Arc::new(cfg)));
         let test_packet_sender = Arc::new(TestPacketSender {
             writer: Arc::new(Mutex::new(login_client)),
         });

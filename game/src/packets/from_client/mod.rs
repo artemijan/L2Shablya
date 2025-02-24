@@ -8,3 +8,4 @@ pub mod logout;
 pub mod delete_char;
 pub mod char_restore;
 pub mod char_select;
+pub mod enter_world;

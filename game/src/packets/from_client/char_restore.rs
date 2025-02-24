@@ -79,7 +79,7 @@ mod tests {
         let (mut client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let cfg = Arc::new(GSServer::from_string(include_str!(
-            "../../../../test_data/game.yaml"
+            "../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::new(cfg));
         controller.add_online_account(String::from("test"));
@@ -106,7 +106,7 @@ mod tests {
         let (mut client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let cfg = Arc::new(GSServer::from_string(include_str!(
-            "../../../../test_data/game.yaml"
+            "../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::new(cfg));
         controller.add_online_account(String::from("test"));
@@ -137,7 +137,7 @@ mod tests {
         let (mut client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let cfg = Arc::new(GSServer::from_string(include_str!(
-            "../../../../test_data/game.yaml"
+            "../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::new(cfg));
         controller.add_online_account(String::from("test"));

@@ -3,7 +3,7 @@ use crate::packets::to_client::NewCharacterResponse;
 use crate::packets::HandleablePacket;
 use async_trait::async_trait;
 use l2_core::shared_packets::common::ReadablePacket;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::handlers::PacketSender;
 
 #[derive(Debug, Clone)]
 pub struct NewCharacterRequest;

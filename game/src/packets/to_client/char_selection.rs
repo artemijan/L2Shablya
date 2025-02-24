@@ -158,7 +158,7 @@ mod tests {
         };
         let char = CharacterInfo::new(inst, vec![]).unwrap();
         let cfg = get_gs_config();
-        let controller = Arc::new(Controller::new(cfg));
+        let controller = Arc::new(Controller::new(Arc::new(cfg)));
         let mut packet = CharSelectionInfo::new("admin", 1, &controller, &vec![char]).unwrap();
         assert_eq!(
             [

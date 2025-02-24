@@ -7,7 +7,7 @@ use l2_core::crypt::game::GameClientEncryption;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::handlers::PacketSender;
 use macro_common::SendablePacketImpl;
 
 #[derive(Debug, Clone, SendablePacketImpl)]

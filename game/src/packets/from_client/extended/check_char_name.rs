@@ -5,7 +5,7 @@ use crate::packets::HandleablePacket;
 use async_trait::async_trait;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::handlers::PacketSender;
 
 #[derive(Debug, Clone)]
 pub struct CheckCharName {
@@ -45,6 +45,7 @@ mod tests {
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt};
     use l2_core::config::gs::GSServer;
+    use l2_core::traits::handlers::PacketHandler;
     use l2_core::traits::ServerConfig;
     use crate::controller::Controller;
 
@@ -57,7 +58,7 @@ mod tests {
         let (mut client, server) = tokio::io::duplex(1024);
         let (r,w) = split(server);
         let cfg = Arc::new(GSServer::from_string(include_str!(
-            "../../../../../test_data/game.yaml"
+            "../../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::new(cfg));
         let mut ch = ClientHandler::new(r,w, Ipv4Addr::LOCALHOST,pool, controller);

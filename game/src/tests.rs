@@ -9,10 +9,10 @@ use l2_core::traits::handlers::PacketSender;
 
 #[allow(unused)]
 #[cfg(not(tarpaulin_include))]
-pub fn get_gs_config() ->Arc<GSServer>{
-    Arc::new(GSServer::from_string(include_str!(
-        "../../test_data/game.yaml"
-    )))
+pub fn get_gs_config() ->GSServer{
+    GSServer::from_string(include_str!(
+        "../../config/game.yaml"
+    ))
 }
 
 #[cfg(not(tarpaulin_include))]

@@ -167,6 +167,7 @@ pub struct Client {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Rates {
     pub vitality_exp_multiplier: i32,
+    pub enable_vitality: bool,
 }
 
 #[cfg(test)]

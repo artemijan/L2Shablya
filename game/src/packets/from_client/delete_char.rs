@@ -7,7 +7,7 @@ use entities::entities::character;
 use l2_core::enums::CharDeletionFailReasons;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::handlers::PacketSender;
 use sea_orm::DbErr;
 use tracing::error;
 

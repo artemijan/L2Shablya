@@ -1,8 +1,11 @@
+use crate as l2_core;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
+use crate::shared_packets::write::SendablePacketBuffer;
 use async_trait::async_trait;
+use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacketImpl)]
 pub struct PlayerTracert {
     pub account: String,
     pub pc_ip: String,
@@ -10,6 +13,37 @@ pub struct PlayerTracert {
     pub hop2: String,
     pub hop3: String,
     pub hop4: String,
+    buffer: SendablePacketBuffer,
+}
+impl PlayerTracert {
+    /// # Errors
+    /// - when write packet bytes fails
+    pub fn new(
+        account: String,
+        pc_ip: String,
+        hop1: String,
+        hop2: String,
+        hop3: String,
+        hop4: String,
+    ) -> anyhow::Result<Self> {
+        let mut inst = Self {
+            account,
+            pc_ip,
+            hop1,
+            hop2,
+            hop3,
+            hop4,
+            buffer: SendablePacketBuffer::new(),
+        };
+        inst.buffer.write(Self::PACKET_ID)?;
+        inst.buffer.write_c_utf16le_string(Some(&inst.account))?;
+        inst.buffer.write_c_utf16le_string(Some(&inst.pc_ip))?;
+        inst.buffer.write_c_utf16le_string(Some(&inst.hop1))?;
+        inst.buffer.write_c_utf16le_string(Some(&inst.hop2))?;
+        inst.buffer.write_c_utf16le_string(Some(&inst.hop3))?;
+        inst.buffer.write_c_utf16le_string(Some(&inst.hop4))?;
+        Ok(inst)
+    }
 }
 
 #[async_trait]
@@ -28,6 +62,7 @@ impl ReadablePacket for PlayerTracert {
         let hop4 = buffer.read_c_utf16le_string()?;
         Ok(Self {
             account: account_name,
+            buffer: SendablePacketBuffer::empty(),
             pc_ip,
             hop1,
             hop2,
@@ -47,7 +82,7 @@ mod tests {
         let hop2 = b"h\x00o\x00p\x002\x00\x00\x00";
         let hop3 = b"h\x00o\x00p\x003\x00\x00\x00";
         let hop4 = b"h\x00o\x00p\x004\x00\x00\x00";
-        let mut data = vec![0x07,];
+        let mut data = vec![0x07];
         data.extend(&acc_name);
         data.extend(pc_ip);
         data.extend(hop1);
@@ -62,5 +97,4 @@ mod tests {
         assert_eq!(packet.hop3, "hop3");
         assert_eq!(packet.hop4, "hop4");
     }
-
 }

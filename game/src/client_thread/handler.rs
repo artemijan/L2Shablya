@@ -1,7 +1,7 @@
 use crate::controller::Controller;
 use crate::cp_factory::build_client_packet;
 use crate::ls_thread::LoginHandler;
-use anyhow::{bail, Error};
+use anyhow::{anyhow, bail, Error};
 use async_trait::async_trait;
 use entities::dao::char_info::CharacterInfo;
 use entities::entities::{character, user};
@@ -65,6 +65,15 @@ impl ClientHandler {
     pub fn get_protocol(&self) -> Option<i32> {
         self.protocol
     }
+    pub fn get_ip(&self) -> &Ipv4Addr {
+        &self.ip
+    }
+    pub fn get_db_pool(&self) -> &DBPool {
+        &self.db_pool
+    }
+    pub fn get_controller(&self) -> &Arc<Controller> {
+        &self.controller
+    }
     pub fn set_protocol(&mut self, protocol: i32) -> anyhow::Result<()> {
         let cfg = self.controller.get_cfg();
         if self.status != ClientStatus::Connected {
@@ -101,7 +110,7 @@ impl ClientHandler {
     pub fn set_status(&mut self, status: ClientStatus) {
         self.status = status;
     }
-    pub fn get_status(&mut self, )->&ClientStatus {
+    pub fn get_status(&mut self) -> &ClientStatus {
         &self.status
     }
 
@@ -144,7 +153,7 @@ impl ClientHandler {
     ) -> anyhow::Result<()>
     where
         F: FnOnce(character::Model) -> Fut,
-        Fut: Future<Output = anyhow::Result<character::Model>> + Send,
+        Fut: Future<Output=anyhow::Result<character::Model>> + Send,
     {
         if let Some(chars) = self.account_chars.as_mut() {
             if slot_id >= i32::try_from(chars.len())? || slot_id < 0 {
@@ -168,6 +177,10 @@ impl ClientHandler {
             ))?
             .get(slot_id as usize)
             .ok_or(anyhow::anyhow!("Missing character at slot {slot_id}"))
+    }
+    #[allow(clippy::cast_sign_loss)]
+    pub fn try_get_selected_char(&self) -> anyhow::Result<&CharacterInfo> {
+        self.try_get_char_by_slot_id(self.selected_char.ok_or(anyhow!("Chars not set, possible cheating"))?)
     }
 
     pub fn set_encryption(&mut self, bf_key: Option<GameClientEncryption>) {
@@ -326,9 +339,11 @@ impl InboundHandler for ClientHandler {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::packets::enums::CharNameResponseVariant;
     use crate::packets::from_client::auth::AuthLogin;
     use crate::packets::from_client::protocol::ProtocolVersion;
     use crate::packets::to_client::PlayerLoginResponse;
+    use crate::tests::{get_gs_config, TestPacketSender};
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::shared_packets::common::{PacketType, ReadablePacket, SendablePacket};
     use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
@@ -340,8 +355,6 @@ mod tests {
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt, AsyncWriteExt, DuplexStream};
     use tokio::task::JoinHandle;
-    use crate::packets::enums::CharNameResponseVariant;
-    use crate::tests::{get_gs_config, TestPacketSender};
 
     impl ProtocolVersion {
         pub fn new(version: i32) -> anyhow::Result<Self> {
@@ -381,7 +394,7 @@ mod tests {
     ) -> JoinHandle<(ClientHandler, anyhow::Result<()>)> {
         let controller = controller_opt.unwrap_or_else(|| {
             let cfg = get_gs_config();
-            Arc::new(Controller::new(cfg))
+            Arc::new(Controller::new(Arc::new(cfg)))
         });
         let cloned_controller = controller.clone();
         // Spawn a server task to handle a single connection
@@ -439,7 +452,7 @@ mod tests {
         let (mut client, server) = tokio::io::duplex(2024);
         let pool = get_test_db().await;
         let h = build_client_handler(server, pool, None);
-        let mut login_packet = ProtocolVersion::new(6_553_697).unwrap();
+        let mut login_packet = ProtocolVersion::new(110).unwrap();
         let bytes = login_packet.get_bytes(false);
         client.write_all(bytes).await.unwrap();
         let mut resp = [0; 24];
@@ -447,8 +460,8 @@ mod tests {
         client.read_exact(&mut resp).await.unwrap();
         client.shutdown().await.unwrap();
         let (ch, _) = h.await.unwrap();
-        assert_eq!(ch.protocol, Some(6_553_697));
-        assert_eq!(resp[0..4], [26, 0, 46, 1]);
+        assert_eq!(ch.protocol, Some(110));
+        assert_eq!(resp[0..4], [34, 0, 46, 1]);
     }
 
     #[tokio::test]
@@ -476,20 +489,21 @@ mod tests {
         // Create a listener on a local port
         let (mut client, server) = tokio::io::duplex(1024);
         let (login_client, mut login_server) = tokio::io::duplex(1024);
-        let cfg = get_gs_config();
+        let mut cfg = get_gs_config();
+        cfg.enable_encryption = false;
         let pool = get_test_db().await;
         let user_model = user_factory(&pool, |mut u| {
             u.username = "test".to_owned();
             u
         })
-        .await;
+            .await;
         let char_model = char_factory(&pool, |mut ch| {
             ch.user_id = user_model.id;
             ch.name = "TestChar".to_owned();
             ch
         })
-        .await;
-        let controller = Arc::new(Controller::new(cfg));
+            .await;
+        let controller = Arc::new(Controller::new(Arc::new(cfg)));
         let test_packet_sender = Arc::new(TestPacketSender {
             writer: Arc::new(Mutex::new(login_client)),
         });
@@ -575,7 +589,7 @@ mod tests {
         client.read_exact(&mut new_char_list).await.unwrap();
         assert_eq!(new_char_list[2], 0x09); //char list packet id
         assert_eq!(new_char_list[3], 2); // 2 characters
-                                         // --> Restore char
+        // --> Restore char
         let mut restore_char_packet = SendablePacketBuffer::new();
         restore_char_packet.write(0x7B).unwrap();
         restore_char_packet.write_i32(1).unwrap();
@@ -594,7 +608,7 @@ mod tests {
             .await
             .unwrap();
         // --> create error
-        let mut error_resp = [0;7];
+        let mut error_resp = [0; 7];
         client.read_exact(&mut error_resp).await.unwrap();
         assert_eq!(error_resp[2], 0x10);
         assert_eq!(i32::from_le_bytes(error_resp[3..].try_into().unwrap()), CharNameResponseVariant::AlreadyExists as i32);

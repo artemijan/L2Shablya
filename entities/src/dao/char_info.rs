@@ -144,7 +144,9 @@ impl CharacterInfo {
         self.paper_doll_item_id(slot)
             .ok_or(anyhow::anyhow!("No paper doll item id at slot {slot:?}"))
     }
-
+    pub fn is_dead(&self) -> bool {
+        self.char_model.cur_hp <= 0.5
+    }
     #[must_use]
     pub fn get_item(&self, item_obj_id: i32) -> Option<&item::Model> {
         self.items.iter().find(|i| i.id == item_obj_id)
@@ -185,11 +187,7 @@ impl CharacterInfo {
     #[allow(clippy::cast_possible_truncation)]
     pub fn get_enchant_effect_as_byte(&self, slot: PaperDoll) -> u8 {
         let effect = self.get_enchant_effect(slot);
-        if effect > 127 {
-            127
-        } else {
-            effect as u8
-        }
+        if effect > 127 { 127 } else { effect as u8 }
     }
 
     pub fn get_hair_style(&self) -> i32 {
@@ -300,9 +298,9 @@ pub enum Race {
 }
 
 fn try_from(value: i32) -> anyhow::Result<Race> {
-    use anyhow::bail;
     #[allow(clippy::enum_glob_use)]
     use Race::*;
+    use anyhow::bail;
     match value {
         0 => Ok(Human),
         1 => Ok(Elf),
@@ -522,8 +520,18 @@ mod tests {
         assert_eq!(char_info.get_max_hp().to_bits(), 300f64.to_bits());
         assert_eq!(char_info.get_max_mp().to_bits(), 400f64.to_bits());
         assert_eq!(char_info.get_max_cp().to_bits(), 500f64.to_bits());
-        assert_eq!(char_info.try_get_paper_doll_visual_id(PaperDoll::Hair).unwrap(), 3);
-        assert_eq!(char_info.try_get_paper_doll_item_id(PaperDoll::RHand).unwrap(), 2);
+        assert_eq!(
+            char_info
+                .try_get_paper_doll_visual_id(PaperDoll::Hair)
+                .unwrap(),
+            3
+        );
+        assert_eq!(
+            char_info
+                .try_get_paper_doll_item_id(PaperDoll::RHand)
+                .unwrap(),
+            2
+        );
         assert_eq!(char_info.get_enchant_effect(PaperDoll::RHand), 0);
         assert_eq!(char_info.get_hair_style(), 3);
         assert_eq!(char_info.get_transform_id(), 2);
