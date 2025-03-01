@@ -5,7 +5,7 @@ use anyhow::bail;
 use async_trait::async_trait;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::handlers::PacketSender;
 
 #[derive(Debug, Clone)]
 pub struct SelectChar {
@@ -62,6 +62,7 @@ mod tests {
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServer;
     use l2_core::session::SessionKey;
+    use l2_core::traits::handlers::PacketHandler;
     use l2_core::traits::ServerConfig;
     use test_utils::utils::get_test_db;
     use crate::controller::Controller;

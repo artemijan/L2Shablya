@@ -1,11 +1,14 @@
 use crate::client_thread::{ClientHandler, ClientStatus};
 use crate::ls_thread::LoginHandler;
+use crate::packets::to_client::UserInfo;
 use crate::packets::HandleablePacket;
 use anyhow::bail;
 use async_trait::async_trait;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerTracert;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
+use l2_core::traits::handlers::PacketSender;
+use l2_core::model::user_info::UserInfoType;
 use tracing::info;
 
 #[derive(Debug, Clone, Default)]
@@ -14,7 +17,7 @@ pub struct EnterWorld {
 }
 
 impl ReadablePacket for EnterWorld {
-    const PACKET_ID: u8 = 0x12;
+    const PACKET_ID: u8 = 0x11;
     const EX_PACKET_ID: Option<u16> = None;
     fn read(data: &[u8]) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
@@ -74,10 +77,15 @@ impl HandleablePacket for EnterWorld {
                 )?),
             )
             .await?;
-        let _player = handler.try_get_selected_char()?;
+        let player = handler.try_get_selected_char()?;
+        
+        handler.send_packet(Box::new(UserInfo::new(player, UserInfoType::all())?)).await?;
+        //todo: send user info
+        //todo: restore player in the instance
         //todo: send clan packet
         if config.rates.enable_vitality {
             info!("Vitality enabled.");
+            //todo: send vitality packet
         }
         //todo: send macro list packet
         //todo: send teleport bookmark list

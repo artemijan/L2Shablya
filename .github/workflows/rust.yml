@@ -23,8 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Update Rust stable version
-        run: rustup update stable
       - uses: actions/cache@v4
         with:
           path: |
@@ -56,8 +54,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Update Rust stable version
-        run: rustup update stable
       - uses: actions/cache@v4
         with:
           path: |

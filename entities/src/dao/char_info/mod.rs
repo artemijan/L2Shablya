@@ -1,122 +1,12 @@
-use crate::entities::{character, item};
 use chrono::Utc;
 use serde_json::Value;
-
-#[derive(Debug, Clone)]
-pub enum CharVariables {
-    VisualHairStyleId,
-    VisualHairColorId,
-    VisualFaceId,
-    HairAccessoryEnabled,
-    VitalityItemsUsed,
-}
-
-impl CharVariables {
-    #[must_use]
-    pub fn as_key(&self) -> &'static str {
-        match self {
-            CharVariables::VisualHairStyleId => "visualHairStyleId",
-            CharVariables::VisualHairColorId => "visualHairColorId",
-            CharVariables::VisualFaceId => "visualFaceId",
-            CharVariables::HairAccessoryEnabled => "hairAccessoryEnabled",
-            CharVariables::VitalityItemsUsed => "vitalityItemsUsed",
-        }
-    }
-}
-
-#[repr(i32)]
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum PaperDoll {
-    Under = 0,
-    Head = 1,
-    Hair = 2,
-    Hair2 = 3,
-    Neck = 4,
-    RHand = 5,
-    Chest = 6,
-    LHand = 7,
-    Rear = 8,
-    Lear = 9,
-    Gloves = 10,
-    Legs = 11,
-    Feet = 12,
-    RFinger = 13,
-    LFinger = 14,
-    LBracelet = 15,
-    RBracelet = 16,
-    Deco1 = 17,
-    Deco2 = 18,
-    Deco3 = 19,
-    Deco4 = 20,
-    Deco5 = 21,
-    Deco6 = 22,
-    Cloak = 23,
-    Belt = 24,
-    Brooch = 25,
-    BroochJewel1 = 26,
-    BroochJewel2 = 27,
-    BroochJewel3 = 28,
-    BroochJewel4 = 29,
-    BroochJewel5 = 30,
-    BroochJewel6 = 31,
-    TotalSlots = 32,
-}
-
-impl PaperDoll {
-    #[must_use]
-    pub fn ordered_ids() -> [PaperDoll; 33] {
-        [
-            Self::Under,
-            Self::Rear,
-            Self::Lear,
-            Self::Neck,
-            Self::RFinger,
-            Self::LFinger,
-            Self::Head,
-            Self::RHand,
-            Self::LHand,
-            Self::Gloves,
-            Self::Chest,
-            Self::Legs,
-            Self::Feet,
-            Self::Cloak,
-            Self::RHand, // I don't give a fuck why Rhand declared twice, copied as is from L2j
-            Self::Hair,
-            Self::Hair2,
-            Self::RBracelet,
-            Self::LBracelet,
-            Self::Deco1,
-            Self::Deco2,
-            Self::Deco3,
-            Self::Deco4,
-            Self::Deco5,
-            Self::Deco6,
-            Self::Belt,
-            Self::Brooch,
-            Self::BroochJewel1,
-            Self::BroochJewel2,
-            Self::BroochJewel3,
-            Self::BroochJewel4,
-            Self::BroochJewel5,
-            Self::BroochJewel6,
-        ]
-    }
-
-    #[must_use]
-    pub fn visual_ids() -> [PaperDoll; 9] {
-        [
-            Self::RHand,
-            Self::LHand,
-            Self::Gloves,
-            Self::Chest,
-            Self::Legs,
-            Self::Feet,
-            Self::RHand, // I don't give a fuck why Rhand declared twice, copied as is from L2j
-            Self::Hair,
-            Self::Hair2,
-        ]
-    }
-}
+use crate::entities::{character, item};
+mod paper_doll;
+mod race;
+mod variables;
+pub use race::*;
+pub use variables::*;
+pub use paper_doll::*;
 
 #[derive(Debug, Clone)]
 pub struct CharacterInfo {
@@ -144,6 +34,7 @@ impl CharacterInfo {
         self.paper_doll_item_id(slot)
             .ok_or(anyhow::anyhow!("No paper doll item id at slot {slot:?}"))
     }
+    #[must_use]
     pub fn is_dead(&self) -> bool {
         self.char_model.cur_hp <= 0.5
     }
@@ -266,91 +157,7 @@ impl CharacterInfo {
     }
 }
 
-#[repr(i32)]
-#[derive(Clone, Debug, Copy, Hash, PartialOrd, Ord, Eq, PartialEq)]
-pub enum Race {
-    Human,
-    Elf,
-    DarkElf,
-    Orc,
-    Dwarf,
-    Kamael,
-    Ertheia,
-    Animal,
-    Beast,
-    Bug,
-    CastleGuard,
-    Construct,
-    Demonic,
-    Divine,
-    Dragon,
-    Elemental,
-    Etc,
-    Fairy,
-    Giant,
-    Humanoid,
-    Mercenary,
-    None,
-    Plant,
-    SiegeWeapon,
-    Undead,
-    Friend,
-}
 
-fn try_from(value: i32) -> anyhow::Result<Race> {
-    #[allow(clippy::enum_glob_use)]
-    use Race::*;
-    use anyhow::bail;
-    match value {
-        0 => Ok(Human),
-        1 => Ok(Elf),
-        2 => Ok(DarkElf),
-        3 => Ok(Orc),
-        4 => Ok(Dwarf),
-        5 => Ok(Kamael),
-        6 => Ok(Ertheia),
-        7 => Ok(Animal),
-        8 => Ok(Beast),
-        9 => Ok(Bug),
-        10 => Ok(CastleGuard),
-        11 => Ok(Construct),
-        12 => Ok(Demonic),
-        13 => Ok(Divine),
-        14 => Ok(Dragon),
-        15 => Ok(Elemental),
-        16 => Ok(Etc),
-        17 => Ok(Fairy),
-        18 => Ok(Giant),
-        19 => Ok(Humanoid),
-        20 => Ok(Mercenary),
-        21 => Ok(None),
-        22 => Ok(Plant),
-        23 => Ok(SiegeWeapon),
-        24 => Ok(Undead),
-        _ => bail!("Unknown race value: {}", value),
-    }
-}
-
-impl TryFrom<i32> for Race {
-    type Error = anyhow::Error;
-    fn try_from(value: i32) -> anyhow::Result<Self> {
-        try_from(value)
-    }
-}
-
-impl TryFrom<i8> for Race {
-    type Error = anyhow::Error;
-    fn try_from(value: i8) -> anyhow::Result<Self> {
-        try_from(value.into())
-    }
-}
-
-impl TryFrom<u8> for Race {
-    type Error = anyhow::Error;
-    fn try_from(value: u8) -> anyhow::Result<Self> {
-        try_from(value.into())
-    }
-}
 
 #[cfg(test)]
 mod tests {
@@ -448,7 +255,7 @@ mod tests {
         ];
 
         for (input, expected) in test_cases {
-            assert_eq!(try_from(input).unwrap(), expected);
+            assert_eq!(Race::try_from(input).unwrap(), expected);
         }
     }
     #[test]
@@ -457,7 +264,7 @@ mod tests {
 
         for &value in &invalid_values {
             assert!(
-                try_from(value).is_err(),
+                Race::try_from(value).is_err(),
                 "Expected error for value: {value}"
             );
         }
@@ -483,7 +290,7 @@ mod tests {
             ch.delete_at = Some(now.into());
             ch
         })
-        .await;
+            .await;
         let item1 = item_factory(&db_pool, |mut it| {
             it.owner = char.id;
             it.variations = json!({
@@ -493,7 +300,7 @@ mod tests {
             });
             it
         })
-        .await;
+            .await;
         let item2 = item_factory(&db_pool, |mut it| {
             it.owner = char.id;
             it.item_id = 2;
@@ -507,7 +314,7 @@ mod tests {
             it.loc_data = PaperDoll::Hair as i32;
             it
         })
-        .await;
+            .await;
         let items = vec![item1, item2];
         let char_info = CharacterInfo::new(char, items).unwrap();
         let weapon = char_info.get_weapon().unwrap();

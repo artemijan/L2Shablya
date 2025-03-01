@@ -6,7 +6,7 @@ use async_trait::async_trait;
 use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::handlers::PacketSender;
 
 #[derive(Debug, Clone)]
 pub struct RestoreChar {
@@ -70,6 +70,7 @@ mod tests {
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncWriteExt};
+    use l2_core::traits::handlers::PacketHandler;
 
     #[tokio::test]
     #[timeout(3000)]

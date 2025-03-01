@@ -17,6 +17,7 @@ pub struct RSAPublicKey {
 }
 
 impl RSAPublicKey {
+    #[must_use]
     pub fn new(key: rsa::RsaPublicKey) -> Self {
         Self { key }
     }

@@ -11,7 +11,7 @@ use entities::dao::char_info::CharacterInfo;
 use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::handlers::PacketSender;
 use sea_orm::DbErr;
 use tracing::error;
 
@@ -144,6 +144,8 @@ mod tests {
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncWriteExt};
+    use l2_core::traits::handlers::PacketHandler;
+
     fn build_packet() -> CreateCharRequest {
         let mut data = vec![];
         data.extend_from_slice(&[116, 0, 101, 0, 115, 0, 116, 0, 0, 0]);

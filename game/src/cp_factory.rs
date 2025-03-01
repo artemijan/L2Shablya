@@ -4,6 +4,7 @@ use crate::packets::from_client::char_create::CreateCharRequest;
 use crate::packets::from_client::char_restore::RestoreChar;
 use crate::packets::from_client::char_select::SelectChar;
 use crate::packets::from_client::delete_char::DeleteChar;
+use crate::packets::from_client::enter_world::EnterWorld;
 use crate::packets::from_client::extended::{
     CheckCharName, GoLobby, RequestUserBanInfo, SendClientIni,
 };
@@ -32,6 +33,7 @@ pub fn build_client_packet(
         DeleteChar::PACKET_ID => Ok(Box::new(DeleteChar::read(packet_body)?)),
         RestoreChar::PACKET_ID => Ok(Box::new(RestoreChar::read(packet_body)?)),
         SelectChar::PACKET_ID => Ok(Box::new(SelectChar::read(packet_body)?)),
+        EnterWorld::PACKET_ID => Ok(Box::new(EnterWorld::read(packet_body)?)),
         0xD0 => build_ex_client_packet(packet_body),
         _ => {
             error!("Unknown GS packet ID: 0x{:02X}", data[0]);

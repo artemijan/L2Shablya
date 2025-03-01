@@ -1,6 +1,6 @@
 use crate::errors::Packet;
-use blowfish::cipher::{BlockDecrypt, BlockEncrypt, KeyInit};
 use blowfish::BlowfishLE;
+use blowfish::cipher::{BlockDecrypt, BlockEncrypt, KeyInit};
 
 #[derive(Debug, Clone)]
 pub struct Encryption {
@@ -19,8 +19,8 @@ impl Encryption {
         let cipher = BlowfishLE::new_from_slice(key).expect("Received invalid blowfish key");
         Encryption { cipher }
     }
-    
-    #[allow(clippy::missing_panics_doc)]
+
+    #[allow(clippy::missing_errors_doc)]
     pub fn try_from_u8_key(key: &[u8]) -> anyhow::Result<Self> {
         let cipher = BlowfishLE::new_from_slice(key)?;
         Ok(Encryption { cipher })
@@ -69,10 +69,10 @@ impl Encryption {
         let mut ecx = key; // Initial xor key
 
         while pos < stop {
-            let edx = u32::from(raw[pos]) & 0xFF
-                | (u32::from(raw[pos + 1]) & 0xFF) << 8
-                | (u32::from(raw[pos + 2]) & 0xFF) << 16
-                | (u32::from(raw[pos + 3]) & 0xFF) << 24;
+            let edx = (u32::from(raw[pos]) & 0xFF)
+                | ((u32::from(raw[pos + 1]) & 0xFF) << 8)
+                | ((u32::from(raw[pos + 2]) & 0xFF) << 16)
+                | ((u32::from(raw[pos + 3]) & 0xFF) << 24);
 
             ecx = ecx.wrapping_add(edx);
             let edx_xor = edx ^ ecx;
