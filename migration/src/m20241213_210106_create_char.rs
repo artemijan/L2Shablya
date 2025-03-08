@@ -60,7 +60,7 @@ impl MigrationTrait for Migration {
                     .col(unsigned_null(Character::ClanPrivs).default(0))
                     .col(tiny_unsigned_null(Character::WantsPeace).default(0))
                     .col(tiny_unsigned_null(Character::PowerGrade))
-                    .col(boolean(Character::Nobless).default(0))
+                    .col(boolean(Character::Nobless).default(false))
                     .col(small_unsigned_null(Character::SubPledge).default(0))
                     .col(tiny_unsigned(Character::LvlJoinedAcademy).default(0))
                     .col(unsigned(Character::Apprentice).default(0))
@@ -132,7 +132,7 @@ pub enum Character {
     RbPoints,
     PvpKills,
     PkKills,
-    //ClanId,
+    ClanId,
     RaceId,
     ClassId,
     BaseClassId,
