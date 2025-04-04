@@ -69,7 +69,7 @@ impl ServerList {
             self.buffer.write_i32(1024)?; // 1: Normal, 2: Relax, 4: Public Test, 8: No Label, 16: Character Creation Restricted, 32: Event, 64: Free
             self.buffer.write_bool(server.brackets)?;
         }
-        self.buffer.write_i16(0xA4)?; //unknown
+        self.buffer.write_i16(0xA4i16)?; //unknown
         if let Some(ref servers) = self.chars_on_server {
             for (server_id, info) in servers {
                 self.buffer.write(*server_id)?;

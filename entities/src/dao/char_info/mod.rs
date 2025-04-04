@@ -1,18 +1,37 @@
+use crate::entities::{character, item};
 use chrono::Utc;
 use serde_json::Value;
-use crate::entities::{character, item};
 mod paper_doll;
 mod race;
 mod variables;
+pub use paper_doll::*;
 pub use race::*;
 pub use variables::*;
-pub use paper_doll::*;
 
+#[derive(Debug, Clone)]
+pub struct Party {
+    //todo: implement me
+    players: Vec<i32>,
+    leader: i32,
+}
+impl Party {
+    #[must_use]
+    pub fn get_leader(&self) -> i32 {
+        self.leader
+    }
+    /// This method doesn't return party leader
+    #[must_use]
+    pub fn get_players(&self) -> &[i32] {
+        &self.players
+    }
+}
 #[derive(Debug, Clone)]
 pub struct CharacterInfo {
     pub char_model: character::Model,
     pub items: Vec<item::Model>,
+    pub party: Option<Party>,
     pub paperdoll: [[i32; 4]; 33],
+    pub is_in_siege: bool,
 }
 
 #[allow(clippy::missing_errors_doc)]
@@ -22,8 +41,59 @@ impl CharacterInfo {
         Ok(Self {
             char_model,
             items,
+            party: None,
             paperdoll,
+            is_in_siege: false,
         })
+    }
+    #[must_use]
+    pub fn get_visible_name(&self) -> &str {
+        &self.char_model.name
+    }
+
+    #[must_use]
+    pub fn get_str(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_con(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_dex(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_men(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+
+    #[must_use]
+    pub fn get_int(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_wit(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+
+    #[must_use]
+    pub fn is_gm(&self) -> bool {
+        // todo: implement me
+        self.char_model.access_level >= 0
+    }
+    #[must_use]
+    pub fn get_visible_name_length(&self) -> usize {
+        self.char_model.name.len() * 2
+    }
+    pub fn set_party(&mut self, party: Option<Party>) {
+        self.party = party;
     }
     #[must_use]
     pub fn paper_doll_item_id(&self, slot: PaperDoll) -> Option<i32> {
@@ -34,10 +104,12 @@ impl CharacterInfo {
         self.paper_doll_item_id(slot)
             .ok_or(anyhow::anyhow!("No paper doll item id at slot {slot:?}"))
     }
+
     #[must_use]
     pub fn is_dead(&self) -> bool {
         self.char_model.cur_hp <= 0.5
     }
+
     #[must_use]
     pub fn get_item(&self, item_obj_id: i32) -> Option<&item::Model> {
         self.items.iter().find(|i| i.id == item_obj_id)
@@ -50,6 +122,19 @@ impl CharacterInfo {
         }
         None
     }
+    #[must_use]
+    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+    pub fn get_weapon_enchant(&self) -> u8 {
+        self.get_weapon().map_or(0, |w| w.enchant_level) as u8
+    }
+
+    #[must_use]
+    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+    pub fn get_min_armor_enchant(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+
     pub fn try_get_race(&self) -> anyhow::Result<Race> {
         Race::try_from(self.char_model.race_id)
     }
@@ -135,6 +220,27 @@ impl CharacterInfo {
         0
     }
     #[must_use]
+    pub fn get_relation(&self, is_clan_leader: bool) -> u32 {
+        let mut relation = 0;
+        if let Some(pt) = self.party.as_ref() {
+            relation |= 0x08;
+            if pt.get_leader() == self.char_model.id {
+                relation |= 0x10;
+            }
+        }
+        if self.char_model.clan_id.is_some() {
+            relation |= 0x20;
+
+            if is_clan_leader {
+                relation |= 0x40;
+            }
+        }
+        if self.is_in_siege {
+            relation |= 0x80;
+        }
+        relation
+    }
+    #[must_use]
     pub fn get_vitality_used(&self) -> i32 {
         self.char_model
             .variables
@@ -156,8 +262,6 @@ impl CharacterInfo {
         i32::from(self.char_model.transform_id)
     }
 }
-
-
 
 #[cfg(test)]
 mod tests {
@@ -290,7 +394,7 @@ mod tests {
             ch.delete_at = Some(now.into());
             ch
         })
-            .await;
+        .await;
         let item1 = item_factory(&db_pool, |mut it| {
             it.owner = char.id;
             it.variations = json!({
@@ -300,7 +404,7 @@ mod tests {
             });
             it
         })
-            .await;
+        .await;
         let item2 = item_factory(&db_pool, |mut it| {
             it.owner = char.id;
             it.item_id = 2;
@@ -314,7 +418,7 @@ mod tests {
             it.loc_data = PaperDoll::Hair as i32;
             it
         })
-            .await;
+        .await;
         let items = vec![item1, item2];
         let char_info = CharacterInfo::new(char, items).unwrap();
         let weapon = char_info.get_weapon().unwrap();

@@ -15,7 +15,6 @@ impl character::Model {
             .await?
             .is_some())
     }
-
     pub async fn create_char(
         db_pool: &DBPool,
         c: character::Model,
@@ -100,11 +99,12 @@ impl character::Model {
                 result[slot as usize][0] = item.id;
                 result[slot as usize][1] = item.item_id;
                 result[slot as usize][2] = item.enchant_level;
-                result[slot as usize][3] = i32::try_from(item
-                    .variables
-                    .get(ItemVariables::VisualId.as_key())
-                    .and_then(serde_json::Value::as_i64)
-                    .unwrap_or(0))?;
+                result[slot as usize][3] = i32::try_from(
+                    item.variables
+                        .get(ItemVariables::VisualId.as_key())
+                        .and_then(serde_json::Value::as_i64)
+                        .unwrap_or(0),
+                )?;
                 if result[slot as usize][3] > 0 {
                     // fix for hair appearance conflicting with original model
                     result[slot as usize][1] = result[slot as usize][3];

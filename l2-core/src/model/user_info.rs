@@ -29,6 +29,12 @@ pub enum UserInfoType {
     TrueHero = 0x16,
 }
 
+impl From<UserInfoType> for u32 {
+    fn from(value: UserInfoType) -> Self {
+        value as u32
+    }
+}
+
 impl UserInfoType {
     #[must_use]
     pub fn mask() -> BitMask {

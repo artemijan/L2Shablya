@@ -59,7 +59,7 @@ mod tests {
         let (mut client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let cfg = get_gs_config();
-        let controller = Arc::new(Controller::new(Arc::new(cfg)));
+        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
         let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool, controller);
 
         let res = pack.handle(&mut ch).await;

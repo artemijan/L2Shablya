@@ -148,7 +148,7 @@ mod tests {
         let cfg = Arc::new(GSServer::from_string(include_str!(
             "../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::new(cfg));
+        let controller = Arc::new(Controller::from_config(cfg));
         let (r, w) = split(server);
         let mut lh = LoginHandler::new(r, w, Ipv4Addr::LOCALHOST, db_pool, controller);
         assert_eq!(format!("{lh:?}"), "Client { ip: 127.0.0.1, .. }");

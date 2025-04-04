@@ -60,7 +60,7 @@ mod tests {
         let cfg = Arc::new(GSServer::from_string(include_str!(
             "../../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::new(cfg));
+        let controller = Arc::new(Controller::from_config(cfg));
         let mut ch = ClientHandler::new(r,w, Ipv4Addr::LOCALHOST,pool, controller);
         pack.handle(&mut ch).await.unwrap();
         tokio::spawn(async move {

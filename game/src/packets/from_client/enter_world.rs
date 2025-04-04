@@ -4,11 +4,11 @@ use crate::packets::to_client::UserInfo;
 use crate::packets::HandleablePacket;
 use anyhow::bail;
 use async_trait::async_trait;
+use l2_core::model::user_info::UserInfoType;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerTracert;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::traits::handlers::PacketSender;
-use l2_core::model::user_info::UserInfoType;
 use tracing::info;
 
 #[derive(Debug, Clone, Default)]
@@ -78,8 +78,12 @@ impl HandleablePacket for EnterWorld {
             )
             .await?;
         let player = handler.try_get_selected_char()?;
-        
-        handler.send_packet(Box::new(UserInfo::new(player, UserInfoType::all())?)).await?;
+
+        handler
+            .send_packet(Box::new(
+                UserInfo::new(player, UserInfoType::all(), controller).await?,
+            ))
+            .await?;
         //todo: send user info
         //todo: restore player in the instance
         //todo: send clan packet

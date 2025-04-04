@@ -24,8 +24,9 @@ impl SendablePacketBuffer {
         Self { data }
     }
 
-    pub fn write(&mut self, value: u8) -> Res<()> {
-        self.data.put_u8(value);
+    pub fn write<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<u8>{
+        self.data.put_u8(value.into());
         Ok(())
     }
     pub fn write_bytes(&mut self, value: &[u8]) -> Res<()> {
@@ -40,7 +41,7 @@ impl SendablePacketBuffer {
                     .map_err(|_| Packet::Encode("UTF_16LE".to_owned()))?,
             )?;
         }
-        self.write_i16(0) //null char for C-like strings
+        self.write_i16(0i16) //null char for C-like strings
     }
     #[allow(clippy::cast_possible_wrap, clippy::cast_possible_truncation)]
     pub fn write_sized_c_utf16le_string(&mut self, value: Option<&str>) -> Res<()> {
@@ -52,66 +53,75 @@ impl SendablePacketBuffer {
                     .map_err(|_| Packet::Encode("UTF_16LE".to_owned()))?,
             )?;
         } else {
-            self.write_i16(0)?; // null char for C-like strings
+            self.write_i16(0i16)?; // null char for C-like strings
         }
         Ok(())
     }
 
     #[allow(clippy::cast_sign_loss)]
-    pub fn write_i8(&mut self, value: i8) -> Res<()> {
-        self.write(value as u8)
+    pub fn write_i8<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<i8> {
+        self.write(value.into()as u8)
     }
 
-    pub fn write_u8(&mut self, value: u8) -> Res<()> {
-        self.write(value)
+    pub fn write_u8<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<u8> {
+        self.write(value.into())
     }
 
-    pub fn write_bool(&mut self, value: bool) -> Res<()> {
-        self.write_u8(u8::from(value))
+    pub fn write_bool<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<bool>{
+        self.write_u8(u8::from(value.into()))
     }
 
-    pub fn write_i16(&mut self, value: i16) -> Res<()> {
-        self.data.put_i16_le(value);
+    pub fn write_i16<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<i16> {
+        self.data.put_i16_le(value.into());
         Ok(())
     }
 
-    pub fn write_u16(&mut self, value: u16) -> Res<()> {
-        self.data.put_u16_le(value);
-        Ok(())
-    }
-    pub fn write_i16_from_bool(&mut self, value: bool) -> Res<()> {
-        self.write_i16(i16::from(value))
-    }
-
-    pub fn write_i32(&mut self, value: i32) -> Res<()> {
-        self.data.put_i32_le(value);
+    pub fn write_u16<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<u16>
+    {
+        self.data.put_u16_le(value.into());
         Ok(())
     }
 
-    pub fn write_u32(&mut self, value: u32) -> Res<()> {
-        self.data.put_u32_le(value);
+    pub fn write_i32<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<i32> {
+        self.data.put_i32_le(value.into());
         Ok(())
     }
-    pub fn write_i32_from_bool(&mut self, value: bool) -> Res<()> {
-        self.write_i32(i32::from(value))
+
+    pub fn write_u32<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<u32>{
+        self.data.put_u32_le(value.into());
+        Ok(())
     }
 
     #[allow(clippy::cast_sign_loss)]
-    pub fn write_i64(&mut self, value: i64) -> Res<()> {
-        self.data.put_i64_le(value);
+    pub fn write_i64<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<i64> {
+        self.data.put_i64_le(value.into());
         Ok(())
     }
-    pub fn write_i64_from_bool(&mut self, value: bool) -> Res<()> {
-        self.write_i64(i64::from(value))
-    }
-
-    pub fn write_f32(&mut self, value: f32) -> Res<()> {
-        self.data.put_f32_le(value);
+    
+    #[allow(clippy::cast_sign_loss)]
+    pub fn write_u64<T>(&mut self, value: T) -> Res<()>
+    where T: Into<u64> {
+        self.data.put_u64_le(value.into());
         Ok(())
     }
 
-    pub fn write_f64(&mut self, value: f64) -> Res<()> {
-        self.data.put_f64_le(value);
+    pub fn write_f32<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<f32> {
+        self.data.put_f32_le(value.into());
+        Ok(())
+    }
+
+    pub fn write_f64<T>(&mut self, value: T) -> Res<()> 
+    where T: Into<f64> {
+        self.data.put_f64_le(value.into());
         Ok(())
     }
 
@@ -158,15 +168,15 @@ mod tests {
         packet.write(0).unwrap();
         packet.write_bool(true).unwrap();
         packet.write_i8(11).unwrap();
-        packet.write_i16(11).unwrap();
+        packet.write_i16(11i16).unwrap();
         packet.write_i32(11).unwrap();
         packet.write_i64(11).unwrap();
-        packet.write_i16_from_bool(true).unwrap();
-        packet.write_i32_from_bool(true).unwrap();
-        packet.write_i64_from_bool(true).unwrap();
+        packet.write_i16(true).unwrap();
+        packet.write_i32(true).unwrap();
+        packet.write_i64(true).unwrap();
         packet.write_u8(0).unwrap();
-        packet.write_u16(0).unwrap();
-        packet.write_u32(0).unwrap();
+        packet.write_u16(0u16).unwrap();
+        packet.write_u32(0u32).unwrap();
         packet.write_bytes(&[0, 1, 2, 3]).unwrap();
         packet.write_f32(3.45).unwrap();
         packet.write_f64(3.45).unwrap();

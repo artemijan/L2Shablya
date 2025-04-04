@@ -16,7 +16,7 @@ impl PlayerLoginResponse {
         let mut buffer = SendablePacketBuffer::new();
         buffer.write(Self::PACKET_ID)?;
         buffer.write_i32(-1)?;
-        buffer.write_u32(0)?;
+        buffer.write_u32(0u32)?;
         Ok(Self {
             buffer,
             reason: 0,

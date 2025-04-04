@@ -23,7 +23,7 @@ impl ProtocolResponse {
         buffer.write_u32(u32::from(cfg.enable_encryption))?; // 0 encryption disabled | 1 enabled
         buffer.write_u32(u32::from(cfg.server_id))?;
         buffer.write(1)?; // ???
-        buffer.write_u32(0)?; // obfuscation key
+        buffer.write_u32(0u32)?; // obfuscation key
         buffer.write(1)?; // is_classic
         Ok(ProtocolResponse {
             buffer,
@@ -38,7 +38,7 @@ impl ProtocolResponse {
         buffer.write_u32(u32::from(cfg.enable_encryption))?; // 0 encryption disabled | 1 enabled
         buffer.write_u32(u32::from(cfg.server_id))?;
         buffer.write(1)?; // ???
-        buffer.write_u32(0)?; // obfuscation key
+        buffer.write_u32(0u32)?; // obfuscation key
         buffer.write(1)?; // is_classic
         Ok(ProtocolResponse {
             buffer,

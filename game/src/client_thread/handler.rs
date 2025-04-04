@@ -394,7 +394,7 @@ mod tests {
     ) -> JoinHandle<(ClientHandler, anyhow::Result<()>)> {
         let controller = controller_opt.unwrap_or_else(|| {
             let cfg = get_gs_config();
-            Arc::new(Controller::new(Arc::new(cfg)))
+            Arc::new(Controller::from_config(Arc::new(cfg)))
         });
         let cloned_controller = controller.clone();
         // Spawn a server task to handle a single connection
@@ -503,7 +503,7 @@ mod tests {
             ch
         })
             .await;
-        let controller = Arc::new(Controller::new(Arc::new(cfg)));
+        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
         let test_packet_sender = Arc::new(TestPacketSender {
             writer: Arc::new(Mutex::new(login_client)),
         });

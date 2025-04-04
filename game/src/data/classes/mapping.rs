@@ -153,7 +153,21 @@ pub enum Class {
     FortuneSeeker = 117,
     Maestro = 118,
 }
-
+impl Into<u8> for Class {
+    fn into(self) -> u8 {
+        self as u8
+    }
+}
+impl Into<u16> for Class {
+    fn into(self) -> u16 {
+        self as u16
+    }
+}
+impl Into<u32> for Class {
+    fn into(self) -> u32 {
+        self as u32
+    }
+}
 impl TryFrom<u8> for Class {
     type Error = anyhow::Error;
     #[allow(clippy::too_many_lines)]
@@ -256,6 +270,14 @@ impl TryFrom<u8> for Class {
 }
 
 impl Class {
+    #[must_use]
+    pub fn get_root(&self) -> CharClass {
+        if self.get_class().parent.is_none() {
+            self.get_class()
+        } else {
+            self.get_root()
+        }
+    }
     #[must_use]
     #[allow(clippy::too_many_lines)]
     pub fn get_class(self) -> CharClass {

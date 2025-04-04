@@ -33,7 +33,7 @@ impl CharSelectionInfo {
         buffer.write_u32(u32::from(cfg.max_chars_on_account))?;
         buffer.write_bool(char_len == u32::from(cfg.max_chars_on_account))?;
         buffer.write(1)?; // 0=can't play, 1=can play free until level 85, 2=100% free play
-        buffer.write_u32(2)?; // if 1, Korean client
+        buffer.write_u32(2u32)?; // if 1, Korean client
         buffer.write(0)?; // Balthus Knights, if 1 suggests premium account
         let mut last_access = None;
         let mut active_id = -1;
@@ -158,7 +158,7 @@ mod tests {
         };
         let char = CharacterInfo::new(inst, vec![]).unwrap();
         let cfg = get_gs_config();
-        let controller = Arc::new(Controller::new(Arc::new(cfg)));
+        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
         let mut packet = CharSelectionInfo::new("admin", 1, &controller, &vec![char]).unwrap();
         assert_eq!(
             [

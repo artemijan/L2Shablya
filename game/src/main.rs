@@ -14,6 +14,7 @@ mod packets;
 mod ls_thread;
 pub mod data;
 mod tests;
+pub mod managers;
 
 pub struct GameServer;
 
@@ -38,7 +39,7 @@ pub fn main() {
         .with_target(false)
         .init();
     GameServer::bootstrap("config/game.yaml", |cfg, db_pool| async move {
-        let controller = Arc::new(Controller::new(cfg.clone()));
+        let controller = Arc::new(Controller::new(cfg.clone(), &db_pool).await);
         let mut ls_handle = GameServer::connector_loop::<LoginHandler>(
             cfg.clone(),
             controller.clone(),

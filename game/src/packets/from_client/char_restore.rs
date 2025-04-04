@@ -82,7 +82,7 @@ mod tests {
         let cfg = Arc::new(GSServer::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::new(cfg));
+        let controller = Arc::new(Controller::from_config(cfg));
         controller.add_online_account(String::from("test"));
         let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
         ch.set_status(ClientStatus::Authenticated);
@@ -109,7 +109,7 @@ mod tests {
         let cfg = Arc::new(GSServer::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::new(cfg));
+        let controller = Arc::new(Controller::from_config(cfg));
         controller.add_online_account(String::from("test"));
         let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
         ch.set_status(ClientStatus::Authenticated);
@@ -140,7 +140,7 @@ mod tests {
         let cfg = Arc::new(GSServer::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::new(cfg));
+        let controller = Arc::new(Controller::from_config(cfg));
         controller.add_online_account(String::from("test"));
         let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
         ch.set_status(ClientStatus::Authenticated);
