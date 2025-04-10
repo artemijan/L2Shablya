@@ -153,16 +153,19 @@ pub enum Class {
     FortuneSeeker = 117,
     Maestro = 118,
 }
+#[allow(clippy::from_over_into)]
 impl Into<u8> for Class {
     fn into(self) -> u8 {
         self as u8
     }
 }
+#[allow(clippy::from_over_into)]
 impl Into<u16> for Class {
     fn into(self) -> u16 {
         self as u16
     }
 }
+#[allow(clippy::from_over_into)]
 impl Into<u32> for Class {
     fn into(self) -> u32 {
         self as u32
@@ -266,6 +269,14 @@ impl TryFrom<u8> for Class {
             118 => Ok(Maestro),
             _ => bail!("Invalid class ID"),
         }
+    }
+}
+
+impl TryFrom<i8> for Class {
+    type Error = anyhow::Error;
+    #[allow(clippy::cast_sign_loss)]
+    fn try_from(value: i8) -> anyhow::Result<Self> {
+        Class::try_from(value as u8)
     }
 }
 
