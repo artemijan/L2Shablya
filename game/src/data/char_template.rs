@@ -1,7 +1,6 @@
 use crate::data::base_stat::{BaseStat, CreatureParameter};
 use crate::data::classes::mapping::Class;
 use anyhow::bail;
-use entities::dao::char_info::CharVariables;
 use entities::entities::character;
 use l2_core::config::traits::{LoadFileHandler, Loadable};
 use macro_common::config_dir;
@@ -11,6 +10,7 @@ use serde::{Deserialize, Deserializer};
 use serde_json::json;
 use std::collections::HashMap;
 use tracing::info;
+use l2_core::game_objects::player::vars::CharVariables;
 
 #[derive(Clone, Debug, Default)]
 #[config_dir(path = "config/data/stats/chars/base_stats", post_load)]

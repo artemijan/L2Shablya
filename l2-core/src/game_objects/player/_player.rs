@@ -1,32 +1,14 @@
-use crate::entities::{character, item};
 use chrono::Utc;
 use serde_json::Value;
-mod paper_doll;
-mod race;
-mod variables;
-pub use paper_doll::*;
-pub use race::*;
-pub use variables::*;
+use entities::entities::{character, item};
+use crate::game_objects::paper_doll::PaperDoll;
+use crate::game_objects::player::party::Party;
+use crate::game_objects::player::vars::CharVariables;
+use crate::game_objects::race::Race;
+
 
 #[derive(Debug, Clone)]
-pub struct Party {
-    //todo: implement me
-    players: Vec<i32>,
-    leader: i32,
-}
-impl Party {
-    #[must_use]
-    pub fn get_leader(&self) -> i32 {
-        self.leader
-    }
-    /// This method doesn't return party leader
-    #[must_use]
-    pub fn get_players(&self) -> &[i32] {
-        &self.players
-    }
-}
-#[derive(Debug, Clone)]
-pub struct CharacterInfo {
+pub struct Player {
     pub char_model: character::Model,
     pub items: Vec<item::Model>,
     pub party: Option<Party>,
@@ -35,7 +17,7 @@ pub struct CharacterInfo {
 }
 
 #[allow(clippy::missing_errors_doc)]
-impl CharacterInfo {
+impl Player {
     pub fn new(char_model: character::Model, items: Vec<item::Model>) -> anyhow::Result<Self> {
         let paperdoll = char_model.restore_visible_inventory(&items)?;
         Ok(Self {
@@ -266,9 +248,9 @@ impl CharacterInfo {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::dao::item::{ItemVariables, ItemVariations, LocType};
-    use crate::test_factories::factories::{char_factory, item_factory, user_factory};
     use serde_json::json;
+    use entities::dao::item::{ItemVariables, ItemVariations, LocType};
+    use entities::test_factories::factories::{char_factory, item_factory, user_factory};
     use test_utils::utils::get_test_db;
 
     #[test]
@@ -394,7 +376,7 @@ mod tests {
             ch.delete_at = Some(now.into());
             ch
         })
-        .await;
+            .await;
         let item1 = item_factory(&db_pool, |mut it| {
             it.owner = char.id;
             it.variations = json!({
@@ -404,7 +386,7 @@ mod tests {
             });
             it
         })
-        .await;
+            .await;
         let item2 = item_factory(&db_pool, |mut it| {
             it.owner = char.id;
             it.item_id = 2;
@@ -418,9 +400,9 @@ mod tests {
             it.loc_data = PaperDoll::Hair as i32;
             it
         })
-        .await;
+            .await;
         let items = vec![item1, item2];
-        let char_info = CharacterInfo::new(char, items).unwrap();
+        let char_info = Player::new(char, items).unwrap();
         let weapon = char_info.get_weapon().unwrap();
         let augmentation = weapon.get_augmentation().unwrap();
         assert_eq!((9, 3, 5), augmentation);

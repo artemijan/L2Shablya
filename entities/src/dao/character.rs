@@ -1,4 +1,3 @@
-use crate::dao::char_info::CharacterInfo;
 use crate::dao::item::{ItemVariables, LocType};
 use crate::entities::{character, item, user};
 use crate::DBPool;
@@ -59,7 +58,7 @@ impl character::Model {
         db_pool: &DBPool,
         username: &str,
         loc_type: LocType,
-    ) -> anyhow::Result<Vec<CharacterInfo>> {
+    ) -> anyhow::Result<Vec<(character::Model, Vec<item::Model>)>> {
         let characters = character::Entity::find()
             .order_by(character::Column::DeleteAt, Order::Asc)
             .order_by(character::Column::CreatedAt, Order::Asc)
@@ -69,16 +68,16 @@ impl character::Model {
             .all(db_pool)
             .await?;
 
-        characters
+        Ok(characters
             .into_iter()
             .map(|(char, items)| {
-                CharacterInfo::new(
+                (
                     char,
                     //todo optimize query maybe there is a way to do filtering on DB level for items
                     items.into_iter().filter(|i| i.loc == loc_type).collect(),
                 )
             })
-            .collect()
+            .collect())
     }
 
     #[must_use]
@@ -118,7 +117,6 @@ impl character::Model {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::dao::char_info::PaperDoll;
     use crate::test_factories::factories::{char_factory, item_factory, user_factory};
     use test_utils::utils::get_test_db;
 
@@ -134,7 +132,7 @@ mod tests {
         let item = item_factory(&db_pool, |mut c| {
             c.item_id = 10;
             c.owner = char.id;
-            c.loc_data = PaperDoll::RHand as i32;
+            c.loc_data = 5; // RHand
             c
         })
         .await;
@@ -144,10 +142,10 @@ mod tests {
                 .await
                 .unwrap();
         assert_eq!(chars.len(), 1);
-        assert_eq!(chars[0].char_model.id, char.id);
-        assert_eq!(chars[0].items.len(), 1);
-        assert_eq!(chars[0].items[0].loc, LocType::Paperdoll);
-        assert_eq!(chars[0].items[0].item_id, item.item_id);
+        assert_eq!(chars[0].0.id, char.id);
+        assert_eq!(chars[0].1.len(), 1);
+        assert_eq!(chars[0].1[0].loc, LocType::Paperdoll);
+        assert_eq!(chars[0].1[0].item_id, item.item_id);
     }
     #[tokio::test]
     async fn test_find_by_username() {

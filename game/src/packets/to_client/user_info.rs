@@ -1,8 +1,8 @@
 use crate::controller::Controller;
 use crate::data::classes::mapping::Class;
-use entities::dao::char_info::CharacterInfo;
 use l2_core::bitmask::BitMask;
-use l2_core::model::user_info::UserInfoType;
+use l2_core::game_objects::player::Player;
+use l2_core::game_objects::player::user_info::UserInfoType;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
 
@@ -20,7 +20,7 @@ impl UserInfo {
     const PACKET_ID: u8 = 0x32;
     const EX_PACKET_ID: Option<u16> = None;
     pub async fn new(
-        char_info: &CharacterInfo,
+        char_info: &Player,
         user_info_flags: BitMask,
         controller: &Controller,
     ) -> anyhow::Result<Self> {

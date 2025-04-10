@@ -59,7 +59,6 @@ mod tests {
     use super::*;
     use crate::client_thread::ClientStatus;
     use crate::controller::Controller;
-    use entities::dao::char_info::CharacterInfo;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServer;
     use l2_core::session::SessionKey;
@@ -70,6 +69,7 @@ mod tests {
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncWriteExt};
+    use l2_core::game_objects::player::Player;
     use l2_core::traits::handlers::PacketHandler;
 
     #[tokio::test]
@@ -125,7 +125,7 @@ mod tests {
         })
         .await;
         ch.set_user(user);
-        ch.set_account_chars(vec![CharacterInfo::new(char_model, vec![]).unwrap()]);
+        ch.set_account_chars(vec![Player::new(char_model, vec![]).unwrap()]);
         let res = pack.handle(&mut ch).await;
         assert!(res.is_err());
         client.shutdown().await.unwrap();
@@ -157,7 +157,7 @@ mod tests {
         })
         .await;
         ch.set_user(user);
-        ch.set_account_chars(vec![CharacterInfo::new(char_model, vec![]).unwrap()]);
+        ch.set_account_chars(vec![Player::new(char_model, vec![]).unwrap()]);
         let res = pack.handle(&mut ch).await;
         assert!(res.is_err());
         ch.set_session_key(SessionKey::new());

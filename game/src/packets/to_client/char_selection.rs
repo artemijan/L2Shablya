@@ -1,9 +1,10 @@
 use crate::controller::Controller;
-use entities::dao::char_info::{CharacterInfo, PaperDoll};
 use entities::entities::item;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
 use std::sync::Arc;
+use l2_core::game_objects::paper_doll::PaperDoll;
+use l2_core::game_objects::player::Player;
 
 #[allow(unused)]
 #[derive(Debug, Clone, Default, SendablePacketImpl)]
@@ -22,7 +23,7 @@ impl CharSelectionInfo {
         account_name: &str,
         session_id: i32,
         controller: &Arc<Controller>,
-        chars: &[CharacterInfo],
+        chars: &[Player],
     ) -> anyhow::Result<Self> {
         let mut buffer = SendablePacketBuffer::new();
         buffer.write(Self::PACKET_ID)?;
@@ -156,7 +157,7 @@ mod tests {
             user_id: 1,
             ..Default::default()
         };
-        let char = CharacterInfo::new(inst, vec![]).unwrap();
+        let char = Player::new(inst, vec![]).unwrap();
         let cfg = get_gs_config();
         let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
         let mut packet = CharSelectionInfo::new("admin", 1, &controller, &vec![char]).unwrap();

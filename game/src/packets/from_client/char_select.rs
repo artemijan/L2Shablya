@@ -58,9 +58,9 @@ mod tests {
     use std::sync::Arc;
     use ntest::timeout;
     use tokio::io::{split, AsyncWriteExt};
-    use entities::dao::char_info::CharacterInfo;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServer;
+    use l2_core::game_objects::player::Player;
     use l2_core::session::SessionKey;
     use l2_core::traits::handlers::PacketHandler;
     use l2_core::traits::ServerConfig;
@@ -99,7 +99,7 @@ mod tests {
         ch.set_user(user);
         let res = pack.handle(&mut ch).await;
         assert!(res.is_err());
-        ch.set_account_chars(vec![CharacterInfo::new(char_model, vec![]).unwrap()]);
+        ch.set_account_chars(vec![Player::new(char_model, vec![]).unwrap()]);
         let res = pack.handle(&mut ch).await;
         assert!(res.is_ok());
         client.shutdown().await.unwrap();

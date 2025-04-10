@@ -9,6 +9,7 @@ use anyhow::bail;
 use async_trait::async_trait;
 use entities::dao::item::LocType;
 use entities::entities::{character, user};
+use l2_core::game_objects::player::Player;
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::{PacketType, ReadablePacket};
 use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
@@ -81,13 +82,17 @@ impl AuthLogin {
             LocType::Paperdoll,
         )
         .await?;
+        
+        let players= characters.into_iter().map(|(ch, items)|{
+            Player::new(ch, items)
+        }).collect::<anyhow::Result<Vec<Player>>>()?;
 
         // Prepare character selection packet
         let char_selection =
-            CharSelectionInfo::new(&self.login_name, self.play_key_1, controller, &characters)?;
+            CharSelectionInfo::new(&self.login_name, self.play_key_1, controller, &players)?;
 
         // Update handler with retrieved data
-        handler.set_account_chars(characters);
+        handler.set_account_chars(players);
         let user = user::Model::find_by_username(&db_pool, &self.login_name).await?;
         handler.set_user(user);
 

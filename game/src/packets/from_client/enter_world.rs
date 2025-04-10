@@ -4,7 +4,7 @@ use crate::packets::to_client::UserInfo;
 use crate::packets::HandleablePacket;
 use anyhow::bail;
 use async_trait::async_trait;
-use l2_core::model::user_info::UserInfoType;
+use l2_core::game_objects::player::user_info::UserInfoType;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerTracert;
 use l2_core::shared_packets::read::ReadablePacketBuffer;

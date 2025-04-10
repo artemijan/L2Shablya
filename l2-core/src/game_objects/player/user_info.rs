@@ -1,5 +1,6 @@
+use sea_orm::EnumIter;
+use sea_orm::strum::IntoEnumIterator;
 use crate::bitmask::BitMask;
-use sea_orm::{EnumIter, Iterable};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter)]
 #[repr(u32)]
@@ -82,9 +83,11 @@ impl UserInfoType {
         }
     }
 }
+
+
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::game_objects::player::user_info::UserInfoType;
     #[test]
     fn test_mask() {
         let mask = UserInfoType::all();

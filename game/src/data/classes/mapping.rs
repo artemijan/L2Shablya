@@ -1,6 +1,6 @@
 use anyhow::bail;
-use entities::dao::char_info::Race;
 use serde::{Deserialize, Deserializer};
+use l2_core::game_objects::race::Race;
 
 #[derive(Clone, Debug, Copy, Eq, PartialEq)]
 pub struct CharClass {

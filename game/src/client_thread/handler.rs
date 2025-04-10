@@ -3,7 +3,6 @@ use crate::cp_factory::build_client_packet;
 use crate::ls_thread::LoginHandler;
 use anyhow::{anyhow, bail, Error};
 use async_trait::async_trait;
-use entities::dao::char_info::CharacterInfo;
 use entities::entities::{character, user};
 use entities::DBPool;
 use l2_core::config::gs::GSServer;
@@ -22,6 +21,7 @@ use std::sync::Arc;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::{Mutex, Notify};
 use tracing::{error, info, instrument};
+use l2_core::game_objects::player::Player;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(unused)]
@@ -45,7 +45,7 @@ pub struct ClientHandler {
     blowfish: Option<Arc<Mutex<GameClientEncryption>>>,
     protocol: Option<i32>,
     status: ClientStatus,
-    account_chars: Option<Vec<CharacterInfo>>,
+    account_chars: Option<Vec<Player>>,
     selected_char: Option<i32>,
     session_key: Option<SessionKey>,
     user: Option<user::Model>,
@@ -114,14 +114,14 @@ impl ClientHandler {
         &self.status
     }
 
-    pub fn set_account_chars(&mut self, chars: Vec<CharacterInfo>) {
+    pub fn set_account_chars(&mut self, chars: Vec<Player>) {
         self.account_chars = Some(chars);
     }
 
-    pub fn get_account_chars(&self) -> Option<&Vec<CharacterInfo>> {
+    pub fn get_account_chars(&self) -> Option<&Vec<Player>> {
         self.account_chars.as_ref()
     }
-    pub fn try_get_account_chars(&self) -> anyhow::Result<&Vec<CharacterInfo>> {
+    pub fn try_get_account_chars(&self) -> anyhow::Result<&Vec<Player>> {
         self.account_chars.as_ref().ok_or(anyhow::anyhow!(
             "Programming error, missing account characters"
         ))
@@ -135,7 +135,7 @@ impl ClientHandler {
         self.selected_char
     }
 
-    pub fn add_character(&mut self, character: CharacterInfo) -> anyhow::Result<()> {
+    pub fn add_character(&mut self, character: Player) -> anyhow::Result<()> {
         self.account_chars
             .as_mut()
             .ok_or(anyhow::anyhow!(
@@ -159,7 +159,7 @@ impl ClientHandler {
             if slot_id >= i32::try_from(chars.len())? || slot_id < 0 {
                 bail!("Missing character at slot: {slot_id}")
             }
-            let mut char_info: CharacterInfo = chars.remove(slot_id as usize);
+            let mut char_info: Player = chars.remove(slot_id as usize);
             let model = char_info.char_model.clone();
             let updated_char = modify_fn(model).await?;
             char_info.char_model = updated_char;
@@ -169,7 +169,7 @@ impl ClientHandler {
     }
 
     #[allow(clippy::cast_sign_loss)]
-    pub fn try_get_char_by_slot_id(&self, slot_id: i32) -> anyhow::Result<&CharacterInfo> {
+    pub fn try_get_char_by_slot_id(&self, slot_id: i32) -> anyhow::Result<&Player> {
         self.account_chars
             .as_ref()
             .ok_or(anyhow::anyhow!(
@@ -179,7 +179,7 @@ impl ClientHandler {
             .ok_or(anyhow::anyhow!("Missing character at slot {slot_id}"))
     }
     #[allow(clippy::cast_sign_loss)]
-    pub fn try_get_selected_char(&self) -> anyhow::Result<&CharacterInfo> {
+    pub fn try_get_selected_char(&self) -> anyhow::Result<&Player> {
         self.try_get_char_by_slot_id(self.selected_char.ok_or(anyhow!("Chars not set, possible cheating"))?)
     }
 

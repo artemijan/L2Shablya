@@ -19,8 +19,8 @@ pub mod session;
 pub mod shared_packets;
 pub mod str;
 pub mod traits;
-pub mod model;
 pub mod bitmask;
+pub mod game_objects;
 
 #[allow(clippy::missing_errors_doc, clippy::missing_panics_doc)]
 pub async fn hash_password(password: &str) -> anyhow::Result<String> {

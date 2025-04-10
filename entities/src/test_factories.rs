@@ -1,6 +1,5 @@
 #[cfg(feature = "test-factories")]
 pub mod factories {
-    use crate::dao::char_info::{PaperDoll, Race};
     use crate::dao::item::LocType;
     use crate::entities;
     use crate::entities::{character, user};
@@ -44,7 +43,7 @@ pub mod factories {
             z: 0,
             transform_id: 2,
             class_id: 1,
-            race_id: Race::Human as i8,
+            race_id: 0, //Human
             hair_color: 0,
             is_female: false,
             ..Default::default()
@@ -70,7 +69,7 @@ pub mod factories {
             enchant_level: 3,
             time_of_use: 0,
             loc: LocType::Paperdoll,
-            loc_data: PaperDoll::RHand as i32,
+            loc_data: 5, //RHand
             ..Default::default()
         };
         let mut active_model = create_fn(model).into_active_model();

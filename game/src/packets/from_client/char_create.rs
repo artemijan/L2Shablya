@@ -7,13 +7,13 @@ use crate::packets::utils::validate_can_create_char;
 use crate::packets::HandleablePacket;
 use anyhow::bail;
 use async_trait::async_trait;
-use entities::dao::char_info::CharacterInfo;
 use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::traits::handlers::PacketSender;
 use sea_orm::DbErr;
 use tracing::error;
+use l2_core::game_objects::player::Player;
 
 #[allow(unused)]
 #[derive(Debug, Clone)]
@@ -105,7 +105,7 @@ impl HandleablePacket for CreateCharRequest {
             template.initialize_character(&mut char, &controller.base_stats_table)?;
             match character::Model::create_char(db_pool, char).await {
                 Ok(inst) => {
-                    handler.add_character(CharacterInfo::new(inst, vec![])?)?;
+                    handler.add_character(Player::new(inst, vec![])?)?;
                     handler.send_packet(Box::new(CreateCharOk::new()?)).await
                 }
                 Err(DbErr::RecordNotInserted) => {
