@@ -3,7 +3,7 @@ use entities::entities::item;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
 use std::sync::Arc;
-use l2_core::game_objects::paper_doll::PaperDoll;
+use l2_core::game_objects::player::paper_doll::PaperDoll;
 use l2_core::game_objects::player::Player;
 
 #[allow(unused)]

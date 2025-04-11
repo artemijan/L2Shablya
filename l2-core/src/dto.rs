@@ -17,10 +17,7 @@ pub struct Database {
     #[serde(default = "default_max_lifetime")]
     pub max_lifetime: u64,
 }
-#[derive(Clone, Debug)]
-pub struct Player {
-    pub login_name: String,
-}
+
 fn default_idle_timeout() -> u64 {
     60
 }

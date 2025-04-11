@@ -1,11 +1,10 @@
-use chrono::Utc;
-use serde_json::Value;
-use entities::entities::{character, item};
-use crate::game_objects::paper_doll::PaperDoll;
+use crate::game_objects::player::paper_doll::PaperDoll;
 use crate::game_objects::player::party::Party;
 use crate::game_objects::player::vars::CharVariables;
 use crate::game_objects::race::Race;
-
+use chrono::Utc;
+use entities::entities::{character, item};
+use serde_json::Value;
 
 #[derive(Debug, Clone)]
 pub struct Player {
@@ -202,11 +201,11 @@ impl Player {
         0
     }
     #[must_use]
-    pub fn get_relation(&self, is_clan_leader: bool) -> u32 {
+    pub async fn get_relation(&self, is_clan_leader: bool) -> u32 {
         let mut relation = 0;
         if let Some(pt) = self.party.as_ref() {
             relation |= 0x08;
-            if pt.get_leader() == self.char_model.id {
+            if pt.get_leader_id().await == self.char_model.id {
                 relation |= 0x10;
             }
         }
@@ -248,9 +247,9 @@ impl Player {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use serde_json::json;
     use entities::dao::item::{ItemVariables, ItemVariations, LocType};
     use entities::test_factories::factories::{char_factory, item_factory, user_factory};
+    use serde_json::json;
     use test_utils::utils::get_test_db;
 
     #[test]
@@ -376,7 +375,7 @@ mod tests {
             ch.delete_at = Some(now.into());
             ch
         })
-            .await;
+        .await;
         let item1 = item_factory(&db_pool, |mut it| {
             it.owner = char.id;
             it.variations = json!({
@@ -386,7 +385,7 @@ mod tests {
             });
             it
         })
-            .await;
+        .await;
         let item2 = item_factory(&db_pool, |mut it| {
             it.owner = char.id;
             it.item_id = 2;
@@ -400,7 +399,7 @@ mod tests {
             it.loc_data = PaperDoll::Hair as i32;
             it
         })
-            .await;
+        .await;
         let items = vec![item1, item2];
         let char_info = Player::new(char, items).unwrap();
         let weapon = char_info.get_weapon().unwrap();

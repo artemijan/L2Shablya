@@ -1,8 +1,8 @@
 use crate::controller::Controller;
 use crate::data::classes::mapping::Class;
 use l2_core::bitmask::BitMask;
-use l2_core::game_objects::player::Player;
 use l2_core::game_objects::player::user_info::UserInfoType;
+use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacketImpl;
 
@@ -19,6 +19,8 @@ pub struct UserInfo {
 impl UserInfo {
     const PACKET_ID: u8 = 0x32;
     const EX_PACKET_ID: Option<u16> = None;
+
+    #[allow(clippy::too_many_lines)]
     pub async fn new(
         char_info: &Player,
         user_info_flags: BitMask,
@@ -61,7 +63,7 @@ impl UserInfo {
             char_info.char_model.clan_id.unwrap(),
         );
         if inst.mask.contains_mask(UserInfoType::Relation) {
-            inst.buffer.write_u32(char_info.get_relation(is_cl))?;
+            inst.buffer.write_u32(char_info.get_relation(is_cl).await)?;
         }
         if inst.mask.contains_mask(UserInfoType::BasicInfo) {
             inst.buffer.write_u16(visible_name_size)?;
@@ -122,7 +124,6 @@ impl UserInfo {
         }
         if inst.mask.contains_mask(UserInfoType::Appearance) {
             inst.buffer.write_u16(15u16);
-            
         }
         //todo: complete
         Ok(inst)

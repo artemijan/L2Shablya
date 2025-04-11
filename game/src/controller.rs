@@ -1,27 +1,26 @@
 use crate::data::base_stat::BaseStat;
 use crate::data::char_template::ClassTemplates;
 use crate::data::exp_table::ExpTable;
+use crate::managers::ClanAllyManager;
 use dashmap::DashMap;
 use entities::entities::character;
 use entities::DBPool;
 use l2_core::config::gs::GSServer;
 use l2_core::config::traits::{ConfigDirLoader, ConfigFileLoader};
-use l2_core::dto::Player;
 use l2_core::message_broker::MessageBroker;
 use l2_core::shared_packets::common::PacketType;
 use l2_core::traits::IpBan;
-use std::sync::{Arc};
+use std::sync::Arc;
 use std::time::Duration;
 use tokio::sync::RwLock;
 use tracing::info;
-use crate::managers::ClanAllyManager;
 
 #[derive(Clone, Debug)]
 pub struct Controller {
     cfg: Arc<GSServer>,
     pub exp_table: ExpTable,
     pub class_templates: Arc<ClassTemplates>,
-    online_accounts: DashMap<String, Player>,
+    online_accounts: DashMap<String, String>,
     pub base_stats_table: BaseStat,
     pub hero_list: DashMap<i32, character::Model>,
     pub clan_ally_manager: Arc<RwLock<ClanAllyManager>>,
@@ -45,7 +44,7 @@ impl Controller {
             clan_ally_manager: Arc::new(RwLock::new(ClanAllyManager::new(db_pool.clone()).await)),
         }
     }
-    
+
     pub fn get_cfg(&self) -> Arc<GSServer> {
         self.cfg.clone()
     }
@@ -60,14 +59,9 @@ impl Controller {
             .map(|entry| entry.key().clone())
             .collect()
     }
-    pub fn add_online_account(&self, account: String) -> Option<Player> {
+    pub fn add_online_account(&self, account: String) -> Option<String> {
         let key = account.clone();
-        self.online_accounts.insert(
-            key,
-            Player {
-                login_name: account,
-            },
-        )
+        self.online_accounts.insert(key, account)
     }
     pub fn logout_account(&self, account: &str) {
         self.online_accounts.remove(account);
@@ -76,7 +70,7 @@ impl Controller {
 }
 
 #[cfg(test)]
-impl Controller{
+impl Controller {
     pub fn from_config(cfg: Arc<GSServer>) -> Self {
         let threshold = Duration::from_secs(u64::from(cfg.listeners.login_server.messages.timeout));
         let exp_table = ExpTable::load();
