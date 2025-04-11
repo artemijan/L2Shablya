@@ -125,7 +125,7 @@ mod tests {
         })
         .await;
         ch.set_user(user);
-        ch.set_account_chars(vec![Player::new(char_model, vec![]).unwrap()]);
+        ch.set_account_chars(vec![Player::new(char_model, vec![])]);
         let res = pack.handle(&mut ch).await;
         assert!(res.is_err());
         client.shutdown().await.unwrap();
@@ -157,7 +157,7 @@ mod tests {
         })
         .await;
         ch.set_user(user);
-        ch.set_account_chars(vec![Player::new(char_model, vec![]).unwrap()]);
+        ch.set_account_chars(vec![Player::new(char_model, vec![])]);
         let res = pack.handle(&mut ch).await;
         assert!(res.is_err());
         ch.set_session_key(SessionKey::new());

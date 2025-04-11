@@ -1,4 +1,4 @@
-use crate::dao::item::{ItemVariables, LocType};
+use crate::dao::item::LocType;
 use crate::entities::{character, item, user};
 use crate::DBPool;
 use chrono::{Duration, Utc};
@@ -84,33 +84,6 @@ impl character::Model {
     #[allow(clippy::cast_sign_loss)]
     pub fn get_lvl(&self) -> u8 {
         self.level as u8
-    }
-
-    #[allow(clippy::cast_sign_loss)]
-    pub fn restore_visible_inventory(
-        &self,
-        items: &Vec<item::Model>,
-    ) -> anyhow::Result<[[i32; 4]; 33]> {
-        let mut result = [[0; 4]; 33];
-        for item in items {
-            if item.loc == LocType::Paperdoll {
-                let slot = item.loc_data;
-                result[slot as usize][0] = item.id;
-                result[slot as usize][1] = item.item_id;
-                result[slot as usize][2] = item.enchant_level;
-                result[slot as usize][3] = i32::try_from(
-                    item.variables
-                        .get(ItemVariables::VisualId.as_key())
-                        .and_then(serde_json::Value::as_i64)
-                        .unwrap_or(0),
-                )?;
-                if result[slot as usize][3] > 0 {
-                    // fix for hair appearance conflicting with original model
-                    result[slot as usize][1] = result[slot as usize][3];
-                }
-            }
-        }
-        Ok(result)
     }
 }
 

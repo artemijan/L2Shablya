@@ -10,22 +10,23 @@ use serde_json::Value;
 pub struct Player {
     pub char_model: character::Model,
     pub items: Vec<item::Model>,
-    pub party: Option<Party>,
     pub paperdoll: [[i32; 4]; 33],
+    pub party: Option<Party>,
     pub is_in_siege: bool,
 }
 
 #[allow(clippy::missing_errors_doc)]
 impl Player {
-    pub fn new(char_model: character::Model, items: Vec<item::Model>) -> anyhow::Result<Self> {
-        let paperdoll = char_model.restore_visible_inventory(&items)?;
-        Ok(Self {
+    #[must_use]
+    pub fn new(char_model: character::Model, items: Vec<item::Model>) -> Self {
+        let paperdoll = PaperDoll::restore_visible_inventory(&items);
+        Self {
             char_model,
             items,
             party: None,
             paperdoll,
             is_in_siege: false,
-        })
+        }
     }
     #[must_use]
     pub fn get_visible_name(&self) -> &str {
@@ -401,7 +402,7 @@ mod tests {
         })
         .await;
         let items = vec![item1, item2];
-        let char_info = Player::new(char, items).unwrap();
+        let char_info = Player::new(char, items);
         let weapon = char_info.get_weapon().unwrap();
         let augmentation = weapon.get_augmentation().unwrap();
         assert_eq!((9, 3, 5), augmentation);

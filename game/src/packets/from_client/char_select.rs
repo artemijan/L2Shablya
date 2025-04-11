@@ -99,7 +99,7 @@ mod tests {
         ch.set_user(user);
         let res = pack.handle(&mut ch).await;
         assert!(res.is_err());
-        ch.set_account_chars(vec![Player::new(char_model, vec![]).unwrap()]);
+        ch.set_account_chars(vec![Player::new(char_model, vec![])]);
         let res = pack.handle(&mut ch).await;
         assert!(res.is_ok());
         client.shutdown().await.unwrap();

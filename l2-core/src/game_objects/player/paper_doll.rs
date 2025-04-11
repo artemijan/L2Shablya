@@ -1,3 +1,6 @@
+use entities::dao::item::{ItemVariables, LocType};
+use entities::entities::item;
+
 #[repr(i32)]
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PaperDoll {
@@ -89,5 +92,28 @@ impl PaperDoll {
             Self::Hair,
             Self::Hair2,
         ]
+    }
+    #[allow(clippy::cast_sign_loss)]
+    pub fn restore_visible_inventory(items: &Vec<item::Model>) -> [[i32; 4]; 33] {
+        let mut result = [[0; 4]; 33];
+        for item in items {
+            if item.loc == LocType::Paperdoll {
+                let slot = item.loc_data;
+                result[slot as usize][0] = item.id;
+                result[slot as usize][1] = item.item_id;
+                result[slot as usize][2] = item.enchant_level;
+                result[slot as usize][3] = item
+                    .variables
+                    .get(ItemVariables::VisualId.as_key())
+                    .and_then(serde_json::Value::as_i64)
+                    .and_then(|v| i32::try_from(v).ok())
+                    .unwrap_or(0);
+                if result[slot as usize][3] > 0 {
+                    // fix for hair appearance conflicting with original model
+                    result[slot as usize][1] = result[slot as usize][3];
+                }
+            }
+        }
+        result
     }
 }

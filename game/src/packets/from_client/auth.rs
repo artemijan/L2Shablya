@@ -85,7 +85,7 @@ impl AuthLogin {
         
         let players= characters.into_iter().map(|(ch, items)|{
             Player::new(ch, items)
-        }).collect::<anyhow::Result<Vec<Player>>>()?;
+        }).collect::<Vec<Player>>();
 
         // Prepare character selection packet
         let char_selection =

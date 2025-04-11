@@ -157,7 +157,7 @@ mod tests {
             user_id: 1,
             ..Default::default()
         };
-        let char = Player::new(inst, vec![]).unwrap();
+        let char = Player::new(inst, vec![]);
         let cfg = get_gs_config();
         let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
         let mut packet = CharSelectionInfo::new("admin", 1, &controller, &vec![char]).unwrap();

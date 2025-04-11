@@ -72,7 +72,7 @@ mod tests {
             user_id: 1,
             ..Default::default()
         };
-        let char = Player::new(inst, vec![]).unwrap();
+        let char = Player::new(inst, vec![]);
         let mut packet = CharSelected::new(&char, 1, 0).unwrap();
         assert_eq!(
             [
