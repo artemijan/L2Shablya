@@ -1,3 +1,4 @@
+use crate::game_objects::player::inventory::Inventory;
 use crate::game_objects::player::paper_doll::PaperDoll;
 use crate::game_objects::player::party::Party;
 use crate::game_objects::player::vars::CharVariables;
@@ -5,6 +6,31 @@ use crate::game_objects::race::Race;
 use chrono::Utc;
 use entities::entities::{character, item};
 use serde_json::Value;
+use crate::game_objects::cursed_weapon::CursedWeapon;
+use crate::game_objects::player::appearance::Appearance;
+use crate::game_objects::zone::ZoneId;
+
+#[repr(u8)]
+#[derive(Clone, Debug, Copy)]
+pub enum Team {
+    None = 0,
+    Blue = 1,
+    Red = 2,
+}
+impl From<u8> for Team {
+    fn from(team: u8) -> Self {
+        match team {
+            1 => Team::Red,
+            2 => Team::Blue,
+            _ => Team::None,
+        }
+    }
+}
+impl From<Team> for u8 {
+    fn from(team: Team) -> Self {
+        team as u8
+    }
+}
 
 #[derive(Debug, Clone)]
 pub struct Player {
@@ -12,6 +38,9 @@ pub struct Player {
     pub items: Vec<item::Model>,
     pub paperdoll: [[i32; 4]; 33],
     pub party: Option<Party>,
+    pub inventory: Inventory,
+    pub appearance: Appearance,
+    pub team: Team,
     pub is_in_siege: bool,
 }
 
@@ -25,7 +54,10 @@ impl Player {
             items,
             party: None,
             paperdoll,
+            team: Team::None,
             is_in_siege: false,
+            appearance: Appearance,
+            inventory: Inventory,
         }
     }
     #[must_use]
@@ -70,6 +102,84 @@ impl Player {
         // todo: implement me
         self.char_model.access_level >= 0
     }
+
+    #[must_use]
+    pub fn is_invincible(&self) -> bool {
+        // todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn get_pvp_flag(&self) -> bool {
+        // todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn is_noble(&self) -> bool {
+        // todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn is_hero(&self) -> bool {
+        // todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn get_pledge_type(&self) -> u16 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_pledge_class(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+
+    #[must_use]
+    pub fn get_recommendations_left(&self) -> u16 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_recommendations_have(&self) -> u16 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn is_inside_zone(&self, zone: ZoneId) -> bool {
+        //todo: implement me
+        false
+    }
+    
+    #[must_use]
+    pub fn get_clan_crest_large_id(&self) -> i32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_clan_crest_id(&self) -> i32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_ally_id(&self) -> i32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_ally_crest_id(&self) -> i32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn is_in_matching_room(&self) -> bool {
+        false
+    }
+
+    #[must_use]
+    pub fn is_clan_leader(&self) -> bool {
+        //todo: implement me
+        false
+    }
     #[must_use]
     pub fn get_visible_name_length(&self) -> usize {
         self.char_model.name.len() * 2
@@ -102,6 +212,160 @@ impl Player {
         if let Some(r_id) = self.get_paper_doll_object_id(PaperDoll::RHand) {
             return self.get_item(r_id);
         }
+        None
+    }
+    #[must_use]
+    pub fn get_movement_speed_multiplier(&self) -> f64 {
+        //todo: implement me
+        1.0
+    }
+    #[must_use]
+    pub fn get_run_speed(&self) -> u16 {
+        //todo: implement me
+        150
+    }
+    #[must_use]
+    pub fn get_walk_speed(&self) -> u16 {
+        //todo: implement me
+        130
+    }
+
+    #[must_use]
+    pub fn is_flying(&self) -> bool {
+        //todo: implement me
+        false
+    }
+
+    #[must_use]
+    pub fn get_cursed_weapon(&self) -> Option<&dyn CursedWeapon> {
+        //todo: implement me
+        None
+    }
+    #[must_use]
+    pub fn is_running(&self) -> bool {
+        //todo: implement me
+        true
+    }
+
+    #[must_use]
+    pub fn get_swim_run_speed(&self) -> u16 {
+        //todo: implement me
+        99
+    }
+    #[must_use]
+    pub fn get_swim_walk_speed(&self) -> u16 {
+        //todo: implement me
+        89
+    }
+    #[must_use]
+    pub fn get_mount_type(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn has_skill(&self, skill_id: u32) -> bool {
+        //todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn get_private_store_type(&self) -> u8 {
+        //todo: implement me
+        0
+    }
+
+    #[must_use]
+    pub fn get_p_attack(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_p_atk_spd(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_p_atk_spd_multiplier(&self) -> f64 {
+        //todo: implement me
+        0.0
+    }
+    #[must_use]
+    pub fn get_collision_radius(&self) -> f64 {
+        //todo: implement me
+        0.0
+    }
+    #[must_use]
+    pub fn get_collision_height(&self) -> f64 {
+        //todo: implement me
+        0.0
+    }
+    #[must_use]
+    pub fn get_p_def(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_evasion_rate(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_accuracy(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_critical_hit(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_m_atk(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_m_atk_spd(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_magic_evasion_rate(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_m_def(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_magic_accuracy(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_m_critical_hit(&self) -> u32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_x(&self) -> i32 {
+        //todo: implement me
+        self.char_model.x
+    }
+    #[must_use]
+    pub fn get_y(&self) -> i32 {
+        //todo: implement me
+        self.char_model.x
+    }
+    #[must_use]
+    pub fn get_z(&self) -> i32 {
+        //todo: implement me
+        self.char_model.x
+    }
+    #[must_use]
+    pub fn get_vehicle_object_id(&self) -> Option<i32> {
+        //todo: implement me
         None
     }
     #[must_use]

@@ -30,6 +30,8 @@ pub struct GSServer {
     pub accept_alternative_id: bool,
     pub allowed_revisions: Vec<i32>,
     pub enable_encryption: bool,
+    #[serde(default)]
+    pub enable_gm_hero_aura: bool,
     pub host_reserved: bool,
     pub use_brackets: bool,
     pub max_players: u32,
