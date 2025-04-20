@@ -37,14 +37,15 @@ impl From<UserInfoType> for u32 {
 }
 
 impl UserInfoType {
+    
     #[must_use]
     pub fn mask() -> BitMask {
-        BitMask::new(3)
+        BitMask::new()
     }
 
     #[must_use]
     pub fn all() -> BitMask {
-        let mut bm = BitMask::new(3);
+        let mut bm = BitMask::new();
         for v in UserInfoType::iter() {
             bm.add_mask(v as u32);
         }

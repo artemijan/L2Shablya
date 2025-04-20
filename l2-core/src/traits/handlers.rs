@@ -10,6 +10,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 use tokio::sync::Mutex;
+use tokio::task;
 use tokio::time::sleep;
 use tracing::{info, instrument};
 
@@ -24,6 +25,7 @@ pub trait OutboundHandler {
     type ConfigType;
     fn get_connection_config(cfg: &Self::ConfigType) -> &dto::OutboundConnection;
 }
+
 #[async_trait]
 pub trait PacketSender: Send + Sync + Debug {
     async fn send_packet(&self, mut packet: Box<dyn SendablePacket>) -> Result<(), Error> {
@@ -76,7 +78,7 @@ pub trait PacketHandler: PacketSender + Shutdown + Send + Sync + Debug {
     fn get_db_pool(&self) -> &DBPool;
 
     async fn on_receive_bytes(&mut self, packet_size: usize, bytes: &mut [u8])
-        -> Result<(), Error>;
+    -> Result<(), Error>;
 
     #[instrument(skip(self))]
     async fn read_packet(&mut self) -> anyhow::Result<(usize, Vec<u8>)> {
@@ -154,9 +156,9 @@ mod test {
     use super::*;
     use anyhow::Error;
     use async_trait::async_trait;
+    use core::time;
     use entities::DBPool;
     use ntest::timeout;
-    use core::time;
     use std::fmt::Debug;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
@@ -311,7 +313,7 @@ mod test {
             controller.clone(),
         );
         client.write_all(&[8, 0, 0, 0, 0, 0, 0, 0]).await.unwrap();
-        let handle = tokio::spawn( async move {
+        let handle = tokio::spawn(async move {
             handler.handle_client().await.unwrap();
             handler
         });

@@ -1,8 +1,8 @@
 use crate::game_objects::creature::buff::BuffInfo;
+use crate::game_objects::player::Player;
 use dashmap::DashSet;
 use std::collections::VecDeque;
 use std::sync::{Arc, Mutex, RwLock};
-use crate::game_objects::player::Player;
 
 #[derive(Debug, Clone)]
 pub struct EffectList {

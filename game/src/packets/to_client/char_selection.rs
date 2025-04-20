@@ -101,7 +101,7 @@ impl CharSelectionInfo {
             buffer.write(char_info.get_enchant_effect_as_byte(PaperDoll::RHand))?;
             let aug = char_info
                 .get_weapon()
-                .and_then(item::Model::get_augmentation);
+                .and_then(|i|i.item_model.get_augmentation());
             if let Some(augmentation) = aug {
                 buffer.write_i32(augmentation.1)?;
                 buffer.write_i32(augmentation.2)?;

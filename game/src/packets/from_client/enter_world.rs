@@ -1,6 +1,9 @@
 use crate::client_thread::{ClientHandler, ClientStatus};
 use crate::ls_thread::LoginHandler;
-use crate::packets::to_client::UserInfo;
+use crate::packets::to_client::extended::{ActionList, BookmarkInfo, QuestItemList, VitalityInfo};
+use crate::packets::to_client::{
+    HennaInfo, ItemList, MacroList, ShortcutsInit, SkillList, UserInfo,
+};
 use crate::packets::HandleablePacket;
 use anyhow::bail;
 use async_trait::async_trait;
@@ -9,7 +12,6 @@ use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerTracert;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::traits::handlers::PacketSender;
-use tracing::info;
 
 #[derive(Debug, Clone, Default)]
 pub struct EnterWorld {
@@ -84,21 +86,46 @@ impl HandleablePacket for EnterWorld {
                 UserInfo::new(player, UserInfoType::all(), controller).await?,
             ))
             .await?;
-        //todo: send user info
-        //todo: restore player in the instance
-        //todo: send clan packet
-        if config.rates.enable_vitality {
-            info!("Vitality enabled.");
-            //todo: send vitality packet
+        if config.restore_player_instance {
+            //todo: restore player in the instance
         }
-        //todo: send macro list packet
-        //todo: send teleport bookmark list
-        //todo: send item list, without showing a window
-        //todo: send quest list
-        //todo: send shortcuts
-        //todo: send action list (static packet, all actions are predefined)
-        //todo: send blank skill list (I suppose because we don't need to show them yet)
+        if player.is_gm() {
+            //todo: gm startup process.
+        } else {
+            //todo: update pvp title
+        }
+        if player.char_model.clan_id.is_some() {
+            //todo: send clan packet
+        }
+        if config.rates.enable_vitality {
+            handler
+                .send_packet(Box::new(VitalityInfo::new(player, &config)?))
+                .await?;
+        }
+        let macros_packets = MacroList::list_macros(player)?;
+        for m in macros_packets {
+            handler.send_packet(Box::new(m)).await?;
+        }
+        handler
+            .send_packet(Box::new(BookmarkInfo::new(player)?))
+            .await?;
+        handler
+            .send_packet(Box::new(ItemList::new(player, false)?))
+            .await?;
+        handler
+            .send_packet(Box::new(QuestItemList::new(player)?))
+            .await?;
+        handler
+            .send_packet(Box::new(ShortcutsInit::new(player)?))
+            .await?;
+        handler
+            .send_packet(Box::new(ActionList::new(controller)?))
+            .await?;
+        handler.send_packet(Box::new(SkillList::empty()?)).await?;
         //todo: AuthGG check?
+        handler
+            .send_packet(Box::new(HennaInfo::new(player)?))
+            .await?;
         //todo: send a skill list asynchronously without waiting a result
         //todo: send etc status update packet
         //todo: again send clan packets (please check why we need to send it twice!!!)

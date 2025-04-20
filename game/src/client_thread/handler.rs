@@ -50,6 +50,7 @@ pub struct ClientHandler {
     session_key: Option<SessionKey>,
     user: Option<user::Model>,
 }
+
 impl fmt::Debug for ClientHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Client")
@@ -110,7 +111,7 @@ impl ClientHandler {
     pub fn set_status(&mut self, status: ClientStatus) {
         self.status = status;
     }
-    pub fn get_status(&mut self) -> &ClientStatus {
+    pub fn get_status(&self) -> &ClientStatus {
         &self.status
     }
 

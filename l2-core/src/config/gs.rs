@@ -43,13 +43,20 @@ pub struct GSServer {
     pub ip_config: Vec<ServerHost>,
     #[serde(default = "default_chars_on_acc")]
     pub max_chars_on_account: u8,
+
+    #[serde(default)]
+    pub restore_player_instance: bool,
+    #[serde(default = "default_vitality_max_items_allowed")]
+    pub vitality_max_items_allowed: i32,
     pub rates: Rates,
 }
 
 fn default_chars_on_acc() -> u8 {
     7
 }
-
+fn default_vitality_max_items_allowed() -> i32 {
+    999
+}
 fn deserialize_hex_to_bigint<'de, D>(deserializer: D) -> Result<BigInt, D::Error>
 where
     D: Deserializer<'de>,

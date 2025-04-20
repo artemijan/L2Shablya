@@ -1,3 +1,4 @@
+use crate::data::action_list::ActionList;
 use crate::data::base_stat::BaseStat;
 use crate::data::char_template::ClassTemplates;
 use crate::data::exp_table::ExpTable;
@@ -19,6 +20,7 @@ use tracing::info;
 pub struct Controller {
     cfg: Arc<GSServer>,
     pub exp_table: ExpTable,
+    pub action_list: ActionList,
     pub class_templates: Arc<ClassTemplates>,
     online_accounts: DashMap<String, String>,
     pub base_stats_table: BaseStat,
@@ -31,11 +33,13 @@ impl Controller {
     pub async fn new(cfg: Arc<GSServer>, db_pool: &DBPool) -> Self {
         let threshold = Duration::from_secs(u64::from(cfg.listeners.login_server.messages.timeout));
         let exp_table = ExpTable::load();
+        let action_list = ActionList::load();
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
         Controller {
             exp_table,
             cfg,
+            action_list,
             base_stats_table: base_stats,
             class_templates: Arc::new(class_templates),
             hero_list: DashMap::new(),
@@ -74,11 +78,13 @@ impl Controller {
     pub fn from_config(cfg: Arc<GSServer>) -> Self {
         let threshold = Duration::from_secs(u64::from(cfg.listeners.login_server.messages.timeout));
         let exp_table = ExpTable::load();
+        let action_list = ActionList::load();
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
         Controller {
             exp_table,
             cfg,
+            action_list,           
             base_stats_table: base_stats,
             class_templates: Arc::new(class_templates),
             hero_list: DashMap::new(),

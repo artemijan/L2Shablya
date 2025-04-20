@@ -1,14 +1,16 @@
+use crate::game_objects::cursed_weapon::CursedWeapon;
+use crate::game_objects::player::appearance::Appearance;
 use crate::game_objects::player::inventory::Inventory;
 use crate::game_objects::player::paper_doll::PaperDoll;
 use crate::game_objects::player::party::Party;
 use crate::game_objects::player::vars::CharVariables;
+use crate::game_objects::player::{PlayerMacro, TeleportBookmark};
 use crate::game_objects::race::Race;
+use crate::game_objects::zone::ZoneId;
 use chrono::Utc;
 use entities::entities::{character, item};
 use serde_json::Value;
-use crate::game_objects::cursed_weapon::CursedWeapon;
-use crate::game_objects::player::appearance::Appearance;
-use crate::game_objects::zone::ZoneId;
+use crate::game_objects::item::ItemObject;
 
 #[repr(u8)]
 #[derive(Clone, Debug, Copy)]
@@ -35,7 +37,7 @@ impl From<Team> for u8 {
 #[derive(Debug, Clone)]
 pub struct Player {
     pub char_model: character::Model,
-    pub items: Vec<item::Model>,
+    pub items: Vec<ItemObject>,
     pub paperdoll: [[i32; 4]; 33],
     pub party: Option<Party>,
     pub inventory: Inventory,
@@ -51,7 +53,7 @@ impl Player {
         let paperdoll = PaperDoll::restore_visible_inventory(&items);
         Self {
             char_model,
-            items,
+            items: ItemObject::from_items(items),
             party: None,
             paperdoll,
             team: Team::None,
@@ -64,7 +66,17 @@ impl Player {
     pub fn get_visible_name(&self) -> &str {
         &self.char_model.name
     }
-
+    #[must_use]
+    pub fn get_macros(&self) -> &Vec<PlayerMacro> {
+        //todo: implement me
+        static EMPTY: Vec<PlayerMacro> = Vec::new();
+        &EMPTY
+    }
+    #[must_use]
+    pub fn get_henna_slots(&self) -> u32 {
+        //todo: implement me
+        3
+    }
     #[must_use]
     pub fn get_str(&self) -> u8 {
         //todo: implement me
@@ -149,7 +161,7 @@ impl Player {
         //todo: implement me
         false
     }
-    
+
     #[must_use]
     pub fn get_clan_crest_large_id(&self) -> i32 {
         //todo: implement me
@@ -203,12 +215,12 @@ impl Player {
     }
 
     #[must_use]
-    pub fn get_item(&self, item_obj_id: i32) -> Option<&item::Model> {
-        self.items.iter().find(|i| i.id == item_obj_id)
+    pub fn get_item(&self, item_obj_id: i32) -> Option<&ItemObject> {
+        self.items.iter().find(|i| i.item_model.id == item_obj_id)
     }
 
     #[must_use]
-    pub fn get_weapon(&self) -> Option<&item::Model> {
+    pub fn get_weapon(&self) -> Option<&ItemObject> {
         if let Some(r_id) = self.get_paper_doll_object_id(PaperDoll::RHand) {
             return self.get_item(r_id);
         }
@@ -264,6 +276,11 @@ impl Player {
     }
     #[must_use]
     pub fn has_skill(&self, skill_id: u32) -> bool {
+        //todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn has_inventory_block(&self) -> bool {
         //todo: implement me
         false
     }
@@ -371,7 +388,7 @@ impl Player {
     #[must_use]
     #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
     pub fn get_weapon_enchant(&self) -> u8 {
-        self.get_weapon().map_or(0, |w| w.enchant_level) as u8
+        self.get_weapon().map_or(0, |w| w.item_model.enchant_level) as u8
     }
 
     #[must_use]
@@ -443,6 +460,7 @@ impl Player {
     pub fn get_max_hp(&self) -> f64 {
         self.char_model.max_hp
     }
+    
     #[must_use]
     pub fn get_max_mp(&self) -> f64 {
         self.char_model.max_mp
@@ -495,6 +513,23 @@ impl Player {
             .and_then(|v| v.try_into().ok())
             .unwrap_or(0)
     }
+    #[must_use]
+    pub fn get_vitality_bonus(&self) -> i32 {
+        // todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_teleport_bookmarks(&self,)->&Vec<TeleportBookmark>{
+        //todo: implement me
+        static EMPTY: Vec<TeleportBookmark> = Vec::new();
+        &EMPTY
+    }
+    #[must_use]
+    pub fn get_bookmark_slot(&self) -> i32 {
+        // todo: implement me
+        0
+    }
+
     #[must_use]
     pub fn is_hair_accessory_enabled(&self) -> bool {
         self.char_model
@@ -668,9 +703,9 @@ mod tests {
         let items = vec![item1, item2];
         let char_info = Player::new(char, items);
         let weapon = char_info.get_weapon().unwrap();
-        let augmentation = weapon.get_augmentation().unwrap();
+        let augmentation = weapon.item_model.get_augmentation().unwrap();
         assert_eq!((9, 3, 5), augmentation);
-        assert_eq!(weapon.id, 1);
+        assert_eq!(weapon.item_model.id, 1);
         assert!(!char_info.is_hair_accessory_enabled());
         assert_eq!(char_info.get_hair_color(), 4);
         assert_eq!(char_info.get_face(), 3);
