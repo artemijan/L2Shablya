@@ -1,10 +1,9 @@
-use crate as l2_core;
+use bytes::BytesMut;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug, SendablePacketImpl)]
+#[derive(Clone, Debug)]
 pub struct PlayerLogout {
     pub acc: String,
     pub buffer: SendablePacketBuffer,
@@ -25,7 +24,7 @@ impl ReadablePacket for PlayerLogout {
     const PACKET_ID: u8 = 0x03;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         let acc = buffer.read_c_utf16le_string()?;
@@ -49,7 +48,7 @@ mod tests {
     #[test]
     fn test_player_logout_read() {
         let buff = [3, 116, 0, 101, 0, 115, 0, 116, 0, 0, 0];
-        let packet = PlayerLogout::read(&buff).unwrap();
+        let packet = PlayerLogout::read(BytesMut::from(&buff[..])).unwrap();
         assert_eq!(packet.acc, "test");
     }
 }

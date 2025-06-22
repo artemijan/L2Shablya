@@ -1,27 +1,31 @@
-use crate::ls_thread::LoginHandler;
-use crate::packets::HandleablePacket;
-use async_trait::async_trait;
+use crate::ls_client::LoginServerClient;
+use bytes::{Bytes, BytesMut};
+use kameo::message::{Context, Message};
+use tracing::instrument;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::crypt::rsa::RSAPublicKey;
 use l2_core::shared_packets::gs_2_ls::BlowFish;
 use l2_core::shared_packets::{gs_2_ls::RequestAuthGS, ls_2_gs::InitLS};
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
+use l2_core::traits::ServerToServer;
 
-#[async_trait]
-impl HandleablePacket for InitLS {
-    type HandlerType = LoginHandler;
-    async fn handle(&self, gs: &mut Self::HandlerType) -> anyhow::Result<()> {
-        let controller = gs.get_controller();
-        let config = controller.get_cfg();
-        let ra = RequestAuthGS::new(&config)?;
-        let p_key = RSAPublicKey::from_modulus(&self.public_key)?;
+impl Message<InitLS> for LoginServerClient {
+    type Reply = anyhow::Result<()>;
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: InitLS,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        let config = self.controller.get_cfg();
+        let ra = RequestAuthGS::new(&config)?; //todo: put it in the cache
+        let p_key = RSAPublicKey::from_modulus(&msg.public_key)?;
         let new_key = generate_blowfish_key(Some(40));
-        let encrypted_data = p_key.encrypt(&new_key);
+        let encrypted_data = BytesMut::from(Bytes::from(p_key.encrypt(&new_key)));
         let bf = BlowFish::new(encrypted_data);
-        gs.send_packet(Box::new(bf)).await?;
-        gs.set_blowfish(Encryption::new(&new_key));
-        gs.send_packet(Box::new(ra)).await?;
+        self.send_packet_blocking(bf.buffer).await?;
+        self.set_blowfish(Encryption::new(&new_key));
+        self.send_packet(ra.buffer).await?;
         Ok(())
     }
 }
@@ -30,17 +34,17 @@ impl HandleablePacket for InitLS {
 mod tests {
     use super::*;
     use crate::controller::Controller;
-    use l2_core::config::gs::GSServer;
+    use crate::test_utils::test::spawn_ls_client_actor;
+    use l2_core::config::gs::GSServerConfig;
     use l2_core::crypt::rsa::ScrambledRSAKeyPair;
     use l2_core::traits::ServerConfig;
     use ntest::timeout;
-    use std::net::Ipv4Addr;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use tokio::io::{split, AsyncReadExt, AsyncWriteExt};
+    use tokio::io::{split, AsyncReadExt};
 
     #[tokio::test]
-    #[timeout(3000)]
+    #[timeout(2000)]
     async fn test_handle() {
         let pool = get_test_db().await;
         let the_key = ScrambledRSAKeyPair::from_pem(include_str!(
@@ -50,27 +54,19 @@ mod tests {
         let pack = InitLS::new(the_key.get_modulus());
         let (mut client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
-        let cfg = Arc::new(GSServer::from_string(include_str!(
+        let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::from_config(cfg));
         controller.add_online_account(String::from("test"));
-        let mut ch = LoginHandler::new(r, w, Ipv4Addr::LOCALHOST, pool, controller);
-        pack.handle(&mut ch).await.unwrap();
-        tokio::spawn(async move {
-            ch.handle_client().await.unwrap();
-        });
+        let ls_actor = spawn_ls_client_actor(controller, pool, r, w).await;
+        let res = ls_actor.ask(pack).await;
+        assert!(res.is_ok());
         let mut resp = [0; 146];
         client.read_exact(&mut resp).await.unwrap();
         assert_eq!([146, 0], resp[..2]);
         let mut resp2 = [0; 42];
         client.read_exact(&mut resp2).await.unwrap();
-        assert_eq!(
-            [
-                42, 0
-            ],
-            resp2[..2]
-        );
-        client.shutdown().await.unwrap();
+        assert_eq!([42, 0], resp2[..2]);
     }
 }

@@ -1,15 +1,13 @@
 use crate::controller::Controller;
-use entities::entities::item;
-use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
-use std::sync::Arc;
 use l2_core::game_objects::player::paper_doll::PaperDoll;
 use l2_core::game_objects::player::Player;
+use l2_core::shared_packets::write::SendablePacketBuffer;
+use std::sync::Arc;
 
 #[allow(unused)]
-#[derive(Debug, Clone, Default, SendablePacketImpl)]
+#[derive(Debug, Clone, Default)]
 pub struct CharSelectionInfo {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     session_id: i32,
     active_id: i32,
 }
@@ -101,7 +99,7 @@ impl CharSelectionInfo {
             buffer.write(char_info.get_enchant_effect_as_byte(PaperDoll::RHand))?;
             let aug = char_info
                 .get_weapon()
-                .and_then(|i|i.item_model.get_augmentation());
+                .and_then(|i| i.item_model.get_augmentation());
             if let Some(augmentation) = aug {
                 buffer.write_i32(augmentation.1)?;
                 buffer.write_i32(augmentation.2)?;
@@ -141,8 +139,8 @@ impl CharSelectionInfo {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::tests::get_gs_config;
     use entities::entities::character;
+    use crate::test_utils::test::get_gs_config;
 
     #[tokio::test]
     async fn test_char_selected() {

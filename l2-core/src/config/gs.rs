@@ -17,7 +17,7 @@ use std::str::FromStr;
 
 #[allow(clippy::struct_excessive_bools)]
 #[derive(Debug, Clone, Deserialize)]
-pub struct GSServer {
+pub struct GSServerConfig {
     pub name: String,
     pub blowfish_key: String,
     pub runtime: Option<Runtime>,
@@ -73,7 +73,7 @@ where
     ServerType::from_str(&s).map_err(Error::custom)
 }
 
-impl GSServer {
+impl GSServerConfig {
     #[must_use]
     pub fn get_hosts(&self) -> Vec<String> {
         self.ip_config
@@ -117,7 +117,7 @@ impl GSServer {
     }
 }
 
-impl ServerConfig for GSServer {
+impl ServerConfig for GSServerConfig {
     fn load(file_name: &str) -> Self {
         let file = File::open(file_name).unwrap_or_else(|e| {
             let cwd = env::current_dir().map_or_else(
@@ -127,7 +127,7 @@ impl ServerConfig for GSServer {
             panic!("Failed to open config file: {file_name} (searched in {cwd}). Error: {e}");
         });
         let reader = BufReader::new(file);
-        let mut config: GSServer = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
+        let mut config: GSServerConfig = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
             panic!("Unable to parse {file_name}, the format is incorrect, {e}")
         });
         info!("Configuration ok, starting application: {}", config.name);
@@ -139,7 +139,7 @@ impl ServerConfig for GSServer {
     }
 
     fn from_string(conf: &str) -> Self {
-        serde_yaml::from_str::<GSServer>(conf)
+        serde_yaml::from_str::<GSServerConfig>(conf)
             .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
     }
 
@@ -183,11 +183,11 @@ pub struct Rates {
 mod test {
     use crate::traits::ServerConfig;
 
-    use super::GSServer;
+    use super::GSServerConfig;
 
     #[test]
     fn test_gs_config() {
-        let conf = GSServer::load("../config/game.yaml");
+        let conf = GSServerConfig::load("../config/game.yaml");
         assert_eq!(conf.name, "Game server");
         assert!(conf.get_hosts().len() > 1); //at least 127.0.0.1/8, 127.0.0.1
     }

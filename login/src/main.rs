@@ -1,30 +1,27 @@
-use crate::client_thread::ClientHandler;
+mod login_client;
+
 use crate::controller::LoginController;
-use crate::gs_thread::GSHandler;
-use l2_core::config::login;
-use l2_core::traits::server::Server;
+use crate::gs_client::GameServerClient;
+use dotenvy::dotenv;
+use kameo::Actor;
+use l2_core::config::login::LoginServerConfig;
+use l2_core::network::listener::ConnectionListener;
+use l2_core::new_db_pool;
+use l2_core::traits::ServerConfig;
+use l2_core::utils::bootstrap_tokio_runtime;
+use login_client::LoginClient;
+use sea_orm::sqlx::any::install_default_drivers;
 use std::sync::Arc;
 use tracing::error;
 
-mod client_thread;
 mod controller;
 mod dto;
-mod gs_thread;
+pub mod enums;
+mod gs_client;
 mod packet;
-pub struct LoginServer;
+mod test_utils;
 
-impl Server for LoginServer {
-    type ConfigType = login::LoginServer;
-    type ControllerType = LoginController;
-}
-///
-/// # Panics
-/// - when can't open a socket
-/// - when config file not found
-/// - when DB is not accessible
-/// - when can't run migrations
-///
-pub fn main() {
+fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt()
         .compact()
         .with_file(true)
@@ -32,20 +29,58 @@ pub fn main() {
         .with_thread_ids(true)
         .with_target(false)
         .init();
-    LoginServer::bootstrap("config/login.yaml", |cfg, db_pool| async move {
-        let lc = Arc::new(LoginController::new(cfg.clone()));
-        let mut clients_handle =
-            LoginServer::listener_loop::<ClientHandler>(cfg.clone(), lc.clone(), db_pool.clone());
 
-        let mut gs_handle =
-            LoginServer::listener_loop::<GSHandler>(cfg.clone(), lc.clone(), db_pool.clone());
+    let cfg = Arc::new(LoginServerConfig::load("config/login.yaml"));
+    install_default_drivers();
+    dotenv().ok();
 
+    let runtime = bootstrap_tokio_runtime(cfg.runtime());
+    runtime.block_on(async move {
+        let controller = Arc::new(LoginController::new(cfg.clone()));
+        let pool = new_db_pool(cfg.database()).await;
+        let clients_listener = ConnectionListener {
+            name: "PlayerListener".to_string(),
+            cfg: cfg.listeners.clients.connection.clone(),
+        };
+        let gs_listener = ConnectionListener {
+            name: "GSListener".to_string(),
+            cfg: cfg.listeners.game_servers.connection.clone(),
+        };
+        let cloned_pool = pool.clone();
+        let cloned_controller = controller.clone();
+        let mut clients_handle = clients_listener.run(async move |stream, addr| {
+            let (reader, writer) = stream.into_split();
+            LoginClient::spawn((
+                LoginClient::new(
+                    addr,
+                    cloned_controller, // Use the cloned values
+                    cloned_pool,
+                ),
+                Box::new(reader),
+                Box::new(writer),
+            ));
+        })?;
+
+        let cloned_controller = controller.clone();
+        let cloned_pool = pool.clone();
+        let mut gs_handle = gs_listener.run(async move |st, ipv4| {
+            let (reader, writer) = st.into_split();
+            GameServerClient::spawn((
+                GameServerClient::new(
+                    ipv4,
+                    cloned_controller, // Use the cloned values
+                    cloned_pool,
+                ),
+                Box::new(reader),
+                Box::new(writer),
+            ));
+        })?;
         tokio::select! {
-            _ = &mut clients_handle => {
-                error!("Client handler exited unexpectedly");
+            Err(e) = &mut clients_handle => {
+                error!("Client handler exited unexpectedly: {e}");
             }
-            _ = &mut gs_handle => {
-                error!("Game server handler exited unexpectedly");
+            Err(e) = &mut gs_handle => {
+                error!("Game server handler exited unexpectedly: {e}");
             }
         }
         if !clients_handle.is_finished() {
@@ -54,5 +89,6 @@ pub fn main() {
         if !gs_handle.is_finished() {
             gs_handle.abort();
         }
-    });
+        Ok(())
+    })
 }

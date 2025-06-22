@@ -1,11 +1,10 @@
-use crate as l2_core;
-use crate::config::gs::GSServer;
+use bytes::BytesMut;
+use crate::config::gs::GSServerConfig;
 use crate::shared_packets::common::{GSStatus, ReadablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug, Default, SendablePacketImpl)]
+#[derive(Clone, Debug, Default)]
 pub struct GSStatusUpdate {
     pub buffer: SendablePacketBuffer,
     pub status: GSStatus,
@@ -25,7 +24,7 @@ impl GSStatusUpdate {
     const SERVER_AGE: i32 = 0x06;
 
     #[allow(clippy::missing_errors_doc)]
-    pub fn new(cfg: &GSServer) -> anyhow::Result<Self> {
+    pub fn new(cfg: &GSServerConfig) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
             status: if cfg.gm_only {
@@ -68,7 +67,7 @@ impl ReadablePacket for GSStatusUpdate {
     const PACKET_ID: u8 = 0x06;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?; //packet id
         let size = buffer.read_i32()? as usize;
@@ -109,7 +108,7 @@ mod test {
 
     #[test]
     fn gs_status_update_new() {
-        let cfg = GSServer::load("../config/game.yaml");
+        let cfg = GSServerConfig::load("../config/game.yaml");
         let mut pack = GSStatusUpdate::new(&cfg).unwrap();
         assert!(!pack.use_square_brackets);
         assert_eq!(pack.max_players, 5000);
@@ -130,7 +129,7 @@ mod test {
             6, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0,
             4, 0, 0, 0, 136, 19, 0, 0, 6, 0, 0, 0, 12, 0, 0, 0,
         ];
-        let pack = GSStatusUpdate::read(&bytes).unwrap();
+        let pack = GSStatusUpdate::read(BytesMut::from(&bytes[..])).unwrap();
         assert!(!pack.use_square_brackets);
         assert_eq!(pack.max_players, 5000);
         assert_eq!(pack.server_type, 1);

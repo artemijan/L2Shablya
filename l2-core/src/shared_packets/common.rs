@@ -1,9 +1,7 @@
-use super::{gs_2_ls::ReplyChars, read::ReadablePacketBuffer};
-use crate as l2_core;
-use crate::shared_packets::ls_2_gs::PlayerAuthResponse;
+use super::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use anyhow::bail;
-use macro_common::SendablePacketImpl;
+use bytes::BytesMut;
 use num_enum::TryFromPrimitive;
 use std::str::FromStr;
 use std::{fmt::Debug, net::Ipv4Addr};
@@ -16,7 +14,7 @@ pub trait ReadablePacket: Debug + Send + Sync {
     const PACKET_ID: u8;
     const EX_PACKET_ID: Option<u16>;
     #[allow(clippy::missing_errors_doc)]
-    fn read(data: &[u8]) -> anyhow::Result<Self>
+    fn read(data: BytesMut) -> anyhow::Result<Self>
     where
         Self: Sized + ReadablePacket;
 }
@@ -101,12 +99,6 @@ impl FromStr for ServerType {
     }
 }
 
-#[derive(Debug, Clone)]
-pub enum PacketType {
-    ReplyChars(ReplyChars),
-    PlayerAuthResp(PlayerAuthResponse),
-}
-
 #[repr(u8)]
 #[allow(unused)]
 #[derive(Debug, Clone)]
@@ -186,7 +178,7 @@ pub enum PlayerLoginFailReasons {
     ReasonCertificationUnderwayTryAgainLater = 0x38,
 }
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct GSLoginFail {
     pub buffer: SendablePacketBuffer,
     pub reason: GSLoginFailReasons,
@@ -195,7 +187,7 @@ impl ReadablePacket for GSLoginFail {
     const PACKET_ID: u8 = 0x01;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self>
+    fn read(data: BytesMut) -> anyhow::Result<Self>
     where
         Self: Sized + ReadablePacket,
     {
@@ -226,7 +218,7 @@ impl GSLoginFail {
     }
 }
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct PlayerLoginFail {
     pub buffer: SendablePacketBuffer,
     pub reason: PlayerLoginFailReasons,

@@ -13,7 +13,6 @@ pub mod crypt;
 pub mod dto;
 pub mod enums;
 pub mod errors;
-pub mod message_broker;
 pub mod network;
 pub mod session;
 pub mod shared_packets;
@@ -21,6 +20,7 @@ pub mod str;
 pub mod traits;
 pub mod bitmask;
 pub mod game_objects;
+pub mod utils;
 
 #[allow(clippy::missing_errors_doc, clippy::missing_panics_doc)]
 pub async fn hash_password(password: &str) -> anyhow::Result<String> {

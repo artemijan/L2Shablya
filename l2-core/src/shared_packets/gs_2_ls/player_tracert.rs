@@ -1,11 +1,10 @@
-use crate as l2_core;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use async_trait::async_trait;
-use macro_common::SendablePacketImpl;
+use bytes::BytesMut;
 
-#[derive(Clone, Debug, SendablePacketImpl)]
+#[derive(Clone, Debug)]
 pub struct PlayerTracert {
     pub account: String,
     pub pc_ip: String,
@@ -13,7 +12,7 @@ pub struct PlayerTracert {
     pub hop2: String,
     pub hop3: String,
     pub hop4: String,
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
 }
 impl PlayerTracert {
     /// # Errors
@@ -51,7 +50,7 @@ impl ReadablePacket for PlayerTracert {
     const PACKET_ID: u8 = 0x07;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         let account_name = buffer.read_c_utf16le_string()?;
@@ -89,7 +88,7 @@ mod tests {
         data.extend(hop2);
         data.extend(hop3);
         data.extend(hop4);
-        let packet = PlayerTracert::read(&data).unwrap();
+        let packet = PlayerTracert::read(BytesMut::from(&data[..])).unwrap();
         assert_eq!(packet.account, "test");
         assert_eq!(packet.pc_ip, "192.168.0.100");
         assert_eq!(packet.hop1, "hop1");

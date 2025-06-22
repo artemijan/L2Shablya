@@ -1,18 +1,17 @@
-use crate as l2_core;
+use bytes::BytesMut;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug, SendablePacketImpl)]
+#[derive(Clone, Debug)]
 pub struct BlowFish {
-    buffer: SendablePacketBuffer,
-    pub encrypted_key: Vec<u8>,
+    pub buffer: SendablePacketBuffer,
+    pub encrypted_key: BytesMut,
 }
 impl BlowFish {
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
-    pub fn new(encrypted_key: Vec<u8>) -> Self {
+    pub fn new(encrypted_key: BytesMut) -> Self {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
             encrypted_key,
@@ -35,13 +34,13 @@ impl ReadablePacket for BlowFish {
     const EX_PACKET_ID: Option<u16> = None;
 
     #[allow(clippy::cast_sign_loss)]
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         let size = buffer.read_i32()?;
         Ok(Self {
             buffer: SendablePacketBuffer::empty(),
-            encrypted_key: buffer.read_bytes(size as usize)?.to_vec(),
+            encrypted_key: BytesMut::from(buffer.read_bytes(size as usize)?),
         })
     }
 }
@@ -57,15 +56,15 @@ mod tests {
     }
     #[test]
     fn blowfish_new() {
-        let mut buffer = BlowFish::new(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
-
-        let bytes = buffer.get_bytes(true);
+        let mut buffer = BlowFish::new(BytesMut::from(&[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16][..]));
+        buffer.buffer.write_padding().unwrap();
+        let bytes = buffer.buffer.take();
         assert_eq!(bytes.len(), 34);
-        assert_eq!(bytes, get_bytes());
+        assert_eq!(bytes.as_ref(), get_bytes());
     }
     #[test]
     fn blowfish_read() {
-        let pack = BlowFish::read(&get_bytes()[2..]).unwrap();
+        let pack = BlowFish::read(BytesMut::from(&get_bytes()[2..])).unwrap();
         assert_eq!(pack.encrypted_key, &get_bytes()[7..7 + 16]);
     }
 }

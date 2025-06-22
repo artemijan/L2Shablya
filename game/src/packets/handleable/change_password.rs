@@ -1,12 +1,18 @@
+use crate::ls_client::LoginServerClient;
+use kameo::message::Context;
+use kameo::prelude::Message;
+use tracing::instrument;
 use l2_core::shared_packets::gs_2_ls::ChangePassword;
-use async_trait::async_trait;
-use crate::ls_thread::LoginHandler;
-use crate::packets::HandleablePacket;
 
-#[async_trait]
-impl HandleablePacket for ChangePassword {
-    type HandlerType = LoginHandler;
-    async fn handle(&self, _: &mut Self::HandlerType) -> anyhow::Result<()> {
+impl Message<ChangePassword> for LoginServerClient {
+    type Reply = anyhow::Result<()>;
+    
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        _msg: ChangePassword,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
         todo!()
     }
 }

@@ -1,11 +1,11 @@
-use crate::client_thread::ClientHandler;
 use crate::packets::to_client::extended::CharExistsResponse;
 use crate::packets::utils::validate_can_create_char;
-use crate::packets::HandleablePacket;
-use async_trait::async_trait;
+use crate::pl_client::PlayerClient;
+use bytes::BytesMut;
+use kameo::message::{Context, Message};
+use tracing::instrument;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::traits::handlers::PacketSender;
 
 #[derive(Debug, Clone)]
 pub struct CheckCharName {
@@ -16,56 +16,58 @@ impl ReadablePacket for CheckCharName {
     const PACKET_ID: u8 = 0xD0;
     const EX_PACKET_ID: Option<u16> = Some(0xA9);
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buff = ReadablePacketBuffer::new(data);
         Ok(Self {
             name: buff.read_c_utf16le_string()?,
         })
     }
 }
-
-#[async_trait]
-impl HandleablePacket for CheckCharName {
-    type HandlerType = ClientHandler;
-    async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
-        let pool = handler.get_db_pool();
-        let reason = validate_can_create_char(pool, &self.name).await?;
-        handler
-            .send_packet(Box::new(CharExistsResponse::new(reason as i32)?))
-            .await?;
+impl Message<CheckCharName> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: CheckCharName,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        let reason = validate_can_create_char(&self.db_pool, &msg.name).await?;
+        self.send_packet(
+            CharExistsResponse::new(reason as i32)?.buffer,
+        )
+        .await?;
         Ok(())
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use std::net::Ipv4Addr;
-    use std::sync::Arc;
     use super::*;
+    use crate::controller::Controller;
+    use crate::test_utils::test::spawn_player_client_actor;
+    use l2_core::config::gs::GSServerConfig;
+    use l2_core::traits::ServerConfig;
+    use std::sync::Arc;
+    use ntest::timeout;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt};
-    use l2_core::config::gs::GSServer;
-    use l2_core::traits::handlers::PacketHandler;
-    use l2_core::traits::ServerConfig;
-    use crate::controller::Controller;
 
     #[tokio::test]
+    #[timeout(2000)]
     pub async fn test_handle() {
         let pool = get_test_db().await;
         let pack = CheckCharName {
             name: "Test".to_string(),
         };
         let (mut client, server) = tokio::io::duplex(1024);
-        let (r,w) = split(server);
-        let cfg = Arc::new(GSServer::from_string(include_str!(
+        let (r, w) = split(server);
+        let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::from_config(cfg));
-        let mut ch = ClientHandler::new(r,w, Ipv4Addr::LOCALHOST,pool, controller);
-        pack.handle(&mut ch).await.unwrap();
-        tokio::spawn(async move {
-            ch.handle_client().await.unwrap();
-        });
+        let pl_actor = spawn_player_client_actor(controller, pool, r, w).await;
+        let res = pl_actor.ask(pack).await;
+        assert!(res.is_ok());
         let mut resp = [0; 9];
         client.read_exact(&mut resp).await.unwrap();
         assert_eq!(resp[2], 0xFE);

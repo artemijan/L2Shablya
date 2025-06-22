@@ -1,20 +1,20 @@
-use crate::ls_thread::LoginHandler;
-use crate::packets::HandleablePacket;
-use async_trait::async_trait;
-use l2_core::shared_packets::common::PacketType;
-use l2_core::shared_packets::ls_2_gs;
-use l2_core::traits::handlers::PacketHandler;
+use crate::ls_client::{LSMessages, LoginServerClient};
+use kameo::message::{Context, Message};
+use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
+use tracing::instrument;
 
-#[async_trait]
-impl HandleablePacket for ls_2_gs::PlayerAuthResponse {
-    type HandlerType = LoginHandler;
-    async fn handle(&self, ph: &mut Self::HandlerType) -> anyhow::Result<()> {
-        let controller = ph.get_controller();
-        controller.message_broker.respond_to_message(
-            Some(Self::HandlerType::HANDLER_ID),
-            &self.account,
-            PacketType::PlayerAuthResp(self.clone()),
-        );
+impl Message<PlayerAuthResponse> for LoginServerClient {
+    type Reply = anyhow::Result<()>;
+
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: PlayerAuthResponse,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        if let Some(sender) = self.pending_requests.remove(&msg.account) {
+            let _ = sender.send(LSMessages::PlayerAuthResponse(msg)); //ignore errors, not critical
+        }
         Ok(())
     }
 }

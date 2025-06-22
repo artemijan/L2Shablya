@@ -1,12 +1,11 @@
-use crate as l2_core;
+use bytes::BytesMut;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug, SendablePacketImpl)]
+#[derive(Clone, Debug)]
 pub struct PlayerInGame {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     pub accounts: Vec<String>,
 }
 
@@ -39,7 +38,7 @@ impl ReadablePacket for PlayerInGame {
     const PACKET_ID: u8 = 0x02;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         let size = buffer.read_i16()?;
@@ -65,8 +64,8 @@ mod tests {
     #[test]
     fn test_player_in_game_new() {
         let accounts = vec!["admin".to_string(), "adm".to_string()];
-        let mut packet = PlayerInGame::new(&accounts).unwrap();
-        let data = packet.get_bytes(false);
+        let packet = PlayerInGame::new(&accounts).unwrap();
+        let data = packet.buffer.take().to_vec();
         assert_eq!(
             data,
             [
@@ -78,9 +77,9 @@ mod tests {
     #[test]
     fn test_player_in_game_read() {
         let expected_accounts = vec!["admin".to_string(), "adm".to_string()];
-        let packet = PlayerInGame::read(&[
+        let packet = PlayerInGame::read(BytesMut::from(&[
             2, 2, 0, 97, 0, 100, 0, 109, 0, 105, 0, 110, 0, 0, 0, 97, 0, 100, 0, 109, 0, 0, 0,
-        ])
+        ][..]))
         .unwrap();
         assert_eq!(packet.accounts, expected_accounts);
     }

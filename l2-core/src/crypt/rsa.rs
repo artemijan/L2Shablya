@@ -1,4 +1,5 @@
 use anyhow::{bail, Context};
+use bytes::{Bytes, BytesMut};
 use num_traits::{FromPrimitive, Zero};
 use pem::parse;
 use rsa;
@@ -101,7 +102,7 @@ impl ScrambledRSAKeyPair {
     }
 
     #[allow(clippy::missing_errors_doc)]
-    pub fn decrypt_data(&self, encrypted_data: &[u8]) -> anyhow::Result<Vec<u8>> {
+    pub fn decrypt_data(&self, encrypted_data: &BytesMut) -> anyhow::Result<BytesMut> {
         let n = self.pair.0.n();
         let size = self.pair.0.size();
         let d = self.pair.0.d();
@@ -118,7 +119,7 @@ impl ScrambledRSAKeyPair {
             decrypted_bytes.splice(0..0, vec![0; pad_length]); // Prepend padding
         }
         // Return the decrypted message as bytes
-        Ok(decrypted_bytes)
+        Ok(BytesMut::from(Bytes::from(decrypted_bytes)))
     }
 
     #[allow(clippy::missing_errors_doc)]
@@ -195,7 +196,7 @@ mod test {
             215, 81, 128, 96, 232, 226, 15, 60, 178, 15, 118, 38, 67, 109,
         ];
         let key = RSAPublicKey::from_modulus(&modulus).unwrap();
-        let encrypted = key.encrypt(&unencrypted);
+        let encrypted = key.encrypt(&BytesMut::from(&unencrypted[..]));
         assert_eq!(encrypted, expected, "Should encrypt properly");
     }
 
@@ -238,8 +239,8 @@ mod test {
         let scrambl =
             ScrambledRSAKeyPair::from_pem(include_str!("../../../test_data/test_private_key.pem"))
                 .unwrap();
-        let decr_raw1 = scrambl.decrypt_data(raw1).unwrap();
-        let decr_raw2 = scrambl.decrypt_data(raw2).unwrap();
+        let decr_raw1 = scrambl.decrypt_data(&BytesMut::from(raw1)).unwrap();
+        let decr_raw2 = scrambl.decrypt_data(&BytesMut::from(raw2)).unwrap();
         let decrypted = [decr_raw1, decr_raw2].concat();
         assert_eq!(decrypted, decr_expect, "Should decrypted be ok");
         let part1 = String::from_utf8_lossy(&decrypted[0x4E..0x4E + 50]);

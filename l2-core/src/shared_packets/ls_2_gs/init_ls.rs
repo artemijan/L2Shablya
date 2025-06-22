@@ -1,13 +1,12 @@
-use crate as l2_core;
+use bytes::BytesMut;
 use crate::constants;
 use crate::shared_packets::common::{LoginServerOpcodes, ReadablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct InitLS {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     pub revision: i32,
     pub public_key: Vec<u8>,
 }
@@ -37,7 +36,7 @@ impl ReadablePacket for InitLS {
     const PACKET_ID: u8 = 0x00;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         let _packet_id = buffer.read_byte()?;
         let revision = buffer.read_i32()?; // LS protocol revision
@@ -54,15 +53,16 @@ impl ReadablePacket for InitLS {
 
 #[cfg(test)]
 mod test {
+    use bytes::BytesMut;
     use crate::{constants, shared_packets::{common::ReadablePacket, ls_2_gs::InitLS}};
 
     #[test]
     fn test_read() {
-        let data = [
+        let data = BytesMut::from(&[
             0, 12, 0, 0, 0, 16, 0, 0, 0, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
             31, 32,
-        ];
-        let packet = InitLS::read(&data).unwrap();
+        ][..]);
+        let packet = InitLS::read(data).unwrap();
         assert_eq!(packet.revision, 12);
         assert_eq!(packet.public_key.len(), 16);
         assert_eq!(

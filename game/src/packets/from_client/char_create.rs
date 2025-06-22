@@ -1,19 +1,19 @@
-use crate::client_thread::{ClientHandler, ClientStatus};
 use crate::data::char_template::CharTemplate;
 use crate::data::classes::mapping::Class;
 use crate::packets::enums::CharNameResponseVariant;
 use crate::packets::to_client::{CreateCharFailed, CreateCharOk};
 use crate::packets::utils::validate_can_create_char;
-use crate::packets::HandleablePacket;
+use crate::pl_client::{ClientStatus, PlayerClient};
 use anyhow::bail;
-use async_trait::async_trait;
+use bytes::BytesMut;
 use entities::entities::character;
+use kameo::message::Context;
+use kameo::prelude::Message;
+use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::traits::handlers::PacketSender;
 use sea_orm::DbErr;
-use tracing::error;
-use l2_core::game_objects::player::Player;
+use tracing::{error, instrument};
 
 #[allow(unused)]
 #[derive(Debug, Clone)]
@@ -56,7 +56,7 @@ impl ReadablePacket for CreateCharRequest {
     const EX_PACKET_ID: Option<u16> = None;
 
     #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
 
         let inst = Self {
@@ -77,57 +77,60 @@ impl ReadablePacket for CreateCharRequest {
         Ok(inst)
     }
 }
-
-#[async_trait]
-impl HandleablePacket for CreateCharRequest {
-    type HandlerType = ClientHandler;
-    async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
-        if &ClientStatus::Authenticated != handler.get_status() || handler.get_user().is_none() {
+impl Message<CreateCharRequest> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+    #[instrument(skip(self, msg, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: CreateCharRequest,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        if &ClientStatus::Authenticated != self.get_status() || self.get_user().is_none() {
             bail!("Not authenticated.");
         }
-        let controller = handler.get_controller().clone();
-        let template = controller.class_templates.try_get_template(self.class_id)?;
-        self.validate(template)?;
-        let db_pool = handler.get_db_pool();
-        let response = validate_can_create_char(db_pool, &self.name).await?;
+        let template = self
+            .controller
+            .class_templates
+            .try_get_template(msg.class_id)?;
+        msg.validate(template)?;
+        let response = validate_can_create_char(&self.db_pool, &msg.name).await?;
         if response == CharNameResponseVariant::Ok {
             let mut char = character::Model {
-                name: self.name.clone(),
-                level: 1,
-                face: self.face,
-                hair_style: self.hair_style,
-                hair_color: self.hair_color,
-                is_female: self.is_female,
+                name: msg.name.clone(),
+                level: 1, //todo take from config
+                face: msg.face,
+                hair_style: msg.hair_style,
+                hair_color: msg.hair_color,
+                is_female: msg.is_female,
                 delete_at: None,
-                user_id: handler.try_get_user()?.id,
+                user_id: self.try_get_user()?.id,
                 ..Default::default()
             };
-            template.initialize_character(&mut char, &controller.base_stats_table)?;
-            match character::Model::create_char(db_pool, char).await {
+            template.initialize_character(&mut char, &self.controller.base_stats_table)?;
+            match character::Model::create_char(&self.db_pool, char).await {
                 Ok(inst) => {
-                    handler.add_character(Player::new(inst, vec![]))?;
-                    handler.send_packet(Box::new(CreateCharOk::new()?)).await
+                    self.add_character(Player::new(inst, vec![]))?;
+                    self.send_packet(CreateCharOk::new()?.buffer).await
                 }
                 Err(DbErr::RecordNotInserted) => {
-                    handler
-                        .send_packet(Box::new(CreateCharFailed::new(
-                            CharNameResponseVariant::AlreadyExists,
-                        )?))
-                        .await
+                    self.send_packet(
+                        CreateCharFailed::new(CharNameResponseVariant::AlreadyExists)?.buffer,
+                    )
+                    .await
                 }
                 e => {
                     error!(?e, "Failed to create char");
-                    handler
-                        .send_packet(Box::new(CreateCharFailed::new(
-                            CharNameResponseVariant::CharCreationFailed,
-                        )?))
-                        .await
+                    self.send_packet(
+                        CreateCharFailed::new(CharNameResponseVariant::CharCreationFailed)?.buffer,
+                    )
+                    .await
                 }
             }
         } else {
-            handler
-                .send_packet(Box::new(CreateCharFailed::new(response)?))
-                .await
+            self.send_packet(
+                CreateCharFailed::new(response)?.buffer,
+            )
+            .await
         }
     }
 }
@@ -136,18 +139,17 @@ impl HandleablePacket for CreateCharRequest {
 mod tests {
     use super::*;
     use crate::controller::Controller;
+    use crate::test_utils::test::{spawn_custom_player_client_actor, spawn_player_client_actor};
     use entities::test_factories::factories::user_factory;
-    use l2_core::config::gs::GSServer;
+    use l2_core::config::gs::GSServerConfig;
     use l2_core::traits::ServerConfig;
-    use ntest::timeout;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use tokio::io::{split, AsyncWriteExt};
-    use l2_core::traits::handlers::PacketHandler;
+    use tokio::io::split;
 
     fn build_packet() -> CreateCharRequest {
-        let mut data = vec![];
+        let mut data = BytesMut::new();
         data.extend_from_slice(&[116, 0, 101, 0, 115, 0, 116, 0, 0, 0]);
         data.extend_from_slice(&i32::to_le_bytes(1));
         data.extend_from_slice(&i32::to_le_bytes(1));
@@ -161,91 +163,103 @@ mod tests {
         data.extend_from_slice(&i32::to_le_bytes(1));
         data.extend_from_slice(&i32::to_le_bytes(1));
         data.extend_from_slice(&i32::to_le_bytes(1));
-        CreateCharRequest::read(&data).unwrap()
+        CreateCharRequest::read(data).unwrap()
     }
     #[tokio::test]
-    #[timeout(3000)]
     async fn test_read_and_handle_fail_no_auth() {
         let pool = get_test_db().await;
         let pack = build_packet();
         let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
-        let cfg = Arc::new(GSServer::from_string(include_str!(
+        let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::from_config(cfg));
         controller.add_online_account(String::from("test"));
-        let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
-        let res = pack.handle(&mut ch).await;
+        let player_actor = spawn_player_client_actor(controller, pool, r, w).await;
+        let res = player_actor.ask(pack).await;
         assert!(res.is_err());
     }
     #[tokio::test]
-    #[timeout(3000)]
     async fn test_read_and_handle_fail_no_user() {
         let pool = get_test_db().await;
         let pack = build_packet();
         let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
-        let cfg = Arc::new(GSServer::from_string(include_str!(
+        let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::from_config(cfg));
         controller.add_online_account(String::from("test"));
-        let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
-        ch.set_status(ClientStatus::Authenticated);
-        let res = pack.handle(&mut ch).await;
+        let mut player_client =
+            PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
+        player_client.set_status(ClientStatus::Authenticated);
+        let player_actor =
+            spawn_custom_player_client_actor(controller, pool, r, w, Some(player_client)).await;
+        let res = player_actor.ask(pack).await;
         assert!(res.is_err());
     }
     #[tokio::test]
-    #[timeout(3000)]
     async fn test_read_and_handle_fail_no_chars() {
         let pool = get_test_db().await;
         let pack = build_packet();
         let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
-        let cfg = Arc::new(GSServer::from_string(include_str!(
+        let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::from_config(cfg));
         controller.add_online_account(String::from("test"));
-        let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
-        ch.set_status(ClientStatus::Authenticated);
+        let mut player_client =
+            PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
+        player_client.set_status(ClientStatus::Authenticated);
+
         let user = user_factory(&pool, |mut u| {
             u.username = String::from("test");
             u
         })
         .await;
-        ch.set_user(user);
-        let res = pack.handle(&mut ch).await;
+        player_client.set_user(user);
+        let player_actor =
+            spawn_custom_player_client_actor(controller, pool, r, w, Some(player_client)).await;
+        let res = player_actor.ask(pack).await;
         assert!(res.is_err());
     }
     #[tokio::test]
-    #[timeout(3000)]
     async fn test_read_and_handle_ok() {
         let pool = get_test_db().await;
         let pack = build_packet();
-        let (mut client, server) = tokio::io::duplex(1024);
+        let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
-        let cfg = Arc::new(GSServer::from_string(include_str!(
+        let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::from_config(cfg));
         controller.add_online_account(String::from("test"));
-        let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool.clone(), controller);
-        ch.set_status(ClientStatus::Authenticated);
+        let mut player_client =
+            PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
+        player_client.set_status(ClientStatus::Authenticated);
         let user = user_factory(&pool, |mut u| {
             u.username = String::from("test");
             u
         })
         .await;
-        ch.set_user(user);
-        ch.set_account_chars(vec![]);
-        let res = pack.handle(&mut ch).await;
+        player_client.set_user(user);
+        player_client.set_account_chars(vec![]);
+        let player_actor =
+            spawn_custom_player_client_actor(controller, pool.clone(), r, w, Some(player_client))
+                .await;
+        let res = player_actor.ask(pack.clone()).await;
         assert!(res.is_ok());
-        assert_eq!(ch.get_account_chars().unwrap().len(), 1);
-        let res = pack.handle(&mut ch).await;
+        let chars = character::Model::find_by_username(&pool, "test")
+            .await
+            .expect("Char must be created");
+        assert_eq!(chars.len(), 1);
+        let res = player_actor.ask(pack).await;
         assert!(res.is_ok());
-        assert_eq!(ch.get_account_chars().unwrap().len(), 1); // but char not created because it's duplicate
-        client.shutdown().await.unwrap();
+        let chars = character::Model::find_by_username(&pool, "test")
+            .await
+            .expect("Char must be created");
+        assert_eq!(chars.len(), 1);
     }
 }

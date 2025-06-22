@@ -1,12 +1,11 @@
-use crate as l2_core;
+use bytes::BytesMut;
 use crate::shared_packets::{
     common::ReadablePacket, read::ReadablePacketBuffer, write::SendablePacketBuffer,
 };
-use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct AuthGS {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     pub server_id: u8,
     pub server_name: String,
 }
@@ -35,7 +34,7 @@ impl ReadablePacket for AuthGS {
     const PACKET_ID: u8 = 0x02;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         let _packet_id = buffer.read_byte()?;
         let server_id = buffer.read_byte()?;
@@ -50,12 +49,13 @@ impl ReadablePacket for AuthGS {
 
 #[cfg(test)]
 mod test {
+    use bytes::BytesMut;
     use crate::shared_packets::{common::ReadablePacket, ls_2_gs::AuthGS};
 
     #[test]
     fn test_read() {
-        let data = [2, 1, 116, 0, 101, 0, 115, 0, 116, 0, 0, 0];
-        let packet = AuthGS::read(&data).unwrap();
+        let data = BytesMut::from(&[2u8, 1, 116, 0, 101, 0, 115, 0, 116, 0, 0, 0][..]);
+        let packet = AuthGS::read(data).unwrap();
         assert_eq!(packet.server_id, 1);
         assert_eq!(packet.server_name, "test");
     }

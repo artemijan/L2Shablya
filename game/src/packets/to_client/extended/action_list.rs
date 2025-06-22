@@ -1,11 +1,10 @@
 use crate::controller::Controller;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 use std::fmt::Debug;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct ActionList {
-    buffer: SendablePacketBuffer,
+    pub(crate) buffer: SendablePacketBuffer,
 }
 
 impl ActionList {

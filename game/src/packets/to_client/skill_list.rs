@@ -1,11 +1,10 @@
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 use std::fmt::Debug;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct SkillList {
-    buffer: SendablePacketBuffer,
+    pub(crate) buffer: SendablePacketBuffer,
 }
 
 impl SkillList {

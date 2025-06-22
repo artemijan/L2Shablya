@@ -1,71 +1,70 @@
-use crate::ls_thread::LoginHandler;
-use crate::packets::HandleablePacket;
+use crate::ls_client::LoginServerClient;
 use anyhow::bail;
-use async_trait::async_trait;
+use kameo::message::Context;
+use kameo::prelude::Message;
 use l2_core::shared_packets::gs_2_ls::{GSStatusUpdate, PlayerInGame};
 use l2_core::shared_packets::ls_2_gs;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
-use std::sync::Arc;
 use tracing::{info, instrument};
+use l2_core::traits::ServerToServer;
 
-#[async_trait]
-impl HandleablePacket for ls_2_gs::AuthGS {
-    type HandlerType = LoginHandler;
+impl Message<ls_2_gs::AuthGS> for LoginServerClient {
+    type Reply = anyhow::Result<()>;
 
-    #[instrument(skip_all)]
-    async fn handle(&self, lh: &mut Self::HandlerType) -> anyhow::Result<()> {
-        let controller = lh.get_controller();
-        let cfg = controller.get_cfg();
-        if self.server_id != cfg.server_id && !cfg.accept_alternative_id {
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: ls_2_gs::AuthGS,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        let cfg = self.controller.get_cfg();
+        if msg.server_id != cfg.server_id && !cfg.accept_alternative_id {
             bail!(
                 "Can not accept alternative id from login server. Id is {}",
-                self.server_id
+                msg.server_id
             );
         }
         let gsu = GSStatusUpdate::new(&cfg)?;
-        lh.send_packet(Box::new(gsu)).await?;
+        self.send_packet(gsu.buffer).await?;
         info!(
             "Registered on Login server: {:} ({:})",
-            self.server_name, self.server_id
+            msg.server_name, msg.server_id
         );
-        controller
-            .message_broker
-            .register_packet_handler(Self::HandlerType::HANDLER_ID, Arc::new(lh.clone()));
-        let accounts = controller.get_online_accounts();
+        let accounts = self.controller.get_online_accounts();
         if !accounts.is_empty() {
-            lh.send_packet(Box::new(PlayerInGame::new(&accounts)?))
+            self.send_packet(PlayerInGame::new(&accounts)?.buffer)
                 .await?;
         }
         Ok(())
     }
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::controller::Controller;
-    use l2_core::config::gs::GSServer;
+    use crate::test_utils::test::spawn_ls_client_actor;
+    use l2_core::config::gs::GSServerConfig;
     use l2_core::traits::ServerConfig;
     use ntest::timeout;
-    use std::net::Ipv4Addr;
+    use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use tokio::io::{split, AsyncReadExt, AsyncWriteExt};
+    use tokio::io::{split, AsyncReadExt};
+
     #[tokio::test]
-    #[timeout(3000)]
+    #[timeout(2000)]
     async fn test_handle() {
         let pool = get_test_db().await;
         let pack = ls_2_gs::AuthGS::new(1, String::from("server"));
         let (mut client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
-        let cfg = Arc::new(GSServer::from_string(include_str!(
+        let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(Controller::from_config(cfg));
         controller.add_online_account(String::from("test"));
-        let mut ch = LoginHandler::new(r, w, Ipv4Addr::LOCALHOST, pool, controller);
-        pack.handle(&mut ch).await.unwrap();
-        tokio::spawn(async move {
-            ch.handle_client().await.unwrap();
-        });
+        let actor = spawn_ls_client_actor(controller, pool, r, w).await;
+        let res = actor.ask(pack).await;
+        assert!(res.is_ok());
         let mut resp = [0; 58];
         client.read_exact(&mut resp).await.unwrap();
         assert_eq!(
@@ -86,6 +85,5 @@ mod tests {
             ],
             resp_online_accs
         );
-        client.shutdown().await.unwrap();
     }
 }

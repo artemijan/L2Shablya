@@ -1,10 +1,9 @@
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
 #[allow(unused)]
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct CreateCharOk {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
 }
 
 #[allow(unused)]

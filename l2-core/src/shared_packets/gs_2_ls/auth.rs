@@ -1,12 +1,11 @@
-use crate as l2_core;
-use crate::config::gs::GSServer;
+use bytes::BytesMut;
+use crate::config::gs::GSServerConfig;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 use num_traits::ToBytes;
 
-#[derive(Clone, Debug, Default, SendablePacketImpl)]
+#[derive(Clone, Debug, Default)]
 pub struct RequestAuthGS {
     pub buffer: SendablePacketBuffer,
     pub desired_id: u8,
@@ -22,7 +21,7 @@ impl RequestAuthGS {
     ///
     /// # Errors
     /// - if writing packet bytes is not possible, for example when packet size is too big
-    pub fn new(cfg: &GSServer) -> anyhow::Result<Self> {
+    pub fn new(cfg: &GSServerConfig) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
             desired_id: cfg.server_id,
@@ -59,7 +58,7 @@ impl ReadablePacket for RequestAuthGS {
     const PACKET_ID: u8 = 0x01;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer: ReadablePacketBuffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         let desired_id = buffer.read_byte()?;
@@ -86,6 +85,7 @@ impl ReadablePacket for RequestAuthGS {
 
 #[cfg(test)]
 mod tests {
+    use bytes::BytesMut;
     use crate::shared_packets::common::{ReadablePacket, SendablePacket};
     use crate::shared_packets::gs_2_ls::RequestAuthGS;
     use crate::shared_packets::write::SendablePacketBuffer;
@@ -109,13 +109,14 @@ mod tests {
             hosts: vec!["127.0.0.0/0".to_string(), "127.0.0.1".to_string()],
         };
         p.write_all().unwrap();
-        let bytes = p.get_bytes(true).to_vec();
+        p.buffer.write_padding().unwrap();
+        let bytes = p.buffer.take().to_vec();
         assert_eq!(bytes.len(), 74);
         assert_eq!(bytes, get_bytes());
     }
     #[test]
     fn test_read() {
-        let p = RequestAuthGS::read(&get_bytes()[2..]).unwrap();
+        let p = RequestAuthGS::read(BytesMut::from(&get_bytes()[2..])).unwrap();
         assert_eq!(p.desired_id, 3);
         assert!(p.accept_alternative_id);
         assert!(!p.host_reserved);

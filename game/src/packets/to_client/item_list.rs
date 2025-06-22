@@ -1,12 +1,11 @@
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use l2_core::traits::conversion::ToU32Rounded;
-use macro_common::SendablePacketImpl;
 use std::fmt::Debug;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct ItemList {
-    buffer: SendablePacketBuffer,
+    pub(crate) buffer: SendablePacketBuffer,
     show_window: bool,
 }
 

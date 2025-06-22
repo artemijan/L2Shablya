@@ -1,15 +1,14 @@
-use crate::client_thread::ClientHandler;
 use crate::dto::player;
+use crate::login_client::LoginClient;
 use crate::packet::to_client::LoginOk;
 use crate::packet::to_client::ServerList;
-use crate::packet::HandleablePacket;
 use anyhow::bail;
-use async_trait::async_trait;
+use bytes::BytesMut;
 use entities::entities::user;
+use kameo::message::{Context, Message};
 use l2_core::hash_password;
 use l2_core::shared_packets::common::{PlayerLoginFail, PlayerLoginFailReasons, ReadablePacket};
 use l2_core::str::Trim;
-use l2_core::traits::handlers::{PacketHandler, PacketSender};
 use sea_orm::{ActiveModelTrait, ActiveValue};
 use std::fmt::Debug;
 
@@ -18,78 +17,85 @@ pub struct RequestAuthLogin {
     pub username: String,
     pub password: String,
 }
+impl Message<RequestAuthLogin> for LoginClient {
+    type Reply = anyhow::Result<()>;
 
-impl ReadablePacket for RequestAuthLogin {
-    const PACKET_ID: u8 = 0x00;
-    const EX_PACKET_ID: Option<u16> = None;
-
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
-        let (username, password) = read_bytes(data);
-        Ok(Self { username, password })
-    }
-}
-#[async_trait]
-impl HandleablePacket for RequestAuthLogin {
-    type HandlerType = ClientHandler;
-    async fn handle(&self, ch: &mut Self::HandlerType) -> anyhow::Result<()> {
-        let cfg = ch.get_controller().get_config();
+    async fn handle(
+        &mut self,
+        msg: RequestAuthLogin,
+        ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        let cfg = self.controller.get_config();
         let show_license = cfg.client.show_licence;
-        let pool = ch.get_db_pool();
-        let user_option = user::Model::find_some_by_username(pool, &self.username).await?;
+        let user_option = user::Model::find_some_by_username(&self.db_pool, &msg.username).await?;
         if let Some(user) = user_option {
-            if !user.verify_password(&self.password).await {
-                ch.send_packet(Box::new(PlayerLoginFail::new(
-                    PlayerLoginFailReasons::ReasonUserOrPassWrong,
-                )?))
+            if !user.verify_password(&msg.password).await {
+                self.send_packet(
+                    PlayerLoginFail::new(PlayerLoginFailReasons::ReasonUserOrPassWrong)?.buffer,
+                )
                 .await?;
-                bail!(format!("Login Fail, tried user: {}", &self.username));
+                bail!(format!("Login Fail, tried user: {}", &msg.username));
             }
         } else if cfg.client.auto_create_accounts {
-            let password_hash = hash_password(&self.password).await?;
+            let password_hash = hash_password(&msg.password).await?;
             let user_record = user::ActiveModel {
                 id: ActiveValue::NotSet,
-                username: ActiveValue::Set(self.username.to_string()),
+                username: ActiveValue::Set(msg.username.to_string()),
                 password: ActiveValue::Set(password_hash),
                 access_level: ActiveValue::Set(0),
                 ban_duration: ActiveValue::NotSet,
                 ban_ip: ActiveValue::NotSet,
             };
-            user_record.save(pool).await?;
+            user_record.save(&self.db_pool).await?;
         } else {
-            ch.send_packet(Box::new(PlayerLoginFail::new(
-                PlayerLoginFailReasons::ReasonUserOrPassWrong,
-            )?))
+            self.send_packet(
+                PlayerLoginFail::new(PlayerLoginFailReasons::ReasonUserOrPassWrong)?.buffer,
+            )
             .await?;
             bail!("User not found, and auto creation of accounts is disabled.");
         }
 
-        ch.account_name = Some(self.username.to_string());
+        self.account_name = Some(msg.username.to_string());
         let player_info = player::Info {
             is_authed: true,
-            session: Some(ch.get_session_key().clone()),
-            account_name: self.username.to_string(),
+            player_actor:Some(ctx.actor_ref()),
+            session: Some(self.session_key.clone()),
+            account_name: msg.username.to_string(),
             ..Default::default()
         };
 
-        let lc = ch.get_controller();
-        if let Err(err) = lc.on_player_login(player_info).await {
+        if let Err(err) = self.controller.on_player_login(player_info).await {
             let err_msg = format!("Player login failed: {err:?}");
-            ch.send_packet(Box::new(PlayerLoginFail::new(err)?)).await?;
+            self.send_packet(
+                PlayerLoginFail::new(err)?.buffer,
+            )
+            .await?;
             bail!(err_msg);
         }
 
         if show_license {
-            ch.send_packet(Box::new(LoginOk::new(ch.get_session_key())))
-                .await?;
+            self.send_packet(
+                LoginOk::new(&self.session_key).buffer,
+            )
+            .await?;
         } else {
-            let s_list = ServerList::new(ch, &self.username);
-            ch.send_packet(Box::new(s_list)).await?;
+            let s_list = ServerList::new(self, &msg.username);
+            self.send_packet(s_list.buffer).await?;
         }
         Ok(())
     }
 }
+impl ReadablePacket for RequestAuthLogin {
+    const PACKET_ID: u8 = 0x00;
+    const EX_PACKET_ID: Option<u16> = None;
 
-pub fn read_bytes(data: &[u8]) -> (String, String) {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
+        let (username, password) = read_bytes(&data);
+        Ok(Self { username, password })
+    }
+}
+
+pub fn read_bytes(data: &BytesMut) -> (String, String) {
     let mut is_new_auth = false;
     if data.len() >= 256 {
         is_new_auth = true;
@@ -116,17 +122,15 @@ pub fn read_bytes(data: &[u8]) -> (String, String) {
 
 #[cfg(test)]
 mod tests {
-    use crate::client_thread::ClientHandler;
     use crate::controller::LoginController;
     use crate::packet::from_client::RequestAuthLogin;
-    use crate::packet::HandleablePacket;
+    use crate::test_utils::test::{GetState, spawn_login_client_actor};
+    use bytes::BytesMut;
     use entities::entities::user;
     use entities::test_factories::factories::user_factory;
-    use l2_core::config::login::LoginServer;
+    use l2_core::config::login::LoginServerConfig;
     use l2_core::shared_packets::common::ReadablePacket;
-    use l2_core::traits::handlers::PacketHandler;
     use l2_core::traits::ServerConfig;
-    use std::net::Ipv4Addr;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::split;
@@ -145,7 +149,7 @@ mod tests {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 1,
         ];
-        let p1 = RequestAuthLogin::read(&login_bytes).unwrap();
+        let p1 = RequestAuthLogin::read(BytesMut::from(&login_bytes[..])).unwrap();
         assert_eq!(p1.username, "admin");
         assert_eq!(p1.password, "admin");
     }
@@ -163,15 +167,15 @@ mod tests {
         })
         .await;
         let (_client, server) = tokio::io::duplex(1024);
-        let cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        let cfg = LoginServerConfig::from_string(include_str!("../../../../config/login.yaml"));
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
         let (r, w) = split(server);
-        let mut ch = ClientHandler::new(r, w, ip, db_pool, cloned_lc);
-        let res = packet.handle(&mut ch).await;
-        assert!(res.is_ok());
-        assert_eq!(ch.account_name, Some("admin".to_string()));
+        let player_actor = spawn_login_client_actor(cloned_lc, db_pool, r, w).await;
+        let result = player_actor.ask(packet).await;
+        let state = player_actor.ask(GetState).await.unwrap();
+        assert!(result.is_ok());
+        assert_eq!(state.account_name, Some("admin".to_string()));
     }
     #[tokio::test]
     async fn test_handle_login_auto_create_account() {
@@ -181,19 +185,19 @@ mod tests {
         };
         let db_pool = get_test_db().await;
         let (_client, server) = tokio::io::duplex(1024);
-        let mut cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        let mut cfg = LoginServerConfig::from_string(include_str!("../../../../config/login.yaml"));
         cfg.client.auto_create_accounts = true;
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
         let (r, w) = split(server);
-        let mut ch = ClientHandler::new(r, w, ip, db_pool.clone(), cloned_lc);
-        let res = packet.handle(&mut ch).await;
+        let player_actor = spawn_login_client_actor(cloned_lc, db_pool.clone(), r, w).await;
+        let result = player_actor.ask(packet).await;
+        let state = player_actor.ask(GetState).await.unwrap();
         let user = user::Model::find_some_by_username(&db_pool, "test")
             .await
             .unwrap();
-        assert!(res.is_ok());
-        assert_eq!(ch.account_name, Some("test".to_string()));
+        assert!(result.is_ok());
+        assert_eq!(state.account_name, Some("test".to_string()));
         assert!(user.is_some());
         assert_eq!(user.unwrap().username, "test");
     }
@@ -206,18 +210,17 @@ mod tests {
         };
         let db_pool = get_test_db().await;
         let (_client, server) = tokio::io::duplex(1024);
-        let mut cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        let mut cfg = LoginServerConfig::from_string(include_str!("../../../../config/login.yaml"));
         cfg.client.auto_create_accounts = false;
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
         let (r, w) = split(server);
-        let mut ch = ClientHandler::new(r, w, ip, db_pool.clone(), cloned_lc);
-        let res = packet.handle(&mut ch).await;
+        let player_actor = spawn_login_client_actor(cloned_lc, db_pool.clone(), r, w).await;
+        let result = player_actor.ask(packet).await;
         let user = user::Model::find_some_by_username(&db_pool, "test")
             .await
             .unwrap();
-        assert!(res.is_err());
+        assert!(result.is_err());
         assert!(user.is_none());
     }
     #[tokio::test]
@@ -228,7 +231,7 @@ mod tests {
         };
         let db_pool = get_test_db().await;
         let (_client, server) = tokio::io::duplex(1024);
-        let mut cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        let mut cfg = LoginServerConfig::from_string(include_str!("../../../../config/login.yaml"));
         cfg.client.auto_create_accounts = false;
         user_factory(&db_pool, |mut u| {
             u.username = "admin".to_owned();
@@ -238,14 +241,13 @@ mod tests {
             .await;
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
         let (r, w) = split(server);
-        let mut ch = ClientHandler::new(r, w, ip, db_pool.clone(), cloned_lc);
-        let res = packet.handle(&mut ch).await;
+        let player_actor = spawn_login_client_actor(cloned_lc, db_pool.clone(), r, w).await;
+        let result = player_actor.ask(packet).await;
         let user = user::Model::find_some_by_username(&db_pool, "test")
             .await
             .unwrap();
-        assert!(res.is_err());
+        assert!(result.is_err());
         assert!(user.is_none());
     }
 }

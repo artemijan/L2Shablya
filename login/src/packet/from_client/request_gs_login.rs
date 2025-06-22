@@ -1,10 +1,11 @@
-use crate::client_thread::ClientHandler;
+use crate::login_client::LoginClient;
 use crate::packet::to_client::PlayOk;
-use crate::packet::HandleablePacket;
-use async_trait::async_trait;
+use anyhow::bail;
+use bytes::BytesMut;
+use kameo::message::{Context, Message};
+use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::traits::handlers::PacketSender;
 
 #[derive(Clone, Debug)]
 #[allow(unused)]
@@ -13,12 +14,35 @@ pub struct RequestGSLogin {
     pub s_key_2: i32,
     pub server_id: u8,
 }
+impl RequestGSLogin {
+    pub fn check_session(&self, session_key: &SessionKey) -> anyhow::Result<()> {
+        if !session_key.check_session(self.s_key_1, self.s_key_2) {
+            bail!("Session key check failed");
+        }
+        Ok(())
+    }
+}
+impl Message<RequestGSLogin> for LoginClient {
+    type Reply = anyhow::Result<()>;
 
+    async fn handle(
+        &mut self,
+        msg: RequestGSLogin,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        msg.check_session(&self.session_key)?;
+        self.send_packet(
+            PlayOk::new(&self.session_key)?.buffer,
+        )
+        .await?;
+        Ok(())
+    }
+}
 impl ReadablePacket for RequestGSLogin {
     const PACKET_ID: u8 = 0x02;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         Ok(Self {
             s_key_1: buffer.read_i32()?,
@@ -28,33 +52,23 @@ impl ReadablePacket for RequestGSLogin {
     }
 }
 
-#[async_trait]
-impl HandleablePacket for RequestGSLogin {
-    type HandlerType = ClientHandler;
-    async fn handle(&self, ch: &mut Self::HandlerType) -> anyhow::Result<()> {
-        ch.check_session(self.s_key_1, self.s_key_2)?;
-        ch.send_packet(Box::new(PlayOk::new(ch.get_session_key())?))
-            .await?;
-        Ok(())
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::controller::LoginController;
-    use l2_core::config::login::LoginServer;
+    use crate::test_utils::test::{spawn_custom_login_client_actor, spawn_login_client_actor};
+    use l2_core::config::login::LoginServerConfig;
     use l2_core::session::SessionKey;
-    use l2_core::traits::handlers::PacketHandler;
     use l2_core::traits::ServerConfig;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::split;
+
     #[test]
     fn request_gs_login_read() {
         let bytes = [1, 0, 0, 0, 2, 0, 0, 0, 8];
-        let packet = RequestGSLogin::read(&bytes).unwrap();
+        let packet = RequestGSLogin::read(BytesMut::from(&bytes[..])).unwrap();
         assert_eq!(packet.s_key_1, 1);
         assert_eq!(packet.s_key_2, 2);
         assert_eq!(packet.server_id, 8);
@@ -68,13 +82,12 @@ mod tests {
         };
         let db_pool = get_test_db().await;
         let (_client, server) = tokio::io::duplex(1024);
-        let cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        let cfg = LoginServerConfig::from_string(include_str!("../../../../config/login.yaml"));
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
         let (r, w) = split(server);
-        let mut ch = ClientHandler::new(r, w, ip, db_pool.clone(), cloned_lc);
-        let result = packet.handle(&mut ch).await;
+        let player_actor = spawn_login_client_actor(cloned_lc, db_pool, r, w).await;
+        let result = player_actor.ask(packet).await;
         assert!(result.is_err());
     }
     #[tokio::test]
@@ -86,19 +99,22 @@ mod tests {
         };
         let db_pool = get_test_db().await;
         let (_client, server) = tokio::io::duplex(1024);
-        let cfg = LoginServer::from_string(include_str!("../../../../config/login.yaml"));
+        let cfg = LoginServerConfig::from_string(include_str!("../../../../config/login.yaml"));
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
         let ip = Ipv4Addr::new(127, 0, 0, 1);
         let (r, w) = split(server);
-        let mut ch = ClientHandler::new(r, w, ip, db_pool.clone(), cloned_lc);
-        ch.set_session_key(SessionKey {
+        let session_key = SessionKey {
             play_ok1: 8,
             play_ok2: 9,
             login_ok1: 3,
             login_ok2: 4,
-        });
-        let result = packet.handle(&mut ch).await;
+        };
+        let mut login_client = LoginClient::new(ip, cloned_lc, db_pool.clone());
+        login_client.session_key = session_key;
+        let player_actor =
+            spawn_custom_login_client_actor(lc, db_pool, r, w, Some(login_client)).await;
+        let result = player_actor.ask(packet).await;
         assert!(result.is_ok());
     }
 }

@@ -1,15 +1,19 @@
-use crate::ls_thread::LoginHandler;
-use crate::packets::HandleablePacket;
-use async_trait::async_trait;
+use crate::ls_client::LoginServerClient;
+use kameo::message::Context;
+use kameo::prelude::Message;
 use l2_core::shared_packets::ls_2_gs::KickPlayer;
-use l2_core::traits::handlers::PacketHandler;
+use tracing::instrument;
 
-#[async_trait]
-impl HandleablePacket for KickPlayer {
-    type HandlerType = LoginHandler;
-    async fn handle(&self, ph: &mut Self::HandlerType) -> anyhow::Result<()> {
-        let controller = ph.get_controller();
-        controller.logout_account(&self.account_name);
+impl Message<KickPlayer> for LoginServerClient {
+    type Reply = anyhow::Result<()>;
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: KickPlayer,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        self.controller.logout_account(&msg.account_name);
+        //todo: disconnect TCP client
         Ok(())
     }
 }

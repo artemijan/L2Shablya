@@ -9,7 +9,7 @@ use std::io::BufReader;
 use tracing::info;
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct LoginServer {
+pub struct LoginServerConfig {
     pub name: String,
     pub blowfish_key: String,
     pub runtime: Option<Runtime>,
@@ -20,7 +20,7 @@ pub struct LoginServer {
     pub client: Client,
 }
 
-impl ServerConfig for LoginServer {
+impl ServerConfig for LoginServerConfig {
     fn load(file_name: &str) -> Self {
         let file = File::open(file_name).unwrap_or_else(|e| {
             let cwd = env::current_dir()
@@ -28,14 +28,14 @@ impl ServerConfig for LoginServer {
             panic!("Failed to open config file: {file_name}. Error: {e}. Current directory: {cwd}");
         });
         let reader = BufReader::new(file);
-        let config: LoginServer = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
+        let config: LoginServerConfig = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
             panic!("Unable to parse {file_name}, the format is incorrect, {e}")
         });
         info!("Configuration ok, starting application: {}", config.name);
         config
     }
     fn from_string(conf: &str) -> Self {
-        serde_yaml::from_str::<LoginServer>(conf)
+        serde_yaml::from_str::<LoginServerConfig>(conf)
             .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
     }
 
@@ -105,17 +105,17 @@ pub struct GSMessages {
 
 #[cfg(test)]
 mod tests {
-    use crate::config::login::LoginServer;
+    use crate::config::login::LoginServerConfig;
     use crate::traits::ServerConfig;
 
     #[test]
     fn test_config_load() {
-        let cfg = LoginServer::load("../config/login.yaml");
+        let cfg = LoginServerConfig::load("../config/login.yaml");
         assert_eq!(cfg.name, "Login server");
     }
     #[test]
     #[should_panic(expected = "Failed to open config file: ./login.yaml. Error: No such file or directory (os error 2).")]
     fn test_config_load_err() {
-        LoginServer::load("./login.yaml");
+        LoginServerConfig::load("./login.yaml");
     }
 }
