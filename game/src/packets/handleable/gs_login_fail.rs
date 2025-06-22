@@ -1,13 +1,18 @@
-use crate::ls_thread::LoginHandler;
-use crate::packets::HandleablePacket;
+use crate::ls_client::LoginServerClient;
 use anyhow::bail;
-use async_trait::async_trait;
+use kameo::message::{Context, Message};
 use l2_core::shared_packets::common::GSLoginFail;
+use tracing::instrument;
 
-#[async_trait]
-impl HandleablePacket for GSLoginFail {
-    type HandlerType = LoginHandler;
-    async fn handle(&self, _: &mut Self::HandlerType) -> anyhow::Result<()> {
-        bail!("Failed to register on Login server{:?}", self.reason)
+impl Message<GSLoginFail> for LoginServerClient {
+    type Reply = anyhow::Result<()>;
+
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: GSLoginFail,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        bail!("Failed to register on Login server{:?}", msg.reason)
     }
 }

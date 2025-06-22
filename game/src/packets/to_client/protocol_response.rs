@@ -1,11 +1,10 @@
-use l2_core::config::gs::GSServer;
+use l2_core::config::gs::GSServerConfig;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
 #[allow(unused)]
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct ProtocolResponse {
-    buffer: SendablePacketBuffer,
+    pub(crate) buffer: SendablePacketBuffer,
     is_protocol_ok: bool,
 }
 
@@ -14,7 +13,7 @@ impl ProtocolResponse {
     pub fn new(
         key: &[u8],
         is_protocol_ok: bool,
-        cfg: &GSServer,
+        cfg: &GSServerConfig,
     ) -> anyhow::Result<ProtocolResponse> {
         let mut buffer = SendablePacketBuffer::new();
         buffer.write(Self::PACKET_ID)?;
@@ -30,7 +29,7 @@ impl ProtocolResponse {
             is_protocol_ok,
         })
     }
-    pub fn fail(cfg: &GSServer) -> anyhow::Result<ProtocolResponse> {
+    pub fn fail(cfg: &GSServerConfig) -> anyhow::Result<ProtocolResponse> {
         let mut buffer = SendablePacketBuffer::new();
         buffer.write(Self::PACKET_ID)?;
         buffer.write_bool(false)?;

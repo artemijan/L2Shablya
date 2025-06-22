@@ -1,7 +1,6 @@
 use l2_core::shared_packets::{common::LoginServerOpcodes, write::SendablePacketBuffer};
-use macro_common::SendablePacketImpl;
 
-#[derive(Debug, SendablePacketImpl)]
+#[derive(Debug)]
 pub struct Init {
     pub buffer: SendablePacketBuffer,
     session_id: i32,
@@ -29,7 +28,7 @@ impl Init {
         self.buffer.write_i32(self.session_id)?; // session id
         self.buffer.write_i32(0x0000_c621)?; // protocol revision
         self.buffer.write_bytes(self.public_key.as_slice())?; // RSA Public Key
-                                                              // unk GG related?
+        // unk GG related?
         self.buffer.write_i32(0x29DD_954E)?;
         self.buffer.write_i32(0x77C3_9CFC)?;
         #[allow(clippy::cast_possible_wrap)]
@@ -54,7 +53,7 @@ mod tests {
             vec![1, 2, 3, 4, 1, 2, 3, 4, 5],
         )
         .unwrap();
-        let bytes = packet.get_bytes(false);
+        let bytes = packet.buffer.get_data_mut(false);
         assert_eq!(
             bytes,
             [

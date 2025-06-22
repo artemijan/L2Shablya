@@ -1,16 +1,17 @@
 use anyhow::{anyhow, bail, Result};
+use bytes::BytesMut;
 use encoding::all::UTF_16LE;
 use encoding::{DecoderTrap, Encoding};
 
 #[derive(Debug, Clone)]
-pub struct ReadablePacketBuffer<'a> {
-    bytes: &'a [u8],
+pub struct ReadablePacketBuffer {
+    bytes: BytesMut,
     position: usize,
 }
 
-impl<'a> ReadablePacketBuffer<'a> {
+impl ReadablePacketBuffer {
     #[must_use]
-    pub fn new(bytes: &'a [u8]) -> Self {
+    pub fn new(bytes: BytesMut) -> Self {
         ReadablePacketBuffer { bytes, position: 0 }
     }
 
@@ -182,13 +183,14 @@ mod test {
 
     #[test]
     fn test_all() {
-        let bytes = [
+        let mut bytes = BytesMut::new();
+        bytes.extend_from_slice(&[
             84, 0, 101, 0, 115, 0, 116, 0, 0, 0, 4, 0, 84, 0, 101, 0, 115, 0, 116, 0, 0, 1, 11, 11,
             0, 11, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 205, 204, 92, 64, 154, 153, 153, 153, 153, 153, 11, 64,
             0, 0, 0, 0, 0, 0,
-        ];
-        let mut packet = ReadablePacketBuffer::new(&bytes);
+        ]);
+        let mut packet = ReadablePacketBuffer::new(bytes);
         let s1 = packet.read_c_utf16le_string().unwrap();
         let s2 = packet.read_sized_string().unwrap();
         let s3 = packet.read_byte().unwrap();

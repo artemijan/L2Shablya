@@ -1,10 +1,9 @@
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 #[allow(unused)]
 pub struct PlayerLoginResponse {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     reason: u32,
     is_ok: bool,
 }

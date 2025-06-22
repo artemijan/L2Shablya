@@ -1,9 +1,8 @@
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::LoginServerOpcodes;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct PlayOk {
     pub buffer: SendablePacketBuffer,
     play_ok1: i32,
@@ -43,7 +42,7 @@ mod tests {
             play_ok2: 6,
         };
         let mut packet = PlayOk::new(&sk).unwrap();
-        let bytes = packet.get_bytes(false);
+        let bytes = packet.buffer.get_data_mut(false);
         assert_eq!(bytes, [11, 0, 7, 7, 0, 0, 0, 6, 0, 0, 0]);
     }
 }

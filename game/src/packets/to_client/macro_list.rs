@@ -1,7 +1,6 @@
 use anyhow::anyhow;
 use l2_core::game_objects::player::{Player, PlayerMacro};
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MacroUpdateType {
@@ -21,9 +20,9 @@ impl MacroUpdateType {
     }
 }
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct MacroList {
-    buffer: SendablePacketBuffer,
+    pub(crate) buffer: SendablePacketBuffer,
     count: u8,
     update_type: MacroUpdateType,
 }

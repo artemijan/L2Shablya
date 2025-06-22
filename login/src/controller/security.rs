@@ -1,6 +1,6 @@
 use super::data::LoginController;
-use l2_core::traits::IpBan;
 use chrono::Utc;
+use l2_core::traits::IpBan;
 
 impl LoginController {
     pub fn update_ip_ban_list(&self, ip: &str, ban_duration: i64) {

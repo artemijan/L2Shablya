@@ -2,36 +2,35 @@ use crate::data::action_list::ActionList;
 use crate::data::base_stat::BaseStat;
 use crate::data::char_template::ClassTemplates;
 use crate::data::exp_table::ExpTable;
+use crate::ls_client::LoginServerClient;
 use crate::managers::ClanAllyManager;
+use anyhow::anyhow;
 use dashmap::DashMap;
 use entities::entities::character;
 use entities::DBPool;
-use l2_core::config::gs::GSServer;
+use kameo::actor::ActorRef;
+use l2_core::config::gs::GSServerConfig;
 use l2_core::config::traits::{ConfigDirLoader, ConfigFileLoader};
-use l2_core::message_broker::MessageBroker;
-use l2_core::shared_packets::common::PacketType;
 use l2_core::traits::IpBan;
 use std::sync::Arc;
-use std::time::Duration;
 use tokio::sync::RwLock;
 use tracing::info;
 
 #[derive(Clone, Debug)]
 pub struct Controller {
-    cfg: Arc<GSServer>,
+    cfg: Arc<GSServerConfig>,
     pub exp_table: ExpTable,
     pub action_list: ActionList,
     pub class_templates: Arc<ClassTemplates>,
+    ls_actor: Arc<RwLock<Option<ActorRef<LoginServerClient>>>>,
     online_accounts: DashMap<String, String>,
     pub base_stats_table: BaseStat,
     pub hero_list: DashMap<i32, character::Model>,
     pub clan_ally_manager: Arc<RwLock<ClanAllyManager>>,
-    pub message_broker: Arc<MessageBroker<u8, PacketType>>,
 }
 
 impl Controller {
-    pub async fn new(cfg: Arc<GSServer>, db_pool: &DBPool) -> Self {
-        let threshold = Duration::from_secs(u64::from(cfg.listeners.login_server.messages.timeout));
+    pub async fn new(cfg: Arc<GSServerConfig>, db_pool: &DBPool) -> Self {
         let exp_table = ExpTable::load();
         let action_list = ActionList::load();
         let class_templates = ClassTemplates::load();
@@ -39,17 +38,31 @@ impl Controller {
         Controller {
             exp_table,
             cfg,
+            ls_actor: Arc::new(RwLock::new(None)),
             action_list,
             base_stats_table: base_stats,
             class_templates: Arc::new(class_templates),
             hero_list: DashMap::new(),
-            message_broker: MessageBroker::new(threshold),
             online_accounts: DashMap::new(),
             clan_ally_manager: Arc::new(RwLock::new(ClanAllyManager::new(db_pool.clone()).await)),
         }
     }
+    pub async fn set_ls_actor(&self, actor: ActorRef<LoginServerClient>) {
+        *self.ls_actor.write().await = Some(actor);
+    }
 
-    pub fn get_cfg(&self) -> Arc<GSServer> {
+    pub async fn get_ls_actor(&self) -> Option<ActorRef<LoginServerClient>> {
+        self.ls_actor.read().await.clone()
+    }
+    pub async fn try_get_ls_actor(&self) -> anyhow::Result<ActorRef<LoginServerClient>> {
+        self.ls_actor
+            .read()
+            .await
+            .clone()
+            .ok_or_else(|| anyhow!("LS actor not found"))
+    }
+    
+    pub fn get_cfg(&self) -> Arc<GSServerConfig> {
         self.cfg.clone()
     }
     #[allow(clippy::unused_self)]
@@ -75,8 +88,7 @@ impl Controller {
 
 #[cfg(test)]
 impl Controller {
-    pub fn from_config(cfg: Arc<GSServer>) -> Self {
-        let threshold = Duration::from_secs(u64::from(cfg.listeners.login_server.messages.timeout));
+    pub fn from_config(cfg: Arc<GSServerConfig>) -> Self {
         let exp_table = ExpTable::load();
         let action_list = ActionList::load();
         let class_templates = ClassTemplates::load();
@@ -84,11 +96,11 @@ impl Controller {
         Controller {
             exp_table,
             cfg,
-            action_list,           
+            action_list,
+            ls_actor: Arc::new(RwLock::new(None)),
             base_stats_table: base_stats,
             class_templates: Arc::new(class_templates),
             hero_list: DashMap::new(),
-            message_broker: MessageBroker::new(threshold),
             online_accounts: DashMap::new(),
             clan_ally_manager: Arc::new(RwLock::new(ClanAllyManager::default())),
         }

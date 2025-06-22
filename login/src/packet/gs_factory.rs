@@ -1,5 +1,5 @@
 use anyhow::bail;
-use crate::gs_thread::GSHandler;
+use bytes::BytesMut;
 use l2_core::shared_packets::{
     common::ReadablePacket,
     gs_2_ls::{
@@ -7,24 +7,44 @@ use l2_core::shared_packets::{
         PlayerInGame, PlayerLogout, PlayerTracert, ReplyChars, RequestAuthGS, RequestTempBan,
     },
 };
-use crate::packet::HandleablePacket;
+use macro_common::PacketEnum;
+use strum::Display;
 
-pub fn build_gs_packet(data: &[u8]) -> anyhow::Result<Box<dyn HandleablePacket<HandlerType = GSHandler>>> {
+#[derive(Clone, Debug, Display, PacketEnum)]
+pub enum GSPackets {
+    BlowFish(BlowFish),
+    RequestAuthGS(RequestAuthGS),
+    PlayerInGame(PlayerInGame),
+    PlayerLogout(PlayerLogout),
+    ChangeAccessLevel(ChangeAccessLevel),
+    PlayerAuthRequest(PlayerAuthRequest),
+    GSStatusUpdate(GSStatusUpdate),
+    PlayerTracert(PlayerTracert),
+    ReplyChars(ReplyChars),
+    RequestTempBan(RequestTempBan),
+    ChangePassword(ChangePassword),
+}
+
+pub fn build_gs_packet(data: BytesMut) -> anyhow::Result<GSPackets> {
     if data.is_empty() {
         bail!("GSFactory: data too short");
     }
     match data[0] {
-        BlowFish::PACKET_ID => Ok(Box::new(BlowFish::read(data)?)),
-        RequestAuthGS::PACKET_ID => Ok(Box::new(RequestAuthGS::read(data)?)),
-        PlayerInGame::PACKET_ID => Ok(Box::new(PlayerInGame::read(data)?)),
-        PlayerLogout::PACKET_ID => Ok(Box::new(PlayerLogout::read(data)?)),
-        ChangeAccessLevel::PACKET_ID => Ok(Box::new(ChangeAccessLevel::read(data)?)),
-        PlayerAuthRequest::PACKET_ID => Ok(Box::new(PlayerAuthRequest::read(data)?)),
-        GSStatusUpdate::PACKET_ID => Ok(Box::new(GSStatusUpdate::read(data)?)),
-        PlayerTracert::PACKET_ID => Ok(Box::new(PlayerTracert::read(data)?)),
-        ReplyChars::PACKET_ID => Ok(Box::new(ReplyChars::read(data)?)),
-        RequestTempBan::PACKET_ID => Ok(Box::new(RequestTempBan::read(data)?)),
-        ChangePassword::PACKET_ID => Ok(Box::new(ChangePassword::read(data)?)),
+        BlowFish::PACKET_ID => Ok(GSPackets::BlowFish(BlowFish::read(data)?)),
+        RequestAuthGS::PACKET_ID => Ok(GSPackets::RequestAuthGS(RequestAuthGS::read(data)?)),
+        PlayerInGame::PACKET_ID => Ok(GSPackets::PlayerInGame(PlayerInGame::read(data)?)),
+        PlayerLogout::PACKET_ID => Ok(GSPackets::PlayerLogout(PlayerLogout::read(data)?)),
+        ChangeAccessLevel::PACKET_ID => {
+            Ok(GSPackets::ChangeAccessLevel(ChangeAccessLevel::read(data)?))
+        }
+        PlayerAuthRequest::PACKET_ID => {
+            Ok(GSPackets::PlayerAuthRequest(PlayerAuthRequest::read(data)?))
+        }
+        GSStatusUpdate::PACKET_ID => Ok(GSPackets::GSStatusUpdate(GSStatusUpdate::read(data)?)),
+        PlayerTracert::PACKET_ID => Ok(GSPackets::PlayerTracert(PlayerTracert::read(data)?)),
+        ReplyChars::PACKET_ID => Ok(GSPackets::ReplyChars(ReplyChars::read(data)?)),
+        RequestTempBan::PACKET_ID => Ok(GSPackets::RequestTempBan(RequestTempBan::read(data)?)),
+        ChangePassword::PACKET_ID => Ok(GSPackets::ChangePassword(ChangePassword::read(data)?)),
         _ => {
             bail!("Unknown GS packet ID:0x{:02X}", data[0]);
         }

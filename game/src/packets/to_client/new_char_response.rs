@@ -1,10 +1,9 @@
 use crate::controller::Controller;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct NewCharacterResponse {
-    buffer: SendablePacketBuffer,
+    pub(crate) buffer: SendablePacketBuffer,
 }
 
 impl NewCharacterResponse {

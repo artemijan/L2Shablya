@@ -1,6 +1,7 @@
-use crate::client_thread::ClientHandler;
-use crate::packets::HandleablePacket;
-use async_trait::async_trait;
+use crate::pl_client::PlayerClient;
+use bytes::BytesMut;
+use kameo::message::{Context, Message};
+use tracing::instrument;
 use l2_core::shared_packets::common::ReadablePacket;
 
 #[derive(Debug, Clone)]
@@ -10,15 +11,18 @@ impl ReadablePacket for NoOp {
     const PACKET_ID: u8 = 0;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(_: &[u8]) -> anyhow::Result<Self> {
+    fn read(_: BytesMut) -> anyhow::Result<Self> {
         Ok(Self {})
     }
 }
-
-#[async_trait]
-impl HandleablePacket for NoOp {
-    type HandlerType = ClientHandler;
-    async fn handle(&self, _: &mut Self::HandlerType) -> anyhow::Result<()> {
+impl Message<NoOp> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        _msg: NoOp,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
         Ok(())
     }
 }

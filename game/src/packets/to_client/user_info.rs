@@ -1,19 +1,18 @@
 use crate::controller::Controller;
 use crate::data::classes::mapping::Class;
 use l2_core::bitmask::BitMask;
-use l2_core::config::gs::GSServer;
+use l2_core::config::gs::GSServerConfig;
 use l2_core::game_objects::cursed_weapon::CursedWeapon;
 use l2_core::game_objects::player::user_info::UserInfoType;
 use l2_core::game_objects::player::Player;
 use l2_core::game_objects::zone::ZoneId;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use l2_core::traits::conversion::{ToU16Rounded, ToU32Rounded};
-use macro_common::SendablePacketImpl;
 
 #[allow(unused)]
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct UserInfo {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     block_size: u32,
     mask: BitMask,
     title: String,
@@ -339,7 +338,7 @@ impl UserInfo {
         self.buffer.write(player.is_in_matching_room())?;
         Ok(())
     }
-    pub fn write_social(&mut self, player: &Player, cfg: &GSServer) -> anyhow::Result<()> {
+    pub fn write_social(&mut self, player: &Player, cfg: &GSServerConfig) -> anyhow::Result<()> {
         self.buffer.write_u16(22u16)?;
         self.buffer.write(player.get_pvp_flag())?;
         self.buffer.write_i32(player.char_model.reputation)?;

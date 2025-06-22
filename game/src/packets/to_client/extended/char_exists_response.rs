@@ -1,10 +1,9 @@
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
 #[allow(unused)]
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct CharExistsResponse {
-    buffer: SendablePacketBuffer,
+    pub(crate) buffer: SendablePacketBuffer,
     allow_response: i32,
 }
 

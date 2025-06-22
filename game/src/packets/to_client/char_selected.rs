@@ -1,11 +1,10 @@
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
 #[allow(unused)]
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct CharSelected {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
 }
 
 #[allow(unused)]

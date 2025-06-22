@@ -1,4 +1,3 @@
-use crate::client_thread::ClientHandler;
 use crate::packets::from_client::auth::AuthLogin;
 use crate::packets::from_client::char_create::CreateCharRequest;
 use crate::packets::from_client::char_restore::RestoreChar;
@@ -12,55 +11,79 @@ use crate::packets::from_client::logout::Logout;
 use crate::packets::from_client::new_char_request::NewCharacterRequest;
 use crate::packets::from_client::noop::NoOp;
 use crate::packets::from_client::protocol::ProtocolVersion;
-use crate::packets::HandleablePacket;
 use anyhow::bail;
+use bytes::BytesMut;
 use l2_core::shared_packets::common::ReadablePacket;
+use macro_common::PacketEnum;
+use strum::Display;
 use tracing::error;
 
-pub fn build_client_packet(
-    data: &[u8],
-) -> anyhow::Result<Box<dyn HandleablePacket<HandlerType = ClientHandler>>> {
+#[derive(Clone, Debug, Display, PacketEnum)]
+pub enum PlayerPackets {
+    ProtocolVersion(ProtocolVersion),
+    AuthLogin(AuthLogin),
+    NewCharacterRequest(NewCharacterRequest),
+    CreateCharRequest(CreateCharRequest),
+    Logout(Logout),
+    DeleteChar(DeleteChar),
+    RestoreChar(RestoreChar),
+    SelectChar(SelectChar),
+    EnterWorld(EnterWorld),
+    GoLobby(GoLobby),
+    CheckCharName(CheckCharName),
+    SendClientIni(SendClientIni),
+    RequestUserBanInfo(RequestUserBanInfo),
+    NoOp(NoOp),
+}
+
+pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
     if data.is_empty() {
         bail!("Empty packet");
     }
-    let packet_body = &data[1..]; // skip 1st byte, because it's packet id
+    let _ = data.split_to(1); // skip 1st byte, because it's packet id
     match data[0] {
-        ProtocolVersion::PACKET_ID => Ok(Box::new(ProtocolVersion::read(packet_body)?)),
-        AuthLogin::PACKET_ID => Ok(Box::new(AuthLogin::read(packet_body)?)),
-        NewCharacterRequest::PACKET_ID => Ok(Box::new(NewCharacterRequest::read(packet_body)?)),
-        CreateCharRequest::PACKET_ID => Ok(Box::new(CreateCharRequest::read(packet_body)?)),
-        Logout::PACKET_ID => Ok(Box::new(Logout::read(packet_body)?)),
-        DeleteChar::PACKET_ID => Ok(Box::new(DeleteChar::read(packet_body)?)),
-        RestoreChar::PACKET_ID => Ok(Box::new(RestoreChar::read(packet_body)?)),
-        SelectChar::PACKET_ID => Ok(Box::new(SelectChar::read(packet_body)?)),
-        EnterWorld::PACKET_ID => Ok(Box::new(EnterWorld::read(packet_body)?)),
-        0xD0 => build_ex_client_packet(packet_body),
+        ProtocolVersion::PACKET_ID => {
+            Ok(PlayerPackets::ProtocolVersion(ProtocolVersion::read(data)?))
+        }
+        AuthLogin::PACKET_ID => Ok(PlayerPackets::AuthLogin(AuthLogin::read(data)?)),
+        NewCharacterRequest::PACKET_ID => Ok(PlayerPackets::NewCharacterRequest(
+            NewCharacterRequest::read(data)?,
+        )),
+        CreateCharRequest::PACKET_ID => Ok(PlayerPackets::CreateCharRequest(
+            CreateCharRequest::read(data)?,
+        )),
+        Logout::PACKET_ID => Ok(PlayerPackets::Logout(Logout::read(data)?)),
+        DeleteChar::PACKET_ID => Ok(PlayerPackets::DeleteChar(DeleteChar::read(data)?)),
+        RestoreChar::PACKET_ID => Ok(PlayerPackets::RestoreChar(RestoreChar::read(data)?)),
+        SelectChar::PACKET_ID => Ok(PlayerPackets::SelectChar(SelectChar::read(data)?)),
+        EnterWorld::PACKET_ID => Ok(PlayerPackets::EnterWorld(EnterWorld::read(data)?)),
+        0xD0 => build_ex_client_packet(data),
         _ => {
             error!("Unknown GS packet ID: 0x{:02X}", data[0]);
-            Ok(Box::new(NoOp::read(data)?))
+            Ok(PlayerPackets::NoOp(NoOp::read(data)?))
         }
     }
 }
 
-pub fn build_ex_client_packet(
-    data: &[u8],
-) -> anyhow::Result<Box<dyn HandleablePacket<HandlerType = ClientHandler>>> {
+pub fn build_ex_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
     if data.len() < 2 {
         bail!("Empty extended packet {data:?}");
     }
     let packet_id = u16::from_le_bytes([data[0], data[1]]);
-    let packet_body = &data[2..];
+    let _ = data.split_to(2);
     match Some(packet_id) {
-        GoLobby::EX_PACKET_ID => Ok(Box::new(GoLobby::read(packet_body)?)),
-        CheckCharName::EX_PACKET_ID => Ok(Box::new(CheckCharName::read(packet_body)?)),
-        SendClientIni::EX_PACKET_ID => Ok(Box::new(SendClientIni::read(packet_body)?)),
-        RequestUserBanInfo::EX_PACKET_ID => Ok(Box::new(RequestUserBanInfo::read(packet_body)?)),
+        GoLobby::EX_PACKET_ID => Ok(PlayerPackets::GoLobby(GoLobby::read(data)?)),
+        CheckCharName::EX_PACKET_ID => Ok(PlayerPackets::CheckCharName(CheckCharName::read(data)?)),
+        SendClientIni::EX_PACKET_ID => Ok(PlayerPackets::SendClientIni(SendClientIni::read(data)?)),
+        RequestUserBanInfo::EX_PACKET_ID => Ok(PlayerPackets::RequestUserBanInfo(
+            RequestUserBanInfo::read(data)?,
+        )),
         _ => {
             error!(
                 "Unknown extended GS packet ID: 0x{:X}",
                 u16::from_le_bytes([data[0], data[1]])
             );
-            Ok(Box::new(NoOp::read(data)?))
+            Ok(PlayerPackets::NoOp(NoOp::read(data)?))
         }
     }
 }

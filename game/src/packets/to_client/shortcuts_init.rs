@@ -1,16 +1,15 @@
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct ShortcutsInit {
-    buffer: SendablePacketBuffer,
+    pub(crate) buffer: SendablePacketBuffer,
 }
 
 impl ShortcutsInit {
     const PACKET_ID: u8 = 0x45;
 
-    pub fn new(p: &Player) -> anyhow::Result<Self> {
+    pub fn new(_p: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
         };

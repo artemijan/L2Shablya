@@ -157,7 +157,7 @@ impl Player {
         0
     }
     #[must_use]
-    pub fn is_inside_zone(&self, zone: ZoneId) -> bool {
+    pub fn is_inside_zone(&self, _zone: ZoneId) -> bool {
         //todo: implement me
         false
     }
@@ -275,7 +275,7 @@ impl Player {
         0
     }
     #[must_use]
-    pub fn has_skill(&self, skill_id: u32) -> bool {
+    pub fn has_skill(&self, _skill_id: u32) -> bool {
         //todo: implement me
         false
     }

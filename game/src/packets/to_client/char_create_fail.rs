@@ -1,11 +1,10 @@
 use crate::packets::enums::CharNameResponseVariant;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use macro_common::SendablePacketImpl;
 
 #[allow(unused)]
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct CreateCharFailed {
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     error: i32,
 }
 

@@ -1,24 +1,21 @@
-use std::sync::Arc;
-
-use crate::client_thread::{ClientHandler, ClientStatus};
-use crate::controller::Controller;
-use crate::ls_thread::LoginHandler;
+use crate::ls_client::LSMessages;
 use crate::packets::to_client::{CharSelectionInfo, PlayerLoginResponse};
-use crate::packets::HandleablePacket;
+use crate::pl_client::{ClientStatus, PlayerClient};
 use anyhow::bail;
-use async_trait::async_trait;
+use bytes::BytesMut;
 use entities::dao::item::LocType;
 use entities::entities::{character, user};
+use kameo::message::Context;
+use kameo::prelude::Message;
 use l2_core::game_objects::player::Player;
 use l2_core::session::SessionKey;
-use l2_core::shared_packets::common::{PacketType, ReadablePacket};
+use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use l2_core::traits::handlers::PacketSender;
-use macro_common::SendablePacketImpl;
+use tracing::instrument;
 
-#[derive(Debug, Clone, SendablePacketImpl)]
+#[derive(Debug, Clone)]
 pub struct AuthLogin {
     pub login_name: String,
     pub play_key_1: i32,
@@ -31,10 +28,10 @@ pub struct AuthLogin {
 impl ReadablePacket for AuthLogin {
     const PACKET_ID: u8 = 0x2B;
     const EX_PACKET_ID: Option<u16> = None;
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         let login_name = buffer.read_c_utf16le_string()?.to_lowercase();
-        let play_key_2 = buffer.read_i32()?; // wtf? client decided to send first play_key_2 and not play_key_1
+        let play_key_2 = buffer.read_i32()?; // wtf? the client decided to send first play_key_2 and not play_key_1
         let play_key_1 = buffer.read_i32()?;
         let login_key_1 = buffer.read_i32()?;
         let login_key_2 = buffer.read_i32()?;
@@ -48,21 +45,20 @@ impl ReadablePacket for AuthLogin {
         })
     }
 }
+
 impl AuthLogin {
     /// Finalizes authentication by updating user status and sending necessary packets.
     async fn authenticate_user(
         &self,
-        handler: &mut ClientHandler,
-        controller: &Arc<Controller>,
+        handler: &mut PlayerClient,
         session_key: SessionKey,
     ) -> anyhow::Result<()> {
-        // Notify that player is in-game
-        controller
-            .message_broker
-            .notify(
-                LoginHandler::HANDLER_ID,
-                Box::new(PlayerInGame::new(&[self.login_name.clone()])?),
-            )
+        // Notify that the player is in-game
+        handler
+            .controller
+            .try_get_ls_actor()
+            .await?
+            .tell(PlayerInGame::new(&[self.login_name.clone()])?)
             .await?;
 
         // Update handler status
@@ -70,128 +66,128 @@ impl AuthLogin {
         handler.set_session_key(session_key);
 
         // Send success response
-        handler
-            .send_packet(Box::new(PlayerLoginResponse::ok()?))
-            .await?;
+        handler.send_packet(
+            PlayerLoginResponse::ok()?.buffer,
+        )
+        .await?;
 
         // Fetch user characters from the database
-        let db_pool = handler.get_db_pool().clone();
         let characters = character::Model::get_with_items_and_vars(
-            &db_pool,
+            &handler.db_pool,
             &self.login_name,
             LocType::Paperdoll,
         )
         .await?;
-        
-        let players= characters.into_iter().map(|(ch, items)|{
-            Player::new(ch, items)
-        }).collect::<Vec<Player>>();
 
-        // Prepare character selection packet
-        let char_selection =
-            CharSelectionInfo::new(&self.login_name, self.play_key_1, controller, &players)?;
+        let players = characters
+            .into_iter()
+            .map(|(ch, items)| Player::new(ch, items))
+            .collect::<Vec<Player>>();
+
+        // Prepare a character selection packet
+        let char_selection = CharSelectionInfo::new(
+            &self.login_name,
+            self.play_key_1,
+            &handler.controller,
+            &players,
+        )?;
 
         // Update handler with retrieved data
         handler.set_account_chars(players);
-        let user = user::Model::find_by_username(&db_pool, &self.login_name).await?;
+        let user = user::Model::find_by_username(&handler.db_pool, &self.login_name).await?;
         handler.set_user(user);
 
         // Send character selection info
-        handler.send_packet(Box::new(char_selection)).await?;
+        handler.send_packet(char_selection.buffer).await?;
 
         Ok(())
     }
 }
+impl Message<AuthLogin> for PlayerClient {
+    type Reply = anyhow::Result<()>;
 
-#[async_trait]
-impl HandleablePacket for AuthLogin {
-    type HandlerType = ClientHandler;
-    async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
-        // Check if user is already authenticated
-        if handler.get_user().is_some() {
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: AuthLogin,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        // Check if the user is already authenticated
+        if self.get_user().is_some() {
             return Ok(());
         }
-        let controller = handler.get_controller().clone();
-        let _cfg = controller.get_cfg();
+        let _cfg = self.controller.get_cfg();
 
-        // Ensure protocol is set and login_name is not empty
-        if handler.get_protocol().is_none() || self.login_name.is_empty() {
+        // Ensure the protocol is set and login_name is not empty
+        if self.get_protocol().is_none() || msg.login_name.is_empty() {
             bail!("Protocol version not set");
         }
 
         // Try to add the user to the online accounts
-        if controller
-            .add_online_account(self.login_name.clone())
+        if self
+            .controller
+            .add_online_account(msg.login_name.clone())
             .is_some()
         {
-            controller.logout_account(&self.login_name);
-            bail!("Account already in game: {}", self.login_name);
+            self.controller.logout_account(&msg.login_name);
+            bail!("Account already in game: {}", msg.login_name);
         }
 
         let session_key = SessionKey {
-            play_ok1: self.play_key_1,
-            play_ok2: self.play_key_2,
-            login_ok1: self.login_key_1,
-            login_ok2: self.login_key_2,
+            play_ok1: msg.play_key_1,
+            play_ok2: msg.play_key_2,
+            login_ok1: msg.login_key_1,
+            login_ok2: msg.login_key_2,
         };
 
         // Send authentication request
-        let auth_request = PlayerAuthRequest::new(&self.login_name, session_key.clone())?;
-        let response = controller
-            .message_broker
-            .send_message(
-                LoginHandler::HANDLER_ID,
-                &self.login_name,
-                Box::new(auth_request),
-            )
-            .await?;
-
-        // Handle authentication response
-        if let Some((_, PacketType::PlayerAuthResp(p))) = response {
-            if p.is_ok {
-                return self
-                    .authenticate_user(handler, &controller, session_key)
-                    .await;
+        let auth_request = PlayerAuthRequest::new(&msg.login_name, session_key.clone())?;
+        if let Ok(response) = self
+            .controller
+            .try_get_ls_actor()
+            .await?
+            .ask(auth_request)
+            .await
+        {
+            if matches!(response.await, Ok(LSMessages::PlayerAuthResponse(r)) if r.is_ok) {
+                return msg.authenticate_user(self, session_key).await;
             }
         }
 
         // Authentication failed
-        handler
-            .send_packet(Box::new(PlayerLoginResponse::fail(
-                PlayerLoginResponse::SYSTEM_ERROR_LOGIN_LATER,
-            )?))
-            .await?;
-        controller.logout_account(&self.login_name);
-        bail!("Login failed: {}", self.login_name);
+        self.send_packet(
+            PlayerLoginResponse::fail(PlayerLoginResponse::SYSTEM_ERROR_LOGIN_LATER)?.buffer,
+        )
+        .await?;
+        self.controller.logout_account(&msg.login_name);
+        bail!("Login failed: {}", msg.login_name);
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::controller::Controller;
+    use crate::ls_client::LoginServerClient;
     use crate::packets::from_client::auth::AuthLogin;
-    use crate::packets::to_client::PlayerLoginResponse;
-    use crate::tests::{get_gs_config, TestPacketSender};
+    use crate::pl_client::{ClientStatus, PlayerClient};
+    use crate::test_utils::test::{
+        get_gs_config, spawn_custom_ls_client_actor, spawn_custom_player_client_actor,
+    };
     use entities::test_factories::factories::user_factory;
-    use l2_core::shared_packets::common::{PacketType, ReadablePacket, SendablePacket};
-    use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
     use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
-    use l2_core::shared_packets::read::ReadablePacketBuffer;
-    use ntest::timeout;
+    use l2_core::shared_packets::write::SendablePacketBuffer;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
+    use std::time::Duration;
     use test_utils::utils::get_test_db;
-    use tokio::io::{split, AsyncReadExt, AsyncWriteExt};
-    use tokio::sync::Mutex;
-    use l2_core::traits::handlers::PacketHandler;
+    use tokio::io::split;
+    use tokio::time::sleep;
 
     #[tokio::test]
-    #[timeout(3000)]
     async fn test_auth() {
         // Create a listener on a local port
-        let (mut client, server) = tokio::io::duplex(1024);
-        let (login_client, mut login_server) = tokio::io::duplex(1024);
+        let (_client, server) = tokio::io::duplex(1024);
+        let (_ls_client_stream, ls_server) = tokio::io::duplex(1024);
         let cfg = get_gs_config();
         let pool = get_test_db().await;
         let _ = user_factory(&pool, |mut u| {
@@ -200,59 +196,46 @@ mod tests {
         })
         .await;
         let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
-        let test_packet_sender = Arc::new(TestPacketSender {
-            writer: Arc::new(Mutex::new(login_client)),
-        });
-        controller
-            .message_broker
-            .register_packet_handler(LoginHandler::HANDLER_ID, test_packet_sender);
-        let db_pool = pool.clone();
-        let contr = controller.clone();
-        tokio::spawn(async move {
-            let ip = Ipv4Addr::new(127, 0, 0, 1);
-            let (r, w) = split(server);
-            let mut ch = ClientHandler::new(r, w, ip, db_pool, contr);
-            ch.set_status(ClientStatus::Connected);
-            ch.set_protocol(110).unwrap();
-            ch.handle_client().await
-        });
+        let (ls_r, ls_w) = split(ls_server);
+        let ls_client =
+            LoginServerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
+        let auth = AuthLogin {
+            login_name: "test".to_string(),
+            play_key_1: 0,
+            play_key_2: 0,
+            login_key_1: 0,
+            login_key_2: 0,
+            buffer: SendablePacketBuffer::empty(),
+        };
+        let ls_actor = spawn_custom_ls_client_actor(
+            controller.clone(),
+            pool.clone(),
+            ls_r,
+            ls_w,
+            Some(ls_client),
+        )
+        .await;
+        controller.set_ls_actor(ls_actor.clone()).await;
+        let (r, w) = split(server);
+        let mut player_client =
+            PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
+        player_client.set_status(ClientStatus::Connected);
+        player_client
+            .set_protocol(110)
+            .expect("Protocol version is wrong");
+        let player_actor =
+            spawn_custom_player_client_actor(controller, pool, r, w, Some(player_client)).await;
         //--> auth login
-        let mut auth = AuthLogin::new().unwrap();
-        client.write_all(auth.get_bytes(false)).await.unwrap();
-        let mut auth_login_packet = [0; 29];
-        // <-- Try login on login server
-        login_server
-            .read_exact(&mut auth_login_packet)
-            .await
-            .unwrap();
-        let p = PlayerAuthRequest::read(&auth_login_packet[2..]).unwrap();
-        assert_eq!(p.account_name, "test");
-        assert_eq!(p.session.play_ok1, 1); //it should be vice versa
-        assert_eq!(p.session.play_ok2, 0);
-        assert_eq!(p.session.login_ok1, 2);
-        assert_eq!(p.session.login_ok2, 3);
-
-        // --> login ok
-        let auth_ok_packet = PlayerAuthResponse::new("test", true);
-        controller.message_broker.respond_to_message(
-            Some(LoginHandler::HANDLER_ID),
-            "test",
-            PacketType::PlayerAuthResp(auth_ok_packet),
-        );
-        // <-- Players in game (received by login server)
-        let mut player_in_game = [0; 15];
-        login_server.read_exact(&mut player_in_game).await.unwrap();
-        let pig = PlayerInGame::read(&player_in_game[2..]).unwrap();
-        assert_eq!(pig.accounts, ["test"]);
-        // <-- Player auth ok
-        let mut auth_ok_resp = [0; 11];
-        client.read_exact(&mut auth_ok_resp).await.unwrap();
-        let mut buffer = ReadablePacketBuffer::new(&auth_ok_resp[2..]);
-        let p_id = buffer.read_byte().unwrap();
-        let is_ok = buffer.read_i32().unwrap();
-        let reason = buffer.read_u32().unwrap();
-        assert_eq!(PlayerLoginResponse::PACKET_ID, p_id);
-        assert_eq!(is_ok, -1);
-        assert_eq!(reason, 0);
+        let pb = PlayerAuthResponse::new(&auth.login_name, true);
+        tokio::spawn(async move {
+            //todo I don't like it, maybe send encrypted packet to _ls_client_stream instead?
+            sleep(Duration::from_millis(100)).await;
+            ls_actor
+                .tell(pb)
+                .await
+                .expect("Failed to send packet to the login server");
+        });
+        let res = player_actor.ask(auth).await;
+        assert!(res.is_ok());
     }
 }

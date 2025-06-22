@@ -1,12 +1,11 @@
-use crate as l2_core;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
 use async_trait::async_trait;
+use bytes::BytesMut;
 use entities::entities::character;
-use macro_common::SendablePacketImpl;
 
-#[derive(Clone, Debug, SendablePacketImpl)]
+#[derive(Clone, Debug)]
 pub struct ReplyChars {
     pub buffer: SendablePacketBuffer,
     pub account_name: String,
@@ -48,7 +47,7 @@ impl ReadablePacket for ReplyChars {
     const PACKET_ID: u8 = 0x08;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data:BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         let account_name = buffer.read_c_utf16le_string()?;
@@ -85,7 +84,7 @@ mod tests {
         data.push(chars);
         data.push(del_chars);
         data.extend(&del_char.to_le_bytes());
-        let packet = ReplyChars::read(&data).unwrap();
+        let packet = ReplyChars::read(BytesMut::from(&data[..])).unwrap();
         assert_eq!(packet.account_name, "test");
         assert_eq!(packet.chars, 2);
         assert_eq!(packet.delete_chars_len, 1);

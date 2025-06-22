@@ -1,12 +1,19 @@
 use crate::errors::Packet;
 use anyhow::Result as Res;
-use bytes::{BufMut, BytesMut};
+use bytes::{BufMut, Bytes, BytesMut};
 use encoding::all::UTF_16LE;
 use encoding::{EncoderTrap, Encoding};
+use std::fmt;
 
-#[derive(Debug, Clone, Default)]
+#[derive(Clone, Default)]
 pub struct SendablePacketBuffer {
     data: BytesMut,
+}
+impl fmt::Debug for SendablePacketBuffer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("SendablePacketBuffer")
+            .finish()
+    }
 }
 
 #[allow(unused, clippy::cast_possible_truncation, clippy::missing_errors_doc)]
@@ -24,8 +31,10 @@ impl SendablePacketBuffer {
         Self { data }
     }
 
-    pub fn write<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<u8>{
+    pub fn write<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<u8>,
+    {
         self.data.put_u8(value.into());
         Ok(())
     }
@@ -59,68 +68,89 @@ impl SendablePacketBuffer {
     }
 
     #[allow(clippy::cast_sign_loss)]
-    pub fn write_i8<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<i8> {
-        self.write(value.into()as u8)
+    pub fn write_i8<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<i8>,
+    {
+        self.write(value.into() as u8)
     }
 
-    pub fn write_u8<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<u8> {
+    pub fn write_u8<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<u8>,
+    {
         self.write(value.into())
     }
 
-    pub fn write_bool<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<bool>{
+    pub fn write_bool<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<bool>,
+    {
         self.write_u8(u8::from(value.into()))
     }
 
-    pub fn write_i16<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<i16> {
+    pub fn write_i16<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<i16>,
+    {
         self.data.put_i16_le(value.into());
         Ok(())
     }
 
-    pub fn write_u16<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<u16>
+    pub fn write_u16<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<u16>,
     {
         self.data.put_u16_le(value.into());
         Ok(())
     }
 
-    pub fn write_i32<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<i32> {
+    pub fn write_i32<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<i32>,
+    {
         self.data.put_i32_le(value.into());
         Ok(())
     }
 
-    pub fn write_u32<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<u32>{
+    pub fn write_u32<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<u32>,
+    {
         self.data.put_u32_le(value.into());
         Ok(())
     }
 
     #[allow(clippy::cast_sign_loss)]
-    pub fn write_i64<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<i64> {
+    pub fn write_i64<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<i64>,
+    {
         self.data.put_i64_le(value.into());
         Ok(())
     }
-    
+
     #[allow(clippy::cast_sign_loss)]
     pub fn write_u64<T>(&mut self, value: T) -> Res<()>
-    where T: Into<u64> {
+    where
+        T: Into<u64>,
+    {
         self.data.put_u64_le(value.into());
         Ok(())
     }
 
-    pub fn write_f32<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<f32> {
+    pub fn write_f32<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<f32>,
+    {
         self.data.put_f32_le(value.into());
         Ok(())
     }
 
-    pub fn write_f64<T>(&mut self, value: T) -> Res<()> 
-    where T: Into<f64> {
+    pub fn write_f64<T>(&mut self, value: T) -> Res<()>
+    where
+        T: Into<f64>,
+    {
         self.data.put_f64_le(value.into());
         Ok(())
     }
@@ -137,6 +167,20 @@ impl SendablePacketBuffer {
         }
         self.write_packet_size();
         self.data.as_mut()
+    }
+    #[must_use]
+    pub fn freeze(mut self, with_padding: bool) -> Bytes {
+        if with_padding {
+            self.write_padding();
+        }
+        self.write_packet_size();
+        self.data.freeze()
+    }
+
+    #[must_use]
+    pub fn take(mut self) -> BytesMut {
+        self.write_packet_size();
+        self.data
     }
 
     pub fn write_packet_size(&mut self) {

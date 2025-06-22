@@ -1,17 +1,16 @@
-use crate::client_thread::{ClientHandler, ClientStatus};
-use crate::ls_thread::LoginHandler;
 use crate::packets::to_client::extended::{ActionList, BookmarkInfo, QuestItemList, VitalityInfo};
 use crate::packets::to_client::{
     HennaInfo, ItemList, MacroList, ShortcutsInit, SkillList, UserInfo,
 };
-use crate::packets::HandleablePacket;
+use crate::pl_client::{ClientStatus, PlayerClient};
 use anyhow::bail;
-use async_trait::async_trait;
+use bytes::BytesMut;
+use kameo::message::{Context, Message};
+use tracing::instrument;
 use l2_core::game_objects::player::user_info::UserInfoType;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerTracert;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::traits::handlers::PacketSender;
 
 #[derive(Debug, Clone, Default)]
 pub struct EnterWorld {
@@ -21,7 +20,7 @@ pub struct EnterWorld {
 impl ReadablePacket for EnterWorld {
     const PACKET_ID: u8 = 0x11;
     const EX_PACKET_ID: Option<u16> = None;
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         let mut inst = Self {
             ..Default::default()
@@ -41,51 +40,52 @@ impl ReadablePacket for EnterWorld {
         Ok(inst)
     }
 }
-
-#[async_trait]
-impl HandleablePacket for EnterWorld {
-    type HandlerType = ClientHandler;
-    async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
-        if handler.get_status() != &ClientStatus::Entering {
+impl Message<EnterWorld> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: EnterWorld,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        if self.get_status() != &ClientStatus::Entering {
             bail!("Not in entering state")
         }
-        handler.set_status(ClientStatus::InGame);
+        self.set_status(ClientStatus::InGame);
         let mut addresses = Vec::with_capacity(5);
         for i in 0..5 {
             addresses.push(format!(
                 "{}.{}.{}.{}",
-                self.tracert[i][0], self.tracert[i][1], self.tracert[i][2], self.tracert[i][3]
+                msg.tracert[i][0], msg.tracert[i][1], msg.tracert[i][2], msg.tracert[i][3]
             ));
         }
         let [ip, hop1, hop2, hop3, hop4]: [String; 5] =
             addresses.try_into().expect("Expected 5 tracert addresses");
 
-        if ip != handler.get_ip().to_string() {
+        if ip != self.ip.to_string() {
             bail!("IP address client sent, doesn't much with what we got from socket.");
         }
-        let controller = handler.get_controller();
-        let config = controller.get_cfg();
-        controller
-            .message_broker
-            .notify(
-                LoginHandler::HANDLER_ID,
-                Box::new(PlayerTracert::new(
-                    handler.try_get_user()?.username.clone(),
-                    ip,
-                    hop1,
-                    hop2,
-                    hop3,
-                    hop4,
-                )?),
-            )
+        let config = self.controller.get_cfg();
+        self.controller
+            .try_get_ls_actor()
+            .await?
+            .tell(PlayerTracert::new(
+                self.try_get_user()?.username.clone(),
+                ip,
+                hop1,
+                hop2,
+                hop3,
+                hop4,
+            )?)
             .await?;
-        let player = handler.try_get_selected_char()?;
 
-        handler
-            .send_packet(Box::new(
-                UserInfo::new(player, UserInfoType::all(), controller).await?,
-            ))
-            .await?;
+        let player = self.try_get_selected_char()?.clone();
+        self.send_packet(
+            UserInfo::new(&player, UserInfoType::all(), &self.controller)
+                .await?
+                .buffer,
+        )
+        .await?;
         if config.restore_player_instance {
             //todo: restore player in the instance
         }
@@ -98,34 +98,43 @@ impl HandleablePacket for EnterWorld {
             //todo: send clan packet
         }
         if config.rates.enable_vitality {
-            handler
-                .send_packet(Box::new(VitalityInfo::new(player, &config)?))
-                .await?;
+            self.send_packet(
+                VitalityInfo::new(&player, &config)?.buffer,
+            )
+            .await?;
         }
-        let macros_packets = MacroList::list_macros(player)?;
+        let macros_packets = MacroList::list_macros(&player)?;
         for m in macros_packets {
-            handler.send_packet(Box::new(m)).await?;
+            self.send_packet(m.buffer).await?;
         }
-        handler
-            .send_packet(Box::new(BookmarkInfo::new(player)?))
-            .await?;
-        handler
-            .send_packet(Box::new(ItemList::new(player, false)?))
-            .await?;
-        handler
-            .send_packet(Box::new(QuestItemList::new(player)?))
-            .await?;
-        handler
-            .send_packet(Box::new(ShortcutsInit::new(player)?))
-            .await?;
-        handler
-            .send_packet(Box::new(ActionList::new(controller)?))
-            .await?;
-        handler.send_packet(Box::new(SkillList::empty()?)).await?;
+
+        self.send_packet(
+            BookmarkInfo::new(&player)?.buffer,
+        )
+        .await?;
+
+        self.send_packet(
+            ItemList::new(&player, false)?.buffer,
+        )
+        .await?;
+
+        self.send_packet(
+            QuestItemList::new(&player)?.buffer,
+        )
+        .await?;
+        self.send_packet(
+            ShortcutsInit::new(&player)?.buffer,
+        )
+        .await?;
+
+        self.send_packet(
+            ActionList::new(&self.controller)?.buffer,
+        )
+        .await?;
+        self.send_packet(SkillList::empty()?.buffer).await?;
         //todo: AuthGG check?
-        handler
-            .send_packet(Box::new(HennaInfo::new(player)?))
-            .await?;
+
+        self.send_packet(HennaInfo::new(&player)?.buffer).await?;
         //todo: send a skill list asynchronously without waiting a result
         //todo: send etc status update packet
         //todo: again send clan packets (please check why we need to send it twice!!!)

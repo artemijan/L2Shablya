@@ -1,15 +1,14 @@
-use macro_common::SendablePacketImpl;
+use bytes::BytesMut;
 use crate::session::SessionKey;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use crate as l2_core;
 
-#[derive(Clone, Debug, SendablePacketImpl)]
+#[derive(Clone, Debug)]
 pub struct PlayerAuthRequest {
     pub session: SessionKey,
     pub account_name: String,
-    buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
 }
 impl PlayerAuthRequest {
     ///
@@ -34,7 +33,7 @@ impl ReadablePacket for PlayerAuthRequest {
     const PACKET_ID: u8 = 0x05;
     const EX_PACKET_ID: Option<u16> = None;
 
-    fn read(data: &[u8]) -> anyhow::Result<Self> {
+    fn read(data: BytesMut) -> anyhow::Result<Self> {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         let account_name = buffer.read_c_utf16le_string()?;

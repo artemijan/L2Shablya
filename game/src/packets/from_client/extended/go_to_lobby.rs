@@ -1,9 +1,9 @@
-use crate::client_thread::ClientHandler;
 use crate::packets::to_client::CharSelectionInfo;
-use crate::packets::HandleablePacket;
-use async_trait::async_trait;
+use crate::pl_client::PlayerClient;
+use bytes::BytesMut;
+use kameo::message::{Context, Message};
+use tracing::instrument;
 use l2_core::shared_packets::common::ReadablePacket;
-use l2_core::traits::handlers::PacketSender;
 
 #[derive(Debug, Clone)]
 pub struct GoLobby;
@@ -12,47 +12,109 @@ impl ReadablePacket for GoLobby {
     const PACKET_ID: u8 = 0xD0;
     const EX_PACKET_ID: Option<u16> = Some(0x33);
 
-    fn read(_: &[u8]) -> anyhow::Result<Self> {
+    fn read(_: BytesMut) -> anyhow::Result<Self> {
         Ok(Self {})
     }
 }
-
-#[async_trait]
-impl HandleablePacket for GoLobby {
-    type HandlerType = ClientHandler;
-    async fn handle(&self, handler: &mut Self::HandlerType) -> anyhow::Result<()> {
-        let user_name = &handler.try_get_user()?.username;
-        let sk = handler
+impl Message<GoLobby> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        _msg: GoLobby,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        let user_name = &self.try_get_user()?.username;
+        let sk = self
             .get_session_key()
             .ok_or(anyhow::anyhow!("Can not go to lobby, Session is missing"))?;
-        let chars = handler
+        let chars = self
             .get_account_chars()
             .ok_or(anyhow::anyhow!("Can not go to lobby, no chars were set"))?;
-        let controller = handler.get_controller();
-        let p = CharSelectionInfo::new(user_name, sk.get_play_session_id(), controller, chars)?;
-        handler.send_packet(Box::new(p)).await?;
+        let p =
+            CharSelectionInfo::new(user_name, sk.get_play_session_id(), &self.controller, chars)?;
+        self.send_packet(p.buffer).await?;
         Ok(())
     }
 }
 #[cfg(test)]
 mod tests {
-    use crate::client_thread::ClientHandler;
     use crate::controller::Controller;
     use crate::packets::from_client::extended::GoLobby;
-    use crate::packets::HandleablePacket;
+    use crate::pl_client::PlayerClient;
+    use crate::test_utils::test::{
+        get_gs_config, spawn_custom_player_client_actor, spawn_player_client_actor,
+    };
     use entities::test_factories::factories::user_factory;
     use l2_core::session::SessionKey;
-    use l2_core::traits::handlers::PacketHandler;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
     use ntest::timeout;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt};
-    use crate::tests::get_gs_config;
 
     #[tokio::test]
+    pub async fn test_handle_no_user() {
+        let pool = get_test_db().await;
+        let pack = GoLobby;
+        let (_client, server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let cfg = get_gs_config();
+        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
+        let pl_actor = spawn_player_client_actor(controller, pool, r, w).await;
+        let res = pl_actor.ask(pack).await;
+        assert!(matches!(res, Err(e) if e.to_string() == "User not set"));
+    }
+    #[tokio::test]
+    pub async fn test_handle_no_session() {
+        let pool = get_test_db().await;
+        let pack = GoLobby;
+        let user = user_factory(&pool, |u| u).await;
+        let (_client, server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let cfg = get_gs_config();
+        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
+        let mut pl_client = PlayerClient::new(Ipv4Addr::LOCALHOST, controller, pool);
+        pl_client.set_user(user);
+        let pl_actor = spawn_custom_player_client_actor(
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+            r,
+            w,
+            Some(pl_client),
+        )
+        .await;
+        let res = pl_actor.ask(pack).await;
+        assert!(
+            matches!(res, Err(e) if e.to_string() == "Can not go to lobby, Session is missing")
+        );
+    }
+    #[tokio::test]
+    pub async fn test_handle_no_chars() {
+        let pool = get_test_db().await;
+        let pack = GoLobby;
+        let user = user_factory(&pool, |u| u).await;
+        let (_client, server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let cfg = get_gs_config();
+        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
+        let mut pl_client = PlayerClient::new(Ipv4Addr::LOCALHOST, controller, pool);
+        pl_client.set_user(user);
+        pl_client.set_session_key(SessionKey::new());
+        let pl_actor = spawn_custom_player_client_actor(
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+            r,
+            w,
+            Some(pl_client),
+        )
+        .await;
+        let res = pl_actor.ask(pack).await;
+        assert!(matches!(res, Err(e) if e.to_string() == "Can not go to lobby, no chars were set"));
+    }
+    #[tokio::test]
     #[timeout(2000)]
-    pub async fn test_handle() {
+    pub async fn test_handle_ok() {
         let pool = get_test_db().await;
         let pack = GoLobby;
         let user = user_factory(&pool, |u| u).await;
@@ -60,25 +122,20 @@ mod tests {
         let (r, w) = split(server);
         let cfg = get_gs_config();
         let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
-        let mut ch = ClientHandler::new(r, w, Ipv4Addr::LOCALHOST, pool, controller);
-
-        let res = pack.handle(&mut ch).await;
-        assert!(matches!(res, Err(e) if e.to_string() == "User not set"));
-        ch.set_user(user);
-        let res2 = pack.handle(&mut ch).await;
-        assert!(
-            matches!(res2, Err(e) if e.to_string() == "Can not go to lobby, Session is missing")
-        );
-        ch.set_session_key(SessionKey::new());
-        let res3 = pack.handle(&mut ch).await;
-        assert!(
-            matches!(res3, Err(e) if e.to_string() == "Can not go to lobby, no chars were set")
-        );
-        ch.set_account_chars(vec![]);
-        pack.handle(&mut ch).await.unwrap();
-        tokio::spawn(async move {
-            ch.handle_client().await.unwrap();
-        });
+        let mut pl_client = PlayerClient::new(Ipv4Addr::LOCALHOST, controller, pool);
+        pl_client.set_user(user);
+        pl_client.set_session_key(SessionKey::new());
+        pl_client.set_account_chars(vec![]);
+        let pl_actor = spawn_custom_player_client_actor(
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+            r,
+            w,
+            Some(pl_client),
+        )
+        .await;
+        let res = pl_actor.ask(pack).await;
+        assert!(res.is_ok());
         let mut ok_resp = [0; 18];
         client.read_exact(&mut ok_resp).await.unwrap();
         assert_eq!(ok_resp[2], 0x09);

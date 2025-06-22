@@ -5,3 +5,7 @@ mod init_ls;
 mod kick_player;
 mod player_auth_response;
 mod req_chars;
+mod player_logout;
+mod player_in_game;
+mod player_auth_request;
+mod player_tracert;

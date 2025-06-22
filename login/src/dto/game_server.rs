@@ -1,6 +1,6 @@
+use anyhow::bail;
 use l2_core::dto::ServerHost;
 use l2_core::shared_packets::common::ServerType;
-use anyhow::bail;
 use num::BigInt;
 use pnet::ipnetwork::Ipv4Network;
 use std::net::Ipv4Addr;
@@ -162,7 +162,9 @@ impl GSInfo {
             let subnet = Ipv4Network::from_str(subnet_str.as_ref())?;
             let ip = Ipv4Addr::from_str(ip_str.as_ref())?;
             if !subnet.contains(ip) {
-                bail!("Subnet \"{subnet}\" doesn't contain IP \"{ip}\". Check game server configuration.")
+                bail!(
+                    "Subnet \"{subnet}\" doesn't contain IP \"{ip}\". Check game server configuration."
+                )
             }
             validated_hosts.push(ServerHost { ip, subnet });
         }

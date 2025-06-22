@@ -4,7 +4,7 @@ mod utils;
 use crate::utils::ConfigAttributes;
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, DeriveInput, Item, ItemStruct};
+use syn::{parse_macro_input, Data, DeriveInput, Fields, Item, ItemStruct};
 
 #[allow(clippy::missing_panics_doc)]
 #[proc_macro_attribute]
@@ -85,47 +85,66 @@ pub fn config_dir(attr: TokenStream, item: TokenStream) -> TokenStream {
     TokenStream::from(expanded)
 }
 
-#[proc_macro_derive(SendablePacketImpl)]
-pub fn derive_sendable(input: TokenStream) -> TokenStream {
+
+
+/// # Panics
+/// - `PacketEnum` can only be derived for enums
+/// - Each variant must be a tuple struct with a single field
+#[proc_macro_derive(PacketEnum)]
+pub fn derive_packet_repository(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
+    let enum_name = &input.ident;
 
-    let name = &input.ident;
-
-    // Generate the implementation
-    let expanded = quote! {
-        impl l2_core::shared_packets::common::SendablePacket for #name {
-            fn get_bytes(&mut self, with_padding:bool) -> &mut [u8] {
-                self.buffer.get_data_mut(with_padding)
-            }
-        }
+    let Data::Enum(data_enum) = &input.data else {
+        return syn::Error::new_spanned(
+            enum_name,
+            "PacketRepository can only be derived for enums",
+        )
+        .to_compile_error()
+        .into();
     };
 
-    TokenStream::from(expanded)
-}
+    // Build match arms and collect field types for the trait bounds
+    let mut match_arms = Vec::new();
+    let mut field_types = Vec::new();
 
-#[proc_macro_derive(LoginPacketSenderImpl)]
-pub fn derive_login_packet_sender(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
+    for variant in &data_enum.variants {
+        let variant_name = &variant.ident;
+        let field_ty = match &variant.fields {
+            Fields::Unnamed(fields) if fields.unnamed.len() == 1 => {
+                &fields.unnamed.first().unwrap().ty
+            }
+            _ => {
+                return syn::Error::new_spanned(
+                    &variant.fields,
+                    "Each variant must be a tuple struct with a single field",
+                )
+                .to_compile_error()
+                .into();
+            }
+        };
 
-    let name = &input.ident;
+        match_arms.push(quote! {
+            #enum_name::#variant_name(msg) => actor
+                .tell(msg)
+                .try_send()
+                .map_err(|e| ::anyhow::anyhow!("{:?}", e)),
+        });
 
-    // Generate the implementation
+        field_types.push(field_ty);
+    }
+
     let expanded = quote! {
-        #[async_trait]
-        impl l2_core::traits::handlers::PacketSender for #name {
-            async fn encrypt(&self, bytes: &mut [u8]) -> anyhow::Result<()> {
-                let size = bytes.len();
-                l2_core::crypt::login::Encryption::append_checksum(&mut bytes[2..size]);
-                self.blowfish.encrypt(&mut bytes[2..size]);
-                Ok(())
-            }
-        
-            fn is_encryption_enabled(&self) -> bool {
-                true
-            }
-        
-            async fn get_stream_writer_mut(&self) -> &std::sync::Arc<tokio::sync::Mutex<dyn tokio::io::AsyncWrite + Send + Unpin>> {
-                &self.tcp_writer
+        #[automatically_derived]
+        impl #enum_name {
+            pub async fn accept<T>(self, actor: ::kameo::prelude::ActorRef<T>) -> ::anyhow::Result<()>
+            where
+                T: ::kameo::prelude::Actor
+                    #( + ::kameo::prelude::Message<#field_types, Reply = ::anyhow::Result<()>> )*
+            {
+                match self {
+                    #(#match_arms)*
+                }
             }
         }
     };

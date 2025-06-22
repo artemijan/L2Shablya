@@ -1,13 +1,15 @@
 use super::data::LoginController;
-use l2_core::shared_packets::common::{PacketType, PlayerLoginFailReasons};
-use l2_core::shared_packets::ls_2_gs::{KickPlayer, RequestChars};
 use crate::dto::player;
 use crate::dto::player::GSCharsInfo;
+use crate::gs_client::GSMessages;
+use l2_core::shared_packets::common::PlayerLoginFailReasons;
+use l2_core::shared_packets::ls_2_gs::{KickPlayer, RequestChars};
 use rand::{
     distributions::{Distribution, Standard},
     Rng,
 };
-use tracing::info;
+use std::time::Duration;
+use tracing::{error, info};
 
 impl LoginController {
     pub async fn on_player_login(
@@ -16,23 +18,24 @@ impl LoginController {
     ) -> anyhow::Result<(), PlayerLoginFailReasons> {
         let account_name = player_info.account_name.clone();
         self.check_player_in_game(&account_name).await?;
-        let mut task_results = self.message_broker
-            .send_message_to_all(&account_name, || Box::new(RequestChars::new(&account_name)))
-            .await
-            .into_iter();
-
-        while let Some(Ok(resp)) = task_results.next() {
-            if let Some((gs_id, PacketType::ReplyChars(p))) = resp {
-                player_info.chars_on_servers.insert(
-                    gs_id,
-                    GSCharsInfo {
-                        char_deletion_timestamps: p.char_deletion_timestamps,
-                        chars_to_delete: p.delete_chars_len,
-                        total_chars: p.chars,
-                    },
-                );
+        let packet = RequestChars::new(&account_name);
+        let timeout =
+            Duration::from_secs(self.config.listeners.game_servers.messages.timeout.into());
+        for entry in &self.gs_actors {
+            let gs_actor = entry.value().clone();
+            let gs_id = *entry.key();
+            if let Ok(resp_fut) = gs_actor.ask(packet.clone()).reply_timeout(timeout).await {
+                if let Ok(GSMessages::ReplyChars(rc)) = resp_fut.await {
+                    player_info.chars_on_servers.insert(
+                        gs_id,
+                        GSCharsInfo {
+                            char_deletion_timestamps: rc.char_deletion_timestamps,
+                            chars_to_delete: rc.delete_chars_len,
+                            total_chars: rc.chars,
+                        },
+                    );
+                }
             }
-            // ignore all the tasks that are timed out
         }
         self.players.insert(account_name, player_info); // if player exists it will drop
         Ok(())
@@ -43,14 +46,17 @@ impl LoginController {
         account_name: &str,
     ) -> anyhow::Result<(), PlayerLoginFailReasons> {
         if let Some(player_in_game) = self.players.remove(account_name) {
+            let packet = KickPlayer::new(account_name);
             if let Some(gs) = player_in_game.1.game_server {
-                let _ = self.message_broker
-                    .notify(gs, Box::new(KickPlayer::new(account_name)))
-                    .await;
+                let gs_actor = self
+                    .gs_actors
+                    .get(&gs)
+                    .ok_or(PlayerLoginFailReasons::ReasonSystemErrorLoginLater)?;
+                let _ = gs_actor.tell(packet.clone()).await;
             } else {
-                let _ = self.message_broker
-                    .notify_all(|| Box::new(KickPlayer::new(account_name)))
-                    .await;
+                for entry in self.gs_actors.iter() {
+                    let _ = entry.value().tell(packet.clone()).await;
+                }
             }
             return Err(PlayerLoginFailReasons::ReasonAccountInUse);
         }
@@ -76,7 +82,17 @@ impl LoginController {
         }
     }
     pub fn remove_player(&self, account_name: &str) {
-        self.players.remove(account_name);
+        if let Some((acc, pl)) = self.players.remove(account_name) {
+            if let Some(pl_actor) = pl.player_actor {
+                //process in the background, no need make caller wait
+                tokio::spawn(async move {
+                    if let Err(e) = pl_actor.stop_gracefully().await {
+                        error!("Failed to stop player {acc}, actor: {e:?}");
+                    }
+                    pl_actor.wait_for_shutdown().await;
+                });
+            }
+        }
     }
 
     pub fn remove_all_gs_players(&self, gs_id: u8) {
