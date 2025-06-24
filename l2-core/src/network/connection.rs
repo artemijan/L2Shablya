@@ -4,18 +4,17 @@ use kameo::actor::{ActorRef, WeakActorRef};
 use kameo::error::ActorStopReason;
 use kameo::message::{Context, Message};
 use kameo::Actor;
+use log::warn;
 use std::fmt;
 use std::net::Ipv4Addr;
 use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
-use tokio::sync::mpsc;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
+use tokio::sync::{mpsc, watch};
 use tokio::time::{sleep, timeout};
 use tracing::{error, info};
 
 pub const PACKET_SIZE_BYTES: usize = 2;
-
-pub struct Shutdown;
 
 pub struct HandleIncomingPacket(pub BytesMut);
 
@@ -41,6 +40,7 @@ where
     reader_handle: Option<tokio::task::JoinHandle<()>>,
     writer_handle: Option<tokio::task::JoinHandle<()>>,
     packet_sender: Option<UnboundedSender<Bytes>>,
+    shutdown_trigger: Option<watch::Sender<bool>>,
 }
 
 impl<T> ConnectionActor<T>
@@ -64,6 +64,7 @@ where
             packet_sender: None,
             reader_handle: None,
             writer_handle: None,
+            shutdown_trigger: None,
         }
     }
     async fn read_packet(
@@ -88,41 +89,43 @@ where
     }
 }
 
-async fn stop_actor<T: Actor>(actor_ref: ActorRef<T>) {
-    actor_ref
-        .stop_gracefully()
-        .await
-        .unwrap_or_else(|_| panic!("Failed to stop Actor {actor_ref:?}"));
-    actor_ref.wait_for_shutdown().await;
-}
-
 impl<T> Actor for ConnectionActor<T>
 where
     T: Actor + Message<HandleIncomingPacket>,
 {
     type Args = Self;
     type Error = anyhow::Error;
-    async fn on_start(mut state: Self::Args, actor_ref: ActorRef<Self>) -> anyhow::Result<Self> {
+    async fn on_start(mut state: Self::Args, _actor_ref: ActorRef<Self>) -> anyhow::Result<Self> {
         let mut reader = state.reader.take().expect("Reader already taken");
         let (tx, mut rx): (UnboundedSender<Bytes>, UnboundedReceiver<Bytes>) =
             mpsc::unbounded_channel();
         let mut write_half = state.writer.take().expect("Writer already taken");
-        let receiver_addr = state.receiver.clone();
-        let self_addr = actor_ref.clone();
-
+        let (shutdown_tx, shutdown_rx) = watch::channel(false);
+        let mut writer_shutdown_rx = shutdown_rx.clone();
+        let mut reader_shutdown_rx = shutdown_rx.clone();
+        let ip = state.addr;
+        state.shutdown_trigger = Some(shutdown_tx);
         state.writer_handle = Some(tokio::spawn(async move {
-            while let Some(data) = rx.recv().await {
-                if let Err(e) = write_half.write_all(&data).await {
-                    error!("Writer error: {e:?}");
-                    break;
+            loop {
+                tokio::select! {
+                    _ = writer_shutdown_rx.changed() => {
+                        if *writer_shutdown_rx.borrow() {
+                            break;
+                        }
+                    }
+
+                    Some(data) = rx.recv() => {
+                        if let Err(e) = write_half.write_all(&data).await {
+                            error!("Writer error: {e:?}");
+                            break;
+                        }
+                    }
+                    else => break,
                 }
             }
-            write_half.shutdown().await.unwrap();
-            stop_actor(receiver_addr).await;
-            stop_actor(self_addr).await;
+            let _ = write_half.shutdown().await;
         }));
         let receiver_addr = state.receiver.clone();
-        let self_addr = actor_ref.clone();
 
         if state.timeout.is_zero() {
             state.timeout = Duration::from_secs(u64::MAX);
@@ -131,22 +134,29 @@ where
         let ip = state.addr;
         state.reader_handle = Some(tokio::spawn(async move {
             loop {
-                match timeout(read_timeout, Self::read_packet(&mut reader)).await {
-                    Err(_) => {
-                        info!("Connection {ip} read timeout, elapsed: {read_timeout:?}");
-                        break;
+                tokio::select! {
+                    _ = reader_shutdown_rx.changed()=>{
+                        if *reader_shutdown_rx.borrow() {
+                            break;
+                        }
                     }
-                    Ok(Err(_) | Ok((0, _))) => {
-                        info!("Connection {ip} closed by client");
-                        break;
-                    }
-                    Ok(Ok((_, data))) => {
-                        let _ = receiver_addr.tell(HandleIncomingPacket(data)).await;
+                    result = timeout(read_timeout, Self::read_packet(&mut reader)) => {
+                        match result {
+                            Err(_) => {
+                                info!("Connection {ip} read timeout, elapsed: {read_timeout:?}");
+                                break;
+                            }
+                            Ok(Err(_) | Ok((0, _))) => {
+                                info!("Connection {ip} closed by client");
+                                break;
+                            }
+                            Ok(Ok((_, data))) => {
+                                let _ = receiver_addr.tell(HandleIncomingPacket(data)).await;
+                            }
+                        }
                     }
                 }
             }
-            stop_actor(receiver_addr).await;
-            stop_actor(self_addr).await;
         }));
         state.packet_sender = Some(tx);
         Ok(state)
@@ -156,11 +166,8 @@ where
         _actor_ref: WeakActorRef<Self>,
         _reason: ActorStopReason,
     ) -> Result<(), Self::Error> {
-        if let Some(reader) = self.reader_handle.as_ref() {
-            reader.abort();
-        }
-        if let Some(writer) = self.writer_handle.as_ref() {
-            writer.abort();
+        if let Some(shutdown) = &self.shutdown_trigger {
+            let _ = shutdown.send(true);
         }
         info!("[Connection {}] closed", self.addr);
         Ok(())

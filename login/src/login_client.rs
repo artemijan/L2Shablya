@@ -6,15 +6,17 @@ use kameo::prelude::*;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::crypt::rsa::ScrambledRSAKeyPair;
-use l2_core::network::connection::{send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket};
+use l2_core::network::connection::{
+    send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket,
+};
 use l2_core::session::SessionKey;
+use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::net::Ipv4Addr;
 use std::ops::ControlFlow;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tokio::io::{AsyncRead, AsyncWrite};
 use tracing::{error, info};
-use l2_core::shared_packets::write::SendablePacketBuffer;
 
 #[derive(Clone)]
 pub struct LoginClient {
@@ -28,9 +30,6 @@ pub struct LoginClient {
     pub session_key: SessionKey,
     pub account_name: Option<String>,
     rsa_keypair: ScrambledRSAKeyPair,
-    // Rate limiting fields
-    last_message_time: Option<Instant>,
-    rate_limit_duration: Duration,
 }
 
 impl LoginClient {
@@ -49,24 +48,9 @@ impl LoginClient {
             session_id: LoginController::generate_session_id(),
             db_pool,
             rsa_keypair,
-            // Initialize rate limiting with default values
-            last_message_time: None,
-            rate_limit_duration: Duration::from_millis(300), // 500ms between messages
         }
     }
-    // Check if a player is allowed to send a packet based on rate limits
-    fn can_accept_packet(&mut self) -> bool {
-        let now = Instant::now();
 
-        if let Some(last_time) = self.last_message_time {
-            if now.duration_since(last_time) < self.rate_limit_duration {
-                return false; // Too soon, a rate limit is active
-            }
-        }
-        // Update the last message time
-        self.last_message_time = Some(now);
-        true
-    }
     pub async fn send_packet(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
         let data = buffer.take();
         send_packet(self.packet_sender.as_ref(), data.freeze()).await
@@ -106,6 +90,19 @@ impl Actor for LoginClient {
         Ok(state)
     }
 
+    async fn on_panic(
+        &mut self,
+        _actor_ref: WeakActorRef<Self>,
+        err: PanicError,
+    ) -> anyhow::Result<ControlFlow<ActorStopReason>> {
+        error!("Login server client {} panicked: {:?}", self.addr, &err);
+        if let Some(sender) = self.packet_sender.take() {
+            let _ = sender.stop_gracefully().await;
+            sender.wait_for_shutdown().await;
+        }
+        Ok(ControlFlow::Break(ActorStopReason::Panicked(err)))
+    }
+
     async fn on_stop(
         &mut self,
         _actor_ref: WeakActorRef<Self>,
@@ -118,15 +115,6 @@ impl Actor for LoginClient {
         }
         Ok(())
     }
-    
-    async fn on_panic(
-        &mut self,
-        _actor_ref: WeakActorRef<Self>,
-        err: PanicError,
-    ) -> anyhow::Result<ControlFlow<ActorStopReason>> {
-        error!("Login server client {} panicked: {:?}", self.addr, &err);
-        Ok(ControlFlow::Break(ActorStopReason::Panicked(err)))
-    }
 }
 
 impl Message<HandleIncomingPacket> for LoginClient {
@@ -137,11 +125,6 @@ impl Message<HandleIncomingPacket> for LoginClient {
         mut msg: HandleIncomingPacket,
         ctx: &mut Context<Self, Self::Reply>,
     ) -> Self::Reply {
-        // Apply rate limiting
-        if !self.can_accept_packet() {
-            info!("Rate limited.");
-            return Ok(());
-        }
         self.encryption.decrypt(msg.0.as_mut())?;
         let packet = build_client_message_packet(msg.0, &self.rsa_keypair)?;
         packet.accept(ctx.actor_ref()).await?;

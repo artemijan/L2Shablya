@@ -238,7 +238,9 @@ impl Actor for PlayerClient {
         Box<dyn AsyncWrite + Send + Unpin>,
     );
     type Error = anyhow::Error;
-
+    fn name() -> &'static str {
+        "PlayerClient"
+    }
     async fn on_start(args: Self::Args, ls_actor: ActorRef<Self>) -> anyhow::Result<Self> {
         let (mut state, reader, writer) = args;
         info!("Player client {} started: ", state.ip);
@@ -259,6 +261,10 @@ impl Actor for PlayerClient {
         err: PanicError,
     ) -> anyhow::Result<ControlFlow<ActorStopReason>> {
         error!("Player client {} panicked: {:?}", self.ip, &err);
+        if let Some(sender) = self.packet_sender.take() {
+            let _ = sender.stop_gracefully().await;
+            sender.wait_for_shutdown().await;
+        }
         Ok(ControlFlow::Break(ActorStopReason::Panicked(err)))
     }
     async fn on_stop(

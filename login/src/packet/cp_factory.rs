@@ -20,19 +20,20 @@ pub fn build_client_message_packet(
     mut data: BytesMut,
     key_pair: &ScrambledRSAKeyPair,
 ) -> anyhow::Result<ClientPackets> {
-    if data.is_empty() {
-        bail!("Empty packet");
+    if data.len() < 2 {
+        bail!("Not enough data to build packet: {data:?}");
     }
     let opcode = data.split_to(1);
     match opcode[0] {
         RequestAuthLogin::PACKET_ID => {
-            let raw1 = data.split_to(128);
-            let mut decrypted = key_pair.decrypt_data(&raw1)?;
+            let (raw1, rest) = data.split_at(128);
+            let decr_raw1 = key_pair.decrypt_data(raw1)?;
+            let mut decrypted = decr_raw1;
             let mut is_new_auth = false;
             if data.len() >= 256 {
-                let raw2 = data.split_to(128);
-                let decr_raw2 = key_pair.decrypt_data(&raw2)?;
-                decrypted.extend_from_slice(&decr_raw2);
+                let (raw2, _) = rest.split_at(128);
+                let decr_raw2 = key_pair.decrypt_data(raw2)?;
+                decrypted.put_slice(&decr_raw2);
                 is_new_auth = true;
             }
             decrypted.put_u8(u8::from(is_new_auth));
@@ -46,7 +47,7 @@ pub fn build_client_message_packet(
             RequestServerList::read(data)?,
         )),
         _ => {
-            bail!("Unknown Client packet ID:0x{:02X}", data[0]);
+            bail!("Unknown Client packet ID:0x{:02X}", opcode[0]);
         }
     }
 }

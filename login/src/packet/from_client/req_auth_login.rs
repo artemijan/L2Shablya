@@ -11,6 +11,7 @@ use l2_core::shared_packets::common::{PlayerLoginFail, PlayerLoginFailReasons, R
 use l2_core::str::Trim;
 use sea_orm::{ActiveModelTrait, ActiveValue};
 use std::fmt::Debug;
+use tracing::instrument;
 
 #[derive(Clone, Debug)]
 pub struct RequestAuthLogin {
@@ -20,6 +21,7 @@ pub struct RequestAuthLogin {
 impl Message<RequestAuthLogin> for LoginClient {
     type Reply = anyhow::Result<()>;
 
+    #[instrument(skip(self, ctx))]
     async fn handle(
         &mut self,
         msg: RequestAuthLogin,
@@ -37,6 +39,9 @@ impl Message<RequestAuthLogin> for LoginClient {
                 bail!(format!("Login Fail, tried user: {}", &msg.username));
             }
         } else if cfg.client.auto_create_accounts {
+            if msg.username.is_empty() || msg.password.is_empty() {
+                bail!("Username or password is empty");
+            }
             let password_hash = hash_password(&msg.password).await?;
             let user_record = user::ActiveModel {
                 id: ActiveValue::NotSet,
@@ -58,7 +63,7 @@ impl Message<RequestAuthLogin> for LoginClient {
         self.account_name = Some(msg.username.to_string());
         let player_info = player::Info {
             is_authed: true,
-            player_actor:Some(ctx.actor_ref()),
+            player_actor: Some(ctx.actor_ref()),
             session: Some(self.session_key.clone()),
             account_name: msg.username.to_string(),
             ..Default::default()
@@ -66,18 +71,13 @@ impl Message<RequestAuthLogin> for LoginClient {
 
         if let Err(err) = self.controller.on_player_login(player_info).await {
             let err_msg = format!("Player login failed: {err:?}");
-            self.send_packet(
-                PlayerLoginFail::new(err)?.buffer,
-            )
-            .await?;
+            self.send_packet(PlayerLoginFail::new(err)?.buffer).await?;
             bail!(err_msg);
         }
 
         if show_license {
-            self.send_packet(
-                LoginOk::new(&self.session_key).buffer,
-            )
-            .await?;
+            self.send_packet(LoginOk::new(&self.session_key).buffer)
+                .await?;
         } else {
             let s_list = ServerList::new(self, &msg.username);
             self.send_packet(s_list.buffer).await?;
@@ -102,6 +102,7 @@ pub fn read_bytes(data: &BytesMut) -> (String, String) {
     }
     let username: String;
     let password: String;
+    println!("Is new Auth");
     if is_new_auth {
         let part1 = String::from_utf8_lossy(&data[0x4E..0x4E + 50]);
         let part2 = String::from_utf8_lossy(&data[0xCE..0xCE + 14]);
@@ -124,7 +125,7 @@ pub fn read_bytes(data: &BytesMut) -> (String, String) {
 mod tests {
     use crate::controller::LoginController;
     use crate::packet::from_client::RequestAuthLogin;
-    use crate::test_utils::test::{GetState, spawn_login_client_actor};
+    use crate::test_utils::test::{spawn_login_client_actor, GetState};
     use bytes::BytesMut;
     use entities::entities::user;
     use entities::test_factories::factories::user_factory;

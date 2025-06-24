@@ -1,7 +1,7 @@
 use crate::gs_client::GameServerClient;
 use kameo::message::{Context, Message};
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
-use tracing::instrument;
+use tracing::{info, instrument};
 
 impl Message<PlayerLogout> for GameServerClient {
     type Reply = anyhow::Result<()>;

@@ -7,7 +7,7 @@ mod gs_request_auth;
 mod gs_request_chars;
 mod gs_request_temp_ban;
 mod gs_status;
-mod player_auth_request;
+mod gs_player_auth_request;
 mod player_in_game;
 mod player_logout;
 mod player_tracert;

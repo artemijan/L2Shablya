@@ -18,8 +18,8 @@ pub enum LSPackets {
 }
 
 pub fn build_ls_packet(data: BytesMut) -> anyhow::Result<LSPackets> {
-    if data.is_empty() {
-        bail!("Empty packet");
+    if data.len() < 2 {
+        bail!("Not enough data to build packet: {data:?}");
     }
     match data[0] {
         InitLS::PACKET_ID => Ok(LSPackets::InitLS(InitLS::read(data)?)),
@@ -31,7 +31,7 @@ pub fn build_ls_packet(data: BytesMut) -> anyhow::Result<LSPackets> {
         KickPlayer::PACKET_ID => Ok(LSPackets::KickPlayer(KickPlayer::read(data)?)),
         RequestChars::PACKET_ID => Ok(LSPackets::RequestChars(RequestChars::read(data)?)),
         _ => {
-            bail!("Unknown GS packet ID:0x{:02X}", data[0]);
+            bail!("Unknown LS packet ID:0x{:02X}", data[0]);
         }
     }
 }

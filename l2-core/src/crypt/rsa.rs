@@ -102,13 +102,14 @@ impl ScrambledRSAKeyPair {
     }
 
     #[allow(clippy::missing_errors_doc)]
-    pub fn decrypt_data(&self, encrypted_data: &BytesMut) -> anyhow::Result<BytesMut> {
+    pub fn decrypt_data<T: AsRef<[u8]>>(&self, encrypted_data: T) -> anyhow::Result<BytesMut> {
+        let data = encrypted_data.as_ref();
         let n = self.pair.0.n();
         let size = self.pair.0.size();
         let d = self.pair.0.d();
 
         // Convert ciphertext to BigUint
-        let c = rsa::BigUint::from_bytes_be(encrypted_data);
+        let c = rsa::BigUint::from_bytes_be(data);
 
         // Perform modular exponentiation: c^d mod n
         let m = c.modpow(d, n);

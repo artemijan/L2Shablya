@@ -13,7 +13,7 @@ use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use tracing::instrument;
+use tracing::{error, instrument};
 
 #[derive(Debug, Clone)]
 pub struct AuthLogin {
@@ -66,10 +66,9 @@ impl AuthLogin {
         handler.set_session_key(session_key);
 
         // Send success response
-        handler.send_packet(
-            PlayerLoginResponse::ok()?.buffer,
-        )
-        .await?;
+        handler
+            .send_packet(PlayerLoginResponse::ok()?.buffer)
+            .await?;
 
         // Fetch user characters from the database
         let characters = character::Model::get_with_items_and_vars(
@@ -142,15 +141,27 @@ impl Message<AuthLogin> for PlayerClient {
 
         // Send authentication request
         let auth_request = PlayerAuthRequest::new(&msg.login_name, session_key.clone())?;
-        if let Ok(response) = self
-            .controller
-            .try_get_ls_actor()
-            .await?
-            .ask(auth_request)
-            .await
-        {
-            if matches!(response.await, Ok(LSMessages::PlayerAuthResponse(r)) if r.is_ok) {
-                return msg.authenticate_user(self, session_key).await;
+        let actor = self.controller.try_get_ls_actor().await?;
+        match actor.ask(auth_request).await {
+            Ok(response_future) => match response_future.await {
+                Ok(LSMessages::PlayerAuthResponse(r)) if r.is_ok => {
+                    return msg.authenticate_user(self, session_key).await;
+                }
+                Ok(LSMessages::PlayerAuthResponse(r)) => {
+                    // Handle auth response that is not OK
+                    tracing::warn!("Authentication failed: {:?}", r);
+                }
+                Ok(other) => {
+                    error!("Unexpected message: {other:?}");
+                }
+                Err(e) => {
+                    // Handle error in the second await
+                    error!("Failed to await response future: {:?}", e);
+                }
+            },
+            Err(e) => {
+                // Handle error from actor.ask
+                error!("Failed to send ask to actor: {:?}", e);
             }
         }
 

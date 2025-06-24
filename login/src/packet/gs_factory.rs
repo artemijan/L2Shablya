@@ -26,8 +26,8 @@ pub enum GSPackets {
 }
 
 pub fn build_gs_packet(data: BytesMut) -> anyhow::Result<GSPackets> {
-    if data.is_empty() {
-        bail!("GSFactory: data too short");
+    if data.len() < 2 {
+        bail!("Not enough data to build packet: {data:?}");
     }
     match data[0] {
         BlowFish::PACKET_ID => Ok(GSPackets::BlowFish(BlowFish::read(data)?)),

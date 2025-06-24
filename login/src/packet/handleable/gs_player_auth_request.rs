@@ -1,9 +1,9 @@
-use crate::gs_client::GameServerClient;
 use anyhow::bail;
+use crate::gs_client::GameServerClient;
 use kameo::message::{Context, Message};
 use l2_core::shared_packets::{gs_2_ls::PlayerAuthRequest, ls_2_gs::PlayerAuthResponse};
-use tracing::instrument;
 use l2_core::traits::ServerToServer;
+use tracing::{error, info, instrument};
 
 impl Message<PlayerAuthRequest> for GameServerClient {
     type Reply = anyhow::Result<()>;
@@ -29,7 +29,7 @@ impl Message<PlayerAuthRequest> for GameServerClient {
         )
         .await?;
         if !operation_ok {
-            bail!("Not authed, so closing connection.");
+            error!("Not authed, so closing connection.");
         }
         Ok(())
     }
@@ -57,7 +57,7 @@ mod tests {
         let (r, w) = split(server);
         let gs_actor = spawn_gs_client_actor(lc, db_pool, r, w).await;
         let res = gs_actor.ask(packet).await;
-        assert!(res.is_err());
+        assert!(res.is_ok()); //session should not be closed
     }
     #[tokio::test]
     async fn handle_auth_user_ok() {
@@ -91,6 +91,6 @@ mod tests {
         let (r, w) = split(server);
         let gs_actor = spawn_gs_client_actor(lc, db_pool, r, w).await;
         let res = gs_actor.ask(packet).await;
-        assert!(res.is_err());
+        assert!(res.is_ok()); // gs session should not be closed
     }
 }

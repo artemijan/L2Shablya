@@ -17,6 +17,7 @@ use l2_core::shared_packets::common::ReadablePacket;
 use macro_common::PacketEnum;
 use strum::Display;
 use tracing::error;
+use tracing::log::info;
 
 #[derive(Clone, Debug, Display, PacketEnum)]
 pub enum PlayerPackets {
@@ -37,11 +38,11 @@ pub enum PlayerPackets {
 }
 
 pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
-    if data.is_empty() {
-        bail!("Empty packet");
+    if data.len() < 2 {
+        bail!("Not enough data to build packet: {data:?}");
     }
-    let _ = data.split_to(1); // skip 1st byte, because it's packet id
-    match data[0] {
+    let packet_id = data.split_to(1); // skip 1st byte, because it's packet id
+    match packet_id[0] {
         ProtocolVersion::PACKET_ID => {
             Ok(PlayerPackets::ProtocolVersion(ProtocolVersion::read(data)?))
         }
@@ -59,7 +60,7 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         EnterWorld::PACKET_ID => Ok(PlayerPackets::EnterWorld(EnterWorld::read(data)?)),
         0xD0 => build_ex_client_packet(data),
         _ => {
-            error!("Unknown GS packet ID: 0x{:02X}", data[0]);
+            error!("Unknown Player packet ID: 0x{:02X}", data[0]);
             Ok(PlayerPackets::NoOp(NoOp::read(data)?))
         }
     }
