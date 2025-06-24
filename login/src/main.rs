@@ -9,7 +9,6 @@ use l2_core::new_db_pool;
 use l2_core::traits::ServerConfig;
 use l2_core::utils::bootstrap_tokio_runtime;
 use login_client::LoginClient;
-use migration::{Migrator, MigratorTrait};
 use sea_orm::sqlx::any::install_default_drivers;
 use std::sync::Arc;
 use tracing::error;
@@ -38,9 +37,7 @@ fn main() -> anyhow::Result<()> {
     runtime.block_on(async move {
         let controller = Arc::new(LoginController::new(cfg.clone()));
         let pool = new_db_pool(cfg.database()).await;
-        Migrator::up(&pool, None)
-            .await
-            .expect("Failed to migrate the database");
+
         let clients_listener = ConnectionListener {
             name: "PlayerListener".to_string(),
             cfg: cfg.listeners.clients.connection.clone(),
