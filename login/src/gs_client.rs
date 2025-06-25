@@ -101,14 +101,6 @@ impl Actor for GameServerClient {
         Ok(state)
     }
 
-    async fn on_link_died(
-        &mut self,
-        _actor_ref: WeakActorRef<Self>,
-        _id: ActorID,
-        reason: ActorStopReason,
-    ) -> Result<ControlFlow<ActorStopReason>, Self::Error> {
-        Ok(ControlFlow::Break(reason))
-    }
     async fn on_panic(
         &mut self,
         _actor_ref: WeakActorRef<Self>,
@@ -120,6 +112,14 @@ impl Actor for GameServerClient {
             sender.wait_for_shutdown().await;
         }
         Ok(ControlFlow::Break(ActorStopReason::Panicked(err)))
+    }
+    async fn on_link_died(
+        &mut self,
+        _actor_ref: WeakActorRef<Self>,
+        _id: ActorID,
+        reason: ActorStopReason,
+    ) -> Result<ControlFlow<ActorStopReason>, Self::Error> {
+        Ok(ControlFlow::Break(reason))
     }
     async fn on_stop(
         &mut self,
