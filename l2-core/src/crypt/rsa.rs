@@ -24,6 +24,7 @@ impl RSAPublicKey {
     }
     #[allow(clippy::missing_errors_doc)]
     pub fn from_modulus(modulus: &[u8]) -> anyhow::Result<RSAPublicKey> {
+        //todo: no need to copy we can own data, let's wait for rsa lib update.
         let modulus = rsa::BigUint::from_bytes_be(modulus);
         // Use the standard public exponent: 65537 (0x10001)
         let exponent = rsa::BigUint::from_u32(65537)
