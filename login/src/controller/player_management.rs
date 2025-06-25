@@ -85,12 +85,13 @@ impl LoginController {
         if let Some((acc, pl)) = self.players.remove(account_name) {
             if let Some(pl_actor) = pl.player_actor {
                 //process in the background, no need make caller wait
-                tokio::spawn(async move {
-                    if let Err(e) = pl_actor.stop_gracefully().await {
-                        error!("Failed to stop player {acc}, actor: {e:?}");
-                    }
-                    pl_actor.wait_for_shutdown().await;
-                });
+                if pl_actor.is_alive() {
+                    tokio::spawn(async move {
+                        if let Err(e) = pl_actor.stop_gracefully().await {
+                            error!("Failed to stop player {acc}, actor: {e:?}");
+                        }
+                    });
+                }
             }
         }
     }
