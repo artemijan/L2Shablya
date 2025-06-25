@@ -19,7 +19,7 @@ impl Message<Logout> for PlayerClient {
     #[instrument(skip(self, ctx))]
     async fn handle(
         &mut self,
-        _msg: Logout,
+        msg: Logout,
         ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo handle proper logout mechanism: olympiad,
@@ -36,6 +36,7 @@ impl Message<Logout> for PlayerClient {
         Ok(())
     }
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;

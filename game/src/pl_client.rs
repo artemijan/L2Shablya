@@ -1,6 +1,7 @@
 use crate::controller::Controller;
 use crate::cp_factory::build_client_packet;
 use anyhow::{anyhow, bail};
+use bytes::BytesMut;
 use entities::entities::{character, user};
 use entities::DBPool;
 use kameo::actor::{ActorRef, WeakActorRef};
@@ -14,16 +15,15 @@ use l2_core::game_objects::player::Player;
 use l2_core::network::connection::{send_packet, ConnectionActor, HandleIncomingPacket};
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
+use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::fmt;
 use std::future::Future;
 use std::net::Ipv4Addr;
 use std::ops::ControlFlow;
 use std::sync::Arc;
 use std::time::Duration;
-use bytes::BytesMut;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tracing::{error, info};
-use l2_core::shared_packets::write::SendablePacketBuffer;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(unused)]
@@ -224,7 +224,7 @@ impl PlayerClient {
             buffer.write_padding()?;
             data = buffer.take();
             self.encrypt(&mut data)?;
-        }else {
+        } else {
             data = buffer.take();
         }
         send_packet(self.packet_sender.as_ref(), data.freeze()).await
@@ -274,7 +274,9 @@ impl Actor for PlayerClient {
     ) -> anyhow::Result<()> {
         info!("Disconnecting Client...");
         if let Some(s) = self.packet_sender.as_ref() {
-            let _ = s.stop_gracefully().await; //ignore errors is it is already dead
+            if s.is_alive() {
+                let _ = s.stop_gracefully().await; //ignore errors is it is already dead
+            }
             s.wait_for_shutdown().await;
         }
         let Some(user) = self.user.as_ref() else {
@@ -290,19 +292,16 @@ impl Actor for PlayerClient {
             Ok(p) => p,
         };
 
-        if let Some(ls_actor) = self.controller.get_ls_actor().await {
-            if let Err(err) = ls_actor.tell(packet).await {
-                error!(
-                    "Error while sending logout to login server, cause: {:?}",
-                    err
-                );
-            }
-        } else {
-            info!("Login server not found, so no need to send logout packet");
+        let ls_actor = self.controller.try_get_ls_actor().await?;
+        if let Err(err) = ls_actor.tell(packet).await {
+            error!(
+                "Error while sending logout to login server, cause: {:?}",
+                err
+            );
         }
+
         Ok(())
     }
-    
 }
 impl Message<HandleIncomingPacket> for PlayerClient {
     type Reply = anyhow::Result<()>;

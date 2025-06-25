@@ -110,7 +110,9 @@ impl Actor for LoginClient {
     ) -> Result<(), Self::Error> {
         info!("[Player {}] stopped", self.addr);
         if let Some(s) = self.packet_sender.as_ref() {
-            let _ = s.stop_gracefully().await; //ignore errors is it is already dead
+            if s.is_alive() {
+                let _ = s.stop_gracefully().await; //ignore errors is it is already dead
+            }
             s.wait_for_shutdown().await;
         }
         Ok(())
