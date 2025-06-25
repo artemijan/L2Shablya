@@ -2,14 +2,12 @@ use crate::controller::Controller;
 use crate::lsp_factory::build_ls_packet;
 use anyhow::bail;
 use entities::DBPool;
-use kameo::actor::{ActorRef, WeakActorRef};
+use kameo::actor::{ActorID, ActorRef, WeakActorRef};
 use kameo::error::{ActorStopReason, PanicError};
 use kameo::message::{Context, Message};
 use kameo::Actor;
 use l2_core::crypt::login::Encryption;
-use l2_core::network::connection::{
-    ConnectionActor, HandleIncomingPacket,
-};
+use l2_core::network::connection::{ConnectionActor, HandleIncomingPacket};
 use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
 use l2_core::traits::ServerToServer;
 use std::collections::HashMap;
@@ -80,6 +78,7 @@ impl Actor for LoginServerClient {
             Duration::from_secs(0),
         ));
         connection.wait_for_startup().await;
+        ls_actor.link(&connection).await;
         state.packet_sender = Some(connection);
         state.controller.set_ls_actor(ls_actor).await;
         Ok(state)
@@ -96,13 +95,23 @@ impl Actor for LoginServerClient {
         }
         Ok(ControlFlow::Break(ActorStopReason::Panicked(err)))
     }
+    async fn on_link_died(
+        &mut self,
+        _actor_ref: WeakActorRef<Self>,
+        _id: ActorID,
+        reason: ActorStopReason,
+    ) -> Result<ControlFlow<ActorStopReason>, Self::Error> {
+        Ok(ControlFlow::Break(reason))
+    }
     async fn on_stop(
         &mut self,
         _actor_ref: WeakActorRef<Self>,
         _reason: ActorStopReason,
     ) -> anyhow::Result<()> {
         if let Some(s) = self.packet_sender.as_ref() {
-            let _ = s.stop_gracefully().await; //ignore errors is it is already dead
+            if s.is_alive() {
+                let _ = s.stop_gracefully().await; //ignore errors is it is already dead
+            }
             s.wait_for_shutdown().await;
         }
         Ok(())

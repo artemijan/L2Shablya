@@ -4,7 +4,7 @@ use anyhow::{anyhow, bail};
 use bytes::BytesMut;
 use entities::entities::{character, user};
 use entities::DBPool;
-use kameo::actor::{ActorRef, WeakActorRef};
+use kameo::actor::{ActorID, ActorRef, WeakActorRef};
 use kameo::error::{ActorStopReason, PanicError};
 use kameo::message::{Context, Message};
 use kameo::Actor;
@@ -241,17 +241,18 @@ impl Actor for PlayerClient {
     fn name() -> &'static str {
         "PlayerClient"
     }
-    async fn on_start(args: Self::Args, ls_actor: ActorRef<Self>) -> anyhow::Result<Self> {
+    async fn on_start(args: Self::Args, pl_actor: ActorRef<Self>) -> anyhow::Result<Self> {
         let (mut state, reader, writer) = args;
         info!("Player client {} started: ", state.ip);
         let connection = ConnectionActor::spawn(ConnectionActor::new(
-            ls_actor,
+            pl_actor.clone(),
             state.ip,
             reader,
             writer,
             Duration::from_secs(0),
         ));
         connection.wait_for_startup().await;
+        pl_actor.link(&connection).await;
         state.packet_sender = Some(connection);
         Ok(state)
     }
@@ -266,6 +267,14 @@ impl Actor for PlayerClient {
             sender.wait_for_shutdown().await;
         }
         Ok(ControlFlow::Break(ActorStopReason::Panicked(err)))
+    }
+    async fn on_link_died(
+        &mut self,
+        _actor_ref: WeakActorRef<Self>,
+        _id: ActorID,
+        reason: ActorStopReason,
+    ) -> Result<ControlFlow<ActorStopReason>, Self::Error> {
+        Ok(ControlFlow::Break(reason))
     }
     async fn on_stop(
         &mut self,

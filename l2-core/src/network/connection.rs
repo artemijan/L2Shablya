@@ -164,8 +164,8 @@ where
             }
             if actor.is_alive(){
                 let _ = actor.stop_gracefully().await;
-                actor.wait_for_shutdown().await;
             }
+            actor.wait_for_shutdown().await;
         }));
         state.packet_sender = Some(tx);
         Ok(state)

@@ -3,7 +3,7 @@ use crate::enums;
 use crate::packet::gs_factory::build_gs_packet;
 use anyhow::{anyhow, bail};
 use entities::DBPool;
-use kameo::actor::{ActorRef, WeakActorRef};
+use kameo::actor::{ActorID, ActorRef, WeakActorRef};
 use kameo::error::{ActorStopReason, PanicError};
 use kameo::message::{Context, Message};
 use kameo::Actor;
@@ -13,6 +13,7 @@ use l2_core::network::connection::{ConnectionActor, HandleIncomingPacket};
 use l2_core::shared_packets::common::GSLoginFail;
 use l2_core::shared_packets::gs_2_ls::ReplyChars;
 use l2_core::shared_packets::ls_2_gs::InitLS;
+use l2_core::traits::ServerToServer;
 use std::collections::HashMap;
 use std::net::Ipv4Addr;
 use std::ops::ControlFlow;
@@ -21,7 +22,6 @@ use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::oneshot;
 use tracing::{error, info};
-use l2_core::traits::ServerToServer;
 
 pub enum GSMessages {
     ReplyChars(ReplyChars),
@@ -94,12 +94,21 @@ impl Actor for GameServerClient {
             Duration::from_secs(0),
         ));
         connection.wait_for_startup().await;
+        gs_actor.link(&connection).await;
         state.packet_sender = Some(connection);
         let init_packet = InitLS::new(state.key_pair.get_modulus());
         state.send_packet(init_packet.buffer).await?;
         Ok(state)
     }
 
+    async fn on_link_died(
+        &mut self,
+        _actor_ref: WeakActorRef<Self>,
+        _id: ActorID,
+        reason: ActorStopReason,
+    ) -> Result<ControlFlow<ActorStopReason>, Self::Error> {
+        Ok(ControlFlow::Break(reason))
+    }
     async fn on_panic(
         &mut self,
         _actor_ref: WeakActorRef<Self>,
@@ -122,7 +131,9 @@ impl Actor for GameServerClient {
             self.server_id.unwrap_or_default()
         );
         if let Some(s) = self.packet_sender.as_ref() {
-            let _ = s.stop_gracefully().await; //ignore errors is it is already dead
+            if s.is_alive() {
+                let _ = s.stop_gracefully().await; //ignore errors is it is already dead
+            }
             s.wait_for_shutdown().await;
         }
         if let Some(server_id) = self.server_id {
