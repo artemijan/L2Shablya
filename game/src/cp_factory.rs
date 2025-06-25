@@ -17,7 +17,6 @@ use l2_core::shared_packets::common::ReadablePacket;
 use macro_common::PacketEnum;
 use strum::Display;
 use tracing::error;
-use tracing::log::info;
 
 #[derive(Clone, Debug, Display, PacketEnum)]
 pub enum PlayerPackets {
@@ -38,7 +37,7 @@ pub enum PlayerPackets {
 }
 
 pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
-    if data.len() < 2 {
+    if data.is_empty() {
         bail!("Not enough data to build packet: {data:?}");
     }
     let packet_id = data.split_to(1); // skip 1st byte, because it's packet id
@@ -70,8 +69,8 @@ pub fn build_ex_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPacket
     if data.len() < 2 {
         bail!("Empty extended packet {data:?}");
     }
-    let packet_id = u16::from_le_bytes([data[0], data[1]]);
-    let _ = data.split_to(2);
+    let packet_id_bytes = data.split_to(2);
+    let packet_id = u16::from_le_bytes([packet_id_bytes[0], packet_id_bytes[1]]);
     match Some(packet_id) {
         GoLobby::EX_PACKET_ID => Ok(PlayerPackets::GoLobby(GoLobby::read(data)?)),
         CheckCharName::EX_PACKET_ID => Ok(PlayerPackets::CheckCharName(CheckCharName::read(data)?)),

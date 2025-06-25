@@ -102,7 +102,6 @@ pub fn read_bytes(data: &BytesMut) -> (String, String) {
     }
     let username: String;
     let password: String;
-    println!("Is new Auth");
     if is_new_auth {
         let part1 = String::from_utf8_lossy(&data[0x4E..0x4E + 50]);
         let part2 = String::from_utf8_lossy(&data[0xCE..0xCE + 14]);

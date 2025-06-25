@@ -1,10 +1,9 @@
 use crate::ls_client::LoginServerClient;
-use anyhow::bail;
 use kameo::message::Context;
 use kameo::prelude::Message;
 use l2_core::shared_packets::gs_2_ls::{GSStatusUpdate, PlayerInGame};
 use l2_core::shared_packets::ls_2_gs;
-use tracing::{info, instrument};
+use tracing::{error, info, instrument};
 use l2_core::traits::ServerToServer;
 
 impl Message<ls_2_gs::AuthGS> for LoginServerClient {
@@ -18,10 +17,11 @@ impl Message<ls_2_gs::AuthGS> for LoginServerClient {
     ) -> anyhow::Result<()> {
         let cfg = self.controller.get_cfg();
         if msg.server_id != cfg.server_id && !cfg.accept_alternative_id {
-            bail!(
+            error!(
                 "Can not accept alternative id from login server. Id is {}",
                 msg.server_id
             );
+            return Ok(())
         }
         let gsu = GSStatusUpdate::new(&cfg)?;
         self.send_packet(gsu.buffer).await?;

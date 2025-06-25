@@ -95,7 +95,7 @@ where
 {
     type Args = Self;
     type Error = anyhow::Error;
-    async fn on_start(mut state: Self::Args, _actor_ref: ActorRef<Self>) -> anyhow::Result<Self> {
+    async fn on_start(mut state: Self::Args, actor_ref: ActorRef<Self>) -> anyhow::Result<Self> {
         let mut reader = state.reader.take().expect("Reader already taken");
         let (tx, mut rx): (UnboundedSender<Bytes>, UnboundedReceiver<Bytes>) =
             mpsc::unbounded_channel();
@@ -103,8 +103,8 @@ where
         let (shutdown_tx, shutdown_rx) = watch::channel(false);
         let mut writer_shutdown_rx = shutdown_rx.clone();
         let mut reader_shutdown_rx = shutdown_rx.clone();
-        let ip = state.addr;
         state.shutdown_trigger = Some(shutdown_tx);
+        let actor = actor_ref.clone();
         state.writer_handle = Some(tokio::spawn(async move {
             loop {
                 tokio::select! {
@@ -124,6 +124,10 @@ where
                 }
             }
             let _ = write_half.shutdown().await;
+            if actor.is_alive(){
+                let _ = actor.stop_gracefully().await;
+                actor.wait_for_shutdown().await;
+            }
         }));
         let receiver_addr = state.receiver.clone();
 
@@ -132,6 +136,7 @@ where
         }
         let read_timeout = state.timeout;
         let ip = state.addr;
+        let actor = actor_ref.clone();
         state.reader_handle = Some(tokio::spawn(async move {
             loop {
                 tokio::select! {
@@ -156,6 +161,10 @@ where
                         }
                     }
                 }
+            }
+            if actor.is_alive(){
+                let _ = actor.stop_gracefully().await;
+                actor.wait_for_shutdown().await;
             }
         }));
         state.packet_sender = Some(tx);

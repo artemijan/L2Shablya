@@ -4,7 +4,7 @@ pub const PROTOCOL_REVISION: i32 = 0x0106;
 /// # Errors
 /// - when server id is not in the list
 pub fn try_get_server_name_by_id(server_id: u8) -> anyhow::Result<String> {
-    if (0..127).contains(&server_id) {
+    if (1..127).contains(&server_id) {
         return Ok(SERVER_NAMES[server_id as usize - 1].to_owned());
     }
     bail!("Server ID out of range: {}", server_id);

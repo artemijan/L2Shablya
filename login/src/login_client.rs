@@ -53,11 +53,11 @@ impl LoginClient {
 
     pub async fn send_packet(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
         let data = buffer.take();
-        send_packet(self.packet_sender.as_ref(), data.freeze()).await
-    }
-    pub async fn send_packet_wait_sent(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
-        let data = buffer.take();
         send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
+    }
+    pub async fn send_packet_no_wait(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
+        let data = buffer.take();
+        send_packet(self.packet_sender.as_ref(), data.freeze()).await
     }
 }
 
@@ -86,7 +86,7 @@ impl Actor for LoginClient {
             state.rsa_keypair.get_scrambled_modulus(),
             state.blowfish_key.clone(),
         )?;
-        state.send_packet_wait_sent(init.buffer).await?;
+        state.send_packet(init.buffer).await?;
         Ok(state)
     }
 

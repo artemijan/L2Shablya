@@ -23,7 +23,7 @@ impl Message<InitLS> for LoginServerClient {
         let new_key = generate_blowfish_key(Some(40));
         let encrypted_data = BytesMut::from(Bytes::from(p_key.encrypt(&new_key)));
         let bf = BlowFish::new(encrypted_data);
-        self.send_packet_blocking(bf.buffer).await?;
+        self.send_packet(bf.buffer).await?;
         self.set_blowfish(Encryption::new(&new_key));
         self.send_packet(ra.buffer).await?;
         Ok(())

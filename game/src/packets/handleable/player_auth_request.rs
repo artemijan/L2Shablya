@@ -13,7 +13,6 @@ impl Message<PlayerAuthRequest> for LoginServerClient {
         msg: PlayerAuthRequest,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<oneshot::Receiver<LSMessages>> {
-        println!("Auth request {msg:?}");
         let (tx, rx) = oneshot::channel();
         self.pending_requests.insert(msg.account_name.clone(), tx);
         //we send a packet and immediately return the receiver to unblock the actor,

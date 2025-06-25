@@ -20,7 +20,7 @@ pub fn build_client_message_packet(
     mut data: BytesMut,
     key_pair: &ScrambledRSAKeyPair,
 ) -> anyhow::Result<ClientPackets> {
-    if data.len() < 2 {
+    if data.is_empty() {
         bail!("Not enough data to build packet: {data:?}");
     }
     let opcode = data.split_to(1);

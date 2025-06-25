@@ -13,6 +13,7 @@ impl Message<ChangePassword> for LoginServerClient {
         _msg: ChangePassword,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        todo!()
+        //todo:
+        Ok(())
     }
 }

@@ -49,11 +49,11 @@ pub trait ServerToServer: Actor + Message<HandleIncomingPacket> {
     }
     async fn send_packet(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
         let data = self.get_bytes(buffer)?;
-        send_packet(self.get_packet_sender(), data.freeze()).await
-    }
-    async fn send_packet_blocking(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
-        let data = self.get_bytes(buffer)?;
         send_packet_blocking(self.get_packet_sender(), data.freeze()).await
+    }
+    async fn send_packet_no_wait(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
+        let data = self.get_bytes(buffer)?;
+        send_packet(self.get_packet_sender(), data.freeze()).await
     }
     async fn send_delayed_packet(
         &self,

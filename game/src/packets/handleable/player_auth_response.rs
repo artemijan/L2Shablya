@@ -12,7 +12,6 @@ impl Message<PlayerAuthResponse> for LoginServerClient {
         msg: PlayerAuthResponse,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        println!("PlayerAuthResponse: {:?}", msg);
         if let Some(sender) = self.pending_requests.remove(&msg.account) {
             let _ = sender.send(LSMessages::PlayerAuthResponse(msg)); //ignore errors, not critical
         }
