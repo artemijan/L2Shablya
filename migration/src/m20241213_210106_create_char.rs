@@ -1,6 +1,6 @@
 use sea_orm::JsonValue;
 use crate::m20220101_000001_create_user as previous;
-use sea_orm_migration::schema::{big_unsigned, big_unsigned_null, boolean, boolean_null, double, integer_null, json_binary, small_unsigned, small_unsigned_null, string_len_null, timestamp_with_time_zone_null, tiny_unsigned, tiny_unsigned_null, unsigned, unsigned_null};
+use sea_orm_migration::schema::{big_unsigned, big_unsigned_null, boolean, double, integer_null, json_binary, small_unsigned, small_unsigned_null, string_len_null, timestamp_with_time_zone_null, tiny_unsigned, tiny_unsigned_null, unsigned, unsigned_null};
 use sea_orm_migration::{
     prelude::*,
     schema::{integer, pk_auto, string},
@@ -49,7 +49,7 @@ impl MigrationTrait for Migration {
                     .col(tiny_unsigned(Character::ClassId).default(0))
                     .col(tiny_unsigned(Character::BaseClassId).default(0))
                     .col(small_unsigned(Character::TransformId))
-                    .col(boolean_null(Character::CanCraft))
+                    .col(boolean(Character::CanCraft).default(false))
                     .col(string_len_null(Character::Title, 21))
                     .col(unsigned_null(Character::TitleColor).default(15_530_402))
                     .col(unsigned(Character::AccessLevel).default(0))

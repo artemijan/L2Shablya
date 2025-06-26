@@ -43,7 +43,7 @@ pub struct Model {
     pub class_id: i8,
     pub base_class_id: i8,
     pub transform_id: i16,
-    pub can_craft: Option<bool>,
+    pub can_craft: bool,
     pub title: Option<String>,
     pub title_color: Option<i32>,
     pub access_level: i32,

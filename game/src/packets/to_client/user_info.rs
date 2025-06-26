@@ -55,11 +55,15 @@ impl UserInfo {
         inst.buffer.write_u32(inst.block_size)?;
         inst.buffer.write_u16(23u16)?;
         inst.buffer.write_bytes(&[0u8, 0u8, 0u8])?; //todo: check
-        let is_cl = controller
-            .clan_ally_manager
-            .read()
-            .await
-            .is_clan_leader(player.char_model.id, player.char_model.clan_id.unwrap());
+        let is_cl = if let Some(clan_id) = player.char_model.clan_id {
+            controller
+                .clan_ally_manager
+                .read()
+                .await
+                .is_clan_leader(player.char_model.id, clan_id)
+        } else {
+            false
+        };
         if inst.mask.contains_mask(UserInfoType::Relation) {
             inst.buffer.write_u32(player.get_relation(is_cl).await)?;
         }
@@ -228,7 +232,7 @@ impl UserInfo {
         self.buffer.write(player.get_mount_type());
         self.buffer.write(player.get_private_store_type());
         self.buffer
-            .write(player.char_model.can_craft.unwrap() || player.has_skill(248));
+            .write(player.char_model.can_craft || player.has_skill(248));
         self.buffer.write(0);
         Ok(())
     }

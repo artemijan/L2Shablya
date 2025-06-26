@@ -81,7 +81,7 @@ pub fn build_ex_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPacket
         _ => {
             error!(
                 "Unknown extended GS packet ID: 0x{:X}",
-                u16::from_le_bytes([data[0], data[1]])
+                u16::from_le_bytes([packet_id_bytes[0], packet_id_bytes[1]])
             );
             Ok(PlayerPackets::NoOp(NoOp::read(data)?))
         }

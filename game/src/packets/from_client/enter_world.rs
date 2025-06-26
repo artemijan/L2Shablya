@@ -6,7 +6,7 @@ use crate::pl_client::{ClientStatus, PlayerClient};
 use anyhow::bail;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
-use tracing::instrument;
+use tracing::{instrument, warn};
 use l2_core::game_objects::player::user_info::UserInfoType;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerTracert;
@@ -63,7 +63,7 @@ impl Message<EnterWorld> for PlayerClient {
             addresses.try_into().expect("Expected 5 tracert addresses");
 
         if ip != self.ip.to_string() {
-            bail!("IP address client sent, doesn't much with what we got from socket.");
+            warn!("IP address client sent {ip:?}, doesn't much with what we got from socket {:?}", self.ip);
         }
         let config = self.controller.get_cfg();
         self.controller
