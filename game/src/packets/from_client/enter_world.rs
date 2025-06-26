@@ -42,11 +42,11 @@ impl ReadablePacket for EnterWorld {
 }
 impl Message<EnterWorld> for PlayerClient {
     type Reply = anyhow::Result<()>;
-    #[instrument(skip(self, _ctx))]
+    #[instrument(skip(self, ctx))]
     async fn handle(
         &mut self,
         msg: EnterWorld,
-        _ctx: &mut Context<Self, Self::Reply>,
+        ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         if self.get_status() != &ClientStatus::Entering {
             bail!("Not in entering state")
@@ -135,7 +135,6 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: AuthGG check?
 
         self.send_packet(HennaInfo::new(&player)?.buffer).await?;
-        //todo: send a skill list asynchronously without waiting a result
         //todo: send etc status update packet
         //todo: again send clan packets (please check why we need to send it twice!!!)
         //todo: if no clan then send ExPledgeWaitingListAlarm

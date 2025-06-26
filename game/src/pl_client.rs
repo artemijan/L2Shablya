@@ -1,7 +1,7 @@
 use crate::controller::Controller;
 use crate::cp_factory::build_client_packet;
 use anyhow::{anyhow, bail};
-use bytes::BytesMut;
+use bytes::{Bytes, BytesMut};
 use entities::entities::{character, user};
 use entities::DBPool;
 use kameo::actor::{ActorID, ActorRef, WeakActorRef};
@@ -12,7 +12,9 @@ use l2_core::crypt::game::GameClientEncryption;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::game_objects::player::Player;
-use l2_core::network::connection::{send_packet, ConnectionActor, HandleIncomingPacket};
+use l2_core::network::connection::{
+    send_delayed_packet, send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket,
+};
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use l2_core::shared_packets::write::SendablePacketBuffer;
@@ -24,6 +26,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tracing::{error, info};
+use crate::packets::from_client::enter_world::EnterWorld;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(unused)]
@@ -218,7 +221,10 @@ impl PlayerClient {
     fn is_encryption_enabled(&self) -> bool {
         self.blowfish.is_some()
     }
-    pub async fn send_packet(&mut self, mut buffer: SendablePacketBuffer) -> anyhow::Result<()> {
+    fn prepare_packet_data(
+        &mut self,
+        mut buffer: SendablePacketBuffer,
+    ) -> anyhow::Result<BytesMut> {
         let mut data;
         if self.is_encryption_enabled() {
             buffer.write_padding()?;
@@ -227,7 +233,24 @@ impl PlayerClient {
         } else {
             data = buffer.take();
         }
+        Ok(data)
+    }
+    
+    pub async fn send_packet(&mut self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
+        let data = self.prepare_packet_data(buffer)?;
+        send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
+    }
+    pub async fn send_packet_nowait(&mut self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
+        let data = self.prepare_packet_data(buffer)?;
         send_packet(self.packet_sender.as_ref(), data.freeze()).await
+    }
+    pub async fn send_packet_later(
+        &mut self,
+        buffer: SendablePacketBuffer,
+        delay: Duration,
+    ) -> anyhow::Result<()> {
+        let data = self.prepare_packet_data(buffer)?;
+        send_delayed_packet(self.packet_sender.as_ref(), data.freeze(), delay).await
     }
 }
 

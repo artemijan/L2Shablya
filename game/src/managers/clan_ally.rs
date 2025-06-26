@@ -8,6 +8,12 @@ pub struct ClanAllyManager {
     pub clan_list: DashMap<i32, clan_ally::Model>,
 }
 impl ClanAllyManager {
+    /**
+    # Panics
+    - If the database connection fails.
+
+    It ia oky to panic here as we start the manager during the boot process of the application.
+    */
     pub async fn new(db_pool: DBPool) -> Self {
         let clan_list = clan_ally::Model::load_all(&db_pool)
             .await
@@ -17,6 +23,7 @@ impl ClanAllyManager {
             .collect();
         Self { _db_pool:db_pool, clan_list }
     }
+    #[must_use]
     pub fn is_clan_leader(&self, clan_id: i32, leader_id: i32) -> bool {
         self.clan_list
             .get(&clan_id)

@@ -15,6 +15,7 @@ impl VitalityInfo {
     const PACKET_ID: u8 = 0xFE;
     const EX_PACKET_ID: u16 = 0x118;
 
+
     pub fn new(player: &Player, config: &GSServerConfig) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
@@ -28,10 +29,11 @@ impl VitalityInfo {
         inst.buffer.write_i32(inst.points)?;
         inst.buffer.write_i32(inst.vitality_bonus)?;
         inst.buffer.write_u16(0u16)?; // Vitality additional bonus in %
+
         inst.buffer
-            .write_u16(inst.vitality_items_remaining as u16)?;
+            .write_u16(u16::try_from(inst.vitality_items_remaining)?)?;
         inst.buffer
-            .write_u16(config.vitality_max_items_allowed as u16)?;
+            .write_u16(u16::try_from(config.vitality_max_items_allowed)?)?;
         Ok(inst)
     }
 }

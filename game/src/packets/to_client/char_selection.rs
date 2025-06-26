@@ -106,7 +106,7 @@ impl CharSelectionInfo {
             } else {
                 buffer.write_i32(0)?;
                 buffer.write_i32(0)?;
-            };
+            }
             buffer.write_i32(char_info.get_transform_id())?;
             buffer.write_i32(0)?; // Pet NpcId
             buffer.write_i32(0)?; // Pet level
