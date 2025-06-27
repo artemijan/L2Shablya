@@ -2,15 +2,16 @@ use crate::packets::to_client::extended::{ActionList, BookmarkInfo, QuestItemLis
 use crate::packets::to_client::{
     HennaInfo, ItemList, MacroList, ShortcutsInit, SkillList, UserInfo,
 };
-use crate::pl_client::{ClientStatus, PlayerClient};
+use crate::pl_client::{ClientStatus, DoLater, PlayerClient};
 use anyhow::bail;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
-use tracing::{instrument, warn};
 use l2_core::game_objects::player::user_info::UserInfoType;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerTracert;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
+use std::time::Duration;
+use tracing::{instrument, warn};
 
 #[derive(Debug, Clone, Default)]
 pub struct EnterWorld {
@@ -40,6 +41,7 @@ impl ReadablePacket for EnterWorld {
         Ok(inst)
     }
 }
+
 impl Message<EnterWorld> for PlayerClient {
     type Reply = anyhow::Result<()>;
     #[instrument(skip(self, ctx))]
@@ -63,7 +65,10 @@ impl Message<EnterWorld> for PlayerClient {
             addresses.try_into().expect("Expected 5 tracert addresses");
 
         if ip != self.ip.to_string() {
-            warn!("IP address client sent {ip:?}, doesn't much with what we got from socket {:?}", self.ip);
+            warn!(
+                "IP address client sent {ip:?}, doesn't much with what we got from socket {:?}",
+                self.ip
+            );
         }
         let config = self.controller.get_cfg();
         self.controller
@@ -98,43 +103,40 @@ impl Message<EnterWorld> for PlayerClient {
             //todo: send clan packet
         }
         if config.rates.enable_vitality {
-            self.send_packet(
-                VitalityInfo::new(&player, &config)?.buffer,
-            )
-            .await?;
+            self.send_packet(VitalityInfo::new(&player, &config)?.buffer)
+                .await?;
         }
         let macros_packets = MacroList::list_macros(&player)?;
         for m in macros_packets {
             self.send_packet(m.buffer).await?;
         }
 
-        self.send_packet(
-            BookmarkInfo::new(&player)?.buffer,
-        )
-        .await?;
+        self.send_packet(BookmarkInfo::new(&player)?.buffer).await?;
 
-        self.send_packet(
-            ItemList::new(&player, false)?.buffer,
-        )
-        .await?;
+        self.send_packet(ItemList::new(&player, false)?.buffer)
+            .await?;
 
-        self.send_packet(
-            QuestItemList::new(&player)?.buffer,
-        )
-        .await?;
-        self.send_packet(
-            ShortcutsInit::new(&player)?.buffer,
-        )
-        .await?;
+        self.send_packet(QuestItemList::new(&player)?.buffer)
+            .await?;
+        self.send_packet(ShortcutsInit::new(&player)?.buffer)
+            .await?;
 
-        self.send_packet(
-            ActionList::new(&self.controller)?.buffer,
-        )
-        .await?;
+        self.send_packet(ActionList::new(&self.controller)?.buffer)
+            .await?;
         self.send_packet(SkillList::empty()?.buffer).await?;
         //todo: AuthGG check?
 
         self.send_packet(HennaInfo::new(&player)?.buffer).await?;
+        self.do_later(
+            ctx.actor_ref(),
+            DoLater {
+                delay: Duration::from_millis(300),
+                callback: Box::new(move |actor: &mut PlayerClient| {
+                    //todo: Send real Skill list
+                    Box::pin(async move { actor.send_packet(SkillList::empty()?.buffer).await })
+                }),
+            },
+        );
         //todo: send etc status update packet
         //todo: again send clan packets (please check why we need to send it twice!!!)
         //todo: if no clan then send ExPledgeWaitingListAlarm

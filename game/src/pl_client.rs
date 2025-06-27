@@ -1,5 +1,6 @@
 use crate::controller::Controller;
 use crate::cp_factory::build_client_packet;
+use crate::pl_client;
 use anyhow::{anyhow, bail};
 use bytes::{Bytes, BytesMut};
 use entities::entities::{character, user};
@@ -19,14 +20,29 @@ use l2_core::session::SessionKey;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::fmt;
+use std::fmt::Debug;
 use std::future::Future;
 use std::net::Ipv4Addr;
 use std::ops::ControlFlow;
+use std::pin::Pin;
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncWrite};
+use tokio::time::sleep;
 use tracing::{error, info};
-use crate::packets::from_client::enter_world::EnterWorld;
+
+/// A message that executes an async callback after a specified delay
+pub struct DoLater {
+    pub delay: Duration,
+    /// The async callback function to execute
+    pub callback: Box<
+        dyn for<'a> FnOnce(
+                &'a mut PlayerClient,
+            )
+                -> Pin<Box<dyn Future<Output = anyhow::Result<()>> + Send + 'a>>
+            + Send,
+    >,
+}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(unused)]
@@ -76,6 +92,37 @@ impl PlayerClient {
             packet_sender: None,
         }
     }
+
+    ///
+    /// Simple usage:
+    /// 
+    /// ```
+    /// self.do_later(
+    ///     ctx.actor_ref(),
+    ///     DoLater {
+    ///         delay: Duration::from_millis(300),
+    ///         callback: Box::new(move |actor: &mut PlayerClient| {
+    ///             Box::pin(async move {
+    ///                 let clan;
+    ///                 {
+    ///                     let m = actor.controller.clan_ally_manager.read().await;
+    ///                     clan = m.clan_list.get(&1).unwrap().clone();
+    ///                 }
+    ///                 println!("{clan:?}");
+    ///                 actor.send_packet(SkillList::empty()?.buffer).await
+    ///             })
+    ///         }),
+    ///     },
+    /// );
+    /// ```
+    pub fn do_later(&self, actor_ref: ActorRef<Self>, task: DoLater) {
+        tokio::spawn(async move {
+            sleep(task.delay).await;
+            // You can add async work here if needed or just immediately send
+            let _ = actor_ref.tell(task).await;
+        });
+    }
+
     pub fn get_protocol(&self) -> Option<i32> {
         self.protocol
     }
@@ -235,7 +282,7 @@ impl PlayerClient {
         }
         Ok(data)
     }
-    
+
     pub async fn send_packet(&mut self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
         let data = self.prepare_packet_data(buffer)?;
         send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
@@ -349,5 +396,14 @@ impl Message<HandleIncomingPacket> for PlayerClient {
         let packet = build_client_packet(msg.0)?;
         packet.accept(ctx.actor_ref()).await?;
         Ok(())
+    }
+}
+
+impl Message<DoLater> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+
+    async fn handle(&mut self, msg: DoLater, _ctx: &mut Context<Self, Self::Reply>) -> Self::Reply {
+        // Execute the callback with mutable reference to self
+        (msg.callback)(self).await
     }
 }
