@@ -12,6 +12,11 @@ pub struct Model {
     pub items: String,
     pub sender: Option<i32>,
     pub recipient: Option<i32>,
+    pub expire_at: DateTimeWithTimeZone,
+    pub request_adena: i32,
+    pub is_unread: bool,
+    pub is_returned: bool,
+    pub is_deleted: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
@@ -23,7 +28,7 @@ pub enum Relation {
         on_update = "NoAction",
         on_delete = "SetNull"
     )]
-    Recipient,
+    Character2,
     #[sea_orm(
         belongs_to = "super::character::Entity",
         from = "Column::Sender",
@@ -31,7 +36,7 @@ pub enum Relation {
         on_update = "NoAction",
         on_delete = "SetNull"
     )]
-    Sender,
+    Character1,
 }
 
 impl ActiveModelBehavior for ActiveModel {}
