@@ -31,7 +31,7 @@ Always remember "Having tests opens doors to refactoring! More tests - more door
 - [x] Game server
     - [x] register o login server
     - [x] player packet encryption support (shifting key)
-    - [x] player can select game server
+    - [x] player can select the game server
     - [x] player can create char
     - [x] player can delete char
     - [x] player can restore char
@@ -42,7 +42,9 @@ Always remember "Having tests opens doors to refactoring! More tests - more door
     - [ ] player can send chat messages
     - ..... a lot more
 
-## The client
+## The client (Interlude Classic)
+
+I don't use an old client of Interlude because graphics there is pretty old.\
 
 [Here](https://drive.google.com/file/d/1lL3Gv9p4v2yGGSiqRxShXS0xWU2LXcq8/view?usp=share_link) is the google drive link where
 you can download the client. To play, you have to change IP in L2.ini file.
