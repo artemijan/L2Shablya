@@ -12,26 +12,26 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(PlayerMail::Table)
+                    .table(CharacterMail::Table)
                     .if_not_exists()
-                    .col(pk_auto(PlayerMail::Id))
-                    .col(string(PlayerMail::Subject))
-                    .col(string_null(PlayerMail::Message))
-                    .col(string(PlayerMail::Items))
-                    .col(integer_null(PlayerMail::Sender))
-                    .col(integer_null(PlayerMail::Recipient))
+                    .col(pk_auto(CharacterMail::Id))
+                    .col(string(CharacterMail::Subject))
+                    .col(string_null(CharacterMail::Message))
+                    .col(string(CharacterMail::Items))
+                    .col(integer_null(CharacterMail::Sender))
+                    .col(integer_null(CharacterMail::Recipient))
                     .foreign_key(
                         ForeignKey::create()
                             .name(SENDER_MAIL_FOREIGN_KEY_NAME)
                             .on_delete(ForeignKeyAction::SetNull)
-                            .from(PlayerMail::Table, PlayerMail::Sender)
+                            .from(CharacterMail::Table, CharacterMail::Sender)
                             .to(Character::Table, Character::Id),
                     )
                     .foreign_key(
                         ForeignKey::create()
                             .name(RECIPIENT_MAIL_FOREIGN_KEY_NAME)
                             .on_delete(ForeignKeyAction::SetNull)
-                            .from(PlayerMail::Table, PlayerMail::Recipient)
+                            .from(CharacterMail::Table, CharacterMail::Recipient)
                             .to(Character::Table, Character::Id),
                     )
                     .to_owned(),
@@ -41,13 +41,13 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(PlayerMail::Table).to_owned())
+            .drop_table(Table::drop().table(CharacterMail::Table).to_owned())
             .await
     }
 }
 
 #[derive(DeriveIden)]
-enum PlayerMail {
+enum CharacterMail {
     Table,
     Id,
     Subject,
