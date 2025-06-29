@@ -7,6 +7,7 @@ mod m20250302_182532_create_clan;
 mod m20250302_194521_create_castle;
 mod m20250302_195001_create_crest;
 mod m20250628_150308_create_skills;
+mod m20250629_171706_create_mail;
 
 pub struct Migrator;
 
@@ -21,6 +22,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20250302_194521_create_castle::Migration),
             Box::new(m20250302_195001_create_crest::Migration),
             Box::new(m20250628_150308_create_skills::Migration),
+            Box::new(m20250629_171706_create_mail::Migration),
         ]
     }
 }
