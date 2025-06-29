@@ -1,6 +1,6 @@
 #[cfg(test)]
 pub mod test {
-    use crate::controller::Controller;
+    use crate::controller::GameController;
     use crate::ls_client::LoginServerClient;
     use entities::DBPool;
     use kameo::actor::ActorRef;
@@ -18,7 +18,7 @@ pub mod test {
     }
 
     pub async fn spawn_custom_ls_client_actor(
-        lc: Arc<Controller>,
+        lc: Arc<GameController>,
         db: DBPool,
         r: ReadHalf<DuplexStream>,
         w: WriteHalf<DuplexStream>,
@@ -36,7 +36,7 @@ pub mod test {
         gs_actor
     }
     pub async fn spawn_custom_player_client_actor(
-        lc: Arc<Controller>,
+        lc: Arc<GameController>,
         db: DBPool,
         r: ReadHalf<DuplexStream>,
         w: WriteHalf<DuplexStream>,
@@ -54,7 +54,7 @@ pub mod test {
         gs_actor
     }
     pub async fn spawn_ls_client_actor(
-        lc: Arc<Controller>,
+        lc: Arc<GameController>,
         db: DBPool,
         r: ReadHalf<DuplexStream>,
         w: WriteHalf<DuplexStream>,
@@ -62,7 +62,7 @@ pub mod test {
         spawn_custom_ls_client_actor(lc, db, r, w, None).await
     }
     pub async fn spawn_player_client_actor(
-        lc: Arc<Controller>,
+        lc: Arc<GameController>,
         db: DBPool,
         r: ReadHalf<DuplexStream>,
         w: WriteHalf<DuplexStream>,

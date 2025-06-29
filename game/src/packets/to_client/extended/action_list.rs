@@ -1,4 +1,4 @@
-use crate::controller::Controller;
+use crate::controller::GameController;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::fmt::Debug;
 
@@ -11,7 +11,7 @@ impl ActionList {
     const PACKET_ID: u8 = 0x11;
     const EX_PACKET_ID: u16 = 0x60;
 
-    pub fn new(ctrl: &Controller) -> anyhow::Result<Self> {
+    pub fn new(ctrl: &GameController) -> anyhow::Result<Self> {
         //todo: optimization, this is static packet we should cache it
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),

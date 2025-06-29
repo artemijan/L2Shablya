@@ -61,7 +61,7 @@ impl Message<RestoreChar> for PlayerClient {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::controller::Controller;
+    use crate::controller::GameController;
     use crate::pl_client::ClientStatus;
     use crate::test_utils::test::spawn_custom_player_client_actor;
     use entities::entities::user;
@@ -81,7 +81,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg));
         controller.add_online_account(String::from("test"));
         PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone())
     }

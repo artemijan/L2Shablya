@@ -33,7 +33,7 @@ impl Message<InitLS> for LoginServerClient {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::controller::Controller;
+    use crate::controller::GameController;
     use crate::test_utils::test::spawn_ls_client_actor;
     use l2_core::config::gs::GSServerConfig;
     use l2_core::crypt::rsa::ScrambledRSAKeyPair;
@@ -57,7 +57,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg));
         controller.add_online_account(String::from("test"));
         let ls_actor = spawn_ls_client_actor(controller, pool, r, w).await;
         let res = ls_actor.ask(pack).await;

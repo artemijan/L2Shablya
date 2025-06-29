@@ -1,4 +1,4 @@
-use crate::controller::Controller;
+use crate::controller::GameController;
 use crate::ls_client::LoginServerClient;
 use crate::pl_client::PlayerClient;
 use dotenvy::dotenv;
@@ -45,7 +45,7 @@ pub fn main() {
     let runtime = bootstrap_tokio_runtime(cfg.runtime());
     runtime.block_on(async move {
         let pool = new_db_pool(cfg.database()).await;
-        let controller = Arc::new(Controller::new(cfg.clone(), &pool).await);
+        let controller = Arc::new(GameController::new(cfg.clone(), &pool).await);
         let clients_listener = ConnectionListener {
             name: "PlayerListener".to_string(),
             cfg: cfg.listeners.clients.connection.clone(),

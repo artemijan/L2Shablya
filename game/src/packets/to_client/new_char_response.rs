@@ -1,4 +1,4 @@
-use crate::controller::Controller;
+use crate::controller::GameController;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 
 #[derive(Debug, Clone)]
@@ -10,7 +10,7 @@ impl NewCharacterResponse {
     const PACKET_ID: i32 = 0x0D;
     #[allow(clippy::cast_possible_truncation)]
     #[allow(clippy::cast_possible_wrap)]
-    pub fn new(controller: &Controller) -> anyhow::Result<Self> {
+    pub fn new(controller: &GameController) -> anyhow::Result<Self> {
         let templates = controller
             .class_templates
             .get_available_templates_for_registration();

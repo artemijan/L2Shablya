@@ -17,7 +17,7 @@ use tokio::sync::RwLock;
 use tracing::info;
 
 #[derive(Clone, Debug)]
-pub struct Controller {
+pub struct GameController {
     cfg: Arc<GSServerConfig>,
     pub exp_table: ExpTable,
     pub action_list: ActionList,
@@ -29,13 +29,13 @@ pub struct Controller {
     pub clan_ally_manager: Arc<RwLock<ClanAllyManager>>,
 }
 
-impl Controller {
+impl GameController {
     pub async fn new(cfg: Arc<GSServerConfig>, db_pool: &DBPool) -> Self {
         let exp_table = ExpTable::load();
         let action_list = ActionList::load();
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
-        Controller {
+        GameController {
             exp_table,
             cfg,
             ls_actor: Arc::new(RwLock::new(None)),
@@ -87,13 +87,13 @@ impl Controller {
 }
 
 #[cfg(test)]
-impl Controller {
+impl GameController {
     pub fn from_config(cfg: Arc<GSServerConfig>) -> Self {
         let exp_table = ExpTable::load();
         let action_list = ActionList::load();
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
-        Controller {
+        GameController {
             exp_table,
             cfg,
             action_list,
@@ -106,7 +106,7 @@ impl Controller {
         }
     }
 }
-impl IpBan for Controller {
+impl IpBan for GameController {
     fn is_ip_banned(&self, _: &str) -> bool {
         false
     }

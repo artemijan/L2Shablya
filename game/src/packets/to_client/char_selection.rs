@@ -1,4 +1,4 @@
-use crate::controller::Controller;
+use crate::controller::GameController;
 use l2_core::game_objects::player::paper_doll::PaperDoll;
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
@@ -20,7 +20,7 @@ impl CharSelectionInfo {
     pub fn new(
         account_name: &str,
         session_id: i32,
-        controller: &Arc<Controller>,
+        controller: &Arc<GameController>,
         chars: &[Player],
     ) -> anyhow::Result<Self> {
         let mut buffer = SendablePacketBuffer::new();
@@ -157,7 +157,7 @@ mod tests {
         };
         let char = Player::new(inst, vec![]);
         let cfg = get_gs_config();
-        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
+        let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
         let mut packet = CharSelectionInfo::new("admin", 1, &controller, &vec![char]).unwrap();
         assert_eq!(
             [

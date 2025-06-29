@@ -39,7 +39,7 @@ impl Message<GoLobby> for PlayerClient {
 }
 #[cfg(test)]
 mod tests {
-    use crate::controller::Controller;
+    use crate::controller::GameController;
     use crate::packets::from_client::extended::GoLobby;
     use crate::pl_client::PlayerClient;
     use crate::test_utils::test::{
@@ -60,7 +60,7 @@ mod tests {
         let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let cfg = get_gs_config();
-        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
+        let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
         let pl_actor = spawn_player_client_actor(controller, pool, r, w).await;
         let res = pl_actor.ask(pack).await;
         assert!(matches!(res, Err(e) if e.to_string() == "User not set"));
@@ -73,7 +73,7 @@ mod tests {
         let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let cfg = get_gs_config();
-        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
+        let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
         let mut pl_client = PlayerClient::new(Ipv4Addr::LOCALHOST, controller, pool);
         pl_client.set_user(user);
         let pl_actor = spawn_custom_player_client_actor(
@@ -97,7 +97,7 @@ mod tests {
         let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let cfg = get_gs_config();
-        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
+        let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
         let mut pl_client = PlayerClient::new(Ipv4Addr::LOCALHOST, controller, pool);
         pl_client.set_user(user);
         pl_client.set_session_key(SessionKey::new());
@@ -121,7 +121,7 @@ mod tests {
         let (mut client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let cfg = get_gs_config();
-        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
+        let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
         let mut pl_client = PlayerClient::new(Ipv4Addr::LOCALHOST, controller, pool);
         pl_client.set_user(user);
         pl_client.set_session_key(SessionKey::new());

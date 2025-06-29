@@ -177,7 +177,7 @@ impl Message<AuthLogin> for PlayerClient {
 
 #[cfg(test)]
 mod tests {
-    use crate::controller::Controller;
+    use crate::controller::GameController;
     use crate::ls_client::LoginServerClient;
     use crate::packets::from_client::auth::AuthLogin;
     use crate::pl_client::{ClientStatus, PlayerClient};
@@ -206,7 +206,7 @@ mod tests {
             u
         })
         .await;
-        let controller = Arc::new(Controller::from_config(Arc::new(cfg)));
+        let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
         let (ls_r, ls_w) = split(ls_server);
         let ls_client =
             LoginServerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());

@@ -1,4 +1,4 @@
-use crate::controller::Controller;
+use crate::controller::GameController;
 use crate::data::classes::mapping::Class;
 use l2_core::bitmask::BitMask;
 use l2_core::config::gs::GSServerConfig;
@@ -27,7 +27,7 @@ impl UserInfo {
     pub async fn new(
         player: &Player,
         user_info_flags: BitMask,
-        controller: &Controller,
+        controller: &GameController,
     ) -> anyhow::Result<Self> {
         //todo: check is subclass locked
         let mut block_size = 5;
@@ -148,7 +148,7 @@ impl UserInfo {
     fn write_basic_info(
         &mut self,
         char_info: &Player,
-        controller: &Controller,
+        controller: &GameController,
     ) -> anyhow::Result<()> {
         let visible_name = char_info.get_visible_name();
         let visible_name_size = u16::try_from(visible_name.len())? * 2;
@@ -192,7 +192,7 @@ impl UserInfo {
     fn write_current_hp_mp_cp_exp_sp(
         &mut self,
         char_info: &Player,
-        controller: &Controller,
+        controller: &GameController,
     ) -> anyhow::Result<()> {
         let exp_table = &controller.exp_table;
         self.buffer.write_u16(38u16)?;

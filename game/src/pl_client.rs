@@ -1,4 +1,4 @@
-use crate::controller::Controller;
+use crate::controller::GameController;
 use crate::cp_factory::build_client_packet;
 use crate::pl_client;
 use anyhow::{anyhow, bail};
@@ -56,7 +56,7 @@ pub enum ClientStatus {
 }
 pub struct PlayerClient {
     pub db_pool: DBPool,
-    pub controller: Arc<Controller>,
+    pub controller: Arc<GameController>,
     pub ip: Ipv4Addr,
     blowfish: Option<GameClientEncryption>,
     protocol: Option<i32>,
@@ -77,7 +77,7 @@ impl Debug for PlayerClient {
     }
 }
 impl PlayerClient {
-    pub fn new(ip: Ipv4Addr, controller: Arc<Controller>, db_pool: DBPool) -> Self {
+    pub fn new(ip: Ipv4Addr, controller: Arc<GameController>, db_pool: DBPool) -> Self {
         Self {
             status: ClientStatus::Connected,
             controller,

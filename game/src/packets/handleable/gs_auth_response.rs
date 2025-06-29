@@ -41,7 +41,7 @@ impl Message<ls_2_gs::AuthGS> for LoginServerClient {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::controller::Controller;
+    use crate::controller::GameController;
     use crate::test_utils::test::spawn_ls_client_actor;
     use l2_core::config::gs::GSServerConfig;
     use l2_core::traits::ServerConfig;
@@ -60,7 +60,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg));
         controller.add_online_account(String::from("test"));
         let actor = spawn_ls_client_actor(controller, pool, r, w).await;
         let res = actor.ask(pack).await;

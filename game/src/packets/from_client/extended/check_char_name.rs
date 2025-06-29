@@ -43,7 +43,7 @@ impl Message<CheckCharName> for PlayerClient {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::controller::Controller;
+    use crate::controller::GameController;
     use crate::test_utils::test::spawn_player_client_actor;
     use l2_core::config::gs::GSServerConfig;
     use l2_core::traits::ServerConfig;
@@ -64,7 +64,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg));
         let pl_actor = spawn_player_client_actor(controller, pool, r, w).await;
         let res = pl_actor.ask(pack).await;
         assert!(res.is_ok());

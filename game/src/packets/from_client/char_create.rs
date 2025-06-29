@@ -138,7 +138,7 @@ impl Message<CreateCharRequest> for PlayerClient {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::controller::Controller;
+    use crate::controller::GameController;
     use crate::test_utils::test::{spawn_custom_player_client_actor, spawn_player_client_actor};
     use entities::test_factories::factories::user_factory;
     use l2_core::config::gs::GSServerConfig;
@@ -174,7 +174,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg));
         controller.add_online_account(String::from("test"));
         let player_actor = spawn_player_client_actor(controller, pool, r, w).await;
         let res = player_actor.ask(pack).await;
@@ -189,7 +189,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg));
         controller.add_online_account(String::from("test"));
         let mut player_client =
             PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
@@ -208,7 +208,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg));
         controller.add_online_account(String::from("test"));
         let mut player_client =
             PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
@@ -234,7 +234,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(Controller::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg));
         controller.add_online_account(String::from("test"));
         let mut player_client =
             PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());

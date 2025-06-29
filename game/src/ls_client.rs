@@ -1,4 +1,4 @@
-use crate::controller::Controller;
+use crate::controller::GameController;
 use crate::lsp_factory::build_ls_packet;
 use anyhow::bail;
 use entities::DBPool;
@@ -27,7 +27,7 @@ pub enum LSMessages {
 pub struct LoginServerClient {
     pub db_pool: DBPool,
     ip: Ipv4Addr,
-    pub controller: Arc<Controller>,
+    pub controller: Arc<GameController>,
     blowfish: Encryption,
     pub packet_sender: Option<ActorRef<ConnectionActor<Self>>>,
     pub pending_requests: HashMap<String, oneshot::Sender<LSMessages>>,
@@ -41,7 +41,7 @@ impl fmt::Debug for LoginServerClient {
     }
 }
 impl LoginServerClient {
-    pub fn new(ip: Ipv4Addr, controller: Arc<Controller>, db_pool: DBPool) -> Self {
+    pub fn new(ip: Ipv4Addr, controller: Arc<GameController>, db_pool: DBPool) -> Self {
         let blowfish = Encryption::from_u8_key(controller.get_cfg().blowfish_key.as_bytes());
         Self {
             db_pool,
