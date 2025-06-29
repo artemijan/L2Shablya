@@ -2,6 +2,7 @@
 
 pub use super::castle::Entity as Castle;
 pub use super::character::Entity as Character;
+pub use super::character_mail::Entity as CharacterMail;
 pub use super::clan_ally::Entity as ClanAlly;
 pub use super::crest::Entity as Crest;
 pub use super::item::Entity as Item;

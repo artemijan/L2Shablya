@@ -4,6 +4,7 @@ pub mod prelude;
 
 pub mod castle;
 pub mod character;
+pub mod character_mail;
 pub mod clan_ally;
 pub mod crest;
 pub mod item;

@@ -20,6 +20,11 @@ impl MigrationTrait for Migration {
                     .col(string(CharacterMail::Items))
                     .col(integer_null(CharacterMail::Sender))
                     .col(integer_null(CharacterMail::Recipient))
+                    .col(timestamp_with_time_zone(CharacterMail::ExpireAt))
+                    .col(integer(CharacterMail::RequestAdena).default(0))
+                    .col(boolean(CharacterMail::IsUnread).default(true))
+                    .col(boolean(CharacterMail::IsReturned).default(false))
+                    .col(boolean(CharacterMail::IsDeleted).default(false))
                     .foreign_key(
                         ForeignKey::create()
                             .name(SENDER_MAIL_FOREIGN_KEY_NAME)
@@ -55,4 +60,9 @@ enum CharacterMail {
     Items,
     Sender,
     Recipient,
+    ExpireAt,
+    RequestAdena,
+    IsReturned,
+    IsUnread,
+    IsDeleted
 }
