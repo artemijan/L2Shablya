@@ -1,7 +1,5 @@
-use crate::packets::to_client::extended::{ActionList, BookmarkInfo, QuestItemList, VitalityInfo};
-use crate::packets::to_client::{
-    HennaInfo, ItemList, MacroList, ShortcutsInit, SkillList, UserInfo,
-};
+use crate::packets::to_client::extended::{ActionList, BookmarkInfo, PledgeWaitingListAlarm, QuestItemList, VitalityInfo};
+use crate::packets::to_client::{CharEtcStatusUpdate, HennaInfo, ItemList, MacroList, ShortcutsInit, SkillList, UserInfo};
 use crate::pl_client::{ClientStatus, DoLater, PlayerClient};
 use anyhow::bail;
 use bytes::BytesMut;
@@ -127,18 +125,40 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: AuthGG check?
 
         self.send_packet(HennaInfo::new(&player)?.buffer).await?;
+
         self.do_later(
             ctx.actor_ref(),
             DoLater {
-                delay: Duration::from_millis(300),
+                delay: Duration::from_millis(500),
                 callback: Box::new(move |actor: &mut PlayerClient| {
-                    //todo: Send real Skill list
-                    Box::pin(async move { actor.send_packet(SkillList::empty()?.buffer).await })
+                    Box::pin(async move {
+                        let pool = actor.db_pool.clone();
+                        let player = actor.try_get_selected_char_mut()?;
+                        let packet =
+                            SkillList::new(&pool, player).await?;
+                        actor.send_packet(packet.buffer).await
+                    })
                 }),
             },
         );
-        //todo: send etc status update packet
+        self.send_packet(CharEtcStatusUpdate::new(&player)?.buffer).await?;
         //todo: again send clan packets (please check why we need to send it twice!!!)
+        if player.char_model.clan_id.is_some() {
+            // clan.broadcastToOnlineMembers(new PledgeShowMemberListUpdate(player));
+            // PledgeShowMemberListAll.sendAllTo(player);
+            // clan.broadcastToOnlineMembers(new ExPledgeCount(clan));
+            // player.sendPacket(new PledgeSkillList(clan));
+            // final ClanHall ch = ClanHallData.getInstance().getClanHallByClan(clan);
+            // if ((ch != null) && (ch.getCostFailDay() > 0))
+            // {
+            //     final SystemMessage sm = new SystemMessage(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW);
+            //     sm.addInt(ch.getLease());
+            //     player.sendPacket(sm);
+            // }
+            todo!("Clan packets");       
+        }else{
+            self.send_packet(PledgeWaitingListAlarm::new()?.buffer).await?;       
+        }
         //todo: if no clan then send ExPledgeWaitingListAlarm
         //todo: send subclass info packet
         //todo: send inventory info

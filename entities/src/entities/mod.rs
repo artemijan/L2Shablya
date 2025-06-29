@@ -7,4 +7,5 @@ pub mod character;
 pub mod clan_ally;
 pub mod crest;
 pub mod item;
+pub mod skill;
 pub mod user;

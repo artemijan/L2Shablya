@@ -44,8 +44,10 @@ Always remember "Having tests opens doors to refactoring! More tests - more door
 
 ## The client
 
-[Here](https://drive.google.com/file/d/1sXMoENX7YuhqKTYSjJN8RfHMgJ6Yeu6s/view?usp=share_link) is google drive link where
-you can download client. In order to play, you have to change ip in L2.ini file.
+[Here](https://drive.google.com/file/d/1lL3Gv9p4v2yGGSiqRxShXS0xWU2LXcq8/view?usp=share_link) is the google drive link where
+you can download the client. To play, you have to change IP in L2.ini file.
+
+NOTE: if you disable CMD login in client, and try to run game from windows bash script it will not send "CreateChar" packet in lobby.
 
 ## Local deployment
 

@@ -5,4 +5,5 @@ pub use super::character::Entity as Character;
 pub use super::clan_ally::Entity as ClanAlly;
 pub use super::crest::Entity as Crest;
 pub use super::item::Entity as Item;
+pub use super::skill::Entity as Skill;
 pub use super::user::Entity as User;

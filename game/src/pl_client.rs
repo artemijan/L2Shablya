@@ -68,7 +68,7 @@ pub struct PlayerClient {
     user: Option<user::Model>,
 }
 
-impl fmt::Debug for PlayerClient {
+impl Debug for PlayerClient {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Player client")
             .field("ip", &self.ip)
@@ -95,7 +95,7 @@ impl PlayerClient {
 
     ///
     /// Simple usage:
-    /// 
+    ///
     /// ```
     /// self.do_later(
     ///     ctx.actor_ref(),
@@ -236,6 +236,20 @@ impl PlayerClient {
             self.selected_char
                 .ok_or(anyhow!("Chars not set, possible cheating"))?,
         )
+    }
+
+    pub fn try_get_selected_char_mut(&mut self) -> anyhow::Result<&mut Player> {
+        let selected = self
+            .selected_char
+            .ok_or_else(|| anyhow::anyhow!("Chars not set, possible cheating"))?;
+
+        let chars = self
+            .account_chars
+            .as_mut()
+            .ok_or_else(|| anyhow::anyhow!("No characters loaded"))?;
+        chars
+            .get_mut(selected as usize)
+            .ok_or_else(|| anyhow::anyhow!("Selected character not found"))
     }
 
     pub fn set_encryption(&mut self, bf_key: Option<GameClientEncryption>) {

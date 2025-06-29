@@ -1,4 +1,6 @@
+use crate::game_objects::creature::skill::Skill;
 use crate::game_objects::cursed_weapon::CursedWeapon;
+use crate::game_objects::item::ItemObject;
 use crate::game_objects::player::appearance::Appearance;
 use crate::game_objects::player::inventory::Inventory;
 use crate::game_objects::player::paper_doll::PaperDoll;
@@ -10,7 +12,6 @@ use crate::game_objects::zone::ZoneId;
 use chrono::Utc;
 use entities::entities::{character, item};
 use serde_json::Value;
-use crate::game_objects::item::ItemObject;
 
 #[repr(u8)]
 #[derive(Clone, Debug, Copy)]
@@ -38,6 +39,7 @@ impl From<Team> for u8 {
 pub struct Player {
     pub char_model: character::Model,
     pub items: Vec<ItemObject>,
+    pub skills: Option<Vec<Skill>>, //None if not initialized
     pub paperdoll: [[i32; 4]; 33],
     pub party: Option<Party>,
     pub inventory: Inventory,
@@ -57,6 +59,7 @@ impl Player {
             party: None,
             paperdoll,
             team: Team::None,
+            skills: None,
             is_in_siege: false,
             appearance: Appearance,
             inventory: Inventory,
@@ -66,6 +69,7 @@ impl Player {
     pub fn get_visible_name(&self) -> &str {
         &self.char_model.name
     }
+
     #[must_use]
     pub fn get_macros(&self) -> &Vec<PlayerMacro> {
         //todo: implement me
@@ -77,6 +81,102 @@ impl Player {
         //todo: implement me
         3
     }
+
+    /// 1-7 increase force, level
+    #[must_use]
+    pub fn get_charges(&self) -> u8 {
+        //todo: implement me
+        0u8
+    }
+    #[must_use]
+    pub fn get_charged_souls(&self) -> u8 {
+        //todo: implement me
+        0u8
+    }
+    ///
+    /// If the player doesn't want to receive messages at all
+    #[must_use]
+    pub fn block_all(&self) -> bool {
+        //todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn chat_banned(&self) -> bool {
+        //todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn silence_mode(&self) -> bool {
+        //todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn is_in_instance_zone(&self) -> bool {
+        //todo: implement me
+        // public enum ZoneId
+        // {
+        // 	    PVP,
+        // 	    PEACE,
+        // 	    SIEGE,
+        // 	    MOTHER_TREE,
+        // 	    CLAN_HALL,
+        // 	    LANDING,
+        // 	    NO_LANDING,
+        // 	    WATER,
+        // 	    JAIL,
+        // 	    MONSTER_TRACK,
+        // 	    CASTLE,
+        // 	    SWAMP,
+        // 	    NO_SUMMON_FRIEND,
+        // 	    FORT,
+        // 	    NO_STORE,
+        // 	    NO_PVP,
+        // 	    SCRIPT,
+        // 	    HQ,
+        // 	    DANGER_AREA,
+        // 	    ALTERED,
+        // 	    NO_BOOKMARK,
+        // 	    NO_ITEM_DROP,
+        // 	    NO_RESTART,
+        // 	    SAYUNE,
+        // 	    FISHING,
+        // 	    UNDYING,
+        // 	    TAX
+        // 	}
+        false
+    }
+    #[must_use]
+    pub fn has_charm_of_courage(&self) -> bool {
+        //todo: implement me
+        false
+    }
+    /// 1-4 weight penalty, level (1=50%, 2=66.6%, 3=80%, 4=100%)
+    #[must_use]
+    pub fn get_weight_penalty(&self) -> i32 {
+        //todo: implement me
+        0
+    }
+    /// Weapon Grade Penalty [1-4]
+    #[must_use]
+    pub fn get_expertise_weapon_penalty(&self) -> u8 {
+        //todo: implement me
+        0u8
+    }
+
+    /// Armor Grade Penalty [1-4]
+    #[must_use]
+    pub fn get_expertise_armor_penalty(&self) -> u8 {
+        //todo: implement me
+        0u8
+    }
+
+    /// Death Penalty [1-15, 0 = disabled)], not used anymore in Ertheia
+    #[must_use]
+    pub fn get_death_penalty(&self) -> u8 {
+        //todo: disabled?
+        0u8
+    }
+
     #[must_use]
     pub fn get_str(&self) -> u8 {
         //todo: implement me
@@ -460,7 +560,7 @@ impl Player {
     pub fn get_max_hp(&self) -> f64 {
         self.char_model.max_hp
     }
-    
+
     #[must_use]
     pub fn get_max_mp(&self) -> f64 {
         self.char_model.max_mp
@@ -519,7 +619,7 @@ impl Player {
         0
     }
     #[must_use]
-    pub fn get_teleport_bookmarks(&self,)->&Vec<TeleportBookmark>{
+    pub fn get_teleport_bookmarks(&self) -> &Vec<TeleportBookmark> {
         //todo: implement me
         static EMPTY: Vec<TeleportBookmark> = Vec::new();
         &EMPTY
