@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use crate::game_objects::creature::skill::Skill;
 use crate::game_objects::cursed_weapon::CursedWeapon;
 use crate::game_objects::item::ItemObject;
@@ -11,7 +12,7 @@ use crate::game_objects::player::{PlayerMacro, TeleportBookmark};
 use crate::game_objects::race::Race;
 use crate::game_objects::zone::ZoneId;
 use chrono::Utc;
-use entities::entities::{character, item};
+use entities::entities::{character, character_mail, item};
 use serde_json::Value;
 use std::fmt::Debug;
 
@@ -43,6 +44,7 @@ pub struct Player {
     pub skills: Option<Vec<Skill>>, //None if not initialized
     pub paperdoll: [[i32; 4]; 33],
     pub party: Option<Party>,
+    pub mailbox: Vec<character_mail::Model>,
     pub inventory: Inventory,
     pub appearance: Appearance,
     pub team: Team,
@@ -60,6 +62,7 @@ impl Player {
             paperdoll,
             team: Team::None,
             skills: None,
+            mailbox: Vec::new(),
             is_in_siege: false,
             appearance: Appearance,
             inventory: Inventory::from_items(items),

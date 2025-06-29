@@ -1,4 +1,8 @@
-use crate::packets::to_client::extended::{ActionList, BookmarkInfo, EquippedItems, InventoryAdenaInfo, InventoryWeight, PledgeWaitingListAlarm, QuestItemList, SubclassInfo, SubclassInfoType, VitalityInfo};
+use crate::packets::to_client::extended::{
+    ActionList, BookmarkInfo, EquippedItems, InventoryAdenaInfo, InventoryWeight,
+    PledgeWaitingListAlarm, QuestItemList, SubclassInfo, SubclassInfoType, UnreadMailCount,
+    VitalityInfo,
+};
 use crate::packets::to_client::{
     CharEtcStatusUpdate, HennaInfo, ItemList, MacroList, ShortcutsInit, SkillList, UserInfo,
 };
@@ -166,9 +170,16 @@ impl Message<EnterWorld> for PlayerClient {
             .await?;
         self.send_packet(InventoryWeight::new(&player)?.buffer)
             .await?;
-        self.send_packet(InventoryAdenaInfo::new(&player)?.buffer).await?;
-        self.send_packet(EquippedItems::new(&player, true)?.buffer).await?;
+        self.send_packet(InventoryAdenaInfo::new(&player)?.buffer)
+            .await?;
+        self.send_packet(EquippedItems::new(&player, true)?.buffer)
+            .await?;
         //todo: Send Unread Mail Count if any
+        let unread_mails = player.mailbox.iter().map(|m| m.is_unread).len();
+        if unread_mails > 0 {
+            self.send_packet(UnreadMailCount::new(u32::try_from(unread_mails)?)?.buffer)
+                .await?;
+        }
         //todo: trigger hook on player enter for quests
         //todo: send quest list again (but why?)
         //todo: check spawn protection and set it if any
