@@ -1,5 +1,7 @@
-use crate::packets::to_client::extended::{ActionList, BookmarkInfo, PledgeWaitingListAlarm, QuestItemList, VitalityInfo};
-use crate::packets::to_client::{CharEtcStatusUpdate, HennaInfo, ItemList, MacroList, ShortcutsInit, SkillList, UserInfo};
+use crate::packets::to_client::extended::{ActionList, BookmarkInfo, EquippedItems, InventoryAdenaInfo, InventoryWeight, PledgeWaitingListAlarm, QuestItemList, SubclassInfo, SubclassInfoType, VitalityInfo};
+use crate::packets::to_client::{
+    CharEtcStatusUpdate, HennaInfo, ItemList, MacroList, ShortcutsInit, SkillList, UserInfo,
+};
 use crate::pl_client::{ClientStatus, DoLater, PlayerClient};
 use anyhow::bail;
 use bytes::BytesMut;
@@ -134,14 +136,14 @@ impl Message<EnterWorld> for PlayerClient {
                     Box::pin(async move {
                         let pool = actor.db_pool.clone();
                         let player = actor.try_get_selected_char_mut()?;
-                        let packet =
-                            SkillList::new(&pool, player).await?;
+                        let packet = SkillList::new(&pool, player).await?;
                         actor.send_packet(packet.buffer).await
                     })
                 }),
             },
         );
-        self.send_packet(CharEtcStatusUpdate::new(&player)?.buffer).await?;
+        self.send_packet(CharEtcStatusUpdate::new(&player)?.buffer)
+            .await?;
         //todo: again send clan packets (please check why we need to send it twice!!!)
         if player.char_model.clan_id.is_some() {
             // clan.broadcastToOnlineMembers(new PledgeShowMemberListUpdate(player));
@@ -155,15 +157,17 @@ impl Message<EnterWorld> for PlayerClient {
             //     sm.addInt(ch.getLease());
             //     player.sendPacket(sm);
             // }
-            todo!("Clan packets");       
-        }else{
-            self.send_packet(PledgeWaitingListAlarm::new()?.buffer).await?;       
+            todo!("Clan packets");
+        } else {
+            self.send_packet(PledgeWaitingListAlarm::new()?.buffer)
+                .await?;
         }
-        //todo: if no clan then send ExPledgeWaitingListAlarm
-        //todo: send subclass info packet
-        //todo: send inventory info
-        //todo: Send Adena / Inventory Count Info
-        //todo: Send Equipped Items
+        self.send_packet(SubclassInfo::new(&player, SubclassInfoType::NoChanges)?.buffer)
+            .await?;
+        self.send_packet(InventoryWeight::new(&player)?.buffer)
+            .await?;
+        self.send_packet(InventoryAdenaInfo::new(&player)?.buffer).await?;
+        self.send_packet(EquippedItems::new(&player, true)?.buffer).await?;
         //todo: Send Unread Mail Count if any
         //todo: trigger hook on player enter for quests
         //todo: send quest list again (but why?)

@@ -1,6 +1,6 @@
-use sea_orm::EnumIter;
-use sea_orm::strum::IntoEnumIterator;
 use crate::bitmask::BitMask;
+use sea_orm::strum::IntoEnumIterator;
+use sea_orm::EnumIter;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter)]
 #[repr(u32)]
@@ -37,17 +37,12 @@ impl From<UserInfoType> for u32 {
 }
 
 impl UserInfoType {
-    
-    #[must_use]
-    pub fn mask() -> BitMask {
-        BitMask::new()
-    }
 
     #[must_use]
     pub fn all() -> BitMask {
-        let mut bm = BitMask::new();
+        let mut bm = BitMask::new(24);
         for v in UserInfoType::iter() {
-            bm.add_mask(v as u32);
+            bm.add_mask(v);
         }
         bm
     }
@@ -55,7 +50,7 @@ impl UserInfoType {
     pub fn calculate_block_size(bit_mask: &BitMask) -> u32 {
         let mut size = 0;
         for v in UserInfoType::iter() {
-            if bit_mask.contains_mask(v as u32) {
+            if bit_mask.contains_mask(v) {
                 size += v.block_size();
             }
         }
@@ -85,9 +80,9 @@ impl UserInfoType {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
+    use crate::bitmask::BitMask;
     use crate::game_objects::player::user_info::UserInfoType;
     #[test]
     fn test_mask() {
@@ -97,14 +92,14 @@ mod tests {
     }
     #[test]
     fn test_mask_does_not_contain() {
-        let mut mask = UserInfoType::mask();
+        let mut mask = BitMask::new(24);
         mask.add_mask(UserInfoType::BasicInfo as u32);
         assert!(mask.contains_mask(UserInfoType::BasicInfo as u32));
         assert!(!mask.contains_mask(UserInfoType::Appearance as u32));
     }
     #[test]
     fn test_mask_calculate_block_size() {
-        let mut mask = UserInfoType::mask();
+        let mut mask = BitMask::new(24);
         mask.add_mask(UserInfoType::BasicInfo as u32);
         mask.add_mask(UserInfoType::Clan as u32);
         let block_size = UserInfoType::calculate_block_size(&mask);

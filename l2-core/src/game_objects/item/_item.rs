@@ -1,7 +1,10 @@
-use crate::bitmask::BitMask;
 use crate::game_objects::item::attribute::Attribute;
 use anyhow::bail;
+use entities::dao::item::ItemVariables;
 use entities::entities::item::Model;
+use log::error;
+use serde_json::Value;
+use std::collections::HashMap;
 
 #[repr(u8)]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Ord, PartialOrd)]
@@ -22,8 +25,7 @@ impl From<ItemListType> for u32 {
         item_list_type as u32
     }
 }
-impl TryFrom<u8> for ItemListType
-{
+impl TryFrom<u8> for ItemListType {
     type Error = anyhow::Error;
     fn try_from(item_list_type: u8) -> anyhow::Result<Self> {
         match item_list_type.into() {
@@ -43,10 +45,10 @@ pub struct ItemObject {
 
 impl ItemObject {
     #[must_use]
-    pub fn from_items(items: Vec<Model>) -> Vec<ItemObject> {
+    pub fn from_items(items: Vec<Model>) -> HashMap<i32, ItemObject> {
         items
             .into_iter()
-            .map(|item| ItemObject { item_model: item })
+            .map(|item| (item.id, ItemObject { item_model: item }))
             .collect()
     }
     #[must_use]
@@ -76,8 +78,27 @@ impl ItemObject {
     }
     #[must_use]
     pub fn get_visual_id(&self) -> i32 {
-        //todo: implement me
-        0
+        let visual_id = self
+            .item_model
+            .variables
+            .get(ItemVariables::VisualId.as_key())
+            .and_then(Value::as_i64)
+            .unwrap_or(0);
+        if visual_id > 0 {
+            let appearance_stone_id = self
+                .item_model
+                .variables
+                .get(ItemVariables::VisualAppearanceStoneId.as_key())
+                .and_then(Value::as_i64)
+                .unwrap_or(0);
+            if appearance_stone_id > 0 {
+                //todo: AppearanceSones data
+            }
+        }
+        i32::try_from(visual_id).unwrap_or_else(|err| {
+            error!("Can't decode visual id: {visual_id}, because: {err}.");
+            0
+        })
     }
 
     #[must_use]
@@ -135,24 +156,24 @@ impl ItemObject {
     }
 
     #[must_use]
-    pub fn calculate_mask(&self) -> BitMask {
+    pub fn calculate_mask(&self) -> i32 {
         //todo: implement me
-        let mut mask = BitMask::new();
+        let mut mask = 0;
         if self.item_model.get_augmentation().is_some() {
-            mask.add_mask(ItemListType::AugmentBonus);
+            mask |= ItemListType::AugmentBonus as i32;
         }
         if self.get_attribute_attack().1 > 0 || self.get_attribute_defence_total() > 0 {
-            mask.add_mask(ItemListType::ElementalAttribute);
+            mask |= ItemListType::ElementalAttribute as i32;
         }
         let options = self.get_enchant_options();
         for opt in options {
             if *opt > 0 {
-                mask.add_mask(ItemListType::EnchantEffect);
+                mask |= ItemListType::EnchantEffect as i32;
                 break;
             }
         }
         if self.get_visual_id() > 0 {
-            mask.add_mask(ItemListType::VisualId);
+            mask |= ItemListType::VisualId as i32;
         }
         mask
     }

@@ -5,6 +5,9 @@ mod quest_item_list;
 mod action_list;
 mod pledge_waiting_list_alarm;
 mod subclass_info;
+mod inventory_weight;
+mod adena_info;
+mod equipped_items;
 
 pub use self::char_exists_response::*;
 pub use self::vitality_info::*;
@@ -12,3 +15,7 @@ pub use self::bookmark_info::*;
 pub use self::quest_item_list::*;
 pub use self::action_list::*;
 pub use self::pledge_waiting_list_alarm::*;
+pub use self::subclass_info::*;
+pub use self::inventory_weight::*;
+pub use self::adena_info::*;
+pub use self::equipped_items::*;

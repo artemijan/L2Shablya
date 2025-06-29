@@ -1,6 +1,7 @@
 use crate::game_objects::creature::skill::Skill;
 use crate::game_objects::cursed_weapon::CursedWeapon;
 use crate::game_objects::item::ItemObject;
+use crate::game_objects::player::_subclass::Subclass;
 use crate::game_objects::player::appearance::Appearance;
 use crate::game_objects::player::inventory::Inventory;
 use crate::game_objects::player::paper_doll::PaperDoll;
@@ -12,6 +13,7 @@ use crate::game_objects::zone::ZoneId;
 use chrono::Utc;
 use entities::entities::{character, item};
 use serde_json::Value;
+use std::fmt::Debug;
 
 #[repr(u8)]
 #[derive(Clone, Debug, Copy)]
@@ -38,7 +40,6 @@ impl From<Team> for u8 {
 #[derive(Debug, Clone)]
 pub struct Player {
     pub char_model: character::Model,
-    pub items: Vec<ItemObject>,
     pub skills: Option<Vec<Skill>>, //None if not initialized
     pub paperdoll: [[i32; 4]; 33],
     pub party: Option<Party>,
@@ -55,14 +56,13 @@ impl Player {
         let paperdoll = PaperDoll::restore_visible_inventory(&items);
         Self {
             char_model,
-            items: ItemObject::from_items(items),
             party: None,
             paperdoll,
             team: Team::None,
             skills: None,
             is_in_siege: false,
             appearance: Appearance,
-            inventory: Inventory,
+            inventory: Inventory::from_items(items),
         }
     }
     #[must_use]
@@ -300,13 +300,25 @@ impl Player {
         self.party = party;
     }
     #[must_use]
-    pub fn paper_doll_item_id(&self, slot: PaperDoll) -> Option<i32> {
-        Some(self.paperdoll.get(slot as usize)?[1])
+    pub fn paper_doll_item_id<T>(&self, slot: T) -> Option<i32>
+    where
+        T: Copy + Into<PaperDoll> + Debug,
+    {
+        Some(self.paperdoll.get(slot.into() as usize)?[1])
     }
 
-    pub fn try_get_paper_doll_item_id(&self, slot: PaperDoll) -> anyhow::Result<i32> {
+    pub fn try_get_paper_doll_item_id<T>(&self, slot: T) -> anyhow::Result<i32>
+    where
+        T: Copy + Into<PaperDoll> + Debug,
+    {
         self.paper_doll_item_id(slot)
             .ok_or(anyhow::anyhow!("No paper doll item id at slot {slot:?}"))
+    }
+
+    #[must_use]
+    pub fn get_subclasses(&self) -> &Vec<Subclass> {
+        static EMPTY: Vec<Subclass> = Vec::new();
+        &EMPTY //todo: implement me
     }
 
     #[must_use]
@@ -316,7 +328,7 @@ impl Player {
 
     #[must_use]
     pub fn get_item(&self, item_obj_id: i32) -> Option<&ItemObject> {
-        self.items.iter().find(|i| i.item_model.id == item_obj_id)
+        self.inventory.items.get(&item_obj_id)
     }
 
     #[must_use]
@@ -503,8 +515,19 @@ impl Player {
     }
 
     #[must_use]
-    pub fn get_paper_doll_object_id(&self, slot: PaperDoll) -> Option<i32> {
-        Some(self.paperdoll.get(slot as usize)?[0])
+    pub fn get_paper_doll_object_id<T>(&self, slot: T) -> Option<i32>
+    where
+        T: Copy + Into<PaperDoll> + Debug,
+    {
+        Some(self.paperdoll.get(slot.into() as usize)?[0])
+    }
+    pub fn get_item_by_slot<T>(&self, slot: T) -> Option<&ItemObject>
+    where
+        T: Copy + Into<PaperDoll> + Debug,
+    {
+        let object_id = self
+            .get_paper_doll_object_id(slot)?;
+        self.get_item(object_id)
     }
 
     #[must_use]
@@ -570,6 +593,7 @@ impl Player {
     pub fn get_max_cp(&self) -> f64 {
         self.char_model.max_cp
     }
+
     #[must_use]
     #[allow(clippy::cast_possible_truncation)]
     pub fn get_delete_timer(&self) -> i32 {

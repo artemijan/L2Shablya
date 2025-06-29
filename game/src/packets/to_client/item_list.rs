@@ -19,10 +19,10 @@ impl ItemList {
         };
         inst.buffer.write(Self::PACKET_ID)?;
         inst.buffer.write_u16(show_window)?;
-        inst.buffer.write_u16(u16::try_from(p.items.len())?)?;
-        for i in &p.items {
+        inst.buffer.write_u16(u16::try_from(p.inventory.items.len())?)?;
+        for  i in p.inventory.items.values() {
             let mask = i.calculate_mask();
-            inst.buffer.write(u8::try_from(mask.flags())?)?;
+            inst.buffer.write(u8::try_from(mask)?)?;
             inst.buffer.write_i32(i.item_model.id)?;
             inst.buffer.write_i32(i.get_display_id())?;
             if i.is_quest_item() {
