@@ -8,6 +8,7 @@ pub mod appearance;
 mod _macro;
 mod _teleport_bookmark;
 mod _subclass;
+pub mod quest;
 
 pub use _player::*;
 pub use _macro::*;

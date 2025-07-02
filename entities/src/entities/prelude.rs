@@ -6,5 +6,6 @@ pub use super::character_mail::Entity as CharacterMail;
 pub use super::clan_ally::Entity as ClanAlly;
 pub use super::crest::Entity as Crest;
 pub use super::item::Entity as Item;
+pub use super::quest::Entity as Quest;
 pub use super::skill::Entity as Skill;
 pub use super::user::Entity as User;

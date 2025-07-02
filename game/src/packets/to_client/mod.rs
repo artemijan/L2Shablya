@@ -14,6 +14,7 @@ mod shortcuts_init;
 mod skill_list;
 mod henna_info;
 mod char_etc_status_update;
+mod quest_list;
 
 pub use protocol_response::*;
 pub use login_response::*;
@@ -30,3 +31,4 @@ pub use shortcuts_init::*;
 pub use skill_list::*;
 pub use henna_info::*;
 pub use char_etc_status_update::*;
+pub use quest_list::*;

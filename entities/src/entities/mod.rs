@@ -8,5 +8,6 @@ pub mod character_mail;
 pub mod clan_ally;
 pub mod crest;
 pub mod item;
+pub mod quest;
 pub mod skill;
 pub mod user;

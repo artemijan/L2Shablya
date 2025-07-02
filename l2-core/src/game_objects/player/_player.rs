@@ -15,6 +15,7 @@ use chrono::Utc;
 use entities::entities::{character, character_mail, item};
 use serde_json::Value;
 use std::fmt::Debug;
+use crate::game_objects::player::quest::Quest;
 
 #[repr(u8)]
 #[derive(Clone, Debug, Copy)]
@@ -42,6 +43,7 @@ impl From<Team> for u8 {
 pub struct Player {
     pub char_model: character::Model,
     pub skills: Option<Vec<Skill>>, //None if not initialized
+    pub quests: Vec<Quest>,
     pub paperdoll: [[i32; 4]; 33],
     pub party: Option<Party>,
     pub mailbox: Vec<character_mail::Model>,
@@ -60,6 +62,7 @@ impl Player {
             char_model,
             party: None,
             paperdoll,
+            quests: Vec::new(),
             team: Team::None,
             skills: None,
             mailbox: Vec::new(),

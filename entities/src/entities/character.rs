@@ -84,6 +84,8 @@ pub enum Relation {
     ClanAlly,
     #[sea_orm(has_many = "super::item::Entity")]
     Item,
+    #[sea_orm(has_many = "super::quest::Entity")]
+    Quest,
     #[sea_orm(has_many = "super::skill::Entity")]
     Skill,
     #[sea_orm(
@@ -105,6 +107,12 @@ impl Related<super::clan_ally::Entity> for Entity {
 impl Related<super::item::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Item.def()
+    }
+}
+
+impl Related<super::quest::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Quest.def()
     }
 }
 
