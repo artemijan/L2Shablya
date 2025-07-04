@@ -15,6 +15,8 @@ mod skill_list;
 mod henna_info;
 mod char_etc_status_update;
 mod quest_list;
+mod friend_list;
+mod skill_cool_time;
 
 pub use protocol_response::*;
 pub use login_response::*;
@@ -32,3 +34,5 @@ pub use skill_list::*;
 pub use henna_info::*;
 pub use char_etc_status_update::*;
 pub use quest_list::*;
+pub use friend_list::*;
+pub use skill_cool_time::*;

@@ -1,9 +1,12 @@
 use crate::packets::to_client::extended::{
-    ActionList, BookmarkInfo, EquippedItems, InventoryAdenaInfo, InventoryWeight,
-    PledgeWaitingListAlarm, QuestItemList, SubclassInfo, SubclassInfoType, UnreadMailCount,
-    VitalityInfo,
+    ActionList, AutoSoulShots, BookmarkInfo, EquippedItems, InventoryAdenaInfo, InventoryWeight,
+    PledgeWaitingListAlarm, QuestItemList, Rotation, SubclassInfo, SubclassInfoType,
+    UnreadMailCount, VitalityInfo,
 };
-use crate::packets::to_client::{CharEtcStatusUpdate, HennaInfo, ItemList, MacroList, QuestList, ShortcutsInit, SkillList, UserInfo};
+use crate::packets::to_client::{
+    CharEtcStatusUpdate, FriendList, HennaInfo, ItemList, MacroList, QuestList, ShortcutsInit,
+    SkillCoolTime, SkillList, UserInfo,
+};
 use crate::pl_client::{ClientStatus, DoLater, PlayerClient};
 use anyhow::bail;
 use bytes::BytesMut;
@@ -181,10 +184,11 @@ impl Message<EnterWorld> for PlayerClient {
         self.send_packet(QuestList::new(&player)?.buffer).await?;
         //todo: check spawn protection and set it if any
         //todo: spawn player
-        //todo: send ExRotation packet
+        self.send_packet(Rotation::new(&player)?.buffer).await?;
         //todo: check isCursedWeaponEquipped
         //todo: check if PC points enabled and send update packet
-        //todo: send expand storage packet (if there is a skill for that)
+        //todo: send expand storage packet (if there is a skill for that) with a delay of 300ms
+        self.send_packet(FriendList::new(&player)?.buffer).await?;
         //todo: send friend list logged in to all friends (broadcast)
         //todo: send packet welcome to the L2 world
         //todo: show Announcements
@@ -194,7 +198,8 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: check petitions if enabled
         //todo: if it's dead then send Die packet
         //todo: on_player_enter hook
-        //todo: send skill cool time update
+        self.send_packet(SkillCoolTime::new(&player)?.buffer)
+            .await?;
         //todo: send vote system info
         //todo: handle shadow items or items with mana
         //todo: do the same for items in warehouse
@@ -212,10 +217,14 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: send ExWorldChatCnt if ENABLE_WORLD_CHAT is enabled
         //todo: send ExConnectedTimeAndGettableReward
         //todo: send ExOneDayReceiveRewardList
-        //todo: send ExAutoSoulShot 0
-        //todo: send ExAutoSoulShot 1
-        //todo: send ExAutoSoulShot 2
-        //todo: send ExAutoSoulShot 3
+        self.send_packet(AutoSoulShots::new(0, false, 0)?.buffer)
+            .await?;
+        self.send_packet(AutoSoulShots::new(0, false, 1)?.buffer)
+            .await?;
+        self.send_packet(AutoSoulShots::new(0, false, 2)?.buffer)
+            .await?;
+        self.send_packet(AutoSoulShots::new(0, false, 3)?.buffer)
+            .await?;
         //todo: update abnormal visual effects
         //todo: if attendance enabled, send in async packets
         //todo: if HWID enabled, then check it

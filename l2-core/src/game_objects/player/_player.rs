@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use crate::game_objects::creature::skill::Skill;
 use crate::game_objects::cursed_weapon::CursedWeapon;
 use crate::game_objects::item::ItemObject;
@@ -7,15 +6,15 @@ use crate::game_objects::player::appearance::Appearance;
 use crate::game_objects::player::inventory::Inventory;
 use crate::game_objects::player::paper_doll::PaperDoll;
 use crate::game_objects::player::party::Party;
+use crate::game_objects::player::quest::Quest;
 use crate::game_objects::player::vars::CharVariables;
 use crate::game_objects::player::{PlayerMacro, TeleportBookmark};
 use crate::game_objects::race::Race;
-use crate::game_objects::zone::ZoneId;
+use crate::game_objects::zone::{Location, ZoneId};
 use chrono::Utc;
 use entities::entities::{character, character_mail, item};
 use serde_json::Value;
 use std::fmt::Debug;
-use crate::game_objects::player::quest::Quest;
 
 #[repr(u8)]
 #[derive(Clone, Debug, Copy)]
@@ -44,6 +43,7 @@ pub struct Player {
     pub char_model: character::Model,
     pub skills: Option<Vec<Skill>>, //None if not initialized
     pub quests: Vec<Quest>,
+    pub location: Location,
     pub paperdoll: [[i32; 4]; 33],
     pub party: Option<Party>,
     pub mailbox: Vec<character_mail::Model>,
@@ -59,6 +59,12 @@ impl Player {
     pub fn new(char_model: character::Model, items: Vec<item::Model>) -> Self {
         let paperdoll = PaperDoll::restore_visible_inventory(&items);
         Self {
+            location: Location {
+                x: char_model.x,
+                y: char_model.y,
+                z: char_model.z,
+                heading: 0
+            },
             char_model,
             party: None,
             paperdoll,
@@ -531,8 +537,7 @@ impl Player {
     where
         T: Copy + Into<PaperDoll> + Debug,
     {
-        let object_id = self
-            .get_paper_doll_object_id(slot)?;
+        let object_id = self.get_paper_doll_object_id(slot)?;
         self.get_item(object_id)
     }
 
