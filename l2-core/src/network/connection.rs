@@ -4,7 +4,6 @@ use kameo::actor::{ActorRef, WeakActorRef};
 use kameo::error::ActorStopReason;
 use kameo::message::{Context, Message};
 use kameo::Actor;
-use log::warn;
 use std::fmt;
 use std::net::Ipv4Addr;
 use std::time::Duration;

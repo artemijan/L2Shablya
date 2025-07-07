@@ -1,5 +1,4 @@
 use crate::ls_client::LoginServerClient;
-use anyhow::bail;
 use kameo::message::{Context, Message};
 use l2_core::shared_packets::common::GSLoginFail;
 use tracing::{error, instrument};

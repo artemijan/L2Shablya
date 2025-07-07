@@ -32,7 +32,6 @@ impl PlayOk {
 mod tests {
     use crate::packet::to_client::PlayOk;
     use l2_core::session::SessionKey;
-    use l2_core::shared_packets::common::SendablePacket;
 
     #[test]
     fn test_play_ok() {

@@ -61,7 +61,7 @@ mod tests {
         )));
         let controller = Arc::new(GameController::from_config(cfg));
         controller.add_online_account(String::from("test"));
-        let user = user_factory(&pool, |mut u| {
+        let _user = user_factory(&pool, |mut u| {
             u.username = String::from("test");
             u
         })

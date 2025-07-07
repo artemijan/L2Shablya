@@ -54,7 +54,7 @@ mod tests {
     use std::net::Ipv4Addr;
     use super::*;
     use crate::controller::LoginController;
-    use crate::test_utils::test::{GetState, spawn_login_client_actor, spawn_custom_login_client_actor};
+    use crate::test_utils::test::{spawn_login_client_actor, spawn_custom_login_client_actor};
     use l2_core::config::login::LoginServerConfig;
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;

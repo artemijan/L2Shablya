@@ -44,7 +44,6 @@ impl Init {
 #[cfg(test)]
 mod tests {
     use crate::packet::to_client::Init;
-    use l2_core::shared_packets::common::SendablePacket;
 
     #[test]
     fn test_init() {

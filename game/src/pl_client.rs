@@ -1,8 +1,7 @@
 use crate::controller::GameController;
 use crate::cp_factory::build_client_packet;
-use crate::pl_client;
 use anyhow::{anyhow, bail};
-use bytes::{Bytes, BytesMut};
+use bytes::BytesMut;
 use entities::entities::{character, user};
 use entities::DBPool;
 use kameo::actor::{ActorID, ActorRef, WeakActorRef};
@@ -19,7 +18,6 @@ use l2_core::network::connection::{
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::SendablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
-use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::fmt;
 use std::fmt::Debug;
 use std::future::Future;

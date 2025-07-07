@@ -1,9 +1,8 @@
-use anyhow::bail;
 use crate::gs_client::GameServerClient;
 use kameo::message::{Context, Message};
 use l2_core::shared_packets::{gs_2_ls::PlayerAuthRequest, ls_2_gs::PlayerAuthResponse};
 use l2_core::traits::ServerToServer;
-use tracing::{error, info, instrument};
+use tracing::{error, instrument};
 
 impl Message<PlayerAuthRequest> for GameServerClient {
     type Reply = anyhow::Result<()>;

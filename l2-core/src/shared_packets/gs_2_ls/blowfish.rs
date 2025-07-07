@@ -49,7 +49,6 @@ impl ReadablePacket for BlowFish {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::shared_packets::common::SendablePacket;
     fn get_bytes() -> [u8; 34] {
         [
             34, 0, 0, 16, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 0, 0,

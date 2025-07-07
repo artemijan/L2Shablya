@@ -1,5 +1,3 @@
-use anyhow::{anyhow, bail};
-
 const BIT_POSITIONS: [u8; 8] = [
     0x80, // bit 7
     0x40, // bit 6

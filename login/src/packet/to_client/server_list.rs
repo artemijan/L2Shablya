@@ -85,7 +85,6 @@ mod tests {
     use crate::login_client::LoginClient;
     use crate::packet::to_client::ServerList;
     use l2_core::config::login::LoginServerConfig;
-    use l2_core::shared_packets::common::SendablePacket;
     use l2_core::traits::ServerConfig;
     use std::net::Ipv4Addr;
     use std::sync::Arc;

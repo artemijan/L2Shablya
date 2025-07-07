@@ -10,7 +10,6 @@ use l2_core::network::connection::{
     send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket,
 };
 use l2_core::session::SessionKey;
-use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::net::Ipv4Addr;
 use std::ops::ControlFlow;
 use std::sync::Arc;
