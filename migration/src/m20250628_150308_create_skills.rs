@@ -1,5 +1,4 @@
 use crate::m20241213_210106_create_char::Character;
-use crate::m20250302_182532_create_clan::ClanAlly;
 use sea_orm_migration::{prelude::*, schema::*};
 
 #[derive(DeriveMigrationName)]
