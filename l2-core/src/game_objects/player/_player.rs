@@ -9,7 +9,7 @@ use crate::game_objects::player::paper_doll::PaperDoll;
 use crate::game_objects::player::party::Party;
 use crate::game_objects::player::quest::Quest;
 use crate::game_objects::player::vars::CharVariables;
-use crate::game_objects::player::{PlayerMacro, TeleportBookmark};
+use crate::game_objects::player::{PlayerMacro, SubclassType, TeleportBookmark};
 use crate::game_objects::race::Race;
 use crate::game_objects::zone::{Location, ZoneId};
 use chrono::Utc;
@@ -49,6 +49,7 @@ pub struct Player {
     pub location: Location,
     pub paperdoll: [[i32; 4]; 33],
     pub party: Option<Party>,
+    pub sub_classes: Vec<Subclass>,
     pub mailbox: Vec<character_mail::Model>,
     pub inventory: Inventory,
     pub appearance: Appearance,
@@ -77,6 +78,13 @@ impl Player {
                 heading: 0,
             },
             template,
+            //todo: implement subclasses
+            sub_classes: vec![Subclass {
+                index: 0,
+                class_id: char_model.class_id,
+                level: char_model.level,
+                class_type: SubclassType::BaseClass,
+            }],
             char_model,
             party: None,
             paperdoll,
@@ -101,9 +109,9 @@ impl Player {
         &EMPTY
     }
     #[must_use]
-    pub fn get_henna_slots(&self) -> u32 {
+    pub fn get_henna_empty_slots(&self) -> u32 {
         //todo: implement me
-        3
+        0
     }
 
     /// 1-7 increase force, level
@@ -341,8 +349,7 @@ impl Player {
 
     #[must_use]
     pub fn get_subclasses(&self) -> &Vec<Subclass> {
-        static EMPTY: Vec<Subclass> = Vec::new();
-        &EMPTY //todo: implement me
+        &self.sub_classes
     }
 
     #[must_use]
@@ -444,18 +451,18 @@ impl Player {
     #[must_use]
     pub fn get_collision_radius(&self) -> f64 {
         //todo: implement me
-        if self.char_model.is_female{
+        if self.char_model.is_female {
             self.template.static_data.collision_female.radius
-        }else {
+        } else {
             self.template.static_data.collision_male.radius
         }
     }
     #[must_use]
     pub fn get_collision_height(&self) -> f64 {
         //todo: implement me
-        if self.char_model.is_female{
+        if self.char_model.is_female {
             self.template.static_data.collision_female.height
-        }else{
+        } else {
             self.template.static_data.collision_male.height
         }
     }

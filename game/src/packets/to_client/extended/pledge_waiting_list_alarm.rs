@@ -19,3 +19,21 @@ impl PledgeWaitingListAlarm {
         Ok(inst)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use l2_core::shared_packets::common::SendablePacket;
+
+    use crate::packets::to_client::extended::PledgeWaitingListAlarm;
+
+    #[tokio::test]
+    async fn test_henna_ok() {
+        let p = PledgeWaitingListAlarm::new().unwrap();
+        assert_eq!(
+            [
+                254, 71, 1
+            ],
+            p.get_buffer().get_data_mut(false)[2..]
+        );
+    }
+}

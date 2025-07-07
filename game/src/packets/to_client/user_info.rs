@@ -164,7 +164,7 @@ impl UserInfo {
         self.buffer.write_u32(class_id.get_root().id)?;
         self.buffer
             .write_i32(i32::from(char_info.char_model.class_id))?;
-        self.buffer.write_i8(char_info.char_model.level)?;
+        self.buffer.write_u8(char_info.char_model.level)?;
         Ok(())
     }
 

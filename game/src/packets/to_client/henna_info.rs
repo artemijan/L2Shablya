@@ -1,7 +1,7 @@
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use std::fmt::Debug;
 use macro_common::SendablePacket;
+use std::fmt::Debug;
 
 #[derive(Debug, Clone, SendablePacket)]
 pub struct HennaInfo {
@@ -24,7 +24,7 @@ impl HennaInfo {
         inst.buffer.write_u16(0u16)?; // WIT
         inst.buffer.write_u16(0u16)?; // LUC
         inst.buffer.write_u16(0u16)?; // CHA
-        inst.buffer.write_u32(3 - p.get_henna_slots())?; //slots 
+        inst.buffer.write_u32(3 - p.get_henna_empty_slots())?; //slots
         inst.buffer.write_u32(0u32)?; //henna size
         //todo: implement me
         //for (Henna henna : _hennas)
@@ -36,5 +36,47 @@ impl HennaInfo {
         inst.buffer.write_u32(0u32)?; // Premium Slot Dye Time Left
         inst.buffer.write_u32(0u32)?; // Premium Slot Dye ID isValid
         Ok(inst)
+    }
+}
+#[cfg(test)]
+mod test {
+    use crate::controller::GameController;
+    use crate::packets::to_client::HennaInfo;
+    use entities::test_factories::factories::{char_factory, user_factory};
+    use l2_core::config::gs::GSServerConfig;
+    use l2_core::data::classes::mapping::Class;
+    use l2_core::game_objects::player::Player;
+    use l2_core::shared_packets::common::SendablePacket;
+    use l2_core::traits::ServerConfig;
+    use std::sync::Arc;
+    use test_utils::utils::get_test_db;
+
+    #[tokio::test]
+    async fn test_henna_ok() {
+        let db_pool = get_test_db().await;
+        let user = user_factory(&db_pool, |u| u).await;
+        let char = char_factory(&db_pool, |mut m| {
+            m.name = "Adelante".to_string();
+            m.user_id = user.id;
+            m
+        })
+        .await;
+        let cfg = Arc::new(GSServerConfig::from_string(include_str!(
+            "../../../../config/game.yaml"
+        )));
+        let controller = GameController::from_config(cfg);
+        let template = controller
+            .class_templates
+            .try_get_template(Class::try_from(char.class_id).unwrap())
+            .unwrap();
+        let player = Player::new(char, vec![], template.clone());
+        let p = HennaInfo::new(&player).unwrap();
+        assert_eq!(
+            [
+                229, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ],
+            p.get_buffer().get_data_mut(false)[2..]
+        );
     }
 }

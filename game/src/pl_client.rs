@@ -283,13 +283,11 @@ impl PlayerClient {
     fn is_encryption_enabled(&self) -> bool {
         self.blowfish.is_some()
     }
-    
+
     #[instrument(skip(self, packet))]
     fn prepare_packet_data(&mut self, packet: impl SendablePacket) -> anyhow::Result<BytesMut> {
         let mut data;
-        let name = packet.name();
         let mut buffer = packet.get_buffer();
-        info!("{}, buffer: {:?}", name, buffer);
         if self.is_encryption_enabled() {
             buffer.write_padding()?;
             data = buffer.take();
