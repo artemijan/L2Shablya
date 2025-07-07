@@ -3,10 +3,8 @@ mod utils;
 
 use crate::utils::ConfigAttributes;
 use proc_macro::TokenStream;
-use proc_macro2::Ident;
 use quote::quote;
-use syn::{parse_macro_input, Data, DeriveInput, Field, FieldMutability, Fields, Item, ItemStruct, Type, Visibility};
-use syn::token::Colon;
+use syn::{parse_macro_input, Data, DeriveInput, Fields, Item, ItemStruct};
 
 #[allow(clippy::missing_panics_doc)]
 #[proc_macro_attribute]
