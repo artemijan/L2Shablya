@@ -1,8 +1,9 @@
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::LoginServerOpcodes;
 use l2_core::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacket;
 
-#[derive(Debug)]
+#[derive(Debug, SendablePacket)]
 pub struct LoginOk {
     pub buffer: SendablePacketBuffer,
     login_ok1: i32,

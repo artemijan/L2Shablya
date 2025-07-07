@@ -1,9 +1,13 @@
 use bytes::BytesMut;
+use macro_common::SendablePacket;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
+use crate as l2_core;
+use crate::shared_packets::write::SendablePacketBuffer;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacket)]
 pub struct ChangeAL {
+    pub buffer: SendablePacketBuffer,
     pub account: String,
     pub level: i32,
 }
@@ -16,6 +20,7 @@ impl ReadablePacket for ChangeAL {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         Ok(Self {
+            buffer: SendablePacketBuffer::empty(),
             level: buffer.read_i32()?,
             account: buffer.read_c_utf16le_string()?,
         })

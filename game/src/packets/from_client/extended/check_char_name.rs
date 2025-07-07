@@ -33,7 +33,7 @@ impl Message<CheckCharName> for PlayerClient {
     ) -> anyhow::Result<()> {
         let reason = validate_can_create_char(&self.db_pool, &msg.name).await?;
         self.send_packet(
-            CharExistsResponse::new(reason as i32)?.buffer,
+            CharExistsResponse::new(reason as i32)?,
         )
         .await?;
         Ok(())

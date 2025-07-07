@@ -1,9 +1,11 @@
 use bytes::BytesMut;
+use macro_common::SendablePacket;
 use crate::shared_packets::{
     common::ReadablePacket, read::ReadablePacketBuffer, write::SendablePacketBuffer,
 };
+use crate as l2_core;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct AuthGS {
     pub buffer: SendablePacketBuffer,
     pub server_id: u8,

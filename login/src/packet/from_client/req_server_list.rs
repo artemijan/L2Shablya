@@ -22,12 +22,12 @@ impl Message<RequestServerList> for LoginClient {
     ) -> Self::Reply {
         let acc_name = self.account_name.clone();
         if let Some(ref acc_name) = acc_name {
-            let packet = ServerList::new(self, acc_name).buffer;
+            let packet = ServerList::new(self, acc_name);
             self.send_packet(packet).await?;
             Ok(())
         } else {
             self.send_packet(
-                PlayerLoginFail::new(PlayerLoginFailReasons::ReasonUserOrPassWrong)?.buffer,
+                PlayerLoginFail::new(PlayerLoginFailReasons::ReasonUserOrPassWrong)?,
             )
             .await?;
             bail!(format!("Login Fail, tried user: {:?}", self.account_name));

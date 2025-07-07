@@ -46,7 +46,7 @@ impl BitMask {
         let bit_index = mask_val & 7;
         self.flags
             .get(byte_index as usize)
-            .map_or(false, |&b| (b & BIT_POSITIONS[bit_index as usize]) != 0)
+            .is_some_and(|&b| (b & BIT_POSITIONS[bit_index as usize]) != 0)
     }
 
     /// Returns the raw flags array (for debugging or export).

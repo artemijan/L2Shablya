@@ -1,12 +1,15 @@
 use bytes::BytesMut;
+use macro_common::SendablePacket;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
-
-#[derive(Clone, Debug)]
+use crate::shared_packets::write::SendablePacketBuffer;
+use crate as l2_core;
+#[derive(Clone, Debug, SendablePacket)]
 pub struct RequestTempBan {
     pub account: String,
     pub ban_duration: i64,
     pub ip: String,
+    pub buffer: SendablePacketBuffer
 }
 
 impl ReadablePacket for RequestTempBan {
@@ -17,6 +20,7 @@ impl ReadablePacket for RequestTempBan {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         Ok(Self {
+            buffer: SendablePacketBuffer::empty(),
             account: buffer.read_c_utf16le_string()?,
             ip: buffer.read_c_utf16le_string()?,
             ban_duration: buffer.read_i64()?,

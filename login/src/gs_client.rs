@@ -57,7 +57,7 @@ impl GameServerClient {
     pub async fn set_connection_state(&mut self, state: &enums::GS) -> anyhow::Result<()> {
         if let Err(err) = self.connection_state.transition_to(state) {
             let err_msg = format!("Connection state transition failed {err:?}");
-            self.send_packet(GSLoginFail::new(err)?.buffer).await?;
+            self.send_packet(GSLoginFail::new(err)?).await?;
             bail!(err_msg);
         }
         Ok(())
@@ -97,7 +97,7 @@ impl Actor for GameServerClient {
         gs_actor.link(&connection).await;
         state.packet_sender = Some(connection);
         let init_packet = InitLS::new(state.key_pair.get_modulus());
-        state.send_packet(init_packet.buffer).await?;
+        state.send_packet(init_packet).await?;
         Ok(state)
     }
 

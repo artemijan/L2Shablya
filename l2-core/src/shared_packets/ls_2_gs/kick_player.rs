@@ -1,8 +1,10 @@
 use bytes::BytesMut;
+use macro_common::SendablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::{common::ReadablePacket, write::SendablePacketBuffer};
+use crate as l2_core;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct KickPlayer {
     pub buffer: SendablePacketBuffer,
     pub account_name: String,

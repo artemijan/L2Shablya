@@ -1,21 +1,23 @@
+use crate as l2_core;
+use crate::config::traits::{LoadFileHandler, Loadable};
 use crate::data::base_stat::{BaseStat, CreatureParameter};
 use crate::data::classes::mapping::Class;
+use crate::game_objects::player::vars::CharVariables;
 use anyhow::bail;
 use entities::entities::character;
-use l2_core::config::traits::{LoadFileHandler, Loadable};
 use macro_common::config_dir;
 use rand::prelude::SliceRandom;
 use rand::thread_rng;
 use serde::{Deserialize, Deserializer};
 use serde_json::json;
 use std::collections::HashMap;
+use std::sync::Arc;
 use tracing::info;
-use l2_core::game_objects::player::vars::CharVariables;
 
 #[derive(Clone, Debug, Default)]
 #[config_dir(path = "config/data/stats/chars/base_stats", post_load)]
 pub struct ClassTemplates {
-    templates: HashMap<Class, CharTemplate>,
+    templates: HashMap<Class, Arc<CharTemplate>>,
 }
 
 impl Loadable for ClassTemplates {
@@ -31,7 +33,7 @@ impl Loadable for ClassTemplates {
 }
 
 impl LoadFileHandler for ClassTemplates {
-    type TargetConfigType = CharTemplate;
+    type TargetConfigType = Arc<CharTemplate>;
     fn for_each(&mut self, item: Self::TargetConfigType) {
         if let Some(i) = self.templates.insert(item.class_id, item) {
             panic!("Duplicate template id: {:?}", i.class_id);
@@ -40,21 +42,29 @@ impl LoadFileHandler for ClassTemplates {
 }
 impl ClassTemplates {
     #[must_use]
-    pub fn get_template(&self, template_id: Class) -> Option<&CharTemplate> {
-        self.templates.get(&template_id)
+    pub fn get_template<T>(&self, template_id: T) -> Option<&Arc<CharTemplate>>
+    where
+        T: Into<Class>,
+    {
+        self.templates.get(&template_id.into())
     }
 
     /// # Errors
     /// - when template is not found
-    pub fn try_get_template(&self, template_id: Class) -> anyhow::Result<&CharTemplate> {
-        self.templates.get(&template_id).ok_or(anyhow::anyhow!(
-            "Invalid class template: {:?}.",
-            template_id
-        ))
+    pub fn try_get_template<T>(&self, template_id: T) -> anyhow::Result<&Arc<CharTemplate>>
+    where
+        T: TryInto<Class>,
+        T::Error: Into<anyhow::Error>,
+    {
+        let class_id = template_id.try_into().map_err(Into::into)?;
+        self.templates
+            .get(&class_id)
+            .ok_or(anyhow::anyhow!("Invalid class template: {:?}.", class_id))
     }
     #[must_use]
-    pub fn has_template(&self, template_id: Class) -> bool {
-        self.templates.contains_key(&template_id)
+    pub fn has_template<T: Into<Class>>(&self, template_id: T) -> bool {
+        let class_id = template_id.into();
+        self.templates.contains_key(&class_id)
     }
 
     fn registration_classes() -> &'static [Class] {
@@ -73,7 +83,7 @@ impl ClassTemplates {
     /// # Panics
     /// - when registration classes mismatch with available classes
     #[must_use]
-    pub fn get_available_templates_for_registration(&self) -> Vec<&CharTemplate> {
+    pub fn get_available_templates_for_registration(&self) -> Vec<&Arc<CharTemplate>> {
         Self::registration_classes()
             .iter()
             .map(|i| {
@@ -189,23 +199,23 @@ impl CharTemplate {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CharTemplateStaticData {
-    pub base_int: i32,
-    pub base_str: i32,
-    pub base_con: i32,
-    pub base_men: i32,
-    pub base_dex: i32,
-    pub base_wit: i32,
+    pub base_int: u8,
+    pub base_str: u8,
+    pub base_con: u8,
+    pub base_men: u8,
+    pub base_dex: u8,
+    pub base_wit: u8,
     pub physical_abnormal_resist: i32,
     pub magic_abnormal_resist: i32,
     pub creation_points: Vec<Point>,
-    pub base_p_atk: i32,
-    pub base_crit_rate: i32,
+    pub base_p_atk: u32,
+    pub base_crit_rate: u32,
     pub base_m_crit_rate: i32,
     pub base_atk_type: BaseAtkType,
-    pub base_p_atk_spd: i32,
-    pub base_m_atk_spd: i32,
+    pub base_p_atk_spd: u32,
+    pub base_m_atk_spd: u32,
     pub base_p_def: BasePDef,
-    pub base_m_atk: i32,
+    pub base_m_atk: u32,
     pub base_m_def: BaseMDef,
     pub base_can_penetrate: i32,
     pub base_atk_range: i32,
@@ -230,8 +240,8 @@ pub struct LvlUpGainData {
 }
 #[derive(Debug, Clone, Deserialize)]
 pub struct CharCollision {
-    pub radius: f32,
-    pub height: f32,
+    pub radius: f64,
+    pub height: f64,
 }
 #[derive(Debug, Clone, Deserialize)]
 pub struct BaseMoveSpeed {
@@ -249,33 +259,33 @@ pub struct BaseDamRange {
 }
 #[derive(Debug, Clone, Deserialize)]
 pub struct BaseMDef {
-    pub r_ear: i32,
-    pub l_ear: i32,
-    pub r_finger: i32,
-    pub l_finger: i32,
-    pub neck: i32,
+    pub r_ear: u32,
+    pub l_ear: u32,
+    pub r_finger: u32,
+    pub l_finger: u32,
+    pub neck: u32,
 }
 #[derive(Debug, Clone, Deserialize)]
 pub struct BasePDef {
-    pub chest: i32,
-    pub legs: i32,
-    pub head: i32,
-    pub feet: i32,
-    pub gloves: i32,
-    pub underwear: i32,
-    pub cloak: i32,
+    pub chest: u32,
+    pub legs: u32,
+    pub head: u32,
+    pub feet: u32,
+    pub gloves: u32,
+    pub underwear: u32,
+    pub cloak: u32,
 }
 
 impl BasePDef {
     #[must_use]
-    pub fn total(&self) -> i32 {
+    pub fn total(&self) -> u32 {
         self.chest + self.legs + self.head + self.feet + self.gloves + self.underwear + self.cloak
     }
 }
 
 impl BaseMDef {
     #[must_use]
-    pub fn total(&self) -> i32 {
+    pub fn total(&self) -> u32 {
         self.r_ear + self.l_ear + self.l_finger + self.neck
     }
 }
@@ -293,8 +303,8 @@ pub struct Point {
 }
 #[cfg(test)]
 mod test {
+    use crate::config::traits::ConfigDirLoader;
     use crate::data::char_template::ClassTemplates;
-    use l2_core::config::traits::ConfigDirLoader;
 
     #[test]
     fn test() {

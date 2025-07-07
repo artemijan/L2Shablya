@@ -1,5 +1,6 @@
 use macro_common::config_file;
 use serde::Deserialize;
+use crate as l2_core;
 
 #[derive(Debug, Clone, Deserialize)]
 #[config_file(path = "config/data/action_list.yaml")]

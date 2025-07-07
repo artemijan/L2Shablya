@@ -5,7 +5,7 @@ use crate::packets::from_client::char_select::SelectChar;
 use crate::packets::from_client::delete_char::DeleteChar;
 use crate::packets::from_client::enter_world::EnterWorld;
 use crate::packets::from_client::extended::{
-    CheckCharName, GoLobby, RequestUserBanInfo, SendClientIni,
+    CheckCharName, GoLobby, RequestKeyMapping, RequestManorList, RequestUserBanInfo, SendClientIni,
 };
 use crate::packets::from_client::logout::Logout;
 use crate::packets::from_client::new_char_request::NewCharacterRequest;
@@ -33,6 +33,8 @@ pub enum PlayerPackets {
     CheckCharName(CheckCharName),
     SendClientIni(SendClientIni),
     RequestUserBanInfo(RequestUserBanInfo),
+    RequestManorList(RequestManorList),
+    RequestKeyMapping(RequestKeyMapping),
     NoOp(NoOp),
 }
 
@@ -59,7 +61,7 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         EnterWorld::PACKET_ID => Ok(PlayerPackets::EnterWorld(EnterWorld::read(data)?)),
         0xD0 => build_ex_client_packet(data),
         _ => {
-            error!("Unknown Player packet ID: 0x{:02X}", data[0]);
+            error!("Unknown Player packet ID: 0x{:02X}", packet_id[0]);
             Ok(PlayerPackets::NoOp(NoOp::read(data)?))
         }
     }
@@ -78,11 +80,14 @@ pub fn build_ex_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPacket
         RequestUserBanInfo::EX_PACKET_ID => Ok(PlayerPackets::RequestUserBanInfo(
             RequestUserBanInfo::read(data)?,
         )),
+        RequestManorList::EX_PACKET_ID => Ok(PlayerPackets::RequestManorList(
+            RequestManorList::read(data)?,
+        )),
+        RequestKeyMapping::EX_PACKET_ID => Ok(PlayerPackets::RequestKeyMapping(
+            RequestKeyMapping::read(data)?,
+        )),
         _ => {
-            error!(
-                "Unknown extended GS packet ID: 0x{:X}",
-                u16::from_le_bytes([packet_id_bytes[0], packet_id_bytes[1]])
-            );
+            error!("Unknown extended client packet ID: 0x{:x}", packet_id);
             Ok(PlayerPackets::NoOp(NoOp::read(data)?))
         }
     }

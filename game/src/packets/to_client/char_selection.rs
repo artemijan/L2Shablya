@@ -2,10 +2,11 @@ use crate::controller::GameController;
 use l2_core::game_objects::player::paper_doll::PaperDoll;
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacket;
 use std::sync::Arc;
 
 #[allow(unused)]
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, SendablePacket)]
 pub struct CharSelectionInfo {
     pub buffer: SendablePacketBuffer,
     session_id: i32,
@@ -114,9 +115,9 @@ impl CharSelectionInfo {
             buffer.write_i32(0)?; // Pet food level
             buffer.write_f64(0.0)?; // Current pet HP
             buffer.write_f64(0.0)?; // Current pet MP
-            buffer.write_i32(char_info.char_model.vitality_points)?;
-            buffer.write_i32(cfg.rates.vitality_exp_multiplier * 100)?;
-            buffer.write_i32(char_info.get_vitality_used())?;
+            buffer.write_u32(char_info.char_model.vitality_points)?;
+            buffer.write_u32(cfg.rates.vitality_exp_multiplier * 100)?;
+            buffer.write_u32(char_info.get_vitality_used())?;
             buffer.write_i32(i32::from(char_info.char_model.access_level != -100))?;
             buffer.write_bool(char_info.char_model.nobless)?;
             buffer.write(
@@ -139,8 +140,11 @@ impl CharSelectionInfo {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use entities::entities::character;
     use crate::test_utils::test::get_gs_config;
+    use entities::entities::character;
+    use l2_core::config::traits::ConfigDirLoader;
+    use l2_core::data::char_template::ClassTemplates;
+    use l2_core::data::classes::mapping::Class;
 
     #[tokio::test]
     async fn test_char_selected() {
@@ -155,7 +159,13 @@ mod tests {
             user_id: 1,
             ..Default::default()
         };
-        let char = Player::new(inst, vec![]);
+        let class_id = inst.class_id;
+        let templates = ClassTemplates::load();
+        let char = Player::new(
+            inst,
+            vec![],
+            templates.try_get_template(class_id).unwrap().clone(),
+        );
         let cfg = get_gs_config();
         let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
         let mut packet = CharSelectionInfo::new("admin", 1, &controller, &vec![char]).unwrap();

@@ -64,7 +64,7 @@ pub struct Model {
     pub variables: Json,
     pub clan_create_expiry_time: Option<DateTimeWithTimeZone>,
     pub bookmark_slot: i16,
-    pub vitality_points: i32,
+    pub vitality_points: u32,
     pub created_at: Option<DateTimeWithTimeZone>,
     pub language: Option<String>,
     pub faction: i8,

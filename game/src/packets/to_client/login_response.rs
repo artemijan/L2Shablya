@@ -1,7 +1,7 @@
 use l2_core::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacket;
 
-#[derive(Debug, Clone)]
-#[allow(unused)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct PlayerLoginResponse {
     pub buffer: SendablePacketBuffer,
     reason: u32,

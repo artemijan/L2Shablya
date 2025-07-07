@@ -33,7 +33,7 @@ impl Message<GoLobby> for PlayerClient {
             .ok_or(anyhow::anyhow!("Can not go to lobby, no chars were set"))?;
         let p =
             CharSelectionInfo::new(user_name, sk.get_play_session_id(), &self.controller, chars)?;
-        self.send_packet(p.buffer).await?;
+        self.send_packet(p).await?;
         Ok(())
     }
 }

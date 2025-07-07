@@ -33,7 +33,7 @@ impl Message<RequestAuthLogin> for LoginClient {
         if let Some(user) = user_option {
             if !user.verify_password(&msg.password).await {
                 self.send_packet(
-                    PlayerLoginFail::new(PlayerLoginFailReasons::ReasonUserOrPassWrong)?.buffer,
+                    PlayerLoginFail::new(PlayerLoginFailReasons::ReasonUserOrPassWrong)?,
                 )
                 .await?;
                 bail!(format!("Login Fail, tried user: {}", &msg.username));
@@ -54,7 +54,7 @@ impl Message<RequestAuthLogin> for LoginClient {
             user_record.save(&self.db_pool).await?;
         } else {
             self.send_packet(
-                PlayerLoginFail::new(PlayerLoginFailReasons::ReasonUserOrPassWrong)?.buffer,
+                PlayerLoginFail::new(PlayerLoginFailReasons::ReasonUserOrPassWrong)?,
             )
             .await?;
             bail!("User not found, and auto creation of accounts is disabled.");
@@ -71,16 +71,16 @@ impl Message<RequestAuthLogin> for LoginClient {
 
         if let Err(err) = self.controller.on_player_login(player_info).await {
             let err_msg = format!("Player login failed: {err:?}");
-            self.send_packet(PlayerLoginFail::new(err)?.buffer).await?;
+            self.send_packet(PlayerLoginFail::new(err)?).await?;
             bail!(err_msg);
         }
 
         if show_license {
-            self.send_packet(LoginOk::new(&self.session_key).buffer)
+            self.send_packet(LoginOk::new(&self.session_key))
                 .await?;
         } else {
             let s_list = ServerList::new(self, &msg.username);
-            self.send_packet(s_list.buffer).await?;
+            self.send_packet(s_list).await?;
         }
         Ok(())
     }

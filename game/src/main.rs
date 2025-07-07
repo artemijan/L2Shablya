@@ -15,7 +15,6 @@ use tracing::error;
 
 mod controller;
 mod cp_factory;
-pub mod data;
 mod ls_client;
 mod lsp_factory;
 pub mod managers;

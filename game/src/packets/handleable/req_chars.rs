@@ -17,7 +17,7 @@ impl Message<RequestChars> for LoginServerClient {
     ) -> anyhow::Result<()> {
         let chars = character::Model::find_by_username(&self.db_pool, &msg.account_name).await?;
         let pack = ReplyChars::new(msg.account_name.clone(), &chars)?;
-        self.send_packet(pack.buffer).await?;
+        self.send_packet(pack).await?;
         Ok(())
     }
 }

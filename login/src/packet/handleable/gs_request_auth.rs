@@ -37,7 +37,7 @@ impl Message<RequestAuthGS> for GameServerClient {
                 let server_name = try_get_server_name_by_id(desired_id)?;
                 self.server_id = Some(desired_id);
                 self.send_packet(
-                    AuthGS::new(desired_id, server_name).buffer,
+                    AuthGS::new(desired_id, server_name),
                 )
                 .await
             }
@@ -46,7 +46,7 @@ impl Message<RequestAuthGS> for GameServerClient {
                     "Failed to register game server with id {:}, fail reason {:?}",
                     msg.desired_id, e
                 );
-                self.send_packet(GSLoginFail::new(e)?.buffer).await?;
+                self.send_packet(GSLoginFail::new(e)?).await?;
                 bail!(err_msg)
             }
         }

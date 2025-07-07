@@ -1,11 +1,11 @@
 use crate::packets::to_client::extended::{
-    ActionList, AutoSoulShots, BookmarkInfo, EquippedItems, InventoryAdenaInfo, InventoryWeight,
-    PledgeWaitingListAlarm, QuestItemList, Rotation, SubclassInfo, SubclassInfoType,
-    UnreadMailCount, VitalityInfo,
+    BasicActionList, AutoSoulShots, BookmarkInfo, EquippedItems, InventoryAdenaInfo, InventoryWeight,
+    PledgeWaitingListAlarm, QuestItemList, Rotation, SetCompasZoneCode, SubclassInfo,
+    SubclassInfoType, UISettings, UnreadMailCount, VitalityInfo,
 };
 use crate::packets::to_client::{
-    CharEtcStatusUpdate, FriendList, HennaInfo, ItemList, MacroList, QuestList, ShortcutsInit,
-    SkillCoolTime, SkillList, UserInfo,
+    AbnormalStatusUpdate, AcquireSkillList, CharEtcStatusUpdate, FriendList, HennaInfo, ItemList,
+    MacroList, MoveTo, QuestList, ShortcutsInit, SkillCoolTime, SkillList, UserInfo,
 };
 use crate::pl_client::{ClientStatus, DoLater, PlayerClient};
 use anyhow::bail;
@@ -90,12 +90,8 @@ impl Message<EnterWorld> for PlayerClient {
             .await?;
 
         let player = self.try_get_selected_char()?.clone();
-        self.send_packet(
-            UserInfo::new(&player, UserInfoType::all(), &self.controller)
-                .await?
-                .buffer,
-        )
-        .await?;
+        self.send_packet(UserInfo::new(&player, UserInfoType::all(), &self.controller).await?)
+            .await?;
         if config.restore_player_instance {
             //todo: restore player in the instance
         }
@@ -107,48 +103,43 @@ impl Message<EnterWorld> for PlayerClient {
         if player.char_model.clan_id.is_some() {
             //todo: send clan packet
         }
-        if config.rates.enable_vitality {
-            self.send_packet(VitalityInfo::new(&player, &config)?.buffer)
-                .await?;
-        }
+        // if config.rates.enable_vitality
+        self.send_packet(VitalityInfo::new(&player, &config)?)
+            .await?;
+        self.send_packet(UISettings::new(&player)?).await?;
         let macros_packets = MacroList::list_macros(&player)?;
         for m in macros_packets {
-            self.send_packet(m.buffer).await?;
+            self.send_packet(m).await?;
         }
 
-        self.send_packet(BookmarkInfo::new(&player)?.buffer).await?;
+        self.send_packet(BookmarkInfo::new(&player)?).await?;
 
-        self.send_packet(ItemList::new(&player, false)?.buffer)
-            .await?;
+        self.send_packet(ItemList::new(&player, false)?).await?;
+        self.send_packet(QuestItemList::new(&player)?).await?;
+        self.send_packet(ShortcutsInit::new(&player)?).await?;
 
-        self.send_packet(QuestItemList::new(&player)?.buffer)
-            .await?;
-        self.send_packet(ShortcutsInit::new(&player)?.buffer)
-            .await?;
-
-        self.send_packet(ActionList::new(&self.controller)?.buffer)
-            .await?;
-        self.send_packet(SkillList::empty()?.buffer).await?;
+        self.send_packet(BasicActionList::new(&self.controller.action_list)?).await?;
+        self.send_packet(SkillList::empty()?).await?;
         //todo: AuthGG check?
 
-        self.send_packet(HennaInfo::new(&player)?.buffer).await?;
+        self.send_packet(HennaInfo::new(&player)?).await?;
 
-        self.do_later(
+        Self::do_later(
             ctx.actor_ref(),
             DoLater {
                 delay: Duration::from_millis(500),
                 callback: Box::new(move |actor: &mut PlayerClient| {
                     Box::pin(async move {
-                        let pool = actor.db_pool.clone();
                         let player = actor.try_get_selected_char_mut()?;
-                        let packet = SkillList::new(&pool, player).await?;
-                        actor.send_packet(packet.buffer).await
+                        let acquire_sl = AcquireSkillList::new(player)?;
+                        let packet = SkillList::new(player)?;
+                        actor.send_packet(packet).await?;
+                        actor.send_packet(acquire_sl).await
                     })
                 }),
             },
         );
-        self.send_packet(CharEtcStatusUpdate::new(&player)?.buffer)
-            .await?;
+        self.send_packet(CharEtcStatusUpdate::new(&player)?).await?;
         //todo: again send clan packets (please check why we need to send it twice!!!)
         if player.char_model.clan_id.is_some() {
             // clan.broadcastToOnlineMembers(new PledgeShowMemberListUpdate(player));
@@ -164,31 +155,27 @@ impl Message<EnterWorld> for PlayerClient {
             // }
             todo!("Clan packets");
         } else {
-            self.send_packet(PledgeWaitingListAlarm::new()?.buffer)
-                .await?;
+            self.send_packet(PledgeWaitingListAlarm::new()?).await?;
         }
-        self.send_packet(SubclassInfo::new(&player, SubclassInfoType::NoChanges)?.buffer)
+        self.send_packet(SubclassInfo::new(&player, SubclassInfoType::NoChanges)?)
             .await?;
-        self.send_packet(InventoryWeight::new(&player)?.buffer)
-            .await?;
-        self.send_packet(InventoryAdenaInfo::new(&player)?.buffer)
-            .await?;
-        self.send_packet(EquippedItems::new(&player, true)?.buffer)
-            .await?;
+        self.send_packet(InventoryWeight::new(&player)?).await?;
+        self.send_packet(InventoryAdenaInfo::new(&player)?).await?;
+        self.send_packet(EquippedItems::new(&player, true)?).await?;
         let unread_mails = player.mailbox.iter().map(|m| m.is_unread).len();
         if unread_mails > 0 {
-            self.send_packet(UnreadMailCount::new(u32::try_from(unread_mails)?)?.buffer)
+            self.send_packet(UnreadMailCount::new(u32::try_from(unread_mails)?)?)
                 .await?;
         }
         //todo: trigger hook on player enter for quests
-        self.send_packet(QuestList::new(&player)?.buffer).await?;
+        self.send_packet(QuestList::new(&player)?).await?;
         //todo: check spawn protection and set it if any
         //todo: spawn player
-        self.send_packet(Rotation::new(&player)?.buffer).await?;
+        self.send_packet(Rotation::new(&player)?).await?;
         //todo: check isCursedWeaponEquipped
         //todo: check if PC points enabled and send update packet
         //todo: send expand storage packet (if there is a skill for that) with a delay of 300ms
-        self.send_packet(FriendList::new(&player)?.buffer).await?;
+        self.send_packet(FriendList::new(&player)?).await?;
         //todo: send friend list logged in to all friends (broadcast)
         //todo: send packet welcome to the L2 world
         //todo: show Announcements
@@ -198,8 +185,7 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: check petitions if enabled
         //todo: if it's dead then send Die packet
         //todo: on_player_enter hook
-        self.send_packet(SkillCoolTime::new(&player)?.buffer)
-            .await?;
+        self.send_packet(SkillCoolTime::new(&player)?).await?;
         //todo: send vote system info
         //todo: handle shadow items or items with mana
         //todo: do the same for items in warehouse
@@ -212,20 +198,25 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: send welcome message again (but why?)
         //todo: send message about premium items (maybe premium account or so?)
         //todo: check if offline trade and cancel it
+
         //todo: broadcast user info
+        self.send_packet(UserInfo::new(&player, UserInfoType::all(), &self.controller).await?)
+            .await?;
+
         //todo: send ExBeautyItemList
         //todo: send ExWorldChatCnt if ENABLE_WORLD_CHAT is enabled
         //todo: send ExConnectedTimeAndGettableReward
         //todo: send ExOneDayReceiveRewardList
-        self.send_packet(AutoSoulShots::new(0, false, 0)?.buffer)
+        self.send_packet(SetCompasZoneCode::new(0x0C)?).await?;
+        self.send_packet(MoveTo::new(&player, &player.location)?)
             .await?;
-        self.send_packet(AutoSoulShots::new(0, false, 1)?.buffer)
-            .await?;
-        self.send_packet(AutoSoulShots::new(0, false, 2)?.buffer)
-            .await?;
-        self.send_packet(AutoSoulShots::new(0, false, 3)?.buffer)
-            .await?;
+        self.send_packet(AutoSoulShots::new(0, false, 0)?).await?;
+        self.send_packet(AutoSoulShots::new(0, false, 1)?).await?;
+        self.send_packet(AutoSoulShots::new(0, false, 2)?).await?;
+        self.send_packet(AutoSoulShots::new(0, false, 3)?).await?;
         //todo: update abnormal visual effects
+        self.send_packet(AbnormalStatusUpdate::new(&player)?)
+            .await?;
         //todo: if attendance enabled, send in async packets
         //todo: if HWID enabled, then check it
         //todo: show chat banned icon if player can't speak

@@ -5,9 +5,12 @@ use bytes::BytesMut;
 use num_enum::TryFromPrimitive;
 use std::str::FromStr;
 use std::{fmt::Debug, net::Ipv4Addr};
+use macro_common::SendablePacket;
+use crate as l2_core;
 
-pub trait SendablePacket: Debug + Send + Sync {
-    fn get_bytes(&mut self, with_padding: bool) -> &mut [u8];
+pub trait SendablePacket {
+    fn get_buffer(self) -> SendablePacketBuffer;
+    fn name(&self,) -> &'static str;
 }
 
 pub trait ReadablePacket: Debug + Send + Sync {
@@ -178,7 +181,7 @@ pub enum PlayerLoginFailReasons {
     ReasonCertificationUnderwayTryAgainLater = 0x38,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct GSLoginFail {
     pub buffer: SendablePacketBuffer,
     pub reason: GSLoginFailReasons,
@@ -218,7 +221,7 @@ impl GSLoginFail {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct PlayerLoginFail {
     pub buffer: SendablePacketBuffer,
     pub reason: PlayerLoginFailReasons,

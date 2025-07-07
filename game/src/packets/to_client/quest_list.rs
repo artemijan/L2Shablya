@@ -1,8 +1,9 @@
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::fmt::Debug;
+use macro_common::SendablePacket;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct QuestList {
     pub(crate) buffer: SendablePacketBuffer,
 }

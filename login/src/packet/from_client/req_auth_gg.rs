@@ -21,11 +21,11 @@ impl Message<RequestAuthGG> for LoginClient {
     ) -> Self::Reply {
         if msg.session_id != self.session_id {
             let packet = PlayerLoginFail::new(PlayerLoginFailReasons::ReasonAccessFailed)?;
-            self.send_packet(packet.buffer).await?;
+            self.send_packet(packet).await?;
             bail!(format!("Wrong session id {}", msg.session_id));
         }
         let packet = AuthGG::new(self.session_id);
-        self.send_packet(packet.buffer).await?;
+        self.send_packet(packet).await?;
         Ok(())
     }
 }

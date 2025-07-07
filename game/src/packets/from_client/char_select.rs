@@ -4,9 +4,9 @@ use anyhow::bail;
 use bytes::BytesMut;
 use kameo::message::Context;
 use kameo::prelude::Message;
-use tracing::instrument;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
+use tracing::instrument;
 
 #[derive(Debug, Clone)]
 pub struct SelectChar {
@@ -29,7 +29,7 @@ impl ReadablePacket for SelectChar {
 }
 impl Message<SelectChar> for PlayerClient {
     type Reply = anyhow::Result<()>;
-    
+
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
@@ -52,8 +52,7 @@ impl Message<SelectChar> for PlayerClient {
                 char_info,
                 self.try_get_session_key()?.get_play_session_id(),
                 game_time,
-            )?
-            .buffer,
+            )?,
         )
         .await?;
         Ok(())
@@ -66,7 +65,6 @@ mod tests {
     use crate::controller::GameController;
     use crate::test_utils::test::spawn_custom_player_client_actor;
     use entities::test_factories::factories::{char_factory, user_factory};
-    use kameo::actor::ActorRef;
     use l2_core::config::gs::GSServerConfig;
     use l2_core::game_objects::player::Player;
     use l2_core::session::SessionKey;
@@ -101,7 +99,7 @@ mod tests {
             w,
             Some(pl_client),
         )
-            .await;
+        .await;
         let res = pl_actor.ask(SelectChar { char_slot: 0 }).await;
         assert!(res.is_err());
     }
@@ -118,11 +116,11 @@ mod tests {
             w,
             Some(pl_client),
         )
-            .await;
+        .await;
         let res = pl_actor.ask(SelectChar { char_slot: 0 }).await;
         assert!(res.is_err());
     }
-    
+
     #[tokio::test]
     async fn test_handle_no_chars() {
         let (controller, pool, mut pl_client) = prepare().await;
@@ -132,7 +130,7 @@ mod tests {
             u.username = String::from("test");
             u
         })
-            .await;
+        .await;
         pl_client.set_session_key(SessionKey::new());
         pl_client.set_user(user);
         let pl_actor = spawn_custom_player_client_actor(
@@ -142,7 +140,7 @@ mod tests {
             w,
             Some(pl_client),
         )
-            .await;
+        .await;
         let res = pl_actor.ask(SelectChar { char_slot: 0 }).await;
         assert!(res.is_err());
     }
@@ -155,16 +153,21 @@ mod tests {
             u.username = String::from("test");
             u
         })
-            .await;
+        .await;
         let char_model = char_factory(&pool, |mut u| {
             u.user_id = user.id;
             u.name = "Char".to_owned();
             u
         })
-            .await;
+        .await;
         pl_client.set_session_key(SessionKey::new());
         pl_client.set_user(user);
-        pl_client.set_account_chars(vec![Player::new(char_model, vec![])]);
+        let temp = pl_client
+            .controller
+            .class_templates
+            .try_get_template(char_model.class_id)
+            .unwrap();
+        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone())]);
         let pl_actor = spawn_custom_player_client_actor(
             controller.clone(),
             pool.clone(),
@@ -172,7 +175,7 @@ mod tests {
             w,
             Some(pl_client),
         )
-            .await;
+        .await;
         let res = pl_actor.ask(SelectChar { char_slot: 0 }).await;
         assert!(res.is_ok());
     }

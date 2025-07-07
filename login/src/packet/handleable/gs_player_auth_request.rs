@@ -25,7 +25,7 @@ impl Message<PlayerAuthRequest> for GameServerClient {
             false // the operation wasn't successful
         });
         self.send_packet(
-            PlayerAuthResponse::new(&msg.account_name, operation_ok).buffer,
+            PlayerAuthResponse::new(&msg.account_name, operation_ok),
         )
         .await?;
         if !operation_ok {

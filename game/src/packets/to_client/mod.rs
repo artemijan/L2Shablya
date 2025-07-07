@@ -17,6 +17,9 @@ mod char_etc_status_update;
 mod quest_list;
 mod friend_list;
 mod skill_cool_time;
+mod acquire_skill_list;
+mod move_to;
+mod abnormal_status_update;
 
 pub use protocol_response::*;
 pub use login_response::*;
@@ -36,3 +39,6 @@ pub use char_etc_status_update::*;
 pub use quest_list::*;
 pub use friend_list::*;
 pub use skill_cool_time::*;
+pub use acquire_skill_list::*;
+pub use move_to::*;
+pub use abnormal_status_update::*;

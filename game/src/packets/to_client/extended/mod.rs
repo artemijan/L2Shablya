@@ -11,6 +11,9 @@ mod equipped_items;
 mod unread_mail_count;
 mod rotation;
 mod auto_soulshots;
+mod set_compas_zone;
+mod manor_list;
+mod ui_settings;
 
 pub use self::char_exists_response::*;
 pub use self::vitality_info::*;
@@ -25,3 +28,6 @@ pub use self::equipped_items::*;
 pub use self::unread_mail_count::*;
 pub use self::rotation::*;
 pub use self::auto_soulshots::*;
+pub use self::set_compas_zone::*;
+pub use self::manor_list::*;
+pub use self::ui_settings::*;

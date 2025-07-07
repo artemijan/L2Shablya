@@ -17,7 +17,7 @@ impl Message<RequestChars> for GameServerClient {
         self.pending_requests.insert(msg.account_name.clone(), tx);
         //we send a packet and immediately return the receiver to unblock the actor,
         // so it can handle the response packet
-        self.send_packet(msg.buffer).await?;
+        self.send_packet(msg).await?;
         Ok(rx)
     }
 }

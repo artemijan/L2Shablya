@@ -3,8 +3,9 @@ use crate::login_client::LoginClient;
 use l2_core::shared_packets::common::{LoginServerOpcodes, ServerData, ServerStatus};
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::collections::HashMap;
+use macro_common::SendablePacket;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct ServerList {
     pub buffer: SendablePacketBuffer,
     servers: Vec<ServerData>,

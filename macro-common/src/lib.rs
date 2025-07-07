@@ -3,8 +3,10 @@ mod utils;
 
 use crate::utils::ConfigAttributes;
 use proc_macro::TokenStream;
+use proc_macro2::Ident;
 use quote::quote;
-use syn::{parse_macro_input, Data, DeriveInput, Fields, Item, ItemStruct};
+use syn::{parse_macro_input, Data, DeriveInput, Field, FieldMutability, Fields, Item, ItemStruct, Type, Visibility};
+use syn::token::Colon;
 
 #[allow(clippy::missing_panics_doc)]
 #[proc_macro_attribute]
@@ -145,6 +147,28 @@ pub fn derive_packet_repository(input: TokenStream) -> TokenStream {
                 match self {
                     #(#match_arms)*
                 }
+            }
+        }
+    };
+
+    TokenStream::from(expanded)
+}
+#[proc_macro_derive(SendablePacket)]
+pub fn derive_packet(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let struct_name = input.ident;
+
+    let (_, generics) = (input.vis, input.generics);
+
+    let struct_name_str = struct_name.to_string();
+
+    let expanded = quote! {
+        impl #generics l2_core::shared_packets::common::SendablePacket for #struct_name #generics {
+            fn get_buffer(self) -> l2_core::shared_packets::write::SendablePacketBuffer {
+                self.buffer
+            }
+            fn name(&self) -> &'static str {
+                #struct_name_str
             }
         }
     };

@@ -47,14 +47,14 @@ pub struct GSServerConfig {
     #[serde(default)]
     pub restore_player_instance: bool,
     #[serde(default = "default_vitality_max_items_allowed")]
-    pub vitality_max_items_allowed: i32,
+    pub vitality_max_items_allowed: u32,
     pub rates: Rates,
 }
 
 fn default_chars_on_acc() -> u8 {
     7
 }
-fn default_vitality_max_items_allowed() -> i32 {
+fn default_vitality_max_items_allowed() -> u32 {
     999
 }
 fn deserialize_hex_to_bigint<'de, D>(deserializer: D) -> Result<BigInt, D::Error>
@@ -134,6 +134,7 @@ impl ServerConfig for GSServerConfig {
         if config.ip_config.is_empty() {
             info!("Missing ip config, using autoconfiguration");
             config.auto_ip_config();
+            assert!(!config.ip_config.is_empty());
         }
         config
     }
@@ -175,7 +176,7 @@ pub struct Client {
 }
 #[derive(Debug, Clone, Deserialize)]
 pub struct Rates {
-    pub vitality_exp_multiplier: i32,
+    pub vitality_exp_multiplier: u32,
     pub enable_vitality: bool,
 }
 

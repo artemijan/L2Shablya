@@ -17,6 +17,7 @@ use l2_core::network::connection::{
     send_delayed_packet, send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket,
 };
 use l2_core::session::SessionKey;
+use l2_core::shared_packets::common::SendablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::fmt;
@@ -29,19 +30,19 @@ use std::sync::Arc;
 use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
-use tracing::{error, info};
+use tracing::{error, info, instrument};
 
+type BoxedClosure = Box<
+    dyn for<'a> FnOnce(
+            &'a mut PlayerClient,
+        ) -> Pin<Box<dyn Future<Output = anyhow::Result<()>> + Send + 'a>>
+        + Send,
+>;
 /// A message that executes an async callback after a specified delay
 pub struct DoLater {
     pub delay: Duration,
     /// The async callback function to execute
-    pub callback: Box<
-        dyn for<'a> FnOnce(
-                &'a mut PlayerClient,
-            )
-                -> Pin<Box<dyn Future<Output = anyhow::Result<()>> + Send + 'a>>
-            + Send,
-    >,
+    pub callback: BoxedClosure,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -97,7 +98,7 @@ impl PlayerClient {
     /// Simple usage:
     ///
     /// ```
-    /// self.do_later(
+    /// Self::do_later(
     ///     ctx.actor_ref(),
     ///     DoLater {
     ///         delay: Duration::from_millis(300),
@@ -115,7 +116,7 @@ impl PlayerClient {
     ///     },
     /// );
     /// ```
-    pub fn do_later(&self, actor_ref: ActorRef<Self>, task: DoLater) {
+    pub fn do_later(actor_ref: ActorRef<Self>, task: DoLater) {
         tokio::spawn(async move {
             sleep(task.delay).await;
             // You can add async work here if needed or just immediately send
@@ -248,7 +249,7 @@ impl PlayerClient {
             .as_mut()
             .ok_or_else(|| anyhow::anyhow!("No characters loaded"))?;
         chars
-            .get_mut(selected as usize)
+            .get_mut(usize::try_from(selected)?)
             .ok_or_else(|| anyhow::anyhow!("Selected character not found"))
     }
 
@@ -282,11 +283,13 @@ impl PlayerClient {
     fn is_encryption_enabled(&self) -> bool {
         self.blowfish.is_some()
     }
-    fn prepare_packet_data(
-        &mut self,
-        mut buffer: SendablePacketBuffer,
-    ) -> anyhow::Result<BytesMut> {
+    
+    #[instrument(skip(self, packet))]
+    fn prepare_packet_data(&mut self, packet: impl SendablePacket) -> anyhow::Result<BytesMut> {
         let mut data;
+        let name = packet.name();
+        let mut buffer = packet.get_buffer();
+        info!("{}, buffer: {:?}", name, buffer);
         if self.is_encryption_enabled() {
             buffer.write_padding()?;
             data = buffer.take();
@@ -297,20 +300,20 @@ impl PlayerClient {
         Ok(data)
     }
 
-    pub async fn send_packet(&mut self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
-        let data = self.prepare_packet_data(buffer)?;
+    pub async fn send_packet(&mut self, packet: impl SendablePacket) -> anyhow::Result<()> {
+        let data = self.prepare_packet_data(packet)?;
         send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
     }
-    pub async fn send_packet_nowait(&mut self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
-        let data = self.prepare_packet_data(buffer)?;
+    pub async fn send_packet_nowait(&mut self, packet: impl SendablePacket) -> anyhow::Result<()> {
+        let data = self.prepare_packet_data(packet)?;
         send_packet(self.packet_sender.as_ref(), data.freeze()).await
     }
     pub async fn send_packet_later(
         &mut self,
-        buffer: SendablePacketBuffer,
+        packet: impl SendablePacket,
         delay: Duration,
     ) -> anyhow::Result<()> {
-        let data = self.prepare_packet_data(buffer)?;
+        let data = self.prepare_packet_data(packet)?;
         send_delayed_packet(self.packet_sender.as_ref(), data.freeze(), delay).await
     }
 }

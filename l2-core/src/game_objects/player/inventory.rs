@@ -18,7 +18,7 @@ impl Inventory {
     #[must_use]
     pub fn get_talisman_slots(&self) -> u8 {
         //todo: implement me
-        0
+        6
     }
     #[must_use]
     pub fn get_brooch_jewel_slots(&self) -> u8 {
@@ -28,7 +28,7 @@ impl Inventory {
     #[must_use]
     pub fn get_limit(&self) -> u8 {
         //todo: implement me
-        200
+        80
     }
     #[must_use]
     pub fn get_current_load(&self) -> i32 {

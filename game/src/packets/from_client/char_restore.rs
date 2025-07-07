@@ -53,7 +53,7 @@ impl Message<RestoreChar> for PlayerClient {
         let user_name = &self.try_get_user()?.username;
         let p =
             CharSelectionInfo::new(user_name, sk.get_play_session_id(), &self.controller, chars)?;
-        self.send_packet(p.buffer).await?;
+        self.send_packet(p).await?;
         Ok(())
     }
 }
@@ -162,7 +162,12 @@ mod tests {
         let user = user(&pl_client.db_pool).await;
         let char_model = char(&pl_client.db_pool, user.id).await;
         pl_client.set_user(user);
-        pl_client.set_account_chars(vec![Player::new(char_model, vec![])]);
+        let temp = pl_client
+            .controller
+            .class_templates
+            .try_get_template(char_model.class_id)
+            .unwrap();
+        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone())]);
         let pl_actor = spawn_custom_player_client_actor(
             pl_client.controller.clone(),
             pl_client.db_pool.clone(),
@@ -187,7 +192,12 @@ mod tests {
         let user = user(&pl_client.db_pool).await;
         let char_model = char(&pl_client.db_pool, user.id).await;
         pl_client.set_user(user);
-        pl_client.set_account_chars(vec![Player::new(char_model, vec![])]);
+        let temp = pl_client
+            .controller
+            .class_templates
+            .try_get_template(char_model.class_id)
+            .unwrap();
+        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone())]);
         let pl_actor = spawn_custom_player_client_actor(
             pl_client.controller.clone(),
             pl_client.db_pool.clone(),
@@ -209,7 +219,13 @@ mod tests {
         let user = user(&pl_client.db_pool).await;
         let char_model = char(&pl_client.db_pool, user.id).await;
         pl_client.set_user(user);
-        pl_client.set_account_chars(vec![Player::new(char_model, vec![])]);
+        let temp = pl_client
+            .controller
+            .class_templates
+            .try_get_template(char_model.class_id)
+            .unwrap();
+
+        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone())]);
         pl_client.set_session_key(SessionKey::new());
         let pl_actor = spawn_custom_player_client_actor(
             pl_client.controller.clone(),

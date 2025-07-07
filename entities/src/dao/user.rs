@@ -9,6 +9,8 @@ impl Model {
     pub async fn verify_password(&self, password: &str) -> bool {
         let pwd = password.to_owned();
         let pwd_hash = self.password.clone();
+        //this is a time-consuming operation to prevent timing attacks,
+        // each attempt to verify password will take approx the same amount of time
         let res = spawn_blocking(move || {
             let Ok(parsed_hash) = PasswordHash::new(&pwd_hash) else {
                 error!("Can not generate a hash for password");
@@ -99,7 +101,7 @@ mod tests {
             .unwrap();
         assert!(user1.is_none());
         assert!(user2.is_some());
-    } 
+    }
     #[tokio::test]
     async fn test_find_by_username() {
         let db_pool = get_test_db().await;

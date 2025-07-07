@@ -38,6 +38,7 @@ mod tests {
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::split;
+    use l2_core::shared_packets::write::SendablePacketBuffer;
 
     #[tokio::test]
     async fn handle() {
@@ -46,6 +47,7 @@ mod tests {
             account: acc.clone(),
             ban_duration: 5000,
             ip: "127.0.0.1".to_string(),
+            buffer: SendablePacketBuffer::empty(),
         };
         let db_pool = get_test_db().await;
         user_factory(&db_pool, |mut u| {

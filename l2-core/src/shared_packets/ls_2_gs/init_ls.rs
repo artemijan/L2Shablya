@@ -1,10 +1,12 @@
 use bytes::BytesMut;
+use macro_common::SendablePacket;
 use crate::constants;
 use crate::shared_packets::common::{LoginServerOpcodes, ReadablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
+use crate as l2_core;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct InitLS {
     pub buffer: SendablePacketBuffer,
     pub revision: i32,

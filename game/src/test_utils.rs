@@ -12,7 +12,6 @@ pub mod test {
     use tokio::io::{DuplexStream, ReadHalf, WriteHalf};
     use crate::pl_client::PlayerClient;
 
-    pub struct GetState;
     pub fn get_gs_config() -> GSServerConfig {
         GSServerConfig::from_string(include_str!("../../config/game.yaml"))
     }

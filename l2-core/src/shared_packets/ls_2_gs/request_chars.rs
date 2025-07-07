@@ -2,8 +2,10 @@ use crate::shared_packets::{
     common::ReadablePacket, read::ReadablePacketBuffer, write::SendablePacketBuffer,
 };
 use bytes::BytesMut;
+use macro_common::SendablePacket;
+use crate as l2_core;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct RequestChars {
     pub buffer: SendablePacketBuffer,
     pub account_name: String,

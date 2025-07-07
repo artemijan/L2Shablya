@@ -12,7 +12,7 @@ impl Message<PlayerTracert> for LoginServerClient {
         msg: PlayerTracert,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        let _ = self.send_packet(msg.buffer).await;
+        let _ = self.send_packet(msg).await;
         Ok(())
     }
 }

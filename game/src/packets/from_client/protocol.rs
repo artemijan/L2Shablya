@@ -38,7 +38,7 @@ impl Message<ProtocolVersion> for PlayerClient {
         let cfg = self.controller.get_cfg();
         if let Err(e) = self.set_protocol(msg.version) {
             self.send_packet(
-                ProtocolResponse::fail(&cfg)?.buffer,
+                ProtocolResponse::fail(&cfg)?,
             )
             .await?;
             bail!(e);
@@ -51,7 +51,7 @@ impl Message<ProtocolVersion> for PlayerClient {
         }
 
         self.send_packet(
-            ProtocolResponse::new(&key_bytes, true, &cfg)?.buffer,
+            ProtocolResponse::new(&key_bytes, true, &cfg)?,
         )
         .await?;
         Ok(())

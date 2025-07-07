@@ -9,9 +9,16 @@ use std::fmt;
 pub struct SendablePacketBuffer {
     data: BytesMut,
 }
+impl fmt::Display for SendablePacketBuffer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("SendablePacketBuffer").finish()
+    }
+}
 impl fmt::Debug for SendablePacketBuffer {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let data_u8 = self.data.iter().copied().collect::<Vec<_>>();
         f.debug_struct("SendablePacketBuffer")
+            .field("data", &data_u8)
             .finish()
     }
 }
@@ -52,17 +59,17 @@ impl SendablePacketBuffer {
         }
         self.write_i16(0i16) //null char for C-like strings
     }
-    #[allow(clippy::cast_possible_wrap, clippy::cast_possible_truncation)]
+    #[allow(clippy::cast_possible_truncation)]
     pub fn write_sized_c_utf16le_string(&mut self, value: Option<&str>) -> Res<()> {
         if let Some(st) = value {
-            self.write_i16((st.len() & 0xff) as i16)?;
+            self.write_u16((st.len() & 0xff) as u16)?;
             self.write_bytes(
                 &UTF_16LE
                     .encode(st, EncoderTrap::Strict)
                     .map_err(|_| Packet::Encode("UTF_16LE".to_owned()))?,
             )?;
         } else {
-            self.write_i16(0i16)?; // null char for C-like strings
+            self.write_u16(0u16)?; // null char for C-like strings
         }
         Ok(())
     }

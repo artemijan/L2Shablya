@@ -1,6 +1,7 @@
 use anyhow::anyhow;
 use macro_common::config_file;
 use serde::Deserialize;
+use crate as l2_core;
 
 #[allow(unused)]
 #[derive(Clone, Debug)]

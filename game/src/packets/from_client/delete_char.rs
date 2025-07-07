@@ -48,7 +48,7 @@ impl Message<DeleteChar> for PlayerClient {
             return if let Some(db_err) = err.downcast_ref::<DbErr>() {
                 let packet = CharDeleteFail::new(CharDeletionFailReasons::Unknown)?;
                 error!("DB error while deleting a character {db_err:?}");
-                self.send_packet(packet.buffer).await
+                self.send_packet(packet).await
             } else {
                 Err(err)
             };
@@ -58,7 +58,7 @@ impl Message<DeleteChar> for PlayerClient {
         let user_name = &self.try_get_user()?.username;
         let p =
             CharSelectionInfo::new(user_name, sk.get_play_session_id(), &self.controller, chars)?;
-        self.send_packet( p.buffer).await?;
+        self.send_packet( p).await?;
         Ok(())
     }
 }

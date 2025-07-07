@@ -1,10 +1,11 @@
 use l2_core::config::gs::GSServerConfig;
 use l2_core::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacket;
 
 #[allow(unused)]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct ProtocolResponse {
-    pub(crate) buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
     is_protocol_ok: bool,
 }
 

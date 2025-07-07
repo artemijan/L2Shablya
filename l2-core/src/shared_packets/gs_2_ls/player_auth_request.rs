@@ -1,10 +1,12 @@
 use bytes::BytesMut;
+use macro_common::SendablePacket;
 use crate::session::SessionKey;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
+use crate as l2_core;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacket)]
 pub struct PlayerAuthRequest {
     pub session: SessionKey,
     pub account_name: String,

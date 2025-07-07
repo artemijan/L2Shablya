@@ -1,5 +1,5 @@
-use crate::data::char_template::CharTemplate;
-use crate::data::classes::mapping::Class;
+use l2_core::data::char_template::CharTemplate;
+use l2_core::data::classes::mapping::Class;
 use crate::packets::enums::CharNameResponseVariant;
 use crate::packets::to_client::{CreateCharFailed, CreateCharOk};
 use crate::packets::utils::validate_can_create_char;
@@ -109,26 +109,26 @@ impl Message<CreateCharRequest> for PlayerClient {
             template.initialize_character(&mut char, &self.controller.base_stats_table)?;
             match character::Model::create_char(&self.db_pool, char).await {
                 Ok(inst) => {
-                    self.add_character(Player::new(inst, vec![]))?;
-                    self.send_packet(CreateCharOk::new()?.buffer).await
+                    self.add_character(Player::new(inst, vec![], template.clone()))?;
+                    self.send_packet(CreateCharOk::new()?).await
                 }
                 Err(DbErr::RecordNotInserted) => {
                     self.send_packet(
-                        CreateCharFailed::new(CharNameResponseVariant::AlreadyExists)?.buffer,
+                        CreateCharFailed::new(CharNameResponseVariant::AlreadyExists)?,
                     )
                     .await
                 }
                 e => {
                     error!(?e, "Failed to create char");
                     self.send_packet(
-                        CreateCharFailed::new(CharNameResponseVariant::CharCreationFailed)?.buffer,
+                        CreateCharFailed::new(CharNameResponseVariant::CharCreationFailed)?,
                     )
                     .await
                 }
             }
         } else {
             self.send_packet(
-                CreateCharFailed::new(response)?.buffer,
+                CreateCharFailed::new(response)?,
             )
             .await
         }

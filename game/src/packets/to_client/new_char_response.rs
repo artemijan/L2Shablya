@@ -1,7 +1,8 @@
 use crate::controller::GameController;
 use l2_core::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacket;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct NewCharacterResponse {
     pub(crate) buffer: SendablePacketBuffer,
 }

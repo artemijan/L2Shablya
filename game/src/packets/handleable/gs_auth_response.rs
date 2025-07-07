@@ -24,14 +24,14 @@ impl Message<ls_2_gs::AuthGS> for LoginServerClient {
             return Ok(())
         }
         let gsu = GSStatusUpdate::new(&cfg)?;
-        self.send_packet(gsu.buffer).await?;
+        self.send_packet(gsu).await?;
         info!(
             "Registered on Login server: {:} ({:})",
             msg.server_name, msg.server_id
         );
         let accounts = self.controller.get_online_accounts();
         if !accounts.is_empty() {
-            self.send_packet(PlayerInGame::new(&accounts)?.buffer)
+            self.send_packet(PlayerInGame::new(&accounts)?)
                 .await?;
         }
         Ok(())

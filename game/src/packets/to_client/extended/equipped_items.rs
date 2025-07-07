@@ -4,9 +4,10 @@ use l2_core::game_objects::player::inventory::InventorySlot;
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use sea_orm::Iterable;
+use macro_common::SendablePacket;
 
 #[allow(unused)]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct EquippedItems {
     pub(crate) buffer: SendablePacketBuffer,
 }

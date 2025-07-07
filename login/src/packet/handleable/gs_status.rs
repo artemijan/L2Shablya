@@ -33,7 +33,7 @@ impl Message<GSStatusUpdate> for GameServerClient {
         }
         if !updated {
             self.send_packet(
-                PlayerLoginFail::new(PlayerLoginFailReasons::ReasonAccessFailed)?.buffer,
+                PlayerLoginFail::new(PlayerLoginFailReasons::ReasonAccessFailed)?,
             )
             .await?;
             bail!("Server was not found, GS id {:?}", self.server_id);

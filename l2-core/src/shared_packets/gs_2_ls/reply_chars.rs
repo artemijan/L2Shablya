@@ -4,8 +4,10 @@ use crate::shared_packets::write::SendablePacketBuffer;
 use async_trait::async_trait;
 use bytes::BytesMut;
 use entities::entities::character;
+use macro_common::SendablePacket;
+use crate as l2_core;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacket)]
 pub struct ReplyChars {
     pub buffer: SendablePacketBuffer,
     pub account_name: String,

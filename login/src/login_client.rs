@@ -14,9 +14,10 @@ use l2_core::shared_packets::write::SendablePacketBuffer;
 use std::net::Ipv4Addr;
 use std::ops::ControlFlow;
 use std::sync::Arc;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tracing::{error, info};
+use l2_core::shared_packets::common::SendablePacket;
 
 #[derive(Clone)]
 pub struct LoginClient {
@@ -51,11 +52,13 @@ impl LoginClient {
         }
     }
 
-    pub async fn send_packet(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
+    pub async fn send_packet(&self, packet: impl SendablePacket) -> anyhow::Result<()> {
+        let buffer = packet.get_buffer();
         let data = buffer.take();
         send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
     }
-    pub async fn send_packet_no_wait(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
+    pub async fn send_packet_no_wait(&self, packet: impl SendablePacket) -> anyhow::Result<()> {
+        let buffer = packet.get_buffer();
         let data = buffer.take();
         send_packet(self.packet_sender.as_ref(), data.freeze()).await
     }
@@ -87,7 +90,7 @@ impl Actor for LoginClient {
             state.rsa_keypair.get_scrambled_modulus(),
             state.blowfish_key.clone(),
         )?;
-        state.send_packet(init.buffer).await?;
+        state.send_packet(init).await?;
         Ok(state)
     }
 
@@ -119,6 +122,12 @@ impl Actor for LoginClient {
         _reason: ActorStopReason,
     ) -> Result<(), Self::Error> {
         info!("[Player {}] stopped", self.addr);
+        if let Some(acc) = self.account_name.as_ref() {
+            let player_requested_join_gs = self.controller.with_player(acc, |pl| pl.gs_id.is_some());
+            if !player_requested_join_gs {
+                self.controller.remove_player(acc);
+            }
+        }
         if let Some(s) = self.packet_sender.as_ref() {
             if s.is_alive() {
                 let _ = s.stop_gracefully().await; //ignore errors is it is already dead

@@ -1,8 +1,9 @@
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::LoginServerOpcodes;
 use l2_core::shared_packets::write::SendablePacketBuffer;
+use macro_common::SendablePacket;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SendablePacket)]
 pub struct PlayOk {
     pub buffer: SendablePacketBuffer,
     play_ok1: i32,

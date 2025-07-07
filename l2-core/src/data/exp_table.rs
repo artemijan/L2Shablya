@@ -2,6 +2,7 @@ use macro_common::config_file;
 use serde::{de, Deserialize, Deserializer};
 use std::collections::HashMap;
 use tracing::info;
+use crate as l2_core;
 
 #[derive(Debug, Clone)]
 #[config_file(path="config/data/stats/exp_table.yaml")]

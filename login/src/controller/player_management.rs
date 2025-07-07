@@ -87,7 +87,7 @@ impl LoginController {
                 //process in the background, no need make caller wait
                 if pl_actor.is_alive() {
                     tokio::spawn(async move {
-                        if let Err(e) = pl_actor.stop_gracefully().await {
+                        if pl_actor.is_alive() && let Err(e) = pl_actor.stop_gracefully().await {
                             error!("Failed to stop player {acc}, actor: {e:?}");
                         }
                     });

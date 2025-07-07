@@ -26,7 +26,7 @@ impl Message<NewCharacterRequest> for PlayerClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         self.send_packet(
-            NewCharacterResponse::new(&self.controller)?.buffer,
+            NewCharacterResponse::new(&self.controller)?,
         )
         .await?;
         Ok(())

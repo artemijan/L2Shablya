@@ -1,7 +1,7 @@
-use crate::data::action_list::ActionList;
-use crate::data::base_stat::BaseStat;
-use crate::data::char_template::ClassTemplates;
-use crate::data::exp_table::ExpTable;
+use l2_core::data::action_list::ActionList;
+use l2_core::data::base_stat::BaseStat;
+use l2_core::data::char_template::ClassTemplates;
+use l2_core::data::exp_table::ExpTable;
 use crate::ls_client::LoginServerClient;
 use crate::managers::ClanAllyManager;
 use anyhow::anyhow;
@@ -67,7 +67,7 @@ impl GameController {
     }
     #[allow(clippy::unused_self)]
     pub fn get_game_time(&self) -> i32 {
-        //todo game time
+        //todo time player spend in game 
         9999
     }
     pub fn get_online_accounts(&self) -> Vec<String> {

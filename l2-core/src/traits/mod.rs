@@ -1,13 +1,13 @@
 pub mod conversion;
-
+use std::future::Future;
 use crate::crypt::login::Encryption;
 use crate::dto::{Database, Runtime};
 use crate::network::connection::{
     send_delayed_packet, send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket,
 };
 use crate::network::encrypt_internal_packet;
-use crate::shared_packets::write::SendablePacketBuffer;
-use bytes::BytesMut;
+use crate::shared_packets::common::SendablePacket;
+use bytes::Bytes;
 use kameo::actor::ActorRef;
 use kameo::message::Message;
 use kameo::Actor;
@@ -32,8 +32,14 @@ pub trait ServerConfig {
     fn runtime(&self) -> Option<&Runtime>;
     fn database(&self) -> &Database;
 }
+fn get_bytes(encryption: &Encryption, packet: impl SendablePacket) -> anyhow::Result<Bytes> {
+    let mut buffer = packet.get_buffer();
+    buffer.write_padding()?;
+    let mut data = buffer.take();
+    encrypt_internal_packet(&mut data, encryption);
+    Ok(data.freeze())
+}
 
-#[async_trait::async_trait]
 pub trait ServerToServer: Actor + Message<HandleIncomingPacket> {
     fn get_packet_sender(&self) -> Option<&ActorRef<ConnectionActor<Self>>>;
     fn get_blowfish(&self) -> &Encryption;
@@ -41,26 +47,29 @@ pub trait ServerToServer: Actor + Message<HandleIncomingPacket> {
     /// # Errors
     /// - fail to write padding
     ///
-    fn get_bytes(&self, mut buffer: SendablePacketBuffer) -> anyhow::Result<BytesMut> {
-        buffer.write_padding()?;
-        let mut data = buffer.take();
-        encrypt_internal_packet(&mut data, self.get_blowfish());
-        Ok(data)
+    fn send_packet(&self, packet: impl SendablePacket) -> impl Future<Output = anyhow::Result<()>> {
+        async move {
+            let data = get_bytes(self.get_blowfish(), packet)?;
+            send_packet_blocking(self.get_packet_sender(), data).await
+        }
     }
-    async fn send_packet(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
-        let data = self.get_bytes(buffer)?;
-        send_packet_blocking(self.get_packet_sender(), data.freeze()).await
-    }
-    async fn send_packet_no_wait(&self, buffer: SendablePacketBuffer) -> anyhow::Result<()> {
-        let data = self.get_bytes(buffer)?;
-        send_packet(self.get_packet_sender(), data.freeze()).await
-    }
-    async fn send_delayed_packet(
+    fn send_packet_no_wait(
         &self,
-        buffer: SendablePacketBuffer,
+        packet: impl SendablePacket,
+    ) -> impl Future<Output = anyhow::Result<()>> {
+        async move {
+            let data = get_bytes(self.get_blowfish(), packet)?;
+            send_packet(self.get_packet_sender(), data).await
+        }
+    }
+    fn send_delayed_packet(
+        &self,
+        packet: impl SendablePacket,
         delay: Duration,
-    ) -> anyhow::Result<()> {
-        let data = self.get_bytes(buffer)?;
-        send_delayed_packet(self.get_packet_sender(), data.freeze(), delay).await
+    ) -> impl Future<Output = anyhow::Result<()>> {
+        async move {
+            let data = get_bytes(self.get_blowfish(), packet)?;
+            send_delayed_packet(self.get_packet_sender(), data, delay).await
+        }
     }
 }

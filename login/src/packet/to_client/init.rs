@@ -1,6 +1,7 @@
 use l2_core::shared_packets::{common::LoginServerOpcodes, write::SendablePacketBuffer};
+use macro_common::SendablePacket;
 
-#[derive(Debug)]
+#[derive(Debug, SendablePacket)]
 pub struct Init {
     pub buffer: SendablePacketBuffer,
     session_id: i32,

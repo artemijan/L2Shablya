@@ -1,10 +1,12 @@
 use bytes::BytesMut;
+use macro_common::SendablePacket;
 use crate::config::gs::GSServerConfig;
 use crate::shared_packets::common::{GSStatus, ReadablePacket};
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
+use crate as l2_core;
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, SendablePacket)]
 pub struct GSStatusUpdate {
     pub buffer: SendablePacketBuffer,
     pub status: GSStatus,

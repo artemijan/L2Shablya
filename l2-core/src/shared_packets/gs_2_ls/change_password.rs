@@ -1,15 +1,17 @@
 use bytes::BytesMut;
+use macro_common::SendablePacket;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
+use crate as l2_core;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, SendablePacket)]
 pub struct ChangePassword {
     pub account: String,
     pub char_name: String,
     pub current_password: String,
     pub new_password: String,
-    _buffer: SendablePacketBuffer,
+    pub buffer: SendablePacketBuffer,
 }
 
 impl ReadablePacket for ChangePassword {
@@ -20,7 +22,7 @@ impl ReadablePacket for ChangePassword {
         let mut buffer = ReadablePacketBuffer::new(data);
         buffer.read_byte()?;
         Ok(Self {
-            _buffer: SendablePacketBuffer::empty(),
+            buffer: SendablePacketBuffer::empty(),
             account: buffer.read_c_utf16le_string()?,
             char_name: buffer.read_c_utf16le_string()?,
             current_password: buffer.read_c_utf16le_string()?,

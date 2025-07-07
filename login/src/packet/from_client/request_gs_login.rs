@@ -31,10 +31,16 @@ impl Message<RequestGSLogin> for LoginClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> Self::Reply {
         msg.check_session(&self.session_key)?;
-        self.send_packet(
-            PlayOk::new(&self.session_key)?.buffer,
-        )
-        .await?;
+        let acc_name = self
+            .account_name
+            .as_ref()
+            .ok_or_else(|| anyhow::anyhow!("Account name not found"))?;
+        let _ = self.controller.with_player(acc_name, |p| {
+            p.gs_id = Some(msg.server_id);
+            true
+        });
+        self.send_packet(PlayOk::new(&self.session_key)?)
+            .await?;
         Ok(())
     }
 }
@@ -111,6 +117,7 @@ mod tests {
             login_ok2: 4,
         };
         let mut login_client = LoginClient::new(ip, cloned_lc, db_pool.clone());
+        login_client.account_name = Some("test".to_string());
         login_client.session_key = session_key;
         let player_actor =
             spawn_custom_login_client_actor(lc, db_pool, r, w, Some(login_client)).await;

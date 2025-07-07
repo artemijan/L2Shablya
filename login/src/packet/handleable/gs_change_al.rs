@@ -35,10 +35,12 @@ mod tests {
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::split;
+    use l2_core::shared_packets::write::SendablePacketBuffer;
 
     #[tokio::test]
     async fn change_al() {
         let packet = ChangeAccessLevel {
+            buffer: SendablePacketBuffer::empty(),
             account: "admin".to_string(),
             level: 100,
         };

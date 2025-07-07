@@ -21,4 +21,5 @@ pub struct Info {
     pub is_authed: bool,
     pub chars_on_servers: HashMap<u8, GSCharsInfo>,
     pub game_server: Option<u8>,
+    pub gs_id: Option<u8>,
 }

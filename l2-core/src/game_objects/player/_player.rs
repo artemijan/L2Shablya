@@ -1,3 +1,4 @@
+use crate::data::char_template::CharTemplate;
 use crate::game_objects::creature::skill::Skill;
 use crate::game_objects::cursed_weapon::CursedWeapon;
 use crate::game_objects::item::ItemObject;
@@ -15,10 +16,12 @@ use chrono::Utc;
 use entities::entities::{character, character_mail, item};
 use serde_json::Value;
 use std::fmt::Debug;
+use std::sync::Arc;
 
 #[repr(u8)]
-#[derive(Clone, Debug, Copy)]
+#[derive(Clone, Debug, Copy, Default)]
 pub enum Team {
+    #[default]
     None = 0,
     Blue = 1,
     Red = 2,
@@ -50,21 +53,30 @@ pub struct Player {
     pub inventory: Inventory,
     pub appearance: Appearance,
     pub team: Team,
+    pub template: Arc<CharTemplate>,
     pub is_in_siege: bool,
 }
 
 #[allow(clippy::missing_errors_doc)]
 impl Player {
+    /// # Panics
+    /// - when char template is different from `class_id` in a user model
     #[must_use]
-    pub fn new(char_model: character::Model, items: Vec<item::Model>) -> Self {
+    pub fn new(
+        char_model: character::Model,
+        items: Vec<item::Model>,
+        template: Arc<CharTemplate>,
+    ) -> Self {
         let paperdoll = PaperDoll::restore_visible_inventory(&items);
+        assert_eq!(char_model.class_id, template.class_id as i8);
         Self {
             location: Location {
                 x: char_model.x,
                 y: char_model.y,
                 z: char_model.z,
-                heading: 0
+                heading: 0,
             },
+            template,
             char_model,
             party: None,
             paperdoll,
@@ -192,39 +204,39 @@ impl Player {
     #[must_use]
     pub fn get_str(&self) -> u8 {
         //todo: implement me
-        0
+        self.template.static_data.base_str
     }
     #[must_use]
     pub fn get_con(&self) -> u8 {
         //todo: implement me
-        0
+        self.template.static_data.base_con
     }
     #[must_use]
     pub fn get_dex(&self) -> u8 {
         //todo: implement me
-        0
+        self.template.static_data.base_dex
     }
     #[must_use]
     pub fn get_men(&self) -> u8 {
         //todo: implement me
-        0
+        self.template.static_data.base_men
     }
 
     #[must_use]
     pub fn get_int(&self) -> u8 {
         //todo: implement me
-        0
+        self.template.static_data.base_int
     }
     #[must_use]
     pub fn get_wit(&self) -> u8 {
         //todo: implement me
-        0
+        self.template.static_data.base_wit
     }
 
     #[must_use]
     pub fn is_gm(&self) -> bool {
         // todo: implement me
-        self.char_model.access_level >= 0
+        self.char_model.access_level > 0
     }
 
     #[must_use]
@@ -353,17 +365,17 @@ impl Player {
     #[must_use]
     pub fn get_movement_speed_multiplier(&self) -> f64 {
         //todo: implement me
-        1.0
+        1.282_258_064_516_129
     }
     #[must_use]
     pub fn get_run_speed(&self) -> u16 {
         //todo: implement me
-        150
+        159
     }
     #[must_use]
     pub fn get_walk_speed(&self) -> u16 {
         //todo: implement me
-        130
+        113
     }
 
     #[must_use]
@@ -386,12 +398,12 @@ impl Player {
     #[must_use]
     pub fn get_swim_run_speed(&self) -> u16 {
         //todo: implement me
-        99
+        85
     }
     #[must_use]
     pub fn get_swim_walk_speed(&self) -> u16 {
         //todo: implement me
-        89
+        85
     }
     #[must_use]
     pub fn get_mount_type(&self) -> u8 {
@@ -417,92 +429,100 @@ impl Player {
     #[must_use]
     pub fn get_p_attack(&self) -> u32 {
         //todo: implement me
-        0
+        self.template.static_data.base_p_atk
     }
     #[must_use]
     pub fn get_p_atk_spd(&self) -> u32 {
         //todo: implement me
-        0
+        self.template.static_data.base_p_atk_spd
     }
     #[must_use]
     pub fn get_p_atk_spd_multiplier(&self) -> f64 {
         //todo: implement me
-        0.0
+        1.155_210_210_210_210_2
     }
     #[must_use]
     pub fn get_collision_radius(&self) -> f64 {
         //todo: implement me
-        0.0
+        if self.char_model.is_female{
+            self.template.static_data.collision_female.radius
+        }else {
+            self.template.static_data.collision_male.radius
+        }
     }
     #[must_use]
     pub fn get_collision_height(&self) -> f64 {
         //todo: implement me
-        0.0
+        if self.char_model.is_female{
+            self.template.static_data.collision_female.height
+        }else{
+            self.template.static_data.collision_male.height
+        }
     }
     #[must_use]
     pub fn get_p_def(&self) -> u32 {
         //todo: implement me
-        0
+        self.template.static_data.base_p_def.total()
     }
     #[must_use]
     pub fn get_evasion_rate(&self) -> u32 {
         //todo: implement me
-        0
+        23
     }
     #[must_use]
     pub fn get_accuracy(&self) -> u32 {
         //todo: implement me
-        0
+        31
     }
     #[must_use]
     pub fn get_critical_hit(&self) -> u32 {
         //todo: implement me
-        0
+        60
     }
     #[must_use]
     pub fn get_m_atk(&self) -> u32 {
         //todo: implement me
-        0
+        self.template.static_data.base_m_atk
     }
     #[must_use]
     pub fn get_m_atk_spd(&self) -> u32 {
         //todo: implement me
-        0
+        self.template.static_data.base_m_atk_spd
     }
     #[must_use]
     pub fn get_magic_evasion_rate(&self) -> u32 {
         //todo: implement me
-        0
+        15
     }
     #[must_use]
     pub fn get_m_def(&self) -> u32 {
         //todo: implement me
-        0
+        self.template.static_data.base_m_def.total()
     }
     #[must_use]
     pub fn get_magic_accuracy(&self) -> u32 {
         //todo: implement me
-        0
+        15
     }
     #[must_use]
     pub fn get_m_critical_hit(&self) -> u32 {
         //todo: implement me
-        0
+        50
     }
     #[must_use]
     pub fn get_x(&self) -> i32 {
         //todo: implement me
-        self.char_model.x
+        self.location.x
     }
     #[must_use]
     pub fn get_y(&self) -> i32 {
         //todo: implement me
-        self.char_model.x
+        self.location.y
     }
     #[must_use]
     pub fn get_z(&self) -> i32 {
         //todo: implement me
-        self.char_model.x
+        self.location.z
     }
     #[must_use]
     pub fn get_vehicle_object_id(&self) -> Option<i32> {
@@ -640,7 +660,7 @@ impl Player {
         relation
     }
     #[must_use]
-    pub fn get_vitality_used(&self) -> i32 {
+    pub fn get_vitality_used(&self) -> u32 {
         self.char_model
             .variables
             .get(CharVariables::VitalityItemsUsed.as_key())
@@ -649,9 +669,9 @@ impl Player {
             .unwrap_or(0)
     }
     #[must_use]
-    pub fn get_vitality_bonus(&self) -> i32 {
+    pub fn get_vitality_bonus(&self) -> u32 {
         // todo: implement me
-        0
+        100
     }
     #[must_use]
     pub fn get_teleport_bookmarks(&self) -> &Vec<TeleportBookmark> {
@@ -682,6 +702,8 @@ impl Player {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::config::traits::ConfigDirLoader;
+    use crate::data::char_template::ClassTemplates;
     use entities::dao::item::{ItemVariables, ItemVariations, LocType};
     use entities::test_factories::factories::{char_factory, item_factory, user_factory};
     use serde_json::json;
@@ -836,7 +858,9 @@ mod tests {
         })
         .await;
         let items = vec![item1, item2];
-        let char_info = Player::new(char, items);
+        let templates = ClassTemplates::load();
+        let temp = templates.try_get_template(char.class_id).unwrap();
+        let char_info = Player::new(char, items, temp.clone());
         let weapon = char_info.get_weapon().unwrap();
         let augmentation = weapon.item_model.get_augmentation().unwrap();
         assert_eq!((9, 3, 5), augmentation);

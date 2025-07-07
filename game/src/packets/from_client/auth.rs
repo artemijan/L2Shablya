@@ -66,9 +66,7 @@ impl AuthLogin {
         handler.set_session_key(session_key);
 
         // Send success response
-        handler
-            .send_packet(PlayerLoginResponse::ok()?.buffer)
-            .await?;
+        handler.send_packet(PlayerLoginResponse::ok()?).await?;
 
         // Fetch user characters from the database
         let characters = character::Model::get_with_items_and_vars(
@@ -80,8 +78,14 @@ impl AuthLogin {
 
         let players = characters
             .into_iter()
-            .map(|(ch, items)| Player::new(ch, items))
-            .collect::<Vec<Player>>();
+            .map(|(ch, items)| {
+                let template = handler
+                    .controller
+                    .class_templates
+                    .try_get_template(ch.class_id)?;
+                Ok(Player::new(ch, items, template.clone()))
+            })
+            .collect::<anyhow::Result<Vec<Player>>>()?;
 
         // Prepare a character selection packet
         let char_selection = CharSelectionInfo::new(
@@ -97,7 +101,7 @@ impl AuthLogin {
         handler.set_user(user);
 
         // Send character selection info
-        handler.send_packet(char_selection.buffer).await?;
+        handler.send_packet(char_selection).await?;
 
         Ok(())
     }
@@ -151,9 +155,6 @@ impl Message<AuthLogin> for PlayerClient {
                     // Handle auth response that is not OK
                     tracing::warn!("Authentication failed: {:?}", r);
                 }
-                Ok(other) => {
-                    error!("Unexpected message: {other:?}");
-                }
                 Err(e) => {
                     // Handle error in the second await
                     error!("Failed to await response future: {:?}", e);
@@ -166,9 +167,9 @@ impl Message<AuthLogin> for PlayerClient {
         }
 
         // Authentication failed
-        self.send_packet(
-            PlayerLoginResponse::fail(PlayerLoginResponse::SYSTEM_ERROR_LOGIN_LATER)?.buffer,
-        )
+        self.send_packet(PlayerLoginResponse::fail(
+            PlayerLoginResponse::SYSTEM_ERROR_LOGIN_LATER,
+        )?)
         .await?;
         self.controller.logout_account(&msg.login_name);
         bail!("Login failed: {}", msg.login_name);
