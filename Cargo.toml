@@ -10,27 +10,35 @@ resolver = "2"
 opt-level = 3
 
 [workspace.dependencies]
-async-trait = "^0.1.83"
-kameo = "0.17.1"
+async-trait = "^0.1.88"
+kameo = "0.17.2"
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 dashmap = "6.1.0"
-sea-orm = { version = "^1.1.4", features = ["default", "uuid"] }
-chrono = "0.4.39"
+sea-orm = { version = "^1.1.13", features = ["default", "uuid"] }
+sea-orm-migration = { version = "1.1.13", features = [
+    # Enable at least one `ASYNC_RUNTIME` and `DATABASE_DRIVER` feature if you want to run migration via CLI.
+    # View the list of supported features at https://www.sea-ql.org/SeaORM/docs/install-and-config/database-and-async-runtime.
+    # e.g.
+    "runtime-tokio-rustls", # `ASYNC_RUNTIME` feature
+    "sqlx-postgres", # `DATABASE_DRIVER` feature
+    "sqlx-sqlite",
+] }
+chrono = "0.4.41"
 rand = "0.8.5"
-serde = { version = "1.0.215", features = ["derive"] }
+serde = { version = "1.0.219", features = ["derive"] }
 serde_yaml = "0.9.34"
-anyhow = "1.0.94"
+anyhow = "1.0.98"
 argon2 = "^0.5.3"
-tokio = { version = "^1.43.0", features = ["full"] }
-serde_json = "1.0.134"
+tokio = { version = "^1.46.1", features = ["full"] }
+serde_json = "1.0.140"
 encoding = "^0.2.33"
 rand_core = "0.6.4"
-thiserror = "2.0.6"
-log = "^0.4.22"
+thiserror = "2.0.12"
+log = "^0.4.27"
 num = "^0.4.3"
 num-traits = "^0.2.19"
-sqlx = { version = "^0.8.2", features = [
+sqlx = { version = "^0.8.6", features = [
     "postgres",
     "sqlite",
     "runtime-tokio-rustls",
@@ -39,14 +47,14 @@ sqlx = { version = "^0.8.2", features = [
 ] }
 dotenvy = "^0.15.7"
 blowfish = "^0.9.1"
-num_enum = "^0.7.3"
+num_enum = "^0.7.4"
 pnet = "0.35.0"
-reqwest = { version = "0.12.9", features = ["blocking"], default-features = false }
+reqwest = { version = "0.12.22", features = ["blocking"], default-features = false }
 futures = "^0.3.31"
 rsa = { version = "0.9.8" }
-pem = "3.0.4"
-uuid = { version = "^1.11.0", features = ["v4"] }
-strum = { version = "0.27.0", features = ["derive"] }
-async-std = { version = "1", features = ["attributes", "tokio1"] }
-bytes = "1.9.0"
+pem = "3.0.5"
+uuid = { version = "^1.17.0", features = ["v4"] }
+strum = { version = "0.27.1", features = ["derive"] }
+async-std = { version = "1.13.1", features = ["attributes", "tokio1"] }
+bytes = "1.10.1"
 ntest = "0.9.3"
