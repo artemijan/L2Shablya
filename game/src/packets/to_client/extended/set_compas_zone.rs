@@ -8,7 +8,7 @@ pub struct SetCompasZoneCode {
 }
 
 impl SetCompasZoneCode {
-    pub const PACKET_ID: u8 = 0x2F;
+    pub const PACKET_ID: u8 = 0xFE;
     pub const EX_PACKET_ID: u16 = 0x33;
     pub fn new(compas_zone: i32) -> anyhow::Result<Self> {
         let mut buffer = SendablePacketBuffer::new();
@@ -27,8 +27,8 @@ mod test {
     async fn test_compas_zone_code() {
         let p = SetCompasZoneCode::new(0x0C).unwrap();
         assert_eq!(
-            [165, 254, 51, 0, 12, 0, 0, 0],
-            p.get_buffer().get_data_mut(false)[1..]
+            [254, 51, 0, 12, 0, 0, 0],
+            p.get_buffer().get_data_mut(false)[2..]
         );
     }
 }
