@@ -1,3 +1,4 @@
+use sea_orm::JsonValue;
 use crate::m20241213_210106_create_char::Character;
 use sea_orm_migration::{prelude::*, schema::*};
 
@@ -14,14 +15,13 @@ impl MigrationTrait for Migration {
                     .table(Quest::Table)
                     .if_not_exists()
                     .col(integer(Quest::CharId))
+                    .col(integer(Quest::QuestId))
                     .col(string(Quest::Name))
-                    .col(string(Quest::Var))
-                    .col(string(Quest::Value))
+                    .col(json_binary(Quest::Variables).default(JsonValue::default()))
                     .primary_key(
                         Index::create()
                             .col(Quest::CharId)
                             .col(Quest::Name)
-                            .col(Quest::Var),
                     )
                     .foreign_key(
                         ForeignKey::create()
@@ -46,7 +46,7 @@ impl MigrationTrait for Migration {
 enum Quest {
     Table,
     CharId,
+    QuestId,
     Name,
-    Var,
-    Value,
+    Variables,
 }

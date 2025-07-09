@@ -7,11 +7,11 @@ use sea_orm::entity::prelude::*;
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub char_id: i32,
+    pub quest_id: i32,
     #[sea_orm(primary_key, auto_increment = false)]
     pub name: String,
-    #[sea_orm(primary_key, auto_increment = false)]
-    pub var: String,
-    pub value: String,
+    #[sea_orm(column_type = "JsonBinary")]
+    pub variables: Json,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

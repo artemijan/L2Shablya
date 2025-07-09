@@ -36,7 +36,7 @@ impl Inventory {
     }
     #[must_use]
     pub fn get_max_load(&self) -> i32 {
-        i32::MAX //todo: implement me
+        202_860 //todo: implement me
     }
     #[must_use]
     pub fn get_adena(&self) -> u64 {
