@@ -81,9 +81,8 @@ impl character::Model {
     }
 
     #[must_use]
-    #[allow(clippy::cast_sign_loss)]
     pub fn get_lvl(&self) -> u8 {
-        self.level as u8
+        self.level
     }
 }
 

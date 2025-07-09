@@ -20,6 +20,7 @@ mod skill_cool_time;
 mod acquire_skill_list;
 mod move_to;
 mod abnormal_status_update;
+mod system_message;
 
 pub use protocol_response::*;
 pub use login_response::*;
@@ -42,3 +43,4 @@ pub use skill_cool_time::*;
 pub use acquire_skill_list::*;
 pub use move_to::*;
 pub use abnormal_status_update::*;
+pub use system_message::*;

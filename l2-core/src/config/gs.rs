@@ -112,7 +112,7 @@ impl GSServerConfig {
                     .expect("WTF: can not parse statically defined ip address"),
             });
         } else {
-            error!("Failed to parse external IP address: {}", external_ip);
+            error!("Failed to parse external IP address: {external_ip}");
         }
     }
 }

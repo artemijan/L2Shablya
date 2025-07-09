@@ -14,6 +14,7 @@ mod auto_soulshots;
 mod set_compas_zone;
 mod manor_list;
 mod ui_settings;
+mod vote_system;
 
 pub use self::char_exists_response::*;
 pub use self::vitality_info::*;

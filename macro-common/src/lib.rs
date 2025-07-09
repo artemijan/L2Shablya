@@ -1,6 +1,4 @@
-extern crate proc_macro;
 mod utils;
-
 use crate::utils::ConfigAttributes;
 use proc_macro::TokenStream;
 use quote::quote;

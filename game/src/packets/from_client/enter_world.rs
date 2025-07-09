@@ -1,11 +1,12 @@
 use crate::packets::to_client::extended::{
-    BasicActionList, AutoSoulShots, BookmarkInfo, EquippedItems, InventoryAdenaInfo, InventoryWeight,
-    PledgeWaitingListAlarm, QuestItemList, Rotation, SetCompasZoneCode, SubclassInfo,
-    SubclassInfoType, UISettings, UnreadMailCount, VitalityInfo,
+    AutoSoulShots, BasicActionList, BookmarkInfo, EquippedItems, InventoryAdenaInfo,
+    InventoryWeight, PledgeWaitingListAlarm, QuestItemList, Rotation, SetCompasZoneCode,
+    SubclassInfo, SubclassInfoType, UISettings, UnreadMailCount, VitalityInfo,
 };
 use crate::packets::to_client::{
     AbnormalStatusUpdate, AcquireSkillList, CharEtcStatusUpdate, FriendList, HennaInfo, ItemList,
-    MacroList, MoveTo, QuestList, ShortcutsInit, SkillCoolTime, SkillList, UserInfo,
+    MacroList, MoveTo, QuestList, ShortcutsInit, SkillCoolTime, SkillList, SystemMessage,
+    SystemMessageType, UserInfo,
 };
 use crate::pl_client::{ClientStatus, DoLater, PlayerClient};
 use anyhow::bail;
@@ -118,7 +119,8 @@ impl Message<EnterWorld> for PlayerClient {
         self.send_packet(QuestItemList::new(&player)?).await?;
         self.send_packet(ShortcutsInit::new(&player)?).await?;
 
-        self.send_packet(BasicActionList::new(&self.controller.action_list)?).await?;
+        self.send_packet(BasicActionList::new(&self.controller.action_list)?)
+            .await?;
         self.send_packet(SkillList::empty()?).await?;
         //todo: AuthGG check?
 
@@ -210,13 +212,17 @@ impl Message<EnterWorld> for PlayerClient {
         self.send_packet(SetCompasZoneCode::new(0x0C)?).await?;
         self.send_packet(MoveTo::new(&player, &player.location)?)
             .await?;
-        self.send_packet(AutoSoulShots::new(0, false, 0)?).await?;
-        self.send_packet(AutoSoulShots::new(0, false, 1)?).await?;
-        self.send_packet(AutoSoulShots::new(0, false, 2)?).await?;
-        self.send_packet(AutoSoulShots::new(0, false, 3)?).await?;
+        self.send_packet(AutoSoulShots::new(0, true, 0)?).await?;
+        self.send_packet(AutoSoulShots::new(0, true, 1)?).await?;
+        self.send_packet(AutoSoulShots::new(0, true, 2)?).await?;
+        self.send_packet(AutoSoulShots::new(0, true, 3)?).await?;
         //todo: update abnormal visual effects
         self.send_packet(AbnormalStatusUpdate::new(&player)?)
             .await?;
+        self.send_packet(SystemMessage::new(
+            SystemMessageType::WelcomeToTheWorldOfLineage2,
+        )?)
+        .await?;
         //todo: if attendance enabled, send in async packets
         //todo: if HWID enabled, then check it
         //todo: show chat banned icon if player can't speak

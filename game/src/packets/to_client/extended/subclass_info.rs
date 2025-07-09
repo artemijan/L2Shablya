@@ -4,9 +4,9 @@ use macro_common::SendablePacket;
 
 #[repr(u8)]
 pub enum SubclassInfoType {
-    NoChanges,
-    NewSlotUsed,
-    ClassChanged,
+    NoChanges = 0,
+    NewSlotUsed = 1,
+    ClassChanged = 2,
 }
 
 #[allow(unused)]
