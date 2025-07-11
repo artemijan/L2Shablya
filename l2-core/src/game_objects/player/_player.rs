@@ -9,6 +9,7 @@ use crate::game_objects::player::paper_doll::PaperDoll;
 use crate::game_objects::player::party::Party;
 use crate::game_objects::player::quest::Quest;
 use crate::game_objects::player::vars::CharVariables;
+use crate::game_objects::player::warehouse::Warehouse;
 use crate::game_objects::player::{PlayerMacro, SubclassType, TeleportBookmark};
 use crate::game_objects::race::Race;
 use crate::game_objects::zone::{Location, ZoneId};
@@ -52,6 +53,7 @@ pub struct Player {
     pub sub_classes: Vec<Subclass>,
     pub mailbox: Vec<character_mail::Model>,
     pub inventory: Inventory,
+    pub warehouse: Warehouse,
     pub appearance: Appearance,
     pub team: Team,
     pub template: Arc<CharTemplate>,
@@ -61,7 +63,7 @@ pub struct Player {
 #[allow(clippy::missing_errors_doc)]
 impl Player {
     /// # Panics
-    /// - when char template is different from `class_id` in a user model
+    /// - when a char template is different from `class_id` in a user model
     #[must_use]
     pub fn new(
         char_model: character::Model,
@@ -78,6 +80,7 @@ impl Player {
                 heading: 0,
             },
             template,
+            warehouse: Warehouse::empty(), //todo: fill it
             //todo: implement subclasses
             sub_classes: vec![Subclass {
                 index: 0,
@@ -100,6 +103,11 @@ impl Player {
     #[must_use]
     pub fn get_visible_name(&self) -> &str {
         &self.char_model.name
+    }
+
+    #[must_use]
+    pub fn get_freight_slots(&self) -> u32 {
+        200 //todo: implement me
     }
 
     #[must_use]
@@ -305,6 +313,12 @@ impl Player {
         0
     }
     #[must_use]
+    pub fn get_clan_warehouse_max_limit(&self) -> u32 {
+        //todo: implement me
+        200
+    }
+
+    #[must_use]
     pub fn get_ally_id(&self) -> i32 {
         //todo: implement me
         0
@@ -423,6 +437,12 @@ impl Player {
         false
     }
     #[must_use]
+    pub fn has_premium(&self) -> bool {
+        //todo: implement me
+        false
+    }
+
+    #[must_use]
     pub fn has_inventory_block(&self) -> bool {
         //todo: implement me
         false
@@ -432,6 +452,34 @@ impl Player {
         //todo: implement me
         0
     }
+    #[must_use]
+    pub fn get_private_store_sell_limit(&self) -> u8 {
+        //todo: implement me
+        3
+    }
+    #[must_use]
+    pub fn get_private_store_buy_limit(&self) -> u8 {
+        //todo: implement me
+        4
+    }
+
+    #[must_use]
+    pub fn get_dwarf_recipe_limit(&self) -> u8 {
+        //todo: implement me
+        100
+    }
+    #[must_use]
+    pub fn get_common_recipe_limit(&self) -> u8 {
+        //todo: implement me
+        100
+    }
+
+    #[must_use]
+    pub fn get_quest_limit_count(&self) -> u8 {
+        //todo: implement me
+        100
+    }
+
 
     #[must_use]
     pub fn get_p_attack(&self) -> u32 {

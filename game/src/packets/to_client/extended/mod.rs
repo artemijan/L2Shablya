@@ -15,6 +15,8 @@ mod set_compas_zone;
 mod manor_list;
 mod ui_settings;
 mod vote_system;
+mod premium_state;
+mod sorage_max_count;
 
 pub use self::char_exists_response::*;
 pub use self::vitality_info::*;
@@ -32,3 +34,6 @@ pub use self::auto_soulshots::*;
 pub use self::set_compas_zone::*;
 pub use self::manor_list::*;
 pub use self::ui_settings::*;
+pub use self::vote_system::*;
+pub use self::premium_state::*;
+pub use self::sorage_max_count::*;
