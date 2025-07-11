@@ -172,6 +172,12 @@ impl Into<u32> for Class {
         self as u32
     }
 }
+#[allow(clippy::from_over_into)]
+impl Into<u64> for Class {
+    fn into(self) -> u64 {
+        self as u64
+    }
+}
 impl TryFrom<u8> for Class {
     type Error = anyhow::Error;
     #[allow(clippy::too_many_lines)]

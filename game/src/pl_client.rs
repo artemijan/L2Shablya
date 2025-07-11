@@ -298,11 +298,11 @@ impl PlayerClient {
 
     pub async fn send_packet(&mut self, packet: impl SendablePacket) -> anyhow::Result<()> {
         let data = self.prepare_packet_data(packet)?;
-        send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
-    }
-    pub async fn send_packet_nowait(&mut self, packet: impl SendablePacket) -> anyhow::Result<()> {
-        let data = self.prepare_packet_data(packet)?;
         send_packet(self.packet_sender.as_ref(), data.freeze()).await
+    }
+    pub async fn send_packet_blocking(&mut self, packet: impl SendablePacket) -> anyhow::Result<()> {
+        let data = self.prepare_packet_data(packet)?;
+        send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
     }
     pub async fn send_packet_later(
         &mut self,

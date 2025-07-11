@@ -1,0 +1,176 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+type: object
+title: "Skill tree schema"
+required:
+  - skills
+  - skill_tree_type
+properties:
+  skills:
+    type: array
+    items:
+      type: object
+      required:
+        - skill_id
+        - skill_level
+        - skill_name
+      properties:
+        sub_class_conditions:
+          type: array
+          items:
+            type: object
+            required:
+              - slot
+              - lvl
+            properties:
+              slot:
+                type: integer
+              lvl:
+                type: integer
+          minItems: 0
+        remove_skill:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+              only_replace_by_learn:
+                type: boolean
+          minItems: 0
+        social_class:
+          type: string
+          enum:
+            - Vagabond
+            - Vassal
+            - Apprentice
+            - Heir
+            - Knight
+            - Elder
+            - Baron
+            - Viscount
+            - Count
+            - Marquis
+            - Duke
+            - GrandDuke
+            - DistinguishedKing
+            - Emperor
+        residence_ids:
+          type: array
+          items:
+            type: integer
+          minItems: 0
+        races:
+          type: array
+          items:
+            type: string
+            enum:
+              - Human
+              - Elf
+              - DarkElf
+              - Orc
+              - Dwarf
+              - Kamael
+              - Ertheia
+          minItems: 0
+        pre_requisite_skill:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - lvl
+            properties:
+              id:
+                type: integer
+              lvl:
+                type: integer
+          minItems: 0
+        items:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - count
+            properties:
+              id:
+                type: integer
+              count:
+                type: integer
+          minItems: 0
+        auto_get:
+          type: boolean
+        get_level:
+          type: integer
+        get_dual_class_level:
+          type: integer
+        learned_by_f_s:
+          type: boolean
+        learned_by_npc:
+          type: boolean
+        level_up_sp:
+          type: integer
+        residence_skill:
+          type: boolean
+        skill_id:
+          type: integer
+        skill_level:
+          type: integer
+        skill_name:
+          type: string
+        tree_id:
+          type: integer
+        row:
+          type: integer
+        column:
+          type: integer
+        points_required:
+          type: integer
+    minItems: 1
+  class_id:
+    type: integer
+    minimum: 0
+  parent_class_id:
+    type: integer
+    minimum: 0
+  skill_tree_type:
+    type: string
+    enum:
+      - AbilitySkillTree
+      - AlchemySkillTree
+      - AwakeningSaveSkillTree
+      - ClassSkillTree
+      - CollectSkillTree
+      - DualClassSkillTree
+      - FishingSkillTree
+      - GameMasterAuraSkillTree
+      - GameMasterSkillTree
+      - HeroSkillTree
+      - NobleSkillTree
+      - PledgeSkillTree
+      - RaceSkillTree
+      - RevelationSkillTree
+      - SubClassSkillTree
+      - SubClassChangeSkillTree
+      - SubPledgeSkillTree
+      - TransferSkillTree
+      - TransformSkillTree
+  race:
+    type: string
+    enum:
+      - Human
+      - Elf
+      - DarkElf
+      - Orc
+      - Dwarf
+      - Kamael
+      - Ertheia
+  sub_type:
+    type: string
+    enum:
+      - Baseclass
+      - DualClass
+
+

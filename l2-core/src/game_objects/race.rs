@@ -1,5 +1,8 @@
+use serde::Deserialize;
+
 #[repr(i32)]
-#[derive(Clone, Debug, Copy, Hash, PartialOrd, Ord, Eq, PartialEq)]
+#[derive(Clone, Debug, Copy, Hash, PartialOrd, Ord, Eq, PartialEq, Deserialize)]
+#[serde(rename_all = "PascalCase")]
 pub enum Race {
     Human,
     Elf,

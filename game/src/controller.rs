@@ -15,12 +15,14 @@ use l2_core::traits::IpBan;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use tracing::info;
+use l2_core::data::SkillTreesData;
 
 #[derive(Clone, Debug)]
 pub struct GameController {
     cfg: Arc<GSServerConfig>,
     pub exp_table: ExpTable,
     pub action_list: ActionList,
+    pub skill_trees_data: SkillTreesData,
     pub class_templates: Arc<ClassTemplates>,
     ls_actor: Arc<RwLock<Option<ActorRef<LoginServerClient>>>>,
     online_accounts: DashMap<String, String>,
@@ -32,6 +34,7 @@ pub struct GameController {
 impl GameController {
     pub async fn new(cfg: Arc<GSServerConfig>, db_pool: &DBPool) -> Self {
         let exp_table = ExpTable::load();
+        let skill_trees_data = SkillTreesData::load();
         let action_list = ActionList::load();
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
@@ -40,6 +43,7 @@ impl GameController {
             cfg,
             ls_actor: Arc::new(RwLock::new(None)),
             action_list,
+            skill_trees_data,
             base_stats_table: base_stats,
             class_templates: Arc::new(class_templates),
             hero_list: DashMap::new(),
@@ -91,12 +95,14 @@ impl GameController {
     pub fn from_config(cfg: Arc<GSServerConfig>) -> Self {
         let exp_table = ExpTable::load();
         let action_list = ActionList::load();
+        let skill_trees_data = SkillTreesData::load();
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
         GameController {
             exp_table,
             cfg,
             action_list,
+            skill_trees_data,
             ls_actor: Arc::new(RwLock::new(None)),
             base_stats_table: base_stats,
             class_templates: Arc::new(class_templates),
