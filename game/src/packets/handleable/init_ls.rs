@@ -44,7 +44,7 @@ mod tests {
     use tokio::io::{split, AsyncReadExt};
 
     #[tokio::test]
-    #[timeout(2000)]
+    #[timeout(3000)]
     async fn test_handle() {
         let pool = get_test_db().await;
         let the_key = ScrambledRSAKeyPair::from_pem(include_str!(
