@@ -16,7 +16,8 @@ use bytes::BytesMut;
 use l2_core::shared_packets::common::ReadablePacket;
 use macro_common::PacketEnum;
 use strum::Display;
-use tracing::error;
+use tracing::{error, info};
+use crate::packets::from_client::move_to_location::MoveToLocation;
 
 #[derive(Clone, Debug, Display, PacketEnum)]
 pub enum PlayerPackets {
@@ -36,6 +37,8 @@ pub enum PlayerPackets {
     RequestManorList(RequestManorList),
     RequestKeyMapping(RequestKeyMapping),
     NoOp(NoOp),
+    MoveToLocation(MoveToLocation),
+
 }
 
 pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
@@ -43,6 +46,8 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         bail!("Not enough data to build packet: {data:?}");
     }
     let packet_id = data.split_to(1); // skip 1st byte, because it's packet id
+    info!("Player packet ID: 0x{:02X}", packet_id[0]);
+
     match packet_id[0] {
         ProtocolVersion::PACKET_ID => {
             Ok(PlayerPackets::ProtocolVersion(ProtocolVersion::read(data)?))
@@ -54,6 +59,8 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         CreateCharRequest::PACKET_ID => Ok(PlayerPackets::CreateCharRequest(
             CreateCharRequest::read(data)?,
         )),
+        MoveToLocation::PACKET_ID => Ok(PlayerPackets::MoveToLocation(
+            MoveToLocation::read(data)?)),
         Logout::PACKET_ID => Ok(PlayerPackets::Logout(Logout::read(data)?)),
         DeleteChar::PACKET_ID => Ok(PlayerPackets::DeleteChar(DeleteChar::read(data)?)),
         RestoreChar::PACKET_ID => Ok(PlayerPackets::RestoreChar(RestoreChar::read(data)?)),
