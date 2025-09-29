@@ -106,6 +106,11 @@ impl Player {
     }
 
     #[must_use]
+    pub fn get_id(&self) -> i32 {
+        self.char_model.id
+    }
+
+    #[must_use]
     pub fn get_freight_slots(&self) -> u32 {
         200 //todo: implement me
     }
