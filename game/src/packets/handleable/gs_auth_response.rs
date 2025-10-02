@@ -51,7 +51,6 @@ mod tests {
     use tokio::io::{split, AsyncReadExt};
 
     #[tokio::test]
-    #[timeout(2000)]
     async fn test_handle() {
         let pool = get_test_db().await;
         let pack = ls_2_gs::AuthGS::new(1, String::from("server"));

@@ -121,7 +121,7 @@ mod tests {
         let (r, w) = split(server);
         let cfg = get_gs_config();
         let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
-        let mut pl_client = PlayerClient::new(Ipv4Addr::LOCALHOST, controller, pool);
+        let mut pl_client = Play\erClient::new(Ipv4Addr::LOCALHOST, controller, pool);
         pl_client.set_user(user);
         pl_client.set_session_key(SessionKey::new());
         pl_client.set_account_chars(vec![]);
