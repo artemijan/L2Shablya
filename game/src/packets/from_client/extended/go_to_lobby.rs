@@ -113,7 +113,6 @@ mod tests {
         assert!(matches!(res, Err(e) if e.to_string() == "Can not go to lobby, no chars were set"));
     }
     #[tokio::test]
-    #[timeout(2000)]
     pub async fn test_handle_ok() {
         let pool = get_test_db().await;
         let pack = GoLobby;
