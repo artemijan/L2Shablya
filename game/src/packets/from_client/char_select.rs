@@ -37,9 +37,6 @@ impl Message<SelectChar> for PlayerClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo flood protection, ban check, maybe set online status in DB?
-        if self.get_selected_char_slot().is_some() {
-            bail!("Char already selected")
-        }
         self.try_get_session_key()?;
         self.try_get_user()?;
         self.try_get_char_by_slot_id(msg.char_slot)?;

@@ -22,6 +22,7 @@ mod move_to;
 mod abnormal_status_update;
 mod system_message;
 mod char_move_to_location;
+mod restart_resp;
 
 pub use protocol_response::*;
 pub use login_response::*;
@@ -46,3 +47,4 @@ pub use move_to::*;
 pub use abnormal_status_update::*;
 pub use system_message::*;
 pub use char_move_to_location::*;
+pub use restart_resp::*;

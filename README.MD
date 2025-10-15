@@ -37,7 +37,8 @@ Always remember "Having tests opens doors to refactoring! More tests - more door
     - [x] player can restore char
     - [x] player can select char
     - [x] player can enter the game world
-    - [ ] player can move
+    - [x] player can move
+    - [ ] player can re-enter the game
     - [ ] player can select target
     - [ ] player can send chat messages
     - ..... a lot more

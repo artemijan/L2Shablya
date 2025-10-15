@@ -8,16 +8,17 @@ use crate::packets::from_client::extended::{
     CheckCharName, GoLobby, RequestKeyMapping, RequestManorList, RequestUserBanInfo, SendClientIni,
 };
 use crate::packets::from_client::logout::Logout;
+use crate::packets::from_client::move_to_location::MoveToLocation;
 use crate::packets::from_client::new_char_request::NewCharacterRequest;
 use crate::packets::from_client::noop::NoOp;
 use crate::packets::from_client::protocol::ProtocolVersion;
+use crate::packets::from_client::restart::RequestRestart;
 use anyhow::bail;
 use bytes::BytesMut;
 use l2_core::shared_packets::common::ReadablePacket;
 use macro_common::PacketEnum;
 use strum::Display;
 use tracing::{error, info};
-use crate::packets::from_client::move_to_location::MoveToLocation;
 
 #[derive(Clone, Debug, Display, PacketEnum)]
 pub enum PlayerPackets {
@@ -38,7 +39,7 @@ pub enum PlayerPackets {
     RequestKeyMapping(RequestKeyMapping),
     NoOp(NoOp),
     MoveToLocation(MoveToLocation),
-
+    ReqRestart(RequestRestart),
 }
 
 pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
@@ -59,8 +60,8 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         CreateCharRequest::PACKET_ID => Ok(PlayerPackets::CreateCharRequest(
             CreateCharRequest::read(data)?,
         )),
-        MoveToLocation::PACKET_ID => Ok(PlayerPackets::MoveToLocation(
-            MoveToLocation::read(data)?)),
+        MoveToLocation::PACKET_ID => Ok(PlayerPackets::MoveToLocation(MoveToLocation::read(data)?)),
+        RequestRestart::PACKET_ID => Ok(PlayerPackets::ReqRestart(RequestRestart::read(data)?)),
         Logout::PACKET_ID => Ok(PlayerPackets::Logout(Logout::read(data)?)),
         DeleteChar::PACKET_ID => Ok(PlayerPackets::DeleteChar(DeleteChar::read(data)?)),
         RestoreChar::PACKET_ID => Ok(PlayerPackets::RestoreChar(RestoreChar::read(data)?)),
