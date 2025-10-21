@@ -15,9 +15,10 @@ impl MoveTo {
         let mut buffer = SendablePacketBuffer::new();
         buffer.write(Self::PACKET_ID)?;
         buffer.write_i32(p.char_model.id)?;
-        buffer.write_i32(p.location.x)?;
-        buffer.write_i32(p.location.y)?;
-        buffer.write_i32(p.location.z)?;
+        let p_loc = p.get_location();
+        buffer.write_i32(p_loc.x)?;
+        buffer.write_i32(p_loc.y)?;
+        buffer.write_i32(p_loc.z)?;
         buffer.write_i32(loc.x)?;
         buffer.write_i32(loc.y)?;
         buffer.write_i32(loc.z)?;

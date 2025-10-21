@@ -50,14 +50,16 @@ impl Message<MoveToLocation> for PlayerClient {
 
         info!("Received MoveToLocation packet {:?}", msg);
         //TODO check with geodata if the location is valid.
-        let selected_char = self.try_get_selected_char();
+        {
+            let selected_char = self.try_get_selected_char_mut()?;
+            selected_char.set_location(msg.x_to, msg.y_to, msg.z_to)?;
+        }
         self.send_packet(CharMoveToLocation::new(
-            selected_char.unwrap(),
+            self.try_get_selected_char()?,
             msg.x_to,
             msg.y_to,
             msg.z_to
-        )?).await;
-
+        )?).await?;
         Ok(())
     }
 }

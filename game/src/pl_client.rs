@@ -300,7 +300,10 @@ impl PlayerClient {
         let data = self.prepare_packet_data(packet)?;
         send_packet(self.packet_sender.as_ref(), data.freeze()).await
     }
-    pub async fn send_packet_blocking(&mut self, packet: impl SendablePacket) -> anyhow::Result<()> {
+    pub async fn send_packet_blocking(
+        &mut self,
+        packet: impl SendablePacket,
+    ) -> anyhow::Result<()> {
         let data = self.prepare_packet_data(packet)?;
         send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
     }
@@ -374,6 +377,12 @@ impl Actor for PlayerClient {
         let Some(user) = self.user.as_ref() else {
             return Ok(());
         };
+        if let Ok(player) = self.try_get_selected_char() {
+            let res = character::Model::update_char(&self.db_pool, &player.char_model).await;
+            if let Err(e) = res {
+                error!("Unable to save Player {} state, error: {:?}", self.ip, e);
+            }
+        }
         self.controller.logout_account(&user.username);
         let packet = match PlayerLogout::new(&user.username) {
             Err(e) => {

@@ -3,7 +3,7 @@ use crate::entities::{character, item, user};
 use crate::DBPool;
 use chrono::{Duration, Utc};
 use sea_orm::entity::prelude::*;
-use sea_orm::{ActiveValue, DbErr, JoinType, Order, QueryOrder, QuerySelect};
+use sea_orm::{ActiveValue, DbErr, IntoActiveModel, JoinType, Order, QueryOrder, QuerySelect, TryIntoModel};
 
 #[allow(clippy::missing_errors_doc)]
 impl character::Model {
@@ -78,6 +78,25 @@ impl character::Model {
                 )
             })
             .collect())
+    }
+
+    pub async fn update_char(
+        db_pool: &DBPool,
+        char: &character::Model,
+    ) -> anyhow::Result<()> {
+        // clone is okay here, because it is small and not frequent operation
+        let active_model= character::ActiveModel{
+            id: ActiveValue::Set(char.id),
+            last_access: ActiveValue::Set(Some(Utc::now().into())),
+            x: ActiveValue::Set(char.x),
+            y: ActiveValue::Set(char.y),
+            z: ActiveValue::Set(char.z),
+            heading: ActiveValue::Set(char.heading),
+            // todo implement the rest
+            ..Default::default()
+        };
+        active_model.update(db_pool).await?;
+        Ok(())
     }
 
     #[must_use]

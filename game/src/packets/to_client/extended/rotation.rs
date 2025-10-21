@@ -19,7 +19,7 @@ impl Rotation {
         inst.buffer.write(Self::PACKET_ID)?;
         inst.buffer.write_u16(Self::EX_PACKET_ID)?;
         inst.buffer.write_i32(player.char_model.id)?;
-        inst.buffer.write_i32(player.location.heading)?;
+        inst.buffer.write_i32(player.get_location().heading)?;
         Ok(inst)
     }
 }
@@ -56,7 +56,7 @@ mod tests {
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
         let mut player = Player::new(char, vec![], template.clone());
-        player.location.heading = 33897;
+        player.set_location_heading(33897);
         let p = Rotation::new(&player).unwrap();
         assert_eq!(
             [0, 254, 194, 0, 44, 159, 0, 16, 105, 132, 0, 0],

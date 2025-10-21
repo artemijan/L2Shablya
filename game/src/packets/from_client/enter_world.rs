@@ -210,7 +210,7 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: send ExConnectedTimeAndGettableReward
         //todo: send ExOneDayReceiveRewardList
         self.send_packet(SetCompasZoneCode::new(0x0C)?).await?;
-        self.send_packet(MoveTo::new(&player, &player.location)?)
+        self.send_packet(MoveTo::new(&player, player.get_location())?)
             .await?;
         self.send_packet(AutoSoulShots::new(0, true, 0)?).await?;
         self.send_packet(AutoSoulShots::new(0, true, 1)?).await?;

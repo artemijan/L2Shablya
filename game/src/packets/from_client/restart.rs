@@ -1,6 +1,7 @@
 use crate::packets::to_client::{CharSelectionInfo, RestartResponse};
 use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
+use entities::entities::character;
 use kameo::message::Context;
 use kameo::prelude::Message;
 use l2_core::shared_packets::common::ReadablePacket;
@@ -30,6 +31,8 @@ impl Message<RequestRestart> for PlayerClient {
         let sk = self.try_get_session_key()?;
         let chars = self.try_get_account_chars()?;
         let user_name = &self.try_get_user()?.username;
+        let player = self.try_get_selected_char()?;
+        character::Model::update_char(&self.db_pool, &player.char_model).await?;
         let p =
             CharSelectionInfo::new(user_name, sk.get_play_session_id(), &self.controller, chars)?;
         self.send_packet(p).await?;

@@ -47,7 +47,7 @@ pub struct Player {
     pub char_model: character::Model,
     pub skills: Option<Vec<Skill>>, //None if not initialized
     pub quests: Vec<Quest>,
-    pub location: Location,
+    location: Location,
     pub paperdoll: [[i32; 4]; 33],
     pub party: Option<Party>,
     pub sub_classes: Vec<Subclass>,
@@ -104,6 +104,26 @@ impl Player {
     pub fn get_visible_name(&self) -> &str {
         &self.char_model.name
     }
+
+    pub fn set_location(&mut self, x: i32, y: i32, z: i32)->anyhow::Result<()> {
+        self.location.x = x;
+        self.location.y = y;
+        self.location.z = z;
+        self.char_model.x = x;
+        self.char_model.y = y;
+        self.char_model.z = z;
+        Ok(())
+    }
+
+    #[must_use]
+    pub fn get_location(&self) -> &Location {
+        &self.location
+    }
+
+    pub fn set_location_heading(&mut self, heading:i32) {
+        self.location.heading = heading;
+    }
+
 
     #[must_use]
     pub fn get_id(&self) -> i32 {
@@ -484,7 +504,6 @@ impl Player {
         //todo: implement me
         100
     }
-
 
     #[must_use]
     pub fn get_p_attack(&self) -> u32 {
