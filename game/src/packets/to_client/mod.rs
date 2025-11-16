@@ -23,6 +23,7 @@ mod abnormal_status_update;
 mod system_message;
 mod char_move_to_location;
 mod restart_resp;
+mod skill_cooltime;
 
 pub use protocol_response::*;
 pub use login_response::*;

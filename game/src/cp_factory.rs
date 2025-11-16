@@ -5,14 +5,18 @@ use crate::packets::from_client::char_select::SelectChar;
 use crate::packets::from_client::delete_char::DeleteChar;
 use crate::packets::from_client::enter_world::EnterWorld;
 use crate::packets::from_client::extended::{
-    CheckCharName, GoLobby, RequestKeyMapping, RequestManorList, RequestUserBanInfo, SendClientIni,
+    CheckCharName, GoLobby, RequestKeyMapping, RequestManorList, RequestUserBanInfo,
+    SelectedQuestZoneId, SendClientIni,
 };
 use crate::packets::from_client::logout::Logout;
 use crate::packets::from_client::move_to_location::MoveToLocation;
 use crate::packets::from_client::new_char_request::NewCharacterRequest;
 use crate::packets::from_client::noop::NoOp;
 use crate::packets::from_client::protocol::ProtocolVersion;
+use crate::packets::from_client::req_skill_cooltime::ReqSkillCoolTime;
 use crate::packets::from_client::restart::RequestRestart;
+use crate::packets::from_client::stop_move::StopMove;
+use crate::packets::from_client::validate_position::ValidatePosition;
 use anyhow::bail;
 use bytes::BytesMut;
 use l2_core::shared_packets::common::ReadablePacket;
@@ -40,6 +44,10 @@ pub enum PlayerPackets {
     NoOp(NoOp),
     MoveToLocation(MoveToLocation),
     ReqRestart(RequestRestart),
+    SelectedQuestZoneId(SelectedQuestZoneId),
+    ReqSkillCoolTime(ReqSkillCoolTime),
+    ValidatePosition(ValidatePosition),
+    StopMove(StopMove),
 }
 
 pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
@@ -67,6 +75,13 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         RestoreChar::PACKET_ID => Ok(PlayerPackets::RestoreChar(RestoreChar::read(data)?)),
         SelectChar::PACKET_ID => Ok(PlayerPackets::SelectChar(SelectChar::read(data)?)),
         EnterWorld::PACKET_ID => Ok(PlayerPackets::EnterWorld(EnterWorld::read(data)?)),
+        StopMove::PACKET_ID => Ok(PlayerPackets::StopMove(StopMove::read(data)?)),
+        ValidatePosition::PACKET_ID => Ok(PlayerPackets::ValidatePosition(ValidatePosition::read(
+            data,
+        )?)),
+        ReqSkillCoolTime::PACKET_ID => Ok(PlayerPackets::ReqSkillCoolTime(ReqSkillCoolTime::read(
+            data,
+        )?)),
         0xD0 => build_ex_client_packet(data),
         _ => {
             error!("Unknown Player packet ID: 0x{:02X}", packet_id[0]);
@@ -90,6 +105,9 @@ pub fn build_ex_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPacket
         )),
         RequestManorList::EX_PACKET_ID => Ok(PlayerPackets::RequestManorList(
             RequestManorList::read(data)?,
+        )),
+        SelectedQuestZoneId::EX_PACKET_ID => Ok(PlayerPackets::SelectedQuestZoneId(
+            SelectedQuestZoneId::read(data)?,
         )),
         RequestKeyMapping::EX_PACKET_ID => Ok(PlayerPackets::RequestKeyMapping(
             RequestKeyMapping::read(data)?,

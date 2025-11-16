@@ -11,3 +11,6 @@ pub mod char_select;
 pub mod enter_world;
 pub mod move_to_location;
 pub mod restart;
+pub mod req_skill_cooltime;
+pub mod validate_position;
+pub mod stop_move;

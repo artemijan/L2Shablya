@@ -58,6 +58,7 @@ pub struct Player {
     pub team: Team,
     pub template: Arc<CharTemplate>,
     pub is_in_siege: bool,
+    pub quest_zone_id: Option<i32>
 }
 
 #[allow(clippy::missing_errors_doc)]
@@ -97,6 +98,7 @@ impl Player {
             mailbox: Vec::new(),
             is_in_siege: false,
             appearance: Appearance,
+            quest_zone_id: None,
             inventory: Inventory::from_items(items),
         }
     }
