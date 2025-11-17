@@ -103,6 +103,7 @@ impl GameController {
         actor_ref: &ActorRef<PlayerClient>,
     ) -> anyhow::Result<()> {
         let ci = CharInfo::new(p, &self.cfg)?;
+        //todo: implement filtering logic to send only to visible players
         for entry in &self.online_chars {
             if let Some(pl_actor) = entry.value()
                 && pl_actor.id() != actor_ref.id()
@@ -125,7 +126,6 @@ impl GameController {
     ) where
         F: Fn(&String, &ActorRef<PlayerClient>) -> bool,
     {
-        //todo: implement filtering logic to broadcast only to visible players
         for entry in &self.online_chars {
             let account = entry.key();
             if let Some(pl_actor) = entry.value() {
