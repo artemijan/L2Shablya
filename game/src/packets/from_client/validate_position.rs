@@ -38,11 +38,13 @@ impl Message<ValidatePosition> for PlayerClient {
         msg: ValidatePosition,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        let char = self.try_get_selected_char_mut()?;
-        //todo: check if char is teleporting or casting spells, if so, do not do anything
-        warn!("todo: validate position");
-        char.set_location(msg.x, msg.y, msg.z)?;
-        char.set_location_heading(msg.heading);
+        //todo: for some reason client sends it too early so selected char is not set yet
+        if let Ok(char) = self.try_get_selected_char_mut(){
+            //todo: check if char is teleporting or casting spells, if so, do not do anything
+            warn!("todo: validate position");
+            char.set_location(msg.x, msg.y, msg.z)?;
+            char.set_location_heading(msg.heading);
+        }
         Ok(())
     }
 }

@@ -31,7 +31,7 @@ pub mod test {
         w: WriteHalf<DuplexStream>,
         login_client: Option<LoginClient>,
     ) -> ActorRef<LoginClient> {
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let ip = Ipv4Addr::LOCALHOST;
         let player;
         if let Some(client) = login_client {
             player = client;
@@ -58,7 +58,7 @@ pub mod test {
         w: WriteHalf<DuplexStream>,
         gs_client: Option<GameServerClient>,
     ) -> ActorRef<GameServerClient> {
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let ip = Ipv4Addr::LOCALHOST;
         let gs;
         if let Some(client) = gs_client {
             gs = client;

@@ -42,8 +42,8 @@ impl EquippedItems {
                 let augmentation = item
                     .and_then(|i| i.item_model.get_augmentation())
                     .unwrap_or((0, 0, 0));
-                inst.buffer.write_i32(augmentation.0)?;
                 inst.buffer.write_i32(augmentation.1)?;
+                inst.buffer.write_i32(augmentation.2)?;
                 inst.buffer
                     .write_i32(item.map_or(0, ItemObject::get_visual_id))?;
             }

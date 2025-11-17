@@ -13,7 +13,8 @@ use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::game_objects::player::Player;
 use l2_core::network::connection::{
-    send_delayed_packet, send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket,
+    send_delayed_packet, send_packet, send_packet_blocking, ConnectionActor,
+    HandleOutboundPacket, HandleIncomingPacket,
 };
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::SendablePacket;
@@ -29,6 +30,7 @@ use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tracing::{error, info, instrument};
+use crate::packets::to_client::CharInfo;
 
 type BoxedClosure = Box<
     dyn for<'a> FnOnce(
@@ -421,11 +423,41 @@ impl Message<HandleIncomingPacket> for PlayerClient {
     }
 }
 
+impl<P> Message<HandleOutboundPacket<P>> for PlayerClient
+where P: SendablePacket + Send + 'static
+{
+    type Reply = anyhow::Result<()>;
+
+    async fn handle(
+        &mut self,
+        msg: HandleOutboundPacket<P>,
+        _: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        self.send_packet(msg.packet).await?;
+        Ok(())
+    }
+}
+
 impl Message<DoLater> for PlayerClient {
     type Reply = anyhow::Result<()>;
 
     async fn handle(&mut self, msg: DoLater, _ctx: &mut Context<Self, Self::Reply>) -> Self::Reply {
-        // Execute the callback with mutable reference to self
+        // Execute the callback with a mutable reference to self
         (msg.callback)(self).await
+    }
+}
+
+#[derive(Debug)]
+pub struct GetCharInfo;
+
+impl Message<GetCharInfo> for PlayerClient {
+    type Reply = anyhow::Result<CharInfo>;
+
+    async fn handle(
+        &mut self,
+        _msg: GetCharInfo,
+        _ctx: &mut Context<Self, Self::Reply>
+    ) -> Self::Reply {
+        CharInfo::new(self.try_get_selected_char()?, &self.controller.get_cfg())
     }
 }

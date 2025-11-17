@@ -73,6 +73,7 @@ mod tests {
     use sea_orm::sqlx::types::chrono::Utc;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
+    use kameo::actor::ActorRef;
     use test_utils::utils::{get_test_db, DBPool};
     use tokio::io::split;
 
@@ -82,7 +83,6 @@ mod tests {
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(GameController::from_config(cfg));
-        controller.add_online_account(String::from("test"));
         PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone())
     }
     async fn user(pool: &DBPool) -> user::Model {
@@ -109,7 +109,7 @@ mod tests {
         let mut player_client = prepare().await;
         player_client
             .controller
-            .add_online_account(String::from("test"));
+            .add_online_account("test", None);
         let user = user(&player_client.db_pool).await;
         player_client.set_status(ClientStatus::Authenticated);
         player_client.set_user(user);
@@ -132,7 +132,7 @@ mod tests {
         let mut pl_client = prepare().await;
         pl_client
             .controller
-            .add_online_account(String::from("test"));
+            .add_online_account("test", None);
         let user = user(&pl_client.db_pool).await;
         pl_client.set_status(ClientStatus::Authenticated);
         pl_client.set_user(user);
@@ -157,7 +157,7 @@ mod tests {
         let mut pl_client = prepare().await;
         pl_client
             .controller
-            .add_online_account(String::from("test"));
+            .add_online_account("test", None);
         pl_client.set_status(ClientStatus::Authenticated);
         let user = user(&pl_client.db_pool).await;
         let char_model = char(&pl_client.db_pool, user.id).await;
@@ -187,7 +187,7 @@ mod tests {
         let mut pl_client = prepare().await;
         pl_client
             .controller
-            .add_online_account(String::from("test"));
+            .add_online_account("test", None);
         pl_client.set_status(ClientStatus::Authenticated);
         let user = user(&pl_client.db_pool).await;
         let char_model = char(&pl_client.db_pool, user.id).await;

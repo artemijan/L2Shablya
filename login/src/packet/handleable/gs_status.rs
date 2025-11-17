@@ -108,7 +108,7 @@ mod tests {
             .unwrap(),
         )
         .unwrap();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let ip = Ipv4Addr::LOCALHOST;
         let (r, w) = split(server);
         let mut gs_client = GameServerClient::new(ip, lc.clone(), db_pool.clone());
         gs_client.server_id = Some(server_id);

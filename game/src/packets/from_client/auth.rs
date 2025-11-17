@@ -109,11 +109,11 @@ impl AuthLogin {
 impl Message<AuthLogin> for PlayerClient {
     type Reply = anyhow::Result<()>;
 
-    #[instrument(skip(self, _ctx))]
+    #[instrument(skip(self, ctx))]
     async fn handle(
         &mut self,
         msg: AuthLogin,
-        _ctx: &mut Context<Self, Self::Reply>,
+        ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         // Check if the user is already authenticated
         if self.get_user().is_some() {
@@ -129,7 +129,7 @@ impl Message<AuthLogin> for PlayerClient {
         // Try to add the user to the online accounts
         if self
             .controller
-            .add_online_account(msg.login_name.clone())
+            .add_online_account(&msg.login_name, Some(ctx.actor_ref().clone()))
             .is_some()
         {
             self.controller.logout_account(&msg.login_name);

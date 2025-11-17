@@ -114,7 +114,7 @@ mod tests {
             .unwrap(),
         )
         .unwrap();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let ip = Ipv4Addr::LOCALHOST;
         let mut login_client = LoginClient::new(ip, lc, db_pool);
         let packet = ServerList::new(&mut login_client, "admin");
         assert_eq!(

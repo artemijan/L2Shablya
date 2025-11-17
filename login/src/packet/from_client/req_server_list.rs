@@ -99,7 +99,7 @@ mod tests {
             .unwrap(),
         )
         .unwrap();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let ip = Ipv4Addr::LOCALHOST;
         let (r, w) = split(server);
         let mut login_client = LoginClient::new(ip, lc.clone(), db_pool.clone());
         login_client.account_name = Some("admin".to_string());
@@ -123,7 +123,7 @@ mod tests {
         cfg.client.auto_create_accounts = false;
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let ip = Ipv4Addr::LOCALHOST;
         let (r, w) = split(server);
         let player_actor = spawn_login_client_actor(cloned_lc, db_pool, r, w).await;
         let result = player_actor.ask(packet).await;

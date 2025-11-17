@@ -1,5 +1,3 @@
-use l2_core::data::char_template::CharTemplate;
-use l2_core::data::classes::mapping::Class;
 use crate::packets::enums::CharNameResponseVariant;
 use crate::packets::to_client::{CreateCharFailed, CreateCharOk};
 use crate::packets::utils::validate_can_create_char;
@@ -9,6 +7,8 @@ use bytes::BytesMut;
 use entities::entities::character;
 use kameo::message::Context;
 use kameo::prelude::Message;
+use l2_core::data::char_template::CharTemplate;
+use l2_core::data::classes::mapping::Class;
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
@@ -113,24 +113,21 @@ impl Message<CreateCharRequest> for PlayerClient {
                     self.send_packet(CreateCharOk::new()?).await
                 }
                 Err(DbErr::RecordNotInserted) => {
-                    self.send_packet(
-                        CreateCharFailed::new(CharNameResponseVariant::AlreadyExists)?,
-                    )
+                    self.send_packet(CreateCharFailed::new(
+                        CharNameResponseVariant::AlreadyExists,
+                    )?)
                     .await
                 }
                 e => {
                     error!(?e, "Failed to create char");
-                    self.send_packet(
-                        CreateCharFailed::new(CharNameResponseVariant::CharCreationFailed)?,
-                    )
+                    self.send_packet(CreateCharFailed::new(
+                        CharNameResponseVariant::CharCreationFailed,
+                    )?)
                     .await
                 }
             }
         } else {
-            self.send_packet(
-                CreateCharFailed::new(response)?,
-            )
-            .await
+            self.send_packet(CreateCharFailed::new(response)?).await
         }
     }
 }
@@ -175,7 +172,7 @@ mod tests {
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(GameController::from_config(cfg));
-        controller.add_online_account(String::from("test"));
+        controller.add_online_account("test", None);
         let player_actor = spawn_player_client_actor(controller, pool, r, w).await;
         let res = player_actor.ask(pack).await;
         assert!(res.is_err());
@@ -190,7 +187,7 @@ mod tests {
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(GameController::from_config(cfg));
-        controller.add_online_account(String::from("test"));
+        controller.add_online_account("test", None);
         let mut player_client =
             PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
         player_client.set_status(ClientStatus::Authenticated);
@@ -209,7 +206,7 @@ mod tests {
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(GameController::from_config(cfg));
-        controller.add_online_account(String::from("test"));
+        controller.add_online_account("test", None);
         let mut player_client =
             PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
         player_client.set_status(ClientStatus::Authenticated);
@@ -235,7 +232,7 @@ mod tests {
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(GameController::from_config(cfg));
-        controller.add_online_account(String::from("test"));
+        controller.add_online_account("test", None);
         let mut player_client =
             PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
         player_client.set_status(ClientStatus::Authenticated);

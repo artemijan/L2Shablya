@@ -69,7 +69,7 @@ impl GSInfo {
                 return s.ip;
             }
         }
-        Ipv4Addr::new(127, 0, 0, 1)
+        Ipv4Addr::LOCALHOST
     }
     pub fn hex(&self) -> String {
         BigInt::from_signed_bytes_be(&self.hex_id).to_str_radix(16)

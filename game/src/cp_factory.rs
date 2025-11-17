@@ -75,7 +75,6 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         RestoreChar::PACKET_ID => Ok(PlayerPackets::RestoreChar(RestoreChar::read(data)?)),
         SelectChar::PACKET_ID => Ok(PlayerPackets::SelectChar(SelectChar::read(data)?)),
         EnterWorld::PACKET_ID => Ok(PlayerPackets::EnterWorld(EnterWorld::read(data)?)),
-        StopMove::PACKET_ID => Ok(PlayerPackets::StopMove(StopMove::read(data)?)),
         ValidatePosition::PACKET_ID => Ok(PlayerPackets::ValidatePosition(ValidatePosition::read(
             data,
         )?)),
@@ -100,6 +99,7 @@ pub fn build_ex_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPacket
         GoLobby::EX_PACKET_ID => Ok(PlayerPackets::GoLobby(GoLobby::read(data)?)),
         CheckCharName::EX_PACKET_ID => Ok(PlayerPackets::CheckCharName(CheckCharName::read(data)?)),
         SendClientIni::EX_PACKET_ID => Ok(PlayerPackets::SendClientIni(SendClientIni::read(data)?)),
+        StopMove::EX_PACKET_ID => Ok(PlayerPackets::StopMove(StopMove::read(data)?)),
         RequestUserBanInfo::EX_PACKET_ID => Ok(PlayerPackets::RequestUserBanInfo(
             RequestUserBanInfo::read(data)?,
         )),

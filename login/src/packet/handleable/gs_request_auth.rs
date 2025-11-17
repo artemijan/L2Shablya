@@ -100,7 +100,7 @@ mod tests {
         let cfg = LoginServerConfig::from_string(include_str!("../../../../config/login.yaml"));
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let ip = Ipv4Addr::LOCALHOST;
         let (r, w) = split(server);
         let mut gs_client = GameServerClient::new(ip, cloned_lc, db_pool.clone());
         gs_client
@@ -123,7 +123,7 @@ mod tests {
         let cfg = LoginServerConfig::from_string(include_str!("../../../../config/login.yaml"));
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let cloned_lc = lc.clone();
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let ip = Ipv4Addr::LOCALHOST;
         let (r, w) = split(server);
         let mut gs_client = GameServerClient::new(ip, cloned_lc, db_pool.clone());
         gs_client

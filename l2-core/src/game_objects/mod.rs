@@ -5,3 +5,4 @@ pub mod creature;
 pub mod zone;
 pub mod cursed_weapon;
 pub mod item;
+pub mod private_store_types;

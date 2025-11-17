@@ -1,3 +1,4 @@
+use crate::shared_packets::common::SendablePacket;
 use anyhow::{anyhow, bail};
 use bytes::{Bytes, BytesMut};
 use kameo::actor::{ActorRef, WeakActorRef};
@@ -22,6 +23,25 @@ impl fmt::Debug for HandleIncomingPacket {
         f.debug_struct("HandleIncomingPacket").finish()
     }
 }
+
+/// This is needed to send outbound packets to the client,
+/// but the packet is constructed outside the current actor
+pub struct HandleOutboundPacket<P>
+where
+    P: SendablePacket + Send + 'static,
+{
+    pub packet: P,
+}
+
+impl<P> fmt::Debug for HandleOutboundPacket<P>
+where
+    P: SendablePacket + Send + 'static,
+{
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("HandleBroadcastedPacket").finish()
+    }
+}
+
 pub struct SendPacket {
     pub data: Bytes,
     pub with_delay: Option<Duration>,
@@ -123,7 +143,7 @@ where
                 }
             }
             let _ = write_half.shutdown().await;
-            if actor.is_alive(){
+            if actor.is_alive() {
                 let _ = actor.stop_gracefully().await;
                 actor.wait_for_shutdown().await;
             }
@@ -161,7 +181,7 @@ where
                     }
                 }
             }
-            if actor.is_alive(){
+            if actor.is_alive() {
                 let _ = actor.stop_gracefully().await;
             }
             actor.wait_for_shutdown().await;

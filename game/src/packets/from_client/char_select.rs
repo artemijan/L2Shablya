@@ -79,7 +79,7 @@ mod tests {
         let controller = Arc::new(GameController::from_config(cfg));
         let pl_client = PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
 
-        controller.add_online_account(String::from("test"));
+        controller.add_online_account("test", None);
         // Run hook_before
         (controller, pool, pl_client)
     }

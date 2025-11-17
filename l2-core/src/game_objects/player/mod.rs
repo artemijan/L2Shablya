@@ -10,6 +10,7 @@ mod _teleport_bookmark;
 mod _subclass;
 pub mod quest;
 mod warehouse;
+pub mod effect;
 
 pub use _player::*;
 pub use _macro::*;

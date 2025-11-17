@@ -4,6 +4,7 @@ use crate::game_objects::cursed_weapon::CursedWeapon;
 use crate::game_objects::item::ItemObject;
 use crate::game_objects::player::_subclass::Subclass;
 use crate::game_objects::player::appearance::Appearance;
+use crate::game_objects::player::effect::abnormal_effect::AbnormalVisualEffect;
 use crate::game_objects::player::inventory::Inventory;
 use crate::game_objects::player::paper_doll::PaperDoll;
 use crate::game_objects::player::party::Party;
@@ -11,6 +12,7 @@ use crate::game_objects::player::quest::Quest;
 use crate::game_objects::player::vars::CharVariables;
 use crate::game_objects::player::warehouse::Warehouse;
 use crate::game_objects::player::{PlayerMacro, SubclassType, TeleportBookmark};
+use crate::game_objects::private_store_types::PrivateStoreType;
 use crate::game_objects::race::Race;
 use crate::game_objects::zone::{Location, ZoneId};
 use chrono::Utc;
@@ -58,7 +60,7 @@ pub struct Player {
     pub team: Team,
     pub template: Arc<CharTemplate>,
     pub is_in_siege: bool,
-    pub quest_zone_id: Option<i32>
+    pub quest_zone_id: Option<i32>,
 }
 
 #[allow(clippy::missing_errors_doc)]
@@ -106,8 +108,17 @@ impl Player {
     pub fn get_visible_name(&self) -> &str {
         &self.char_model.name
     }
+    #[must_use]
+    pub fn get_name_color(&self) -> i32 {
+        i32::MAX
+    }
+    
+    #[must_use]
+    pub fn get_title_color(&self) -> i32 {
+        i32::MAX
+    }
 
-    pub fn set_location(&mut self, x: i32, y: i32, z: i32)->anyhow::Result<()> {
+    pub fn set_location(&mut self, x: i32, y: i32, z: i32) -> anyhow::Result<()> {
         self.location.x = x;
         self.location.y = y;
         self.location.z = z;
@@ -122,10 +133,9 @@ impl Player {
         &self.location
     }
 
-    pub fn set_location_heading(&mut self, heading:i32) {
+    pub fn set_location_heading(&mut self, heading: i32) {
         self.location.heading = heading;
     }
-
 
     #[must_use]
     pub fn get_id(&self) -> i32 {
@@ -177,6 +187,22 @@ impl Player {
         //todo: implement me
         false
     }
+    #[must_use]
+    pub fn is_in_combat(&self) -> bool {
+        //todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn is_in_olympiad_mode(&self) -> bool {
+        //todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn is_alike_dead(&self) -> bool {
+        //todo: implement me
+        self.is_dead()
+    }
+
     #[must_use]
     pub fn is_in_instance_zone(&self) -> bool {
         //todo: implement me
@@ -426,8 +452,46 @@ impl Player {
         113
     }
 
+    pub fn get_fly_run_speed(&self) -> u16 {
+        //todo: implement me
+        159
+    }
+    pub fn get_fly_walk_speed(&self) -> u16 {
+        //todo: implement me
+        113
+    }
+
     #[must_use]
     pub fn is_flying(&self) -> bool {
+        //todo: implement me
+        false
+    }
+
+    #[must_use]
+    pub fn is_fishing(&self) -> bool {
+        //todo: implement me
+        false
+    }
+    #[must_use]
+    pub fn get_fishing_bait_location(&self) -> Option<&Location> {
+        //todo: implement me
+        None
+    }
+
+    #[must_use]
+    pub fn is_flying_mounted(&self) -> bool {
+        //todo: implement me
+        false
+    }
+
+    #[must_use]
+    pub fn get_mount_npc_id(&self) -> i32 {
+        //todo: implement me
+        0
+    }
+
+    #[must_use]
+    pub fn is_sitting(&self) -> bool {
         //todo: implement me
         false
     }
@@ -456,7 +520,17 @@ impl Player {
     #[must_use]
     pub fn get_mount_type(&self) -> u8 {
         //todo: implement me
+        // 1-on Strider, 2-on Wyvern, 3-on Great Wolf, 0-no mount
         0
+    }
+    #[must_use]
+    pub fn get_team(&self) -> Team {
+        //todo: implement me
+        Team::None
+    }
+    #[must_use]
+    pub fn is_mounted(&self) -> bool {
+        self.get_mount_type() != 0u8
     }
     #[must_use]
     pub fn has_skill(&self, _skill_id: u32) -> bool {
@@ -474,10 +548,17 @@ impl Player {
         //todo: implement me
         false
     }
+
     #[must_use]
-    pub fn get_private_store_type(&self) -> u8 {
+    pub fn get_cubics(&self) -> Vec<u16> {
         //todo: implement me
-        0
+        Vec::new()
+    }
+
+    #[must_use]
+    pub fn get_private_store_type(&self) -> PrivateStoreType {
+        //todo: implement me
+        PrivateStoreType::None
     }
     #[must_use]
     pub fn get_private_store_sell_limit(&self) -> u8 {
@@ -690,6 +771,25 @@ impl Player {
             .and_then(|v| v.try_into().ok()) // Convert to i32 safely
             .unwrap_or(0)
     }
+    #[must_use]
+    pub fn get_clan_id(&self) -> i32 {
+        self.char_model.clan_id.unwrap_or(0)
+    }
+    #[must_use]
+    pub fn get_clan_reputation_score(&self) -> i32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_transformation_display_id(&self) -> i32 {
+        //todo: implement me
+        0
+    }
+    #[must_use]
+    pub fn get_agation_id(&self) -> i32 {
+        //todo: implement me
+        0
+    }
 
     #[must_use]
     pub fn get_max_hp(&self) -> f64 {
@@ -704,6 +804,28 @@ impl Player {
     #[must_use]
     pub fn get_max_cp(&self) -> f64 {
         self.char_model.max_cp
+    }
+
+    #[must_use]
+    pub fn get_cur_hp(&self) -> f64 {
+        self.char_model.cur_hp
+    }
+
+    #[must_use]
+    pub fn get_cur_mp(&self) -> f64 {
+        self.char_model.cur_mp
+    }
+
+    #[must_use]
+    pub fn get_cur_cp(&self) -> f64 {
+        self.char_model.cur_cp
+    }
+
+    #[must_use]
+    pub fn get_abnoraml_visual_effects(&self, ) -> &Vec<AbnormalVisualEffect> {
+        //todo: implement me
+        static EMPTY: Vec<AbnormalVisualEffect> = Vec::new();
+        &EMPTY
     }
 
     #[must_use]
@@ -777,6 +899,11 @@ impl Player {
     #[must_use]
     pub fn get_transform_id(&self) -> i32 {
         i32::from(self.char_model.transform_id)
+    }
+    #[must_use]
+    pub fn get_ability_points_used(&self,)->u8{
+        //todo: implement me
+        0
     }
 }
 

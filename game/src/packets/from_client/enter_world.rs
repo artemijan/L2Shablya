@@ -4,8 +4,8 @@ use crate::packets::to_client::extended::{
     SubclassInfo, SubclassInfoType, UISettings, UnreadMailCount, VitalityInfo,
 };
 use crate::packets::to_client::{
-    AbnormalStatusUpdate, AcquireSkillList, CharEtcStatusUpdate, FriendList, HennaInfo, ItemList,
-    MacroList, MoveTo, QuestList, ShortcutsInit, SkillCoolTime, SkillList, SystemMessage,
+    AbnormalStatusUpdate, AcquireSkillList, CharEtcStatusUpdate, CharInfo, FriendList, HennaInfo,
+    ItemList, MacroList, MoveTo, QuestList, ShortcutsInit, SkillCoolTime, SkillList, SystemMessage,
     SystemMessageType, UserInfo,
 };
 use crate::pl_client::{ClientStatus, DoLater, PlayerClient};
@@ -201,9 +201,11 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: send message about premium items (maybe premium account or so?)
         //todo: check if offline trade and cancel it
 
-        //todo: broadcast user info
-        self.send_packet(UserInfo::new(&player, UserInfoType::all(), &self.controller).await?)
+        self.controller
+            .add_player_to_world(&player, &ctx.actor_ref())
             .await?;
+        let p = UserInfo::new(&player, UserInfoType::all(), &self.controller).await?;
+        self.send_packet(p).await?;
 
         //todo: send ExBeautyItemList
         //todo: send ExWorldChatCnt if ENABLE_WORLD_CHAT is enabled

@@ -200,7 +200,7 @@ mod tests {
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let (r, w) = split(server);
         let (cr, cw) = split(server2);
-        let ip = Ipv4Addr::new(127, 0, 0, 1);
+        let ip = Ipv4Addr::LOCALHOST;
         let mut gs_client = GameServerClient::new(ip, lc.clone(), db_pool.clone());
         gs_client.server_id = Some(1);
         gs_client

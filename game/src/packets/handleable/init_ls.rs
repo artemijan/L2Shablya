@@ -57,7 +57,7 @@ mod tests {
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(GameController::from_config(cfg));
-        controller.add_online_account(String::from("test"));
+        controller.add_online_account("test", None);
         let ls_actor = spawn_ls_client_actor(controller, pool, r, w).await;
         let res = ls_actor.ask(pack).await;
         assert!(res.is_ok());

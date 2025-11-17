@@ -60,7 +60,7 @@ mod tests {
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(GameController::from_config(cfg));
-        controller.add_online_account(String::from("test"));
+        controller.add_online_account("test", None);
         let _user = user_factory(&pool, |mut u| {
             u.username = String::from("test");
             u
@@ -81,7 +81,7 @@ mod tests {
             "../../../../config/game.yaml"
         )));
         let controller = Arc::new(GameController::from_config(cfg));
-        controller.add_online_account(String::from("test"));
+        controller.add_online_account("test", None);
         let user = user_factory(&pool, |mut u| {
             u.username = String::from("test");
             u

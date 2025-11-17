@@ -234,7 +234,7 @@ impl UserInfo {
     fn write_status(&mut self, player: &Player) -> anyhow::Result<()> {
         self.buffer.write_u16(6u16)?;
         self.buffer.write(player.get_mount_type());
-        self.buffer.write(player.get_private_store_type());
+        self.buffer.write(player.get_private_store_type().id());
         self.buffer
             .write(player.char_model.can_craft || player.has_skill(248));
         self.buffer.write(0);
