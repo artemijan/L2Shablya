@@ -11,6 +11,9 @@ mod _subclass;
 pub mod quest;
 mod warehouse;
 pub mod effect;
+mod _player_db;
+pub mod relation;
+pub mod clan;
 
 pub use _player::*;
 pub use _macro::*;

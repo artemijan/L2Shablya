@@ -66,7 +66,7 @@ impl UserInfo {
             false
         };
         if inst.mask.contains_mask(UserInfoType::Relation) {
-            let relation = player.get_relation(is_cl).await;
+            let relation = inst.get_relation(player, is_cl);
             inst.buffer.write_u32(relation)?;
         }
         if inst.mask.contains_mask(UserInfoType::BasicInfo) {
@@ -333,7 +333,7 @@ impl UserInfo {
         self.buffer
             .write_u16(32u16 + u16::try_from(title.len() * 2)?)?;
         self.buffer.write_sized_c_utf16le_string(Some(&title))?;
-        self.buffer.write_u16(player.get_pledge_type())?;
+        self.buffer.write_i16(player.get_pledge_type())?;
         self.buffer
             .write_i32(player.char_model.clan_id.unwrap_or(0))?;
         self.buffer.write_i32(player.get_clan_crest_large_id())?;
@@ -419,6 +419,27 @@ impl UserInfo {
         }
         Ok(())
     }
+    #[must_use]
+    pub fn get_relation(&self, p: &Player, is_clan_leader: bool) -> u32 {
+        let mut relation = 0;
+        if let Some(pt) = p.party.as_ref() {
+            relation |= 0x08;
+            if pt.get_leader_id() == p.char_model.id {
+                relation |= 0x10;
+            }
+        }
+        if p.char_model.clan_id.is_some() {
+            relation |= 0x20;
+
+            if is_clan_leader {
+                relation |= 0x40;
+            }
+        }
+        if p.siege_state !=0 {
+            relation |= 0x80;
+        }
+        relation
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -465,7 +486,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = GameController::from_config(cfg);
+        let controller = GameController::from_config(cfg).await;
         let template = controller
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
@@ -476,7 +497,7 @@ mod tests {
             .unwrap();
         assert_eq!(p.block_size, 393);
         assert_eq!(p.mask.flags(), &[0xFF, 0xFF, 0xFE]);
-        let relation = player.get_relation(false).await;
+        let relation = p.get_relation(&player,false);
         assert_eq!(relation, 0);
         let class_id = Class::try_from(10i8).unwrap();
         assert_eq!(class_id.get_root().id as u32, 10u32);

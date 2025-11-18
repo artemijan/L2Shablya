@@ -1,5 +1,6 @@
 use crate::controller::GameController;
 use crate::cp_factory::build_client_packet;
+use crate::packets::to_client::CharInfo;
 use anyhow::{anyhow, bail};
 use bytes::BytesMut;
 use entities::entities::{character, user};
@@ -13,8 +14,8 @@ use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::game_objects::player::Player;
 use l2_core::network::connection::{
-    send_delayed_packet, send_packet, send_packet_blocking, ConnectionActor,
-    HandleOutboundPacket, HandleIncomingPacket,
+    send_delayed_packet, send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket,
+    HandleOutboundPacket,
 };
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::SendablePacket;
@@ -30,7 +31,6 @@ use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tracing::{error, info, instrument};
-use crate::packets::to_client::CharInfo;
 
 type BoxedClosure = Box<
     dyn for<'a> FnOnce(
@@ -424,7 +424,8 @@ impl Message<HandleIncomingPacket> for PlayerClient {
 }
 
 impl<P> Message<HandleOutboundPacket<P>> for PlayerClient
-where P: SendablePacket + Send + 'static
+where
+    P: SendablePacket + Send + 'static,
 {
     type Reply = anyhow::Result<()>;
 
@@ -451,13 +452,9 @@ impl Message<DoLater> for PlayerClient {
 pub struct GetCharInfo;
 
 impl Message<GetCharInfo> for PlayerClient {
-    type Reply = anyhow::Result<CharInfo>;
+    type Reply = anyhow::Result<Player>;
 
-    async fn handle(
-        &mut self,
-        _msg: GetCharInfo,
-        _ctx: &mut Context<Self, Self::Reply>
-    ) -> Self::Reply {
-        CharInfo::new(self.try_get_selected_char()?, &self.controller.get_cfg())
+    async fn handle(&mut self, _msg: GetCharInfo, _ctx: &mut Context<Self, Self::Reply>) -> Self::Reply {
+        Ok(self.try_get_selected_char()?.clone())
     }
 }

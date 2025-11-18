@@ -1,6 +1,5 @@
 use crate::packets::to_client::CharSelected;
 use crate::pl_client::{ClientStatus, PlayerClient};
-use anyhow::bail;
 use bytes::BytesMut;
 use kameo::message::Context;
 use kameo::prelude::Message;
@@ -76,7 +75,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(GameController::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg).await);
         let pl_client = PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
 
         controller.add_online_account("test", None);

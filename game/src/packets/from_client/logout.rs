@@ -59,7 +59,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(GameController::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg).await);
         controller.add_online_account("test", None);
         let _user = user_factory(&pool, |mut u| {
             u.username = String::from("test");
@@ -80,7 +80,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(GameController::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg).await);
         controller.add_online_account("test", None);
         let user = user_factory(&pool, |mut u| {
             u.username = String::from("test");

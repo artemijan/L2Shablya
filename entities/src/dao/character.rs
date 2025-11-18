@@ -1,9 +1,9 @@
 use crate::dao::item::LocType;
-use crate::entities::{character, item, user};
+use crate::entities::{character, clan_ally, item, user};
 use crate::DBPool;
 use chrono::{Duration, Utc};
 use sea_orm::entity::prelude::*;
-use sea_orm::{ActiveValue, DbErr, IntoActiveModel, JoinType, Order, QueryOrder, QuerySelect, TryIntoModel};
+use sea_orm::{ActiveValue, DbErr, JoinType, Order, QueryOrder, QuerySelect};
 
 #[allow(clippy::missing_errors_doc)]
 impl character::Model {
@@ -54,38 +54,48 @@ impl character::Model {
         Ok(characters)
     }
 
-    pub async fn get_with_items_and_vars(
+    pub async fn load_chars_with_data(
         db_pool: &DBPool,
         username: &str,
         loc_type: LocType,
-    ) -> anyhow::Result<Vec<(character::Model, Vec<item::Model>)>> {
+    ) -> anyhow::Result<Vec<(character::Model, Vec<item::Model>, Option<clan_ally::Model>)>> {
         let characters = character::Entity::find()
-            .order_by(character::Column::DeleteAt, Order::Asc)
             .order_by(character::Column::CreatedAt, Order::Asc)
             .join(JoinType::InnerJoin, character::Relation::User.def())
             .filter(user::Column::Username.eq(username))
-            .find_with_related(item::Entity)
+            .find_also_related(clan_ally::Entity)
             .all(db_pool)
             .await?;
 
-        Ok(characters
+        let char_ids:Vec<_> = characters.iter().map(|(c, _)| c.id).collect();
+
+        // Fetch all items for these characters in a single query
+        let items = item::Entity::find()
+            .filter(item::Column::Owner.is_in(char_ids))
+            .filter(item::Column::Loc.eq(loc_type))
+            .all(db_pool)
+            .await?;
+        // Create a HashMap for O(1) lookup, grouping items by character_id
+        let mut items_map: std::collections::HashMap<_, Vec<item::Model>> =
+            std::collections::HashMap::new();
+
+        for item in items {
+            items_map.entry(item.owner).or_default().push(item);
+        }
+        // Build the result
+        let result = characters
             .into_iter()
-            .map(|(char, items)| {
-                (
-                    char,
-                    //todo optimize query maybe there is a way to do filtering on DB level for items
-                    items.into_iter().filter(|i| i.loc == loc_type).collect(),
-                )
+            .map(|(char_model, clan)| {
+                let items = items_map.remove(&char_model.id).unwrap_or_default();
+                (char_model, items, clan)
             })
-            .collect())
+            .collect();
+        Ok(result)
     }
 
-    pub async fn update_char(
-        db_pool: &DBPool,
-        char: &character::Model,
-    ) -> anyhow::Result<()> {
+    pub async fn update_char(db_pool: &DBPool, char: &character::Model) -> anyhow::Result<()> {
         // clone is okay here, because it is small and not frequent operation
-        let active_model= character::ActiveModel{
+        let active_model = character::ActiveModel {
             id: ActiveValue::Set(char.id),
             last_access: ActiveValue::Set(Some(Utc::now().into())),
             x: ActiveValue::Set(char.x),
@@ -128,10 +138,9 @@ mod tests {
         })
         .await;
 
-        let chars =
-            character::Model::get_with_items_and_vars(&db_pool, "admin", LocType::Paperdoll)
-                .await
-                .unwrap();
+        let chars = character::Model::load_chars_with_data(&db_pool, "admin", LocType::Paperdoll)
+            .await
+            .unwrap();
         assert_eq!(chars.len(), 1);
         assert_eq!(chars[0].0.id, char.id);
         assert_eq!(chars[0].1.len(), 1);

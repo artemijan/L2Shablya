@@ -4,11 +4,14 @@ use crate::game_objects::cursed_weapon::CursedWeapon;
 use crate::game_objects::item::ItemObject;
 use crate::game_objects::player::_subclass::Subclass;
 use crate::game_objects::player::appearance::Appearance;
+use crate::game_objects::player::clan::ClanSubUnit;
 use crate::game_objects::player::effect::abnormal_effect::AbnormalVisualEffect;
 use crate::game_objects::player::inventory::Inventory;
 use crate::game_objects::player::paper_doll::PaperDoll;
 use crate::game_objects::player::party::Party;
 use crate::game_objects::player::quest::Quest;
+use crate::game_objects::player::relation::RelationChanges;
+use crate::game_objects::player::user_info::UserInfoType::Clan;
 use crate::game_objects::player::vars::CharVariables;
 use crate::game_objects::player::warehouse::Warehouse;
 use crate::game_objects::player::{PlayerMacro, SubclassType, TeleportBookmark};
@@ -16,7 +19,8 @@ use crate::game_objects::private_store_types::PrivateStoreType;
 use crate::game_objects::race::Race;
 use crate::game_objects::zone::{Location, ZoneId};
 use chrono::Utc;
-use entities::entities::{character, character_mail, item};
+use entities::entities::{character, character_mail, clan_ally, item};
+use log::info;
 use serde_json::Value;
 use std::fmt::Debug;
 use std::sync::Arc;
@@ -58,8 +62,9 @@ pub struct Player {
     pub warehouse: Warehouse,
     pub appearance: Appearance,
     pub team: Team,
+    pub clan: Option<clan_ally::Model>,
     pub template: Arc<CharTemplate>,
-    pub is_in_siege: bool,
+    pub siege_state: u8,
     pub quest_zone_id: Option<i32>,
 }
 
@@ -82,6 +87,7 @@ impl Player {
                 z: char_model.z,
                 heading: 0,
             },
+            clan: None,
             template,
             warehouse: Warehouse::empty(), //todo: fill it
             //todo: implement subclasses
@@ -98,12 +104,13 @@ impl Player {
             team: Team::None,
             skills: None,
             mailbox: Vec::new(),
-            is_in_siege: false,
+            siege_state: 0,
             appearance: Appearance,
             quest_zone_id: None,
             inventory: Inventory::from_items(items),
         }
     }
+
     #[must_use]
     pub fn get_visible_name(&self) -> &str {
         &self.char_model.name
@@ -112,7 +119,7 @@ impl Player {
     pub fn get_name_color(&self) -> i32 {
         i32::MAX
     }
-    
+
     #[must_use]
     pub fn get_title_color(&self) -> i32 {
         i32::MAX
@@ -201,6 +208,11 @@ impl Player {
     pub fn is_alike_dead(&self) -> bool {
         //todo: implement me
         self.is_dead()
+    }
+    #[must_use]
+    pub fn is_auto_attackable(&self, another: &Player) -> bool {
+        //todo: implement me
+        return false
     }
 
     #[must_use]
@@ -314,6 +326,11 @@ impl Player {
         false
     }
     #[must_use]
+    pub fn is_invisible(&self) -> bool {
+        // todo: implement me
+        false
+    }
+    #[must_use]
     pub fn get_pvp_flag(&self) -> bool {
         // todo: implement me
         false
@@ -329,7 +346,7 @@ impl Player {
         false
     }
     #[must_use]
-    pub fn get_pledge_type(&self) -> u16 {
+    pub fn get_pledge_type(&self) -> i16 {
         //todo: implement me
         0
     }
@@ -822,7 +839,7 @@ impl Player {
     }
 
     #[must_use]
-    pub fn get_abnoraml_visual_effects(&self, ) -> &Vec<AbnormalVisualEffect> {
+    pub fn get_abnoraml_visual_effects(&self) -> &Vec<AbnormalVisualEffect> {
         //todo: implement me
         static EMPTY: Vec<AbnormalVisualEffect> = Vec::new();
         &EMPTY
@@ -842,25 +859,52 @@ impl Player {
         0
     }
     #[must_use]
-    pub async fn get_relation(&self, is_clan_leader: bool) -> u32 {
-        let mut relation = 0;
-        if let Some(pt) = self.party.as_ref() {
-            relation |= 0x08;
-            if pt.get_leader_id().await == self.char_model.id {
-                relation |= 0x10;
+    pub fn get_relation(&self, another: &Player) -> u32 {
+        let mut res = 0;
+        if let Some(clan) = &self.clan {
+            res |= RelationChanges::ClanMember;
+            if clan.id == another.char_model.clan_id.unwrap_or(-1) {
+                res |= RelationChanges::ClanMate;
+            }
+            if clan.ally_id.is_some() {
+                res |= RelationChanges::AllyMember;
             }
         }
-        if self.char_model.clan_id.is_some() {
-            relation |= 0x20;
-
-            if is_clan_leader {
-                relation |= 0x40;
+        if self.is_clan_leader() {
+            res |= RelationChanges::Leader;
+        }
+        if let Some(party) = &self.party
+            && let Some(another_party) = &another.party
+            && another_party.eq(party)
+        {
+            res |= RelationChanges::HasParty;
+            if let Some(pi) = party.index_of(self.char_model.id) {
+                res |= RelationChanges::party_index_mask(pi);
             }
         }
-        if self.is_in_siege {
-            relation |= 0x80;
+        if self.siege_state != 0 {
+            res |= RelationChanges::InSiege;
+            if self.siege_state == another.siege_state {
+                res |= RelationChanges::Ally;
+            } else {
+                res |= RelationChanges::Enemy;
+            }
+            if (self.siege_state == 1) {
+                res |= RelationChanges::Attacker;
+            }
         }
-        relation
+        if let Some(target_clan) = &another.clan
+            && let Some(clan) = &self.clan
+            && self.get_pledge_type() != ClanSubUnit::Academy as i16
+            && another.get_pledge_type() != ClanSubUnit::Academy as i16
+        {
+            //todo: clan war
+            info!(
+                "Todos: clan war relation not implemented, target clan: {}, self clan: {}",
+                target_clan.id, clan.id
+            );
+        }
+        res
     }
     #[must_use]
     pub fn get_vitality_used(&self) -> u32 {
@@ -901,7 +945,7 @@ impl Player {
         i32::from(self.char_model.transform_id)
     }
     #[must_use]
-    pub fn get_ability_points_used(&self,)->u8{
+    pub fn get_ability_points_used(&self) -> u8 {
         //todo: implement me
         0
     }

@@ -64,7 +64,7 @@ mod test {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = GameController::from_config(cfg);
+        let controller = GameController::from_config(cfg).await;
         let template = controller
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())

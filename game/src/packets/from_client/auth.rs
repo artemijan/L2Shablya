@@ -68,25 +68,12 @@ impl AuthLogin {
         // Send success response
         handler.send_packet(PlayerLoginResponse::ok()?).await?;
 
-        // Fetch user characters from the database
-        let characters = character::Model::get_with_items_and_vars(
-            &handler.db_pool,
+        let players = Player::load_account_chars_from_db(
             &self.login_name,
-            LocType::Paperdoll,
+            &handler.db_pool,
+            &handler.controller.class_templates,
         )
         .await?;
-
-        let players = characters
-            .into_iter()
-            .map(|(ch, items)| {
-                let template = handler
-                    .controller
-                    .class_templates
-                    .try_get_template(ch.class_id)?;
-                Ok(Player::new(ch, items, template.clone()))
-            })
-            .collect::<anyhow::Result<Vec<Player>>>()?;
-
         // Prepare a character selection packet
         let char_selection = CharSelectionInfo::new(
             &self.login_name,
@@ -207,7 +194,7 @@ mod tests {
             u
         })
         .await;
-        let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
+        let controller = Arc::new(GameController::from_config(Arc::new(cfg)).await);
         let (ls_r, ls_w) = split(ls_server);
         let ls_client =
             LoginServerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());

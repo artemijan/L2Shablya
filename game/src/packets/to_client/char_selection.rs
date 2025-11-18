@@ -167,7 +167,7 @@ mod tests {
             templates.try_get_template(class_id).unwrap().clone(),
         );
         let cfg = get_gs_config();
-        let controller = Arc::new(GameController::from_config(Arc::new(cfg)));
+        let controller = Arc::new(GameController::from_config(Arc::new(cfg)).await);
         let mut packet = CharSelectionInfo::new("admin", 1, &controller, &vec![char]).unwrap();
         assert_eq!(
             [

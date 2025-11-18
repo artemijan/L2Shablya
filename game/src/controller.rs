@@ -1,6 +1,6 @@
 use crate::ls_client::LoginServerClient;
 use crate::managers::ClanAllyManager;
-use crate::packets::to_client::CharInfo;
+use crate::packets::to_client::{CharInfo, RelationChanged};
 use crate::pl_client::{GetCharInfo, PlayerClient};
 use anyhow::anyhow;
 use dashmap::DashMap;
@@ -26,6 +26,7 @@ use tracing::{info, warn};
 #[derive(Clone, Debug)]
 pub struct GameController {
     cfg: Arc<GSServerConfig>,
+    db_pool: DBPool,
     pub exp_table: ExpTable,
     pub action_list: ActionList,
     pub skill_trees_data: SkillTreesData,
@@ -46,6 +47,7 @@ impl GameController {
         let base_stats = BaseStat::load();
         GameController {
             exp_table,
+            db_pool: db_pool.clone(),
             cfg,
             ls_actor: Arc::new(RwLock::new(None)),
             action_list,
@@ -61,6 +63,9 @@ impl GameController {
         *self.ls_actor.write().await = Some(actor);
     }
 
+    pub fn get_db_pool(&self) -> &DBPool {
+        &self.db_pool
+    }
     pub async fn get_ls_actor(&self) -> Option<ActorRef<LoginServerClient>> {
         self.ls_actor.read().await.clone()
     }
@@ -102,21 +107,40 @@ impl GameController {
         p: &Player,
         actor_ref: &ActorRef<PlayerClient>,
     ) -> anyhow::Result<()> {
-        let ci = CharInfo::new(p, &self.cfg)?;
         //todo: implement filtering logic to send only to visible players
         for entry in &self.online_chars {
             if let Some(pl_actor) = entry.value()
                 && pl_actor.id() != actor_ref.id()
             {
-                let char_info = pl_actor.ask(GetCharInfo).await?;
-                //tell a player about a new player that just has spawned
-                pl_actor.tell(HandleOutboundPacket { packet: ci.clone() }).await?;
-                //tell the player that has just spawned about existing player
-                actor_ref
-                    .tell(HandleOutboundPacket { packet: char_info })
+                let p2 = pl_actor.ask(GetCharInfo).await?;
+                self.exchange_players_info((p, actor_ref), (&p2, pl_actor))
                     .await?;
             }
         }
+        Ok(())
+    }
+    pub async fn exchange_players_info(
+        &self,
+        p1: (&Player, &ActorRef<PlayerClient>),
+        p2: (&Player, &ActorRef<PlayerClient>),
+    ) -> anyhow::Result<()> {
+        //todo: check vehicles and send to player
+        let ci1 = CharInfo::new(p1.0, &self.get_cfg())?;
+        let ci2 = CharInfo::new(p2.0, &self.get_cfg())?;
+        p2.1.tell(HandleOutboundPacket { packet: ci1 }).await?;
+        p1.1.tell(HandleOutboundPacket { packet: ci2 }).await?;
+        let rel1 = p1.0.get_relation(p2.0);
+        let rp1 = RelationChanged::builder()
+            .add_relation(p1.0, rel1, p1.0.is_auto_attackable(p2.0))
+            .finish()?;
+        //todo: add summon/servitors relation
+        p2.1.tell(HandleOutboundPacket { packet: rp1 }).await?;
+
+        let rel2 = p2.0.get_relation(p1.0);
+        let rp2 = RelationChanged::builder()
+            .add_relation(p2.0, rel2, p2.0.is_auto_attackable(p1.0))
+            .finish()?;
+        p1.1.tell(HandleOutboundPacket { packet: rp2 }).await?;
         Ok(())
     }
     pub async fn broadcast_packet<F>(
@@ -146,13 +170,15 @@ impl GameController {
 
 #[cfg(test)]
 impl GameController {
-    pub fn from_config(cfg: Arc<GSServerConfig>) -> Self {
+    pub async fn from_config(cfg: Arc<GSServerConfig>) -> Self {
+        use test_utils::utils::get_test_db;
         let exp_table = ExpTable::load();
         let action_list = ActionList::load();
         let skill_trees_data = SkillTreesData::load();
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
         GameController {
+            db_pool: get_test_db().await,
             exp_table,
             cfg,
             action_list,

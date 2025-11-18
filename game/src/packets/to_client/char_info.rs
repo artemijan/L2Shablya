@@ -6,7 +6,6 @@ use l2_core::game_objects::zone::ZoneId;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use l2_core::traits::conversion::ToU32Rounded;
 use macro_common::SendablePacket;
-use num_traits::ToPrimitive;
 use std::fmt::Debug;
 
 #[derive(Debug, Clone, SendablePacket)]
@@ -162,7 +161,7 @@ impl CharInfo {
         inst.buffer.write_i32(p.get_name_color())?; // Confirmed
         inst.buffer.write_i32(p.get_location().heading)?; // Confirmed
         inst.buffer.write(p.get_pledge_class())?;
-        inst.buffer.write_u16(p.get_pledge_type())?;
+        inst.buffer.write_i16(p.get_pledge_type())?;
         inst.buffer.write_i32(p.get_title_color())?; // Confirmed
         inst.buffer.write(if let Some(cw) = p.get_cursed_weapon() {
             cw.get_lvl()

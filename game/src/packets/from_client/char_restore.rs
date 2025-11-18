@@ -73,7 +73,6 @@ mod tests {
     use sea_orm::sqlx::types::chrono::Utc;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
-    use kameo::actor::ActorRef;
     use test_utils::utils::{get_test_db, DBPool};
     use tokio::io::split;
 
@@ -82,7 +81,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(GameController::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg).await);
         PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone())
     }
     async fn user(pool: &DBPool) -> user::Model {

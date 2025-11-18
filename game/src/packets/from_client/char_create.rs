@@ -171,7 +171,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(GameController::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg).await);
         controller.add_online_account("test", None);
         let player_actor = spawn_player_client_actor(controller, pool, r, w).await;
         let res = player_actor.ask(pack).await;
@@ -186,7 +186,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(GameController::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg).await);
         controller.add_online_account("test", None);
         let mut player_client =
             PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
@@ -205,7 +205,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(GameController::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg).await);
         controller.add_online_account("test", None);
         let mut player_client =
             PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
@@ -231,7 +231,7 @@ mod tests {
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
-        let controller = Arc::new(GameController::from_config(cfg));
+        let controller = Arc::new(GameController::from_config(cfg).await);
         controller.add_online_account("test", None);
         let mut player_client =
             PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone());
