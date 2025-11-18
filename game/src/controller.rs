@@ -18,7 +18,6 @@ use l2_core::game_objects::player::Player;
 use l2_core::network::connection::HandleOutboundPacket;
 use l2_core::shared_packets::common::SendablePacket;
 use l2_core::traits::IpBan;
-use std::ops::Deref;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use tracing::{info, warn};
