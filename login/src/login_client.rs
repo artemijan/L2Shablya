@@ -109,7 +109,7 @@ impl Actor for LoginClient {
     async fn on_link_died(
         &mut self,
         _actor_ref: WeakActorRef<Self>,
-        _id: ActorID,
+        _id: ActorId,
         reason: ActorStopReason,
     ) -> Result<ControlFlow<ActorStopReason>, Self::Error> {
         Ok(ControlFlow::Break(reason))
@@ -147,7 +147,7 @@ impl Message<HandleIncomingPacket> for LoginClient {
     ) -> Self::Reply {
         self.encryption.decrypt(msg.0.as_mut())?;
         let packet = build_client_message_packet(msg.0, &self.rsa_keypair)?;
-        packet.accept(ctx.actor_ref()).await?;
+        packet.accept(ctx.actor_ref().clone()).await?;
         Ok(())
     }
 }

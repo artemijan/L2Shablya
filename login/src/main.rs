@@ -11,6 +11,7 @@ use l2_core::utils::bootstrap_tokio_runtime;
 use login_client::LoginClient;
 use sea_orm::sqlx::any::install_default_drivers;
 use std::sync::Arc;
+use kameo::actor::Spawn;
 use tracing::error;
 
 mod controller;

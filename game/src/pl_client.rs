@@ -1,11 +1,10 @@
 use crate::controller::GameController;
 use crate::cp_factory::build_client_packet;
-use crate::packets::to_client::CharInfo;
 use anyhow::{anyhow, bail};
 use bytes::BytesMut;
 use entities::entities::{character, user};
 use entities::DBPool;
-use kameo::actor::{ActorID, ActorRef, WeakActorRef};
+use kameo::actor::{ActorId, ActorRef, Spawn, WeakActorRef};
 use kameo::error::{ActorStopReason, PanicError};
 use kameo::message::{Context, Message};
 use kameo::Actor;
@@ -359,7 +358,7 @@ impl Actor for PlayerClient {
     async fn on_link_died(
         &mut self,
         _actor_ref: WeakActorRef<Self>,
-        _id: ActorID,
+        _id: ActorId,
         reason: ActorStopReason,
     ) -> Result<ControlFlow<ActorStopReason>, Self::Error> {
         Ok(ControlFlow::Break(reason))
@@ -418,7 +417,7 @@ impl Message<HandleIncomingPacket> for PlayerClient {
             blowfish.decrypt(msg.0.as_mut())?;
         }
         let packet = build_client_packet(msg.0)?;
-        packet.accept(ctx.actor_ref()).await?;
+        packet.accept(ctx.actor_ref().clone()).await?;
         Ok(())
     }
 }
@@ -454,7 +453,11 @@ pub struct GetCharInfo;
 impl Message<GetCharInfo> for PlayerClient {
     type Reply = anyhow::Result<Player>;
 
-    async fn handle(&mut self, _msg: GetCharInfo, _ctx: &mut Context<Self, Self::Reply>) -> Self::Reply {
+    async fn handle(
+        &mut self,
+        _msg: GetCharInfo,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
         Ok(self.try_get_selected_char()?.clone())
     }
 }

@@ -4,7 +4,7 @@ pub mod test {
     use crate::gs_client::GameServerClient;
     use crate::login_client::LoginClient;
     use entities::DBPool;
-    use kameo::actor::ActorRef;
+    use kameo::actor::{ActorRef, Spawn};
     use kameo::message::{Context, Message};
     use kameo::Actor;
     use std::net::Ipv4Addr;

@@ -3,7 +3,7 @@ use crate::enums;
 use crate::packet::gs_factory::build_gs_packet;
 use anyhow::{anyhow, bail};
 use entities::DBPool;
-use kameo::actor::{ActorID, ActorRef, WeakActorRef};
+use kameo::actor::{ActorId, ActorRef, Spawn, WeakActorRef};
 use kameo::error::{ActorStopReason, PanicError};
 use kameo::message::{Context, Message};
 use kameo::Actor;
@@ -116,7 +116,7 @@ impl Actor for GameServerClient {
     async fn on_link_died(
         &mut self,
         _actor_ref: WeakActorRef<Self>,
-        _id: ActorID,
+        _id: ActorId,
         reason: ActorStopReason,
     ) -> Result<ControlFlow<ActorStopReason>, Self::Error> {
         Ok(ControlFlow::Break(reason))
@@ -159,7 +159,7 @@ impl Message<HandleIncomingPacket> for GameServerClient {
             bail!("Can not verify check sum.")
         }
         let packet = build_gs_packet(msg.0)?;
-        packet.accept(ctx.actor_ref()).await?;
+        packet.accept(ctx.actor_ref().clone()).await?;
         Ok(())
     }
 }

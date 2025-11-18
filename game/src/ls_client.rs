@@ -2,7 +2,7 @@ use crate::controller::GameController;
 use crate::lsp_factory::build_ls_packet;
 use anyhow::bail;
 use entities::DBPool;
-use kameo::actor::{ActorID, ActorRef, WeakActorRef};
+use kameo::actor::{ActorId, ActorRef, Spawn, WeakActorRef};
 use kameo::error::{ActorStopReason, PanicError};
 use kameo::message::{Context, Message};
 use kameo::Actor;
@@ -98,7 +98,7 @@ impl Actor for LoginServerClient {
     async fn on_link_died(
         &mut self,
         _actor_ref: WeakActorRef<Self>,
-        _id: ActorID,
+        _id: ActorId,
         reason: ActorStopReason,
     ) -> Result<ControlFlow<ActorStopReason>, Self::Error> {
         Ok(ControlFlow::Break(reason))
@@ -131,7 +131,7 @@ impl Message<HandleIncomingPacket> for LoginServerClient {
             bail!("Can not verify check sum.")
         }
         let packet = build_ls_packet(msg.0)?;
-        packet.accept(ctx.actor_ref()).await?;
+        packet.accept(ctx.actor_ref().clone()).await?;
         Ok(())
     }
 }

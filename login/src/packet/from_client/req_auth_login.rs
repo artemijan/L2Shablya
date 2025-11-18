@@ -63,7 +63,7 @@ impl Message<RequestAuthLogin> for LoginClient {
         self.account_name = Some(msg.username.to_string());
         let player_info = player::Info {
             is_authed: true,
-            player_actor: Some(ctx.actor_ref()),
+            player_actor: Some(ctx.actor_ref().clone()),
             session: Some(self.session_key.clone()),
             account_name: msg.username.to_string(),
             ..Default::default()

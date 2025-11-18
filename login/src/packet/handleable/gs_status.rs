@@ -40,7 +40,7 @@ impl Message<GSStatusUpdate> for GameServerClient {
         }
         self.lc
             .gs_actors
-            .insert(self.try_get_server_id()?, ctx.actor_ref());
+            .insert(self.try_get_server_id()?, ctx.actor_ref().clone());
         Ok(())
     }
 }

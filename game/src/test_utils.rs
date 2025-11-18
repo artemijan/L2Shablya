@@ -3,7 +3,7 @@ pub mod test {
     use crate::controller::GameController;
     use crate::ls_client::LoginServerClient;
     use entities::DBPool;
-    use kameo::actor::ActorRef;
+    use kameo::actor::{ActorRef, Spawn};
     use kameo::Actor;
     use l2_core::config::gs::GSServerConfig;
     use l2_core::traits::ServerConfig;

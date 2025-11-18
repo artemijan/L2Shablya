@@ -127,7 +127,7 @@ impl Message<EnterWorld> for PlayerClient {
         self.send_packet(HennaInfo::new(&player)?).await?;
 
         Self::do_later(
-            ctx.actor_ref(),
+            ctx.actor_ref().clone(),
             DoLater {
                 delay: Duration::from_millis(500),
                 callback: Box::new(move |actor: &mut PlayerClient| {
