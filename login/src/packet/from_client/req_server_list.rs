@@ -17,7 +17,7 @@ impl Message<RequestServerList> for LoginClient {
 
     async fn handle(
         &mut self,
-        _msg: RequestServerList,
+        _: RequestServerList,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> Self::Reply {
         let acc_name = self.account_name.clone();

@@ -64,7 +64,10 @@ pub trait ConfigDirLoader: Loadable + Default + LoadFileHandler {
         for entry in WalkDir::new(Self::DATA_DIR)
             .into_iter()
             .filter_map(Result::ok)
-            .filter(|e| e.path().is_file() && e.path().extension().and_then(|ext| ext.to_str()) == Some("yaml"))
+            .filter(|e| {
+                e.path().is_file()
+                    && e.path().extension().and_then(|ext| ext.to_str()) == Some("yaml")
+            })
         {
             let path = entry.path();
             let file = fs::read_to_string(path).expect("Cannot read file");

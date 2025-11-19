@@ -20,7 +20,7 @@ impl Message<SendClientIni> for PlayerClient {
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
-        _msg: SendClientIni,
+        _: SendClientIni,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo: I don't know what this packet is needed for, in L2J it is also not handled

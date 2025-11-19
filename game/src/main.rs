@@ -2,7 +2,6 @@ use crate::controller::GameController;
 use crate::ls_client::LoginServerClient;
 use crate::pl_client::PlayerClient;
 use dotenvy::dotenv;
-use kameo::Actor;
 use l2_core::config::gs::GSServerConfig;
 use l2_core::network::connector::Connector;
 use l2_core::network::listener::ConnectionListener;

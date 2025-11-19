@@ -1,8 +1,8 @@
 use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
-use tracing::instrument;
 use l2_core::shared_packets::common::ReadablePacket;
+use tracing::instrument;
 
 #[derive(Debug, Clone)]
 pub struct NoOp {}
@@ -20,7 +20,7 @@ impl Message<NoOp> for PlayerClient {
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
-        _msg: NoOp,
+        _: NoOp,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         Ok(())

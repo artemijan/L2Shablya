@@ -5,8 +5,8 @@ use crate::gs_client::GSMessages;
 use l2_core::shared_packets::common::PlayerLoginFailReasons;
 use l2_core::shared_packets::ls_2_gs::{KickPlayer, RequestChars};
 use rand::{
-    distributions::{Distribution, Standard},
     Rng,
+    distributions::{Distribution, Standard},
 };
 use std::time::Duration;
 use tracing::{error, info};
@@ -24,17 +24,17 @@ impl LoginController {
         for entry in &self.gs_actors {
             let gs_actor = entry.value().clone();
             let gs_id = *entry.key();
-            if let Ok(resp_fut) = gs_actor.ask(packet.clone()).reply_timeout(timeout).await {
-                if let Ok(GSMessages::ReplyChars(rc)) = resp_fut.await {
-                    player_info.chars_on_servers.insert(
-                        gs_id,
-                        GSCharsInfo {
-                            char_deletion_timestamps: rc.char_deletion_timestamps,
-                            chars_to_delete: rc.delete_chars_len,
-                            total_chars: rc.chars,
-                        },
-                    );
-                }
+            if let Ok(resp_fut) = gs_actor.ask(packet.clone()).reply_timeout(timeout).await
+                && let Ok(GSMessages::ReplyChars(rc)) = resp_fut.await
+            {
+                player_info.chars_on_servers.insert(
+                    gs_id,
+                    GSCharsInfo {
+                        char_deletion_timestamps: rc.char_deletion_timestamps,
+                        chars_to_delete: rc.delete_chars_len,
+                        total_chars: rc.chars,
+                    },
+                );
             }
         }
         self.players.insert(account_name, player_info); // if player exists it will drop
@@ -54,7 +54,7 @@ impl LoginController {
                     .ok_or(PlayerLoginFailReasons::ReasonSystemErrorLoginLater)?;
                 let _ = gs_actor.tell(packet.clone()).await;
             } else {
-                for entry in self.gs_actors.iter() {
+                for entry in &self.gs_actors {
                     let _ = entry.value().tell(packet.clone()).await;
                 }
             }
@@ -82,17 +82,18 @@ impl LoginController {
         }
     }
     pub fn remove_player(&self, account_name: &str) {
-        if let Some((acc, pl)) = self.players.remove(account_name) {
-            if let Some(pl_actor) = pl.player_actor {
-                //process in the background, no need make caller wait
-                if pl_actor.is_alive() {
-                    tokio::spawn(async move {
-                        if pl_actor.is_alive() && let Err(e) = pl_actor.stop_gracefully().await {
-                            error!("Failed to stop player {acc}, actor: {e:?}");
-                        }
-                    });
+        if let Some((acc, pl)) = self.players.remove(account_name)
+            && let Some(pl_actor) = pl.player_actor
+            && pl_actor.is_alive()
+        {
+            //process in the background, no need make caller wait
+            tokio::spawn(async move {
+                if pl_actor.is_alive()
+                    && let Err(e) = pl_actor.stop_gracefully().await
+                {
+                    error!("Failed to stop player {acc}, actor: {e:?}");
                 }
-            }
+            });
         }
     }
 

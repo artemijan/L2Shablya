@@ -21,7 +21,7 @@ impl Message<GoLobby> for PlayerClient {
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
-        _msg: GoLobby,
+        _: GoLobby,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         let user_name = &self.try_get_user()?.username;

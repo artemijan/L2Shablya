@@ -4,6 +4,8 @@ use std::thread;
 use tokio::runtime::Runtime;
 use tracing::info;
 
+/// # Panics
+/// - when failed to build tokio runtime
 pub fn bootstrap_tokio_runtime(cfg: Option<&dto::Runtime>) -> Runtime {
     let mut worker_count = thread::available_parallelism()
         .map(NonZero::get)

@@ -11,7 +11,7 @@ pub struct AbnormalStatusUpdate {
 impl AbnormalStatusUpdate {
     const PACKET_ID: u8 = 0x85;
 
-    pub fn new(p: &Player) -> anyhow::Result<Self> {
+    pub fn new(_: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
         };

@@ -2,7 +2,6 @@ mod login_client;
 use crate::controller::LoginController;
 use crate::gs_client::GameServerClient;
 use dotenvy::dotenv;
-use kameo::Actor;
 use l2_core::config::login::LoginServerConfig;
 use l2_core::network::listener::ConnectionListener;
 use l2_core::new_db_pool;

@@ -140,13 +140,13 @@ impl CharTemplate {
         target.access_level = 0;
         target.race_id = self.class_id.get_class().race as i8;
         let base_max_hp =
-            self.get_base_max_parameter(target.level as u8, &CreatureParameter::HP)?;
+            self.get_base_max_parameter(target.level, &CreatureParameter::HP)?;
         let base_max_mp =
-            self.get_base_max_parameter(target.level as u8, &CreatureParameter::MP)?;
+            self.get_base_max_parameter(target.level, &CreatureParameter::MP)?;
         let base_max_cp =
-            self.get_base_max_parameter(target.level as u8, &CreatureParameter::CP)?;
-        let base_con = base_stats.con_bonus(u8::try_from(self.static_data.base_con)?)?;
-        let base_men = base_stats.con_bonus(u8::try_from(self.static_data.base_men)?)?;
+            self.get_base_max_parameter(target.level, &CreatureParameter::CP)?;
+        let base_con = base_stats.con_bonus(self.static_data.base_con)?;
+        let base_men = base_stats.con_bonus(self.static_data.base_men)?;
         target.max_hp = f64::from(base_max_hp) * base_con;
         target.max_mp = f64::from(base_max_mp) * base_men;
         target.max_cp = f64::from(base_max_cp) * base_con;

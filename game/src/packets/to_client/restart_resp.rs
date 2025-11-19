@@ -15,10 +15,10 @@ impl RestartResponse {
         buffer.write_i32(ok)?;
         Ok(Self { buffer })
     }
-    pub fn Ok() -> anyhow::Result<Self> {
+    pub fn ok() -> anyhow::Result<Self> {
         Self::new(true)
     }
-    pub fn NotOk() -> anyhow::Result<Self> {
+    pub fn not_ok() -> anyhow::Result<Self> {
         Self::new(false)
     }
 }

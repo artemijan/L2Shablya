@@ -1,13 +1,8 @@
-use anyhow::bail;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
 use tracing::{info, instrument};
-use entities::entities::character;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use crate::packets::from_client::char_restore::RestoreChar;
-use crate::packets::from_client::char_select::SelectChar;
-use crate::packets::to_client::{CharSelectionInfo, CreateCharOk};
 use crate::packets::to_client::{CharMoveToLocation};
 
 use crate::pl_client::PlayerClient;

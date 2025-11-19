@@ -21,7 +21,7 @@ impl Message<RequestManorList> for PlayerClient {
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
-        _msg: RequestManorList,
+        _: RequestManorList,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         let p = ManorList::new()?;

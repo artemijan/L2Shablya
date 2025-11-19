@@ -4,7 +4,7 @@ use crate::packets::to_client::extended::{
     SubclassInfo, SubclassInfoType, UISettings, UnreadMailCount, VitalityInfo,
 };
 use crate::packets::to_client::{
-    AbnormalStatusUpdate, AcquireSkillList, CharEtcStatusUpdate, CharInfo, FriendList, HennaInfo,
+    AbnormalStatusUpdate, AcquireSkillList, CharEtcStatusUpdate, FriendList, HennaInfo,
     ItemList, MacroList, MoveTo, QuestList, ShortcutsInit, SkillCoolTime, SkillList, SystemMessage,
     SystemMessageType, UserInfo,
 };
@@ -202,7 +202,7 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: check if offline trade and cancel it
 
         self.controller
-            .add_player_to_world(&player, &ctx.actor_ref())
+            .add_player_to_world(&player, ctx.actor_ref())
             .await?;
         let p = UserInfo::new(&player, UserInfoType::all(), &self.controller).await?;
         self.send_packet(p).await?;

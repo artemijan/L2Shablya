@@ -205,9 +205,9 @@ impl UserInfo {
             .write_u32(char_info.char_model.cur_cp.to_u32_rounded()?)?;
         self.buffer.write_i64(char_info.char_model.sp)?;
         self.buffer.write_i64(char_info.char_model.exp)?;
-        let current_threshold = exp_table.get_exp(u8::try_from(char_info.char_model.level)?);
+        let current_threshold = exp_table.get_exp(char_info.char_model.level);
         let next_threshold =
-            exp_table.get_exp_for_next_lvl(u8::try_from(char_info.char_model.level)?);
+            exp_table.get_exp_for_next_lvl(char_info.char_model.level);
         let gained = char_info.char_model.exp - current_threshold;
         let total = next_threshold - current_threshold;
         #[allow(clippy::cast_precision_loss)]

@@ -1,6 +1,5 @@
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use crate::packets::to_client::CharEtcStatusUpdate;
 use macro_common::SendablePacket;
 
 

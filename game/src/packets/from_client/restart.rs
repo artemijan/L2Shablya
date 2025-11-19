@@ -27,7 +27,7 @@ impl Message<RequestRestart> for PlayerClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo: if can logout (olymp, pvp flag, events, etc.)
-        self.send_packet(RestartResponse::Ok()?).await?;
+        self.send_packet(RestartResponse::ok()?).await?;
         let sk = self.try_get_session_key()?;
         let chars = self.try_get_account_chars()?;
         let user_name = &self.try_get_user()?.username;

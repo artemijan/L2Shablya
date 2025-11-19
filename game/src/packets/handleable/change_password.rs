@@ -6,11 +6,11 @@ use l2_core::shared_packets::gs_2_ls::ChangePassword;
 
 impl Message<ChangePassword> for LoginServerClient {
     type Reply = anyhow::Result<()>;
-    
+
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
-        _msg: ChangePassword,
+        _: ChangePassword,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo:

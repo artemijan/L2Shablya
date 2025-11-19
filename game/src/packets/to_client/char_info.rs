@@ -177,7 +177,7 @@ impl CharInfo {
         inst.buffer.write_u32(p.get_max_hp().to_u32_rounded()?)?; // Confirmed
         inst.buffer.write_u32(p.get_cur_hp().to_u32_rounded()?)?; // Confirmed
         inst.buffer.write_u32(p.get_max_mp().to_u32_rounded()?)?; // Confirmed
-        inst.buffer.write_u32(p.get_cur_mp().to_u32_rounded()?)?; // Confirmed   
+        inst.buffer.write_u32(p.get_cur_mp().to_u32_rounded()?)?; // Confirmed
 
         inst.buffer.write(0)?; // cBRLectureMark
 
@@ -187,7 +187,7 @@ impl CharInfo {
         for af in p.get_abnoraml_visual_effects() {
             inst.buffer.write_u16(*af)?; // Confirmed
         }
-        if (p.is_gm()) {
+        if p.is_gm() {
             inst.buffer.write_u16(AbnormalVisualEffect::Stealth)?;
         }
 

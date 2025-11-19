@@ -30,7 +30,7 @@ pub struct MacroList {
 
 impl MacroList {
     const PACKET_ID: u8 = 0xE8;
-    
+
     pub fn list_macros(p: &Player) -> anyhow::Result<Vec<Self>> {
         let macros = p.get_macros();
         if macros.is_empty() {
@@ -68,8 +68,7 @@ impl MacroList {
         inst.buffer.write_i32(macro_id)?;
         inst.buffer.write(count)?;
         inst.buffer.write_bool(m.is_some())?;
-        if let Some(m) = m {
-            if update != MacroUpdateType::Delete {
+        if let Some(m) = m && update != MacroUpdateType::Delete{
                 inst.buffer.write_i32(m.id)?;
                 inst.buffer.write_c_utf16le_string(Some(&m.name))?;
                 inst.buffer.write_c_utf16le_string(Some(&m.description))?;
@@ -84,7 +83,6 @@ impl MacroList {
                     inst.buffer
                         .write_c_utf16le_string(Some(cmd.get_cmd_name()))?;
                 }
-            }
         }
         Ok(inst)
     }

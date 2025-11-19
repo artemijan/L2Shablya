@@ -20,7 +20,7 @@ impl Message<RequestKeyMapping> for PlayerClient {
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
-        _msg: RequestKeyMapping,
+        _: RequestKeyMapping,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo:

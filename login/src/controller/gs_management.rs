@@ -42,10 +42,10 @@ impl LoginController {
     }
     pub fn register_gs(&self, gs_info: GSInfo) -> anyhow::Result<u8, GSLoginFailReasons> {
         let id = gs_info.get_id();
-        if let Some(allowed_gs) = &self.config.allowed_gs {
-            if !allowed_gs.contains(&gs_info.hex_int()) {
-                return Err(GSLoginFailReasons::WrongHexId);
-            }
+        if let Some(allowed_gs) = &self.config.allowed_gs
+            && !allowed_gs.contains(&gs_info.hex_int())
+        {
+            return Err(GSLoginFailReasons::WrongHexId);
         }
         if self.game_servers.contains_key(&gs_info.get_id()) {
             if gs_info.accept_alternative_id() {

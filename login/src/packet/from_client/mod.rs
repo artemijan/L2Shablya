@@ -7,7 +7,3 @@ pub use self::{
     req_auth_gg::RequestAuthGG, req_auth_login::RequestAuthLogin,
     req_server_list::RequestServerList, request_gs_login::RequestGSLogin,
 };
-use kameo::Reply;
-
-#[derive(Reply)]
-pub struct HandlePacketReply;

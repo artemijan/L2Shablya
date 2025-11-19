@@ -17,7 +17,7 @@ pub mod test {
         type Reply = Arc<Self>;
         async fn handle(
             &mut self,
-            _msg: GetState,
+            _: GetState,
             _ctx: &mut Context<Self, Self::Reply>,
         ) -> Self::Reply {
             Arc::new(self.clone())

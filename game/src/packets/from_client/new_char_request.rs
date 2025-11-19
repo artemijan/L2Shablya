@@ -22,7 +22,7 @@ impl Message<NewCharacterRequest> for PlayerClient {
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
-        _msg: NewCharacterRequest,
+        _: NewCharacterRequest,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         self.send_packet(

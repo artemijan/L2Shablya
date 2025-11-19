@@ -17,11 +17,11 @@ impl ReadablePacket for RequestUserBanInfo {
 }
 impl Message<RequestUserBanInfo> for PlayerClient {
     type Reply = anyhow::Result<()>;
-    #[instrument(skip(_msg, _ctx))]
+    #[instrument()]
     async fn handle(
         &mut self,
-        _msg: RequestUserBanInfo,
-        _ctx: &mut Context<Self, Self::Reply>,
+        _: RequestUserBanInfo,
+        _: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo: I don't know what this packet is needed for, in L2J it is also not handled
         Ok(())

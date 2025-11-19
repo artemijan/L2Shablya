@@ -4,9 +4,9 @@ use macro_common::SendablePacket;
 #[derive(Debug, Clone)]
 pub struct Relation {
     pub obj_id: i32,
-    pub relation: u32,
+    pub rel: u32,
     pub auto_attackable: bool,
-    pub reputation: i32,
+    pub reputation: u32,
     pub pvp_flag: bool,
 }
 
@@ -46,16 +46,16 @@ impl RelationChangedBuilder {
         if !player.is_invisible() {
             let relation = Relation {
                 obj_id: player.char_model.id,
-                relation,
+                rel: relation,
                 auto_attackable,
-                reputation: player.char_model.reputation,
+                reputation: player.char_model.reputation as u32,
                 pvp_flag: player.get_pvp_flag(),
             };
             if let Some(multi) = &mut self.multi {
                 multi.push(relation);
             } else {
                 self.multi = Some(vec![relation]);
-                
+
             }
         }
         self
@@ -87,9 +87,9 @@ impl RelationChangedBuilder {
     ) -> anyhow::Result<()> {
         buffer.write_i32(r.obj_id)?;
         if (self.mask & RelationChanged::SEND_DEFAULT) != RelationChanged::SEND_DEFAULT {
-            buffer.write_u32(r.relation)?;
+            buffer.write_u32(r.rel)?;
             buffer.write(r.auto_attackable)?;
-            buffer.write_u32(r.relation)?;
+            buffer.write_u32(r.reputation)?;
             buffer.write(r.pvp_flag)?;
         }
         Ok(())

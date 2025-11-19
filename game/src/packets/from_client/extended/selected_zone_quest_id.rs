@@ -2,7 +2,7 @@ use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
 use l2_core::shared_packets::common::ReadablePacket;
-use tracing::{instrument, warn};
+use tracing::instrument;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 
 #[derive(Debug, Clone)]

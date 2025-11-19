@@ -1,4 +1,3 @@
-use crate::packets::to_client::{CharSelectionInfo, RestartResponse};
 use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
 use kameo::message::Context;

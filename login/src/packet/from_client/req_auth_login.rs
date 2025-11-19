@@ -45,7 +45,7 @@ impl Message<RequestAuthLogin> for LoginClient {
             let password_hash = hash_password(&msg.password).await?;
             let user_record = user::ActiveModel {
                 id: ActiveValue::NotSet,
-                username: ActiveValue::Set(msg.username.to_string()),
+                username: ActiveValue::Set(msg.username.clone()),
                 password: ActiveValue::Set(password_hash),
                 access_level: ActiveValue::Set(0),
                 ban_duration: ActiveValue::NotSet,
@@ -60,12 +60,12 @@ impl Message<RequestAuthLogin> for LoginClient {
             bail!("User not found, and auto creation of accounts is disabled.");
         }
 
-        self.account_name = Some(msg.username.to_string());
+        self.account_name = Some(msg.username.clone());
         let player_info = player::Info {
             is_authed: true,
             player_actor: Some(ctx.actor_ref().clone()),
             session: Some(self.session_key.clone()),
-            account_name: msg.username.to_string(),
+            account_name: msg.username.clone(),
             ..Default::default()
         };
 

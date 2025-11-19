@@ -455,7 +455,7 @@ impl Message<GetCharInfo> for PlayerClient {
 
     async fn handle(
         &mut self,
-        _msg: GetCharInfo,
+        _: GetCharInfo,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> Self::Reply {
         Ok(self.try_get_selected_char()?.clone())
