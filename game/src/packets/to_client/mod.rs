@@ -25,6 +25,7 @@ mod restart_resp;
 mod skill_cooltime;
 mod char_info;
 mod relation_changed;
+mod delete_object;
 
 pub use protocol_response::*;
 pub use login_response::*;
@@ -52,3 +53,4 @@ pub use char_move_to_location::*;
 pub use restart_resp::*;
 pub use char_info::*;
 pub use relation_changed::*;
+pub use delete_object::*;

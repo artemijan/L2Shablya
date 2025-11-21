@@ -22,6 +22,8 @@ use std::sync::Arc;
 use tokio::sync::RwLock;
 use tracing::{info, warn};
 
+pub type PacketFilter = Box<dyn Fn(&str, &ActorRef<PlayerClient>) -> bool + Send>;
+
 #[derive(Clone, Debug)]
 pub struct GameController {
     cfg: Arc<GSServerConfig>,
@@ -110,8 +112,8 @@ impl GameController {
         for entry in &self.online_chars {
             if let Some(pl_actor) = entry.value()
                 && pl_actor.id() != actor_ref.id()
+                && let Ok(p2) = pl_actor.ask(GetCharInfo).await
             {
-                let p2 = pl_actor.ask(GetCharInfo).await?;
                 self.exchange_players_info((p, actor_ref), (&p2, pl_actor))
                     .await?;
             }
@@ -142,18 +144,26 @@ impl GameController {
         p1.1.tell(HandleOutboundPacket { packet: rp2 }).await?;
         Ok(())
     }
-    pub async fn broadcast_packet<F>(
+    pub fn broadcast_packet_with_filter(
         &self,
         packet: impl SendablePacket + Clone + Send + 'static,
-        filter: F,
-    ) where
-        F: Fn(&String, &ActorRef<PlayerClient>) -> bool,
-    {
-        for entry in &self.online_chars {
-            let account = entry.key();
-            if let Some(pl_actor) = entry.value() {
-                // Apply the filter function
-                if !filter(account, pl_actor) {
+        filter: Option<PacketFilter>,
+    ) {
+        let online_chars: Vec<_> = self
+            .online_chars
+            .iter()
+            .map(|entry| (entry.key().to_string(), entry.value().clone()))
+            .collect();
+        // we need to unblock the execution of the caller + calling tell on the same actor will lead to deadlock
+        tokio::spawn(async move {
+            for (account, pl_actor_opt) in online_chars {
+                // Apply filter
+                let Some(pl_actor) = pl_actor_opt else {
+                    continue;
+                };
+                if let Some(ref filter_fn) = filter
+                    && !filter_fn(&account, &pl_actor)
+                {
                     continue;
                 }
                 let pkt = packet.clone();
@@ -163,7 +173,10 @@ impl GameController {
                     );
                 }
             }
-        }
+        });
+    }
+    pub fn broadcast_packet(&self, packet: impl SendablePacket + Clone + Send + 'static) {
+        self.broadcast_packet_with_filter(packet, None);
     }
 }
 

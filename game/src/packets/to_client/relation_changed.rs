@@ -48,7 +48,7 @@ impl RelationChangedBuilder {
                 obj_id: player.char_model.id,
                 rel: relation,
                 auto_attackable,
-                reputation: player.char_model.reputation as u32,
+                reputation: player.char_model.reputation,
                 pvp_flag: player.get_pvp_flag(),
             };
             if let Some(multi) = &mut self.multi {

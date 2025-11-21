@@ -79,7 +79,7 @@ impl CharInfo {
                 .write_i32(p.try_get_paper_doll_visual_id(*slot)?)?;
         }
         inst.buffer.write(p.get_pvp_flag())?;
-        inst.buffer.write_i32(p.char_model.reputation)?;
+        inst.buffer.write_u32(p.char_model.reputation)?;
         inst.buffer.write_u32(p.get_m_atk_spd())?;
         inst.buffer.write_u32(p.get_p_atk_spd())?;
         inst.buffer.write_u16(p.get_run_speed())?;

@@ -1,4 +1,4 @@
-use crate::packets::to_client::{CharSelectionInfo, RestartResponse};
+use crate::packets::to_client::{CharSelectionInfo, DeleteObject, RestartResponse};
 use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
 use entities::entities::character;
@@ -17,6 +17,7 @@ impl ReadablePacket for RequestRestart {
         Ok(Self {})
     }
 }
+
 impl Message<RequestRestart> for PlayerClient {
     type Reply = anyhow::Result<()>;
 
@@ -27,14 +28,17 @@ impl Message<RequestRestart> for PlayerClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo: if can logout (olymp, pvp flag, events, etc.)
-        self.send_packet(RestartResponse::ok()?).await?;
-        let sk = self.try_get_session_key()?;
+        let session_id = self.try_get_session_key()?.get_play_session_id();
         let chars = self.try_get_account_chars()?;
-        let user_name = &self.try_get_user()?.username;
-        let player = self.try_get_selected_char()?;
+        let user_name = self.try_get_user()?.username.clone();
+        let p = CharSelectionInfo::new(&user_name.clone(), session_id, &self.controller, chars)?;
+        let player = self.try_get_selected_char()?.clone(); // we clone it to avoid borrow checker issues with reference to self
+        self.controller.broadcast_packet_with_filter(
+            DeleteObject::new(player.get_id())?,
+            Some(Box::new(move |acc, _| !acc.eq(&user_name))),
+        );
+        self.send_packet(RestartResponse::ok()?).await?;
         character::Model::update_char(&self.db_pool, &player.char_model).await?;
-        let p =
-            CharSelectionInfo::new(user_name, sk.get_play_session_id(), &self.controller, chars)?;
         self.send_packet(p).await?;
         Ok(())
     }

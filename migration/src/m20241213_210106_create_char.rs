@@ -40,7 +40,7 @@ impl MigrationTrait for Migration {
                     .col(big_unsigned(Character::Exp).default(0))
                     .col(big_unsigned_null(Character::ExpBeforeDeath).default(0))
                     .col(big_unsigned(Character::SP).default(0))
-                    .col(integer(Character::Reputation).default(0))
+                    .col(unsigned(Character::Reputation).default(0))
                     .col(unsigned(Character::Fame).default(0))
                     .col(unsigned(Character::RbPoints).default(0))
                     .col(unsigned(Character::PvpKills).default(0))

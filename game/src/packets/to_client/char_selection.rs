@@ -65,7 +65,7 @@ impl CharSelectionInfo {
             #[allow(clippy::cast_precision_loss)]
             buffer.write_f64((char.exp - exp_current) as f64 / (exp_next - exp_current) as f64)?;
             buffer.write_i32(i32::from(char.level))?;
-            buffer.write_i32(char.reputation)?;
+            buffer.write_u32(char.reputation)?;
             buffer.write_i32(char.pk_kills)?;
             buffer.write_i32(char.pvp_kills)?;
             buffer.write_i32(0)?;

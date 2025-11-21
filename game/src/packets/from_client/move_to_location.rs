@@ -1,9 +1,9 @@
+use crate::packets::to_client::CharMoveToLocation;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
-use tracing::{info, instrument};
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use crate::packets::to_client::{CharMoveToLocation};
+use tracing::{info, instrument};
 
 use crate::pl_client::PlayerClient;
 
@@ -42,19 +42,15 @@ impl Message<MoveToLocation> for PlayerClient {
         msg: MoveToLocation,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-
         info!("Received MoveToLocation packet {:?}", msg);
         //TODO check with geodata if the location is valid.
         {
             let selected_char = self.try_get_selected_char_mut()?;
             selected_char.set_location(msg.x_to, msg.y_to, msg.z_to)?;
         }
-        self.send_packet(CharMoveToLocation::new(
-            self.try_get_selected_char()?,
-            msg.x_to,
-            msg.y_to,
-            msg.z_to
-        )?).await?;
+        let p =
+            CharMoveToLocation::new(self.try_get_selected_char()?, msg.x_to, msg.y_to, msg.z_to)?;
+        self.controller.broadcast_packet(p); //broadcast to all players including self
         Ok(())
     }
 }

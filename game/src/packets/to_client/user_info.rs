@@ -349,7 +349,7 @@ impl UserInfo {
     pub fn write_social(&mut self, player: &Player, cfg: &GSServerConfig) -> anyhow::Result<()> {
         self.buffer.write_u16(22u16)?;
         self.buffer.write(player.get_pvp_flag())?;
-        self.buffer.write_i32(player.char_model.reputation)?;
+        self.buffer.write_u32(player.char_model.reputation)?;
         self.buffer.write(player.is_noble())?;
         self.buffer
             .write(player.is_hero() || player.is_gm() && cfg.enable_gm_hero_aura)?;

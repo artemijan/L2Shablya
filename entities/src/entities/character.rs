@@ -34,7 +34,7 @@ pub struct Model {
     pub exp: i64,
     pub exp_before_death: Option<i64>,
     pub sp: i64,
-    pub reputation: i32,
+    pub reputation: u32,
     pub fame: i32,
     pub rb_points: i32,
     pub pvp_kills: i32,

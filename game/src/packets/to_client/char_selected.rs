@@ -42,7 +42,7 @@ impl CharSelected {
         inst.buffer.write_i64(player.char_model.sp)?;
         inst.buffer.write_i64(player.char_model.exp)?;
         inst.buffer.write_i32(i32::from(player.char_model.level))?;
-        inst.buffer.write_i32(player.char_model.reputation)?;
+        inst.buffer.write_u32(player.char_model.reputation)?;
         inst.buffer.write_i32(player.char_model.pk_kills)?;
         inst.buffer.write_i32(game_time % (24 * 60))?;
         inst.buffer.write_i32(0)?;
