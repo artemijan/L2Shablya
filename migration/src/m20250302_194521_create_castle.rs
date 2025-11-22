@@ -1,5 +1,5 @@
 use crate::m20250302_182532_create_clan::ClanAlly;
-use sea_orm_migration::{prelude::*, schema::*};
+use sea_orm_migration::{prelude::*, schema::{pk_auto, string, integer, big_unsigned, timestamp_with_time_zone_null, boolean, small_unsigned}};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;

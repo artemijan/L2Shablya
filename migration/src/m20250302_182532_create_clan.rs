@@ -1,6 +1,6 @@
 use crate::m20241213_210106_create_char::Character;
 use sea_orm::DbBackend;
-use sea_orm_migration::{prelude::*, schema::*};
+use sea_orm_migration::{prelude::*, schema::{pk_auto, string_len, boolean, integer_null, tiny_unsigned, unsigned, timestamp_with_time_zone_null, small_unsigned, integer}};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;

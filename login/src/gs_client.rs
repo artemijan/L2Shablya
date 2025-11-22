@@ -230,7 +230,6 @@ mod tests {
             acc.clone(),
             player::Info {
                 game_server: Some(1),
-                ip_address: Some(ip),
                 account_name: acc,
                 ..player::Info::default()
             },

@@ -48,7 +48,6 @@ mod tests {
     use l2_core::config::gs::GSServerConfig;
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
-    use ntest::timeout;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt};
 

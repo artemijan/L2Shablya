@@ -121,7 +121,6 @@ impl LoginController {
                     game_server: Some(gs_id),
                     account_name: acc_name.clone(),
                     is_joined_gs: true,
-                    is_authed: true,
                     ..player::Info::default()
                 };
                 self.players.insert(acc_name.clone(), pl);

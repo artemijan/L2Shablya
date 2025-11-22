@@ -16,6 +16,7 @@ pub struct BitMask {
 
 impl BitMask {
     /// Creates a new bitmask with enough space for `num_flags` bits.
+    #[must_use] 
     pub fn new(num_flags: i32) -> Self {
         let num_bytes = (num_flags + 7) / 8;
         Self {
@@ -48,6 +49,7 @@ impl BitMask {
     }
 
     /// Returns the raw flags array (for debugging or export).
+    #[must_use] 
     pub fn flags(&self) -> &[u8] {
         &self.flags
     }

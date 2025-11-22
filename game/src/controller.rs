@@ -152,7 +152,7 @@ impl GameController {
         let online_chars: Vec<_> = self
             .online_chars
             .iter()
-            .map(|entry| (entry.key().to_string(), entry.value().clone()))
+            .map(|entry| (entry.key().clone(), entry.value().clone()))
             .collect();
         // we need to unblock the execution of the caller + calling tell on the same actor will lead to deadlock
         tokio::spawn(async move {

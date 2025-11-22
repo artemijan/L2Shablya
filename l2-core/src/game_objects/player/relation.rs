@@ -35,10 +35,9 @@ impl BitOrAssign<RelationChanges> for u32 {
     }
 }
 impl RelationChanges {
+    #[must_use] 
     pub fn party_index_mask(index: u32) -> u32 {
-        if index > 8 {
-            panic!("Invalid party index");
-        }
+        assert!(index <= 8, "Invalid party index");
         match index {
             0 => Self::PartyLeader as u32, //0x10
             _ => 9 - index,

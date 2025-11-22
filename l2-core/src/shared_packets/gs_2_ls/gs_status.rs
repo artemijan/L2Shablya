@@ -97,7 +97,7 @@ impl ReadablePacket for GSStatusUpdate {
                     instance.server_age = value as u8;
                 }
                 _ => {}
-            };
+            }
         }
         Ok(instance)
     }

@@ -9,7 +9,7 @@ use crate::packets::from_client::extended::{
     SelectedQuestZoneId, SendClientIni,
 };
 use crate::packets::from_client::logout::Logout;
-use crate::packets::from_client::move_to_location::MoveToLocation;
+use crate::packets::from_client::move_to_location::RequestMoveToLocation;
 use crate::packets::from_client::new_char_request::NewCharacterRequest;
 use crate::packets::from_client::noop::NoOp;
 use crate::packets::from_client::protocol::ProtocolVersion;
@@ -42,7 +42,7 @@ pub enum PlayerPackets {
     RequestManorList(RequestManorList),
     RequestKeyMapping(RequestKeyMapping),
     NoOp(NoOp),
-    MoveToLocation(MoveToLocation),
+    MoveToLocation(RequestMoveToLocation),
     ReqRestart(RequestRestart),
     SelectedQuestZoneId(SelectedQuestZoneId),
     ReqSkillCoolTime(ReqSkillCoolTime),
@@ -68,7 +68,7 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         CreateCharRequest::PACKET_ID => Ok(PlayerPackets::CreateCharRequest(
             CreateCharRequest::read(data)?,
         )),
-        MoveToLocation::PACKET_ID => Ok(PlayerPackets::MoveToLocation(MoveToLocation::read(data)?)),
+        RequestMoveToLocation::PACKET_ID => Ok(PlayerPackets::MoveToLocation(RequestMoveToLocation::read(data)?)),
         RequestRestart::PACKET_ID => Ok(PlayerPackets::ReqRestart(RequestRestart::read(data)?)),
         Logout::PACKET_ID => Ok(PlayerPackets::Logout(Logout::read(data)?)),
         DeleteChar::PACKET_ID => Ok(PlayerPackets::DeleteChar(DeleteChar::read(data)?)),

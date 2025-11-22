@@ -95,7 +95,7 @@ impl Encryption {
     pub fn decrypt(&self, raw: &mut [u8]) -> Result<(), Packet> {
         let size = raw.len();
         let offset = 0;
-        if size % 8 > 0 || offset + size > raw.len() {
+        if !size.is_multiple_of(8) || offset + size > raw.len() {
             return Err(Packet::DecryptBlowfishError);
         }
         for chunk in raw.chunks_mut(8) {

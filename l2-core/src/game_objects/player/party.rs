@@ -25,6 +25,7 @@ pub struct Party {
 }
 
 impl Party {
+    #[must_use] 
     pub fn new(leader: Player) -> Self {
         Self {
             loot: PartyLoot::default(),
@@ -34,7 +35,7 @@ impl Party {
 
     #[must_use]
     pub fn get_leader(&self) -> &Player {
-        &self
+        self
             .players
             .first()
             .unwrap_or_else(|| panic!("Programming error: Party has no leader"))

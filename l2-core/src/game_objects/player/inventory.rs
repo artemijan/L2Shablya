@@ -10,6 +10,7 @@ pub struct Inventory {
 }
 
 impl Inventory {
+    #[must_use] 
     pub fn from_items(items: Vec<item::Model>) -> Self {
         Self {
             items: ItemObject::from_items(items),

@@ -11,7 +11,6 @@ use crate::game_objects::player::paper_doll::PaperDoll;
 use crate::game_objects::player::party::Party;
 use crate::game_objects::player::quest::Quest;
 use crate::game_objects::player::relation::RelationChanges;
-use crate::game_objects::player::user_info::UserInfoType::Clan;
 use crate::game_objects::player::vars::CharVariables;
 use crate::game_objects::player::warehouse::Warehouse;
 use crate::game_objects::player::{PlayerMacro, SubclassType, TeleportBookmark};
@@ -210,9 +209,9 @@ impl Player {
         self.is_dead()
     }
     #[must_use]
-    pub fn is_auto_attackable(&self, another: &Player) -> bool {
+    pub fn is_auto_attackable(&self, _another: &Player) -> bool {
         //todo: implement me
-        return false
+        false
     }
 
     #[must_use]
@@ -469,10 +468,12 @@ impl Player {
         113
     }
 
+    #[must_use] 
     pub fn get_fly_run_speed(&self) -> u16 {
         //todo: implement me
         159
     }
+    #[must_use] 
     pub fn get_fly_walk_speed(&self) -> u16 {
         //todo: implement me
         113
@@ -889,7 +890,7 @@ impl Player {
             } else {
                 res |= RelationChanges::Enemy;
             }
-            if (self.siege_state == 1) {
+            if self.siege_state == 1 {
                 res |= RelationChanges::Attacker;
             }
         }

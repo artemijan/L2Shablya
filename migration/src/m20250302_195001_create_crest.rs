@@ -1,6 +1,6 @@
 use crate::m20250302_182532_create_clan::ClanAlly;
 use sea_orm::DbBackend;
-use sea_orm_migration::{prelude::*, schema::*};
+use sea_orm_migration::{prelude::*, schema::{pk_auto, binary_len, tiny_integer, integer_null}};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;

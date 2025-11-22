@@ -1,5 +1,5 @@
 use crate::m20241213_210106_create_char::Character;
-use sea_orm_migration::{prelude::*, schema::*};
+use sea_orm_migration::{prelude::*, schema::{pk_auto, string, string_null, integer_null, timestamp_with_time_zone, integer, boolean}};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;

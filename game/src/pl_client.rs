@@ -183,10 +183,6 @@ impl PlayerClient {
         self.selected_char = Some(char_slot);
     }
 
-    pub fn get_selected_char_slot(&self) -> Option<i32> {
-        self.selected_char
-    }
-
     pub fn add_character(&mut self, character: Player) -> anyhow::Result<()> {
         self.account_chars
             .as_mut()
@@ -301,6 +297,7 @@ impl PlayerClient {
         let data = self.prepare_packet_data(packet)?;
         send_packet(self.packet_sender.as_ref(), data.freeze()).await
     }
+    #[allow(dead_code)]
     pub async fn send_packet_blocking(
         &mut self,
         packet: impl SendablePacket,
@@ -308,6 +305,7 @@ impl PlayerClient {
         let data = self.prepare_packet_data(packet)?;
         send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
     }
+    #[allow(dead_code)]
     pub async fn send_packet_later(
         &mut self,
         packet: impl SendablePacket,

@@ -272,7 +272,7 @@ where
             })
             .await;
         match reply {
-            Ok(_) => Ok(()),
+            Ok(()) => Ok(()),
             Err(e) => bail!("Error sending packet: {e:?}"),
         }
     } else {

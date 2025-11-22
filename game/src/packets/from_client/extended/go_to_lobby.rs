@@ -49,7 +49,6 @@ mod tests {
     use l2_core::session::SessionKey;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
-    use ntest::timeout;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt};
 

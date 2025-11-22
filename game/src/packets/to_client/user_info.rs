@@ -420,6 +420,7 @@ impl UserInfo {
         Ok(())
     }
     #[must_use]
+    #[allow(clippy::unused_self)]
     pub fn get_relation(&self, p: &Player, is_clan_leader: bool) -> u32 {
         let mut relation = 0;
         if let Some(pt) = p.party.as_ref() {

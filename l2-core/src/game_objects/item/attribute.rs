@@ -19,13 +19,22 @@ pub enum Attribute {
     Unholy,
 }
 
+impl Default for AttributeSet {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl AttributeSet {
+    #[must_use]
     pub fn new() -> Self {
         Self {
             attributes: HashMap::new()
         }
     }
 
+    /// # Errors
+    /// - when attributes dont match
     pub fn add(&mut self, attr: Attribute, value: u16) -> Result<(), &'static str> {
         match attr {
             Attribute::None => Ok(()),
@@ -64,7 +73,7 @@ impl Serialize for AttributeSet {
         let mut map = serializer.serialize_map(Some(self.attributes.len()))?;
         for (key, value) in &self.attributes {
             match key {
-                Attribute::None => continue,
+                Attribute::None => {}, //continue
                 _ => map.serialize_entry(&key, &value)?
             }
         }
@@ -79,13 +88,13 @@ impl<'de> Deserialize<'de> for AttributeSet {
     {
         let map: HashMap<Attribute, u16> = HashMap::deserialize(deserializer)?;
         let mut attr_set = AttributeSet::new();
-        
+
         for (attr, value) in map {
             if let Err(e) = attr_set.add(attr, value) {
                 return Err(serde::de::Error::custom(e));
             }
         }
-        
+
         Ok(attr_set)
     }
 }

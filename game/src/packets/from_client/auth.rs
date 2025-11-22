@@ -1,3 +1,5 @@
+use std::slice;
+
 use crate::ls_client::LSMessages;
 use crate::packets::to_client::{CharSelectionInfo, PlayerLoginResponse};
 use crate::pl_client::{ClientStatus, PlayerClient};
@@ -57,7 +59,7 @@ impl AuthLogin {
             .controller
             .try_get_ls_actor()
             .await?
-            .tell(PlayerInGame::new(&[self.login_name.clone()])?)
+            .tell(PlayerInGame::new(slice::from_ref(&self.login_name))?)
             .await?;
 
         // Update handler status
