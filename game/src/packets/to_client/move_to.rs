@@ -14,7 +14,7 @@ impl MoveTo {
     pub fn new(p: &Player, loc: &Location) -> anyhow::Result<Self> {
         let mut buffer = SendablePacketBuffer::new();
         buffer.write(Self::PACKET_ID)?;
-        buffer.write_i32(p.char_model.id)?;
+        buffer.write_i32(p.get_object_id())?;
         let p_loc = p.get_location();
         buffer.write_i32(p_loc.x)?;
         buffer.write_i32(p_loc.y)?;

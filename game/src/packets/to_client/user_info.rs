@@ -52,7 +52,7 @@ impl UserInfo {
             title: String::new(),
         };
         inst.buffer.write(Self::PACKET_ID)?;
-        inst.buffer.write_i32(player.char_model.id)?;
+        inst.buffer.write_i32(player.get_object_id())?;
         inst.buffer.write_u32(inst.block_size)?;
         inst.buffer.write_u16(23u16)?;
         inst.buffer.write_bytes(inst.mask.flags())?;
@@ -425,7 +425,7 @@ impl UserInfo {
         let mut relation = 0;
         if let Some(pt) = p.party.as_ref() {
             relation |= 0x08;
-            if pt.get_leader_id() == p.char_model.id {
+            if pt.get_leader_id() == p.get_object_id() {
                 relation |= 0x10;
             }
         }
@@ -492,7 +492,8 @@ mod tests {
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
-        let player = Player::new(char, vec![], template.clone());
+        let mut player = Player::new(char, vec![], template.clone());
+        player.object_id = 268_476_204;
         let p = UserInfo::new(&player, UserInfoType::all(), &controller)
             .await
             .unwrap();

@@ -5,6 +5,7 @@ use sea_orm::JsonValue;
 #[derive(Debug, Clone)]
 pub struct Quest {
     pub model: quest::Model,
+
 }
 impl Quest {
     

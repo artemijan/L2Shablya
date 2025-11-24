@@ -18,7 +18,7 @@ impl Rotation {
         };
         inst.buffer.write(Self::PACKET_ID)?;
         inst.buffer.write_u16(Self::EX_PACKET_ID)?;
-        inst.buffer.write_i32(player.char_model.id)?;
+        inst.buffer.write_i32(player.get_object_id())?;
         inst.buffer.write_i32(player.get_location().heading)?;
         Ok(inst)
     }

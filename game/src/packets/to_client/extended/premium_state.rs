@@ -15,7 +15,7 @@ impl PremiumState {
         let mut buffer = SendablePacketBuffer::new();
         buffer.write(Self::PACKET_ID)?;
         buffer.write_u16(Self::EX_PACKET_ID)?;
-        buffer.write_i32(p.char_model.id)?;
+        buffer.write_i32(p.get_object_id())?;
         buffer.write(p.has_premium())?;
         Ok(Self { buffer })
     }

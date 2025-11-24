@@ -23,6 +23,7 @@ use log::info;
 use serde_json::Value;
 use std::fmt::Debug;
 use std::sync::Arc;
+use crate::id_factory::IdFactory;
 
 #[repr(u8)]
 #[derive(Clone, Debug, Copy, Default)]
@@ -49,6 +50,7 @@ impl From<Team> for u8 {
 
 #[derive(Debug, Clone)]
 pub struct Player {
+    pub object_id: i32,
     pub char_model: character::Model,
     pub skills: Option<Vec<Skill>>, //None if not initialized
     pub quests: Vec<Quest>,
@@ -77,9 +79,12 @@ impl Player {
         items: Vec<item::Model>,
         template: Arc<CharTemplate>,
     ) -> Self {
-        let paperdoll = PaperDoll::restore_visible_inventory(&items);
+        let inventory = Inventory::from_items(items);
+        let paperdoll = PaperDoll::restore_visible_inventory(&inventory.items);
         assert_eq!(char_model.class_id, template.class_id as i8);
+        let object_id = IdFactory::instance().get_next_id();
         Self {
+            object_id,
             location: Location {
                 x: char_model.x,
                 y: char_model.y,
@@ -106,7 +111,7 @@ impl Player {
             siege_state: 0,
             appearance: Appearance,
             quest_zone_id: None,
-            inventory: Inventory::from_items(items),
+            inventory,
         }
     }
 
@@ -144,8 +149,8 @@ impl Player {
     }
 
     #[must_use]
-    pub fn get_id(&self) -> i32 {
-        self.char_model.id
+    pub fn get_object_id(&self) -> i32 {
+        self.object_id
     }
 
     #[must_use]
@@ -798,6 +803,15 @@ impl Player {
         //todo: implement me
         0
     }
+}
+
+impl Drop for Player {
+    fn drop(&mut self) {
+        IdFactory::instance().release_id(self.object_id);
+    }
+}
+
+impl Player {
     #[must_use]
     pub fn get_transformation_display_id(&self) -> i32 {
         //todo: implement me
@@ -879,7 +893,7 @@ impl Player {
             && another_party.eq(party)
         {
             res |= RelationChanges::HasParty;
-            if let Some(pi) = party.index_of(self.char_model.id) {
+            if let Some(pi) = party.index_of(self.get_object_id()) {
                 res |= RelationChanges::party_index_mask(pi);
             }
         }

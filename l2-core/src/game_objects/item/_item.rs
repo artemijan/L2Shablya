@@ -1,4 +1,5 @@
 use crate::game_objects::item::attribute::Attribute;
+use crate::id_factory::IdFactory;
 use anyhow::bail;
 use entities::dao::item::ItemVariables;
 use entities::entities::item::Model;
@@ -40,6 +41,7 @@ impl TryFrom<u8> for ItemListType {
 
 #[derive(Clone, Debug)]
 pub struct ItemObject {
+    pub object_id: i32,
     pub item_model: Model,
 }
 
@@ -48,7 +50,16 @@ impl ItemObject {
     pub fn from_items(items: Vec<Model>) -> HashMap<i32, ItemObject> {
         items
             .into_iter()
-            .map(|item| (item.id, ItemObject { item_model: item }))
+            .map(|item| {
+                let object_id = IdFactory::instance().get_next_id();
+                (
+                    object_id,
+                    ItemObject {
+                        object_id,
+                        item_model: item,
+                    },
+                )
+            })
             .collect()
     }
     #[must_use]
@@ -176,5 +187,11 @@ impl ItemObject {
             mask |= ItemListType::VisualId as i32;
         }
         mask
+    }
+}
+
+impl Drop for ItemObject {
+    fn drop(&mut self) {
+        IdFactory::instance().release_id(self.object_id);
     }
 }

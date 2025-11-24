@@ -20,7 +20,7 @@ impl CharSelected {
         inst.buffer.write(Self::PACKET_ID)?;
         inst.buffer
             .write_c_utf16le_string(Some(&player.char_model.name))?;
-        inst.buffer.write_i32(player.char_model.id)?;
+        inst.buffer.write_i32(player.get_object_id())?;
         inst.buffer
             .write_c_utf16le_string(player.char_model.title.as_deref())?;
         inst.buffer.write_i32(session_id)?;
@@ -86,7 +86,8 @@ mod tests {
         };
         let templates = ClassTemplates::load();
         let temp = templates.try_get_template(inst.class_id).unwrap().clone();
-        let char = Player::new(inst, vec![], temp);
+        let mut char = Player::new(inst, vec![], temp);
+        char.object_id = char.char_model.id;
         let mut packet = CharSelected::new(&char, 9998, 286).unwrap();
         assert_eq!(
             [

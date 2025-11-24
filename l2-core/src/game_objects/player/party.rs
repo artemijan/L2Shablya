@@ -42,7 +42,7 @@ impl Party {
     }
     #[must_use]
     pub fn get_leader_id(&self) -> i32 {
-        self.get_leader().char_model.id
+        self.get_leader().get_object_id()
     }
 
     #[must_use]
@@ -50,11 +50,11 @@ impl Party {
         &self.players
     }
     #[must_use]
-    pub fn index_of(&self, player_id: i32) -> Option<u32> {
+    pub fn index_of(&self, player_object_id: i32) -> Option<u32> {
         self.players
             .iter()
             .enumerate()
-            .find(|(_, p)| p.char_model.id == player_id)
+            .find(|(_, p)| p.get_object_id() == player_object_id)
             .map(|(i, _)| i)
             .map(u32::try_from)?
             .ok()

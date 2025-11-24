@@ -21,7 +21,7 @@ impl EquippedItems {
         };
         inst.buffer.write(Self::PACKET_ID)?;
         inst.buffer.write_u16(Self::EX_PACKET_ID)?;
-        inst.buffer.write_i32(p.char_model.id)?;
+        inst.buffer.write_i32(p.get_object_id())?;
         let mut bitmask = BitMask::new(40); //5 bytes, 50 bits
         let slots = InventorySlot::iter();
         let num_slots = slots.len();
@@ -82,7 +82,8 @@ mod tests {
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
-        let player = Player::new(char, vec![], template.clone());
+        let mut player = Player::new(char, vec![], template.clone());
+        player.object_id = player.char_model.id;
         let p = EquippedItems::new(&player, true).unwrap();
         assert_eq!(
             [

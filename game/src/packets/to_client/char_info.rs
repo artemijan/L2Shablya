@@ -55,7 +55,7 @@ impl CharInfo {
         inst.buffer.write_i32(p.get_z())?; // Confirmed
         inst.buffer
             .write_i32(p.get_vehicle_object_id().unwrap_or(0))?; // Confirmed
-        inst.buffer.write_i32(p.char_model.id)?; // Confirmed
+        inst.buffer.write_i32(p.get_object_id())?; // Confirmed
         inst.buffer
             .write_c_utf16le_string(Some(p.get_visible_name()))?; // Confirmed
         inst.buffer.write_i16(p.char_model.race_id)?; // Confirmed
