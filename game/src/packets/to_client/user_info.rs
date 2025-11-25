@@ -451,6 +451,7 @@ mod tests {
     use sea_orm::JsonValue;
     use std::str::FromStr;
     use std::sync::Arc;
+    use l2_core::id_factory::ObjectId;
     use test_utils::utils::get_test_db;
 
     #[tokio::test]
@@ -483,7 +484,6 @@ mod tests {
         })
         .await;
 
-        char.id = 268_476_204;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
@@ -493,7 +493,7 @@ mod tests {
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
         let mut player = Player::new(char, vec![], template.clone());
-        player.object_id = 268_476_204;
+        player.object_id = ObjectId::new(268_476_204);
         let p = UserInfo::new(&player, UserInfoType::all(), &controller)
             .await
             .unwrap();
@@ -517,7 +517,7 @@ mod tests {
         assert_eq!(
             [
                 50, //packet id
-                44, 159, 0, 16, //cjar model id
+                44, 159, 0, 16, //char model id
                 137, 1, 0, 0, //block size
                 23, 0, //23
                 255, 255, 254, //flags

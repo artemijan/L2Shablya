@@ -48,7 +48,7 @@ mod tests {
         let (_client, server) = tokio::io::duplex(1024);
         let cfg = LoginServerConfig::from_string(include_str!("../../../../config/login.yaml"));
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
-        lc.on_players_in_game(1, &[acc.clone()]); // hack to insert players
+        lc.on_players_in_game(1, std::slice::from_ref(&acc)); // hack to insert players
         assert!(lc.get_player("admin").is_some());
         let (r, w) = split(server);
         let gs_actor = spawn_gs_client_actor(lc.clone(), db_pool, r, w).await;

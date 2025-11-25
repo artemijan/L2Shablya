@@ -99,7 +99,7 @@ impl PaperDoll {
         for item in items.values() {
             if item.item_model.loc == LocType::Paperdoll {
                 let slot = item.item_model.loc_data;
-                result[slot as usize][0] = item.object_id;
+                result[slot as usize][0] = item.object_id.value();
                 result[slot as usize][1] = item.item_model.item_id;
                 result[slot as usize][2] = item.item_model.enchant_level;
                 result[slot as usize][3] = item

@@ -17,13 +17,13 @@ use crate::game_objects::player::{PlayerMacro, SubclassType, TeleportBookmark};
 use crate::game_objects::private_store_types::PrivateStoreType;
 use crate::game_objects::race::Race;
 use crate::game_objects::zone::{Location, ZoneId};
+use crate::id_factory::{IdFactory, ObjectId};
 use chrono::Utc;
 use entities::entities::{character, character_mail, clan_ally, item};
 use log::info;
 use serde_json::Value;
 use std::fmt::Debug;
 use std::sync::Arc;
-use crate::id_factory::IdFactory;
 
 #[repr(u8)]
 #[derive(Clone, Debug, Copy, Default)]
@@ -50,7 +50,7 @@ impl From<Team> for u8 {
 
 #[derive(Debug, Clone)]
 pub struct Player {
-    pub object_id: i32,
+    pub object_id: ObjectId,
     pub char_model: character::Model,
     pub skills: Option<Vec<Skill>>, //None if not initialized
     pub quests: Vec<Quest>,
@@ -150,7 +150,7 @@ impl Player {
 
     #[must_use]
     pub fn get_object_id(&self) -> i32 {
-        self.object_id
+        self.object_id.value()
     }
 
     #[must_use]
@@ -473,12 +473,12 @@ impl Player {
         113
     }
 
-    #[must_use] 
+    #[must_use]
     pub fn get_fly_run_speed(&self) -> u16 {
         //todo: implement me
         159
     }
-    #[must_use] 
+    #[must_use]
     pub fn get_fly_walk_speed(&self) -> u16 {
         //todo: implement me
         113
@@ -802,12 +802,6 @@ impl Player {
     pub fn get_clan_reputation_score(&self) -> i32 {
         //todo: implement me
         0
-    }
-}
-
-impl Drop for Player {
-    fn drop(&mut self) {
-        IdFactory::instance().release_id(self.object_id);
     }
 }
 

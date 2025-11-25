@@ -48,6 +48,7 @@ mod tests {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use sea_orm::JsonValue;
+    use l2_core::id_factory::ObjectId;
     use test_utils::utils::get_test_db;
     #[tokio::test]
     async fn test_quest_list_packet() {
@@ -59,7 +60,6 @@ mod tests {
             m
         })
         .await;
-        char.id = 268_476_204;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
@@ -69,6 +69,7 @@ mod tests {
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
         let mut player = Player::new(char, vec![], template.clone());
+        player.object_id = ObjectId::new(268_476_208);
         player.quests.push(Quest {
             model: quest::Model {
                 char_id: player.char_model.id,

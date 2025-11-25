@@ -1,11 +1,12 @@
 use crate::game_objects::item::attribute::Attribute;
-use crate::id_factory::IdFactory;
+use crate::id_factory::{IdFactory, ObjectId};
 use anyhow::bail;
 use entities::dao::item::ItemVariables;
 use entities::entities::item::Model;
 use log::error;
 use serde_json::Value;
 use std::collections::HashMap;
+use std::sync::Arc;
 
 #[repr(u8)]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Ord, PartialOrd)]
@@ -41,7 +42,7 @@ impl TryFrom<u8> for ItemListType {
 
 #[derive(Clone, Debug)]
 pub struct ItemObject {
-    pub object_id: i32,
+    pub object_id: ObjectId,
     pub item_model: Model,
 }
 
@@ -53,7 +54,7 @@ impl ItemObject {
             .map(|item| {
                 let object_id = IdFactory::instance().get_next_id();
                 (
-                    object_id,
+                    object_id.clone().into(),
                     ItemObject {
                         object_id,
                         item_model: item,
@@ -187,11 +188,5 @@ impl ItemObject {
             mask |= ItemListType::VisualId as i32;
         }
         mask
-    }
-}
-
-impl Drop for ItemObject {
-    fn drop(&mut self) {
-        IdFactory::instance().release_id(self.object_id);
     }
 }

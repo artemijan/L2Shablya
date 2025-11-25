@@ -30,6 +30,7 @@ mod test {
     use l2_core::shared_packets::common::SendablePacket;
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
+    use l2_core::id_factory::ObjectId;
     use test_utils::utils::get_test_db;
     use super::*;
 
@@ -43,7 +44,6 @@ mod test {
             m
         })
             .await;
-        char.id = 268_476_204;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
@@ -52,10 +52,11 @@ mod test {
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
-        let player = Player::new(char, vec![], template.clone());
+        let mut player = Player::new(char, vec![], template.clone());
+        player.object_id = ObjectId::new(268_476_209);
         let p = PremiumState::new(&player).unwrap();
         assert_eq!(
-            [254, 218, 0, 44, 159, 0, 16, 0],
+            [254, 218, 0, 49, 159, 0, 16, 0],
             p.get_buffer().get_data_mut(false)[2..]
         );
     }

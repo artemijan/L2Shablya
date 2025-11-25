@@ -62,7 +62,6 @@ mod test {
             is_female: true,
             delete_at: None,
             user_id: 1,
-            id: 268_476_204,
             ..Default::default()
         };
         let templates = ClassTemplates::load();
