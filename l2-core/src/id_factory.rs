@@ -100,6 +100,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[serial_test::serial]
     fn test_allocation() {
         let factory = IdFactory::instance();
         let id1 = factory.get_next_id();
@@ -110,18 +111,21 @@ mod tests {
     }
 
     #[test]
+    #[serial_test::serial]
     fn test_reuse() {
         let factory = IdFactory::instance();
         let id_copy: i32;
         {
             let id1 = factory.get_next_id();
             id_copy = id1.clone().into();
+            drop(id1);
         } //drop id1
         let id2 = factory.get_next_id();
         assert_eq!(id2, id_copy);
     }
 
     #[test]
+    #[serial_test::serial]
     fn test_cloned() {
         let factory = IdFactory::instance();
         let id_copy: i32;
