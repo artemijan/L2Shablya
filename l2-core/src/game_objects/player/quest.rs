@@ -7,23 +7,16 @@ pub struct Quest {
     pub model: quest::Model,
 }
 impl Quest {
-    
     #[must_use]
     pub fn get_id(&self) -> i32 {
         self.model.quest_id
     }
-    pub fn has_state(&self, state: &str) -> bool {
-        if let Some(state) = self
-            .model
+    pub fn has_state(&self, expected_state: &str) -> bool {
+        self.model
             .variables
             .get(QuestVariables::State.as_key())
             .and_then(JsonValue::as_str)
-            && state.eq(state)
-        {
-            true
-        } else {
-            false
-        }
+            .is_some_and(|state| state.eq(expected_state))
     }
 
     #[must_use]

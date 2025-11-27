@@ -18,7 +18,7 @@ impl Rotation {
         };
         inst.buffer.write(Self::PACKET_ID)?;
         inst.buffer.write_u16(Self::EX_PACKET_ID)?;
-        inst.buffer.write_i32(player.char_model.id)?;
+        inst.buffer.write_i32(player.get_object_id())?;
         inst.buffer.write_i32(player.get_location().heading)?;
         Ok(inst)
     }
@@ -35,6 +35,7 @@ mod tests {
     use l2_core::shared_packets::common::SendablePacket;
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
+    use l2_core::id_factory::ObjectId;
     use test_utils::utils::get_test_db;
     #[tokio::test]
     async fn test_rotation_packet() {
@@ -46,7 +47,6 @@ mod tests {
             m
         })
             .await;
-        char.id = 268_476_204;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
@@ -56,10 +56,11 @@ mod tests {
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
         let mut player = Player::new(char, vec![], template.clone());
+        player.object_id = ObjectId::new(268_476_210);
         player.set_location_heading(33897);
         let p = Rotation::new(&player).unwrap();
         assert_eq!(
-            [0, 254, 194, 0, 44, 159, 0, 16, 105, 132, 0, 0],
+            [0, 254, 194, 0, 50, 159, 0, 16, 105, 132, 0, 0],
             p.get_buffer().get_data_mut(false)[1..]
         );
     }

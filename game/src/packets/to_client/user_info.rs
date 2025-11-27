@@ -52,7 +52,7 @@ impl UserInfo {
             title: String::new(),
         };
         inst.buffer.write(Self::PACKET_ID)?;
-        inst.buffer.write_i32(player.char_model.id)?;
+        inst.buffer.write_i32(player.get_object_id())?;
         inst.buffer.write_u32(inst.block_size)?;
         inst.buffer.write_u16(23u16)?;
         inst.buffer.write_bytes(inst.mask.flags())?;
@@ -425,7 +425,7 @@ impl UserInfo {
         let mut relation = 0;
         if let Some(pt) = p.party.as_ref() {
             relation |= 0x08;
-            if pt.get_leader_id() == p.char_model.id {
+            if pt.get_leader_id() == p.get_object_id() {
                 relation |= 0x10;
             }
         }
@@ -451,6 +451,7 @@ mod tests {
     use sea_orm::JsonValue;
     use std::str::FromStr;
     use std::sync::Arc;
+    use l2_core::id_factory::ObjectId;
     use test_utils::utils::get_test_db;
 
     #[tokio::test]
@@ -483,7 +484,6 @@ mod tests {
         })
         .await;
 
-        char.id = 268_476_204;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
@@ -492,7 +492,8 @@ mod tests {
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
-        let player = Player::new(char, vec![], template.clone());
+        let mut player = Player::new(char, vec![], template.clone());
+        player.object_id = ObjectId::new(268_476_204);
         let p = UserInfo::new(&player, UserInfoType::all(), &controller)
             .await
             .unwrap();
@@ -516,7 +517,7 @@ mod tests {
         assert_eq!(
             [
                 50, //packet id
-                44, 159, 0, 16, //cjar model id
+                44, 159, 0, 16, //char model id
                 137, 1, 0, 0, //block size
                 23, 0, //23
                 255, 255, 254, //flags

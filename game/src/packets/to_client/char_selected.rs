@@ -20,7 +20,7 @@ impl CharSelected {
         inst.buffer.write(Self::PACKET_ID)?;
         inst.buffer
             .write_c_utf16le_string(Some(&player.char_model.name))?;
-        inst.buffer.write_i32(player.char_model.id)?;
+        inst.buffer.write_i32(player.get_object_id())?;
         inst.buffer
             .write_c_utf16le_string(player.char_model.title.as_deref())?;
         inst.buffer.write_i32(session_id)?;
@@ -61,6 +61,7 @@ mod tests {
     use entities::entities::character;
     use l2_core::config::traits::ConfigDirLoader;
     use l2_core::data::char_template::ClassTemplates;
+    use l2_core::id_factory::ObjectId;
 
     #[test]
     fn test_char_selected() {
@@ -81,16 +82,16 @@ mod tests {
             x: -90939,
             y: 248_138,
             z: -3563,
-            id: 268_476_204,
             ..Default::default()
         };
         let templates = ClassTemplates::load();
         let temp = templates.try_get_template(inst.class_id).unwrap().clone();
-        let char = Player::new(inst, vec![], temp);
+        let mut char = Player::new(inst, vec![], temp);
+        char.object_id = ObjectId::new(268_476_207);
         let mut packet = CharSelected::new(&char, 9998, 286).unwrap();
         assert_eq!(
             [
-                11, 65, 0, 100, 0, 101, 0, 108, 0, 97, 0, 110, 0, 116, 0, 101, 0, 0, 0, 44,
+                11, 65, 0, 100, 0, 101, 0, 108, 0, 97, 0, 110, 0, 116, 0, 101, 0, 0, 0, 47,
                 159, 0, 16, 0, 0, 14, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 10,
                 0, 0, 0, 1, 0, 0, 0, 197, 156, 254, 255, 74, 201, 3, 0, 21, 242, 255, 255, 0, 0, 0,
                 0, 0, 128, 88, 64, 0, 0, 0, 0, 0, 128, 77, 64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

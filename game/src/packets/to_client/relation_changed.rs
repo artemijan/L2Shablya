@@ -45,7 +45,7 @@ impl RelationChangedBuilder {
     pub fn add_relation(mut self, player: &Player, relation: u32, auto_attackable: bool) -> Self {
         if !player.is_invisible() {
             let relation = Relation {
-                obj_id: player.char_model.id,
+                obj_id: player.get_object_id(),
                 rel: relation,
                 auto_attackable,
                 reputation: player.char_model.reputation,

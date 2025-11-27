@@ -18,7 +18,7 @@ impl CharMoveToLocation {
             buffer: SendablePacketBuffer::new(),
         };
         inst.buffer.write(Self::PACKET_ID)?;
-        inst.buffer.write_i32(p.get_id())?; // 1-7 increase force, level
+        inst.buffer.write_i32(p.get_object_id())?; // 1-7 increase force, level
 
         // Target position
         inst.buffer.write_i32(target_x)?;

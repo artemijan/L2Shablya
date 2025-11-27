@@ -34,7 +34,7 @@ impl Message<RequestRestart> for PlayerClient {
         let p = CharSelectionInfo::new(&user_name.clone(), session_id, &self.controller, chars)?;
         let player = self.try_get_selected_char()?.clone(); // we clone it to avoid borrow checker issues with reference to self
         self.controller.broadcast_packet_with_filter(
-            DeleteObject::new(player.get_id())?,
+            DeleteObject::new(player.get_object_id())?,
             Some(Box::new(move |acc, _| !acc.eq(&user_name))),
         );
         self.send_packet(RestartResponse::ok()?).await?;
