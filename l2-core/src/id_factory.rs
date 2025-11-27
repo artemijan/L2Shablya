@@ -1,14 +1,15 @@
 use dashmap::DashSet;
 use log::warn;
+use std::collections::HashSet;
 use std::sync::atomic::{AtomicI32, Ordering};
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 
 const FIRST_OID: i32 = 0x1000_0000;
 
 #[derive(Debug)]
 pub struct IdFactory {
     next_id: AtomicI32,
-    reusable_ids: DashSet<i32>,
+    reusable_ids: Mutex<HashSet<i32>>,
 }
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct ObjectId(Arc<i32>);
@@ -66,32 +67,31 @@ impl IdFactory {
             .get_or_init(|| {
                 Arc::new(IdFactory {
                     next_id: AtomicI32::new(FIRST_OID),
-                    reusable_ids: DashSet::new(),
+                    reusable_ids: Mutex::new(HashSet::new()),
                 })
             })
             .clone()
     }
 
     pub fn get_next_id(&self) -> ObjectId {
-        //be careful, don't hold shared reference to self.reusable_ids.iter()
-        // and modifying it in the same time, because it will deadlock
-        let id_val = {
-            let mut iter = self.reusable_ids.iter();
-            iter.next().map(|r| *r) // copy value
+        let mut set = self.get_locked_state();
+        let Some(&id) = set.iter().next() else {
+            return ObjectId::new(self.next_id.fetch_add(1, Ordering::SeqCst));
         };
-        //at this stage self.reusable_ids shared lock is released, so we can safely modify it
-        if let Some(id_ref) = id_val {
-            self.reusable_ids.remove(&id_ref);
-            return ObjectId::new(id_ref);
-        }
-        ObjectId::new(self.next_id.fetch_add(1, Ordering::SeqCst))
+        set.remove(&id);
+        ObjectId::new(id)
     }
 
     pub fn release_id(&self, id: impl Into<i32>) {
         let val = id.into();
-        if !self.reusable_ids.insert(val) {
+        if !self.get_locked_state().insert(val) {
             warn!("Trying to release already released id: {val}");
         }
+    }
+    fn get_locked_state(&self) -> std::sync::MutexGuard<'_, HashSet<i32>> {
+        self.reusable_ids
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
     }
 }
 
@@ -135,7 +135,7 @@ mod tests {
             assert_eq!(id1, id2);
             drop(id1);
             //id1 is dropped, but the clone id2 is still in the scope, so it should not be released yet
-            assert!(!IdFactory::instance().reusable_ids.contains(&*id2.0));
+            assert!(!IdFactory::instance().get_locked_state().contains(&*id2.0));
             id_copy = id2.into();
         } //drop id1
         let id2 = factory.get_next_id();
