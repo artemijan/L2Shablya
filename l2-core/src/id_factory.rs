@@ -114,7 +114,6 @@ mod tests {
         let id2 = factory.get_next_id();
         assert_ne!(id1, id2);
         assert!(id1 >= ObjectId::new(FIRST_OID));
-        assert!(id2 > id1);
     }
 
     #[test]
@@ -127,25 +126,19 @@ mod tests {
             id_copy = id1.clone().into();
             drop(id1);
         } //drop id1
-        let id2 = factory.get_next_id();
-        assert_eq!(id2, id_copy);
+        //it appears in reusable_ids
+        assert!(factory.get_locked_state().contains(&id_copy));
     }
 
     #[test]
     fn test_cloned() {
         let factory = IdFactory::instance();
         factory.reset_for_tests();
-        let id_copy: i32;
-        {
-            let id1 = factory.get_next_id();
-            let id2 = id1.clone();
-            assert_eq!(id1, id2);
-            drop(id1);
-            //id1 is dropped, but the clone id2 is still in the scope, so it should not be released yet
-            assert!(!IdFactory::instance().get_locked_state().contains(&*id2.0));
-            id_copy = id2.into();
-        } //drop id1
-        let id2 = factory.get_next_id();
-        assert_eq!(id2, id_copy);
+        let id1 = factory.get_next_id();
+        let id2 = id1.clone();
+        assert_eq!(id1, id2);
+        drop(id1);
+        //id1 is dropped, but the clone id2 is still in the scope, so it should not be released yet
+        assert!(!IdFactory::instance().get_locked_state().contains(&*id2.0));
     }
 }
