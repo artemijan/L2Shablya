@@ -98,11 +98,18 @@ impl IdFactory {
 #[cfg(test)]
 mod tests {
     use super::*;
+    impl IdFactory {
+        fn reset_for_tests(&self) {
+            let mut set = self.get_locked_state();
+            set.clear();
+            self.next_id.store(FIRST_OID, Ordering::SeqCst);
+        }
+    }
 
     #[test]
-    #[serial_test::serial]
     fn test_allocation() {
         let factory = IdFactory::instance();
+        factory.reset_for_tests();
         let id1 = factory.get_next_id();
         let id2 = factory.get_next_id();
         assert_ne!(id1, id2);
@@ -111,9 +118,9 @@ mod tests {
     }
 
     #[test]
-    #[serial_test::serial]
     fn test_reuse() {
         let factory = IdFactory::instance();
+        factory.reset_for_tests();
         let id_copy: i32;
         {
             let id1 = factory.get_next_id();
@@ -125,9 +132,9 @@ mod tests {
     }
 
     #[test]
-    #[serial_test::serial]
     fn test_cloned() {
         let factory = IdFactory::instance();
+        factory.reset_for_tests();
         let id_copy: i32;
         {
             let id1 = factory.get_next_id();
