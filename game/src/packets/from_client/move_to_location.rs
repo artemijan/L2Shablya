@@ -1,3 +1,4 @@
+use anyhow::bail;
 use crate::packets::to_client::CharMoveToLocation;
 use bytes::BytesMut;
 use kameo::actor::ActorRef;
@@ -8,6 +9,14 @@ use l2_core::shared_packets::read::ReadablePacketBuffer;
 use std::time::Duration;
 use tokio::time::interval;
 use tracing::{info, instrument, warn};
+
+/// Helper function to calculate distance between two 3D points
+fn calculate_distance(x1: i32, y1: i32, z1: i32, x2: i32, y2: i32, z2: i32) -> f64 {
+    let dx = f64::from(x2 - x1);
+    let dy = f64::from(y2 - y1);
+    let dz = f64::from(z2 - z1);
+    (dx * dx + dy * dy + dz * dz).sqrt()
+}
 
 use crate::pl_client::PlayerClient;
 
@@ -49,6 +58,25 @@ impl Message<RequestMoveToLocation> for PlayerClient {
         info!("Received MoveToLocation packet {:?}", msg);
         
         //TODO check with geodata if the location is valid.
+        
+        // Get current position for distance validation
+        let player = self.try_get_selected_char()?;
+        let (current_x, current_y, current_z) = (player.get_x(), player.get_y(), player.get_z());
+        
+        // Calculate distance
+        let distance = calculate_distance(current_x, current_y, current_z, msg.x_to, msg.y_to, msg.z_to);
+        
+        // Check against max distance from config
+        let cfg = self.controller.get_cfg();
+        if cfg.max_movement_distance > 0 && distance > f64::from(cfg.max_movement_distance) {
+            warn!(
+                "Player {} attempted to move excessive distance: {:.2} (max: {})",
+                player.char_model.name,
+                distance,
+                cfg.max_movement_distance
+            );
+            bail!("Movement distance exceeds maximum allowed");
+        }
         
         // Start or restart movement (handles rerouting automatically)
         let (source_x, source_y, source_z) = self.start_movement(msg.x_to, msg.y_to, msg.z_to)?;

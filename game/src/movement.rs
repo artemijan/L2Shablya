@@ -49,7 +49,7 @@ impl MovementState {
     }
 
     /// Calculate the total distance to travel
-    fn calculate_distance(&self) -> f64 {
+    pub fn calculate_distance(&self) -> f64 {
         let dx = f64::from(self.dest_x - self.source_x);
         let dy = f64::from(self.dest_y - self.source_y);
         let dz = f64::from(self.dest_z - self.source_z);
