@@ -44,14 +44,15 @@ impl Message<RequestMoveToLocation> for PlayerClient {
     ) -> anyhow::Result<()> {
         //TODO check with geodata if the location is valid.
 
-        // Get the current position for distance validation
-        let player = self.try_get_selected_char()?;
-        let (current_x, current_y, current_z) = (player.get_x(), player.get_y(), player.get_z());
+        // Get the effective current position for distance validation
+        // This aligns with start_movement starting point logic (mid-move retargets included)
+        let (current_x, current_y, current_z) = self.effective_current_position()?;
 
         // Calculate distance
         let Some(distance) = calculate_distance(
             current_x, current_y, current_z, msg.x_to, msg.y_to, msg.z_to,
         ) else {
+            let player = self.try_get_selected_char()?;
             warn!(
                 "Player {} attempted movement causing coordinate overflow. Pos: ({},{},{}) -> Dest: ({},{},{})",
                 player.char_model.name,
@@ -68,6 +69,7 @@ impl Message<RequestMoveToLocation> for PlayerClient {
         // Check against max distance from config
         let cfg = self.controller.get_cfg();
         if cfg.max_movement_distance > 0 && distance > f64::from(cfg.max_movement_distance) {
+            let player = self.try_get_selected_char()?;
             warn!(
                 "Player {} attempted to move excessive distance: {:.2} (max: {})",
                 player.char_model.name, distance, cfg.max_movement_distance

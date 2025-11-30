@@ -68,7 +68,7 @@ pub struct PlayerClient {
     pub packet_sender: Option<ActorRef<ConnectionActor<Self>>>,
     session_key: Option<SessionKey>,
     user: Option<user::Model>,
-    pub movement_state: Option<MovementState>,
+    movement_state: Option<MovementState>,
 }
 
 impl Debug for PlayerClient {
@@ -80,6 +80,17 @@ impl Debug for PlayerClient {
     }
 }
 impl PlayerClient {
+    /// Get the player's effective current position used as a starting point for movement
+    /// If there is an existing movement, we return its interpolated current position;
+    /// otherwise we fall back to the stored player coordinates.
+    pub(crate) fn effective_current_position(&self) -> anyhow::Result<(i32, i32, i32)> {
+        if let Some(movement) = &self.movement_state {
+            Ok(movement.calculate_current_position())
+        } else {
+            let player = self.try_get_selected_char()?;
+            Ok((player.get_x(), player.get_y(), player.get_z()))
+        }
+    }
     pub fn new(ip: Ipv4Addr, controller: Arc<GameController>, db_pool: DBPool) -> Self {
         Self {
             status: ClientStatus::Connected,
@@ -327,16 +338,13 @@ impl PlayerClient {
         dest_z: i32,
         actor_ref: ActorRef<PlayerClient>,
     ) -> anyhow::Result<(i32, i32, i32)> {
-        // Cancel existing movement if any and get the current position
-        let (current_x, current_y, current_z) =
-            if let Some(mut existing_movement) = self.movement_state.take() {
-                existing_movement.cancel_task();
-                existing_movement.calculate_current_position()
-            } else {
-                // Use a player's stored position
-                let player = self.try_get_selected_char()?;
-                (player.get_x(), player.get_y(), player.get_z())
-            };
+        // Compute effective current position consistent with validation logic
+        let (current_x, current_y, current_z) = self.effective_current_position()?;
+
+        // Cancel existing movement if any
+        if let Some(mut existing_movement) = self.movement_state.take() {
+            existing_movement.cancel_task();
+        }
 
         // Get player speed
         let player = self.try_get_selected_char()?;
@@ -399,8 +407,25 @@ impl PlayerClient {
     /// Stop current movement and return the current interpolated position
     pub fn stop_movement(&mut self) -> Option<(i32, i32, i32)> {
         if let Some(mut movement) = self.movement_state.take() {
+            // Calculate current position at the time of stopping
+            let (x, y, z) = movement.calculate_current_position();
+
+            // Stop periodic task
             movement.cancel_task();
-            Some(movement.calculate_current_position())
+
+            // Persist the position to the selected character so server state matches
+            match self.try_get_selected_char_mut() {
+                Ok(player) => {
+                    if let Err(err) = player.set_location(x, y, z) {
+                        error!("Failed to persist player position on stop_movement: {err}");
+                    }
+                }
+                Err(err) => {
+                    error!("Failed to get selected character on stop_movement: {err}");
+                }
+            }
+
+            Some((x, y, z))
         } else {
             None
         }
