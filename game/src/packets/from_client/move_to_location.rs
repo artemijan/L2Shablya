@@ -95,8 +95,8 @@ impl Message<RequestMoveToLocation> for PlayerClient {
             bail!("Movement distance exceeds maximum allowed");
         }
         
-        // Start or restart movement (handles rerouting automatically)
-        let (source_x, source_y, source_z) = self.start_movement(msg.x_to, msg.y_to, msg.z_to)?;
+        // Start or restart movement
+        let (mut movement, source_x, source_y, source_z) = self.start_movement(msg.x_to, msg.y_to, msg.z_to)?;
         
         // Send initial movement packet immediately
         let initial_packet = CharMoveToLocation::new(
@@ -115,51 +115,40 @@ impl Message<RequestMoveToLocation> for PlayerClient {
         let dest_z = msg.z_to;
 
         let task_handle = tokio::spawn(async move {
-            let mut tick = interval(Duration::from_millis(300));
-            tick.tick().await; // Skip first immediate tick
-
+            let mut interval = tokio::time::interval(std::time::Duration::from_millis(300));
+            
             loop {
-                // Check movement state BEFORE waiting, ensuring at least one update
-                // even for very short movements
+                // Check movement state BEFORE waiting
                 let result = actor_ref
                     .ask(GetMovementPosition)
                     .await;
 
-                match result {
-                    Ok(Some((current_x, current_y, current_z, has_arrived))) => {
-                        if has_arrived {
-                            // Arrived at destination, stop broadcasting
-                            info!("Player arrived at destination ({}, {}, {})", dest_x, dest_y, dest_z);
-                            break;
-                        }
+                if let Ok(Some((x, y, z, has_arrived))) = result {
+                    if has_arrived {
+                        // Arrived at destination, stop broadcasting
+                        info!("Player arrived at destination ({}, {}, {})", dest_x, dest_y, dest_z);
+                        break;
+                    }
 
-                        // Broadcast current position
-                        if let Ok(player) = actor_ref.ask(crate::pl_client::GetCharInfo).await {
-                            if let Ok(packet) = CharMoveToLocation::new(&player, dest_x, dest_y, dest_z) {
-                                controller.broadcast_packet(packet);
-                            }
+                    // Broadcast current position
+                    if let Ok(player) = actor_ref.ask(crate::pl_client::GetCharInfo).await {
+                        if let Ok(packet) = CharMoveToLocation::new(&player, dest_x, dest_y, dest_z) {
+                            controller.broadcast_packet(packet);
                         }
-                        
-                        // Wait for next tick after sending update
-                        tick.tick().await;
                     }
-                    Ok(None) => {
-                        // Movement was stopped/cancelled
-                        info!("Movement stopped");
-                        break;
-                    }
-                    Err(e) => {
-                        warn!("Error checking movement state: {}", e);
-                        break;
-                    }
+                } else {
+                    // Error or no movement state, stop task
+                    break;
                 }
+
+                // Wait for next tick
+                interval.tick().await;
             }
         });
 
-        // Store the task handle in movement state
-        if let Some(movement) = self.movement_state.as_mut() {
-            movement.task_handle = Some(task_handle);
-        }
+        // Store the task handle in movement state and set it in client
+        movement.task_handle = Some(task_handle);
+        self.movement_state = Some(movement);
 
         Ok(())
     }

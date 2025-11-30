@@ -324,7 +324,7 @@ impl PlayerClient {
         dest_x: i32,
         dest_y: i32,
         dest_z: i32,
-    ) -> anyhow::Result<(i32, i32, i32)> {
+    ) -> anyhow::Result<(MovementState, i32, i32, i32)> {
         // Cancel existing movement if any and get current position
         let (current_x, current_y, current_z) = if let Some(mut existing_movement) = self.movement_state.take() {
             existing_movement.cancel_task();
@@ -354,8 +354,7 @@ impl PlayerClient {
             speed,
         );
 
-        self.movement_state = Some(movement);
-        Ok((current_x, current_y, current_z))
+        Ok((movement, current_x, current_y, current_z))
     }
 
     /// Stop current movement and return the current interpolated position
