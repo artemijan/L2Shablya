@@ -18,6 +18,7 @@ mod cp_factory;
 mod ls_client;
 mod lsp_factory;
 pub mod managers;
+mod movement;
 mod packets;
 mod pl_client;
 mod test_utils;

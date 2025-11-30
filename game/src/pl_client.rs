@@ -1,5 +1,6 @@
 use crate::controller::GameController;
 use crate::cp_factory::build_client_packet;
+use crate::movement::MovementState;
 use anyhow::{anyhow, bail};
 use bytes::BytesMut;
 use entities::entities::{character, user};
@@ -66,6 +67,7 @@ pub struct PlayerClient {
     pub packet_sender: Option<ActorRef<ConnectionActor<Self>>>,
     session_key: Option<SessionKey>,
     user: Option<user::Model>,
+    pub movement_state: Option<MovementState>,
 }
 
 impl Debug for PlayerClient {
@@ -90,6 +92,7 @@ impl PlayerClient {
             session_key: None,
             selected_char: None,
             packet_sender: None,
+            movement_state: None,
         }
     }
 
@@ -314,7 +317,58 @@ impl PlayerClient {
         let data = self.prepare_packet_data(packet)?;
         send_delayed_packet(self.packet_sender.as_ref(), data.freeze(), delay).await
     }
+
+    /// Start or restart player movement
+    pub fn start_movement(
+        &mut self,
+        dest_x: i32,
+        dest_y: i32,
+        dest_z: i32,
+    ) -> anyhow::Result<(i32, i32, i32)> {
+        // Cancel existing movement if any and get current position
+        let (current_x, current_y, current_z) = if let Some(mut existing_movement) = self.movement_state.take() {
+            existing_movement.cancel_task();
+            existing_movement.calculate_current_position()
+        } else {
+            // Use player's stored position
+            let player = self.try_get_selected_char()?;
+            (player.get_x(), player.get_y(), player.get_z())
+        };
+
+        // Get player speed
+        let player = self.try_get_selected_char()?;
+        let speed = if player.is_running() {
+            player.get_run_speed()
+        } else {
+            player.get_walk_speed()
+        };
+
+        // Create new movement state
+        let movement = MovementState::new(
+            current_x,
+            current_y,
+            current_z,
+            dest_x,
+            dest_y,
+            dest_z,
+            speed,
+        );
+
+        self.movement_state = Some(movement);
+        Ok((current_x, current_y, current_z))
+    }
+
+    /// Stop current movement and return the current interpolated position
+    pub fn stop_movement(&mut self) -> Option<(i32, i32, i32)> {
+        if let Some(mut movement) = self.movement_state.take() {
+            movement.cancel_task();
+            Some(movement.calculate_current_position())
+        } else {
+            None
+        }
+    }
 }
+
 
 impl Actor for PlayerClient {
     type Args = (
