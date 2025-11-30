@@ -7,6 +7,7 @@ use entities::entities::{character, user};
 use entities::DBPool;
 use kameo::actor::{ActorId, ActorRef, Spawn, WeakActorRef};
 use kameo::error::{ActorStopReason, PanicError};
+use crate::packets::to_client::CharMoveToLocation;
 use kameo::message::{Context, Message};
 use kameo::Actor;
 use l2_core::crypt::game::GameClientEncryption;
@@ -324,7 +325,8 @@ impl PlayerClient {
         dest_x: i32,
         dest_y: i32,
         dest_z: i32,
-    ) -> anyhow::Result<(MovementState, i32, i32, i32)> {
+        actor_ref: ActorRef<PlayerClient>,
+    ) -> anyhow::Result<(i32, i32, i32)> {
         // Cancel existing movement if any and get current position
         let (current_x, current_y, current_z) = if let Some(mut existing_movement) = self.movement_state.take() {
             existing_movement.cancel_task();
@@ -344,7 +346,7 @@ impl PlayerClient {
         };
 
         // Create new movement state
-        let movement = MovementState::new(
+        let mut movement = MovementState::new(
             current_x,
             current_y,
             current_z,
@@ -354,7 +356,46 @@ impl PlayerClient {
             speed,
         );
 
-        Ok((movement, current_x, current_y, current_z))
+        // Spawn periodic broadcast task
+        let controller = self.controller.clone();
+        
+        let task_handle = tokio::spawn(async move {
+            let mut interval = tokio::time::interval(std::time::Duration::from_millis(300));
+            
+            loop {
+                // Check movement state BEFORE waiting
+                let result = actor_ref
+                    .ask(GetMovementPosition)
+                    .await;
+
+                if let Ok(Some((_x, _y, _z, has_arrived))) = result {
+                    if has_arrived {
+                        // Arrived at destination, stop broadcasting
+                        info!("Player arrived at destination ({}, {}, {})", dest_x, dest_y, dest_z);
+                        break;
+                    }
+
+                    // Broadcast current position
+                    if let Ok(player) = actor_ref.ask(crate::pl_client::GetCharInfo).await {
+                        if let Ok(packet) = CharMoveToLocation::new(&player, dest_x, dest_y, dest_z) {
+                            controller.broadcast_packet(packet);
+                        }
+                    }
+                } else {
+                    // Error or no movement state, stop task
+                    break;
+                }
+
+                // Wait for next tick
+                interval.tick().await;
+            }
+        });
+
+        // Store the task handle in movement state and set it in client
+        movement.task_handle = Some(task_handle);
+        self.movement_state = Some(movement);
+
+        Ok((current_x, current_y, current_z))
     }
 
     /// Stop current movement and return the current interpolated position
@@ -510,5 +551,33 @@ impl Message<GetCharInfo> for PlayerClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> Self::Reply {
         Ok(self.try_get_selected_char()?.clone())
+    }
+}
+
+/// Message to get current movement position and status
+#[derive(Debug)]
+pub struct GetMovementPosition;
+
+impl Message<GetMovementPosition> for PlayerClient {
+    type Reply = anyhow::Result<Option<(i32, i32, i32, bool)>>;
+
+    async fn handle(
+        &mut self,
+        _: GetMovementPosition,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        if let Some(movement) = self.movement_state.as_ref() {
+            let (x, y, z) = movement.calculate_current_position();
+            let has_arrived = movement.has_arrived();
+            
+            // Update player's actual position
+            if let Ok(player) = self.try_get_selected_char_mut() {
+                let _ = player.set_location(x, y, z);
+            }
+            
+            Ok(Some((x, y, z, has_arrived)))
+        } else {
+            Ok(None)
+        }
     }
 }
