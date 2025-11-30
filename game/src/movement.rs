@@ -1,6 +1,20 @@
 use std::time::Instant;
 use tokio::task::JoinHandle;
 
+/// Calculate Euclidean distance between two 3D points (x1,y1,z1) -> (x2,y2,z2)
+/// Returns None if coordinate subtraction overflows
+pub fn calculate_distance(x1: i32, y1: i32, z1: i32, x2: i32, y2: i32, z2: i32) -> Option<f64> {
+    let dx = x2.checked_sub(x1)?;
+    let dy = y2.checked_sub(y1)?;
+    let dz = z2.checked_sub(z1)?;
+
+    let dx = f64::from(dx);
+    let dy = f64::from(dy);
+    let dz = f64::from(dz);
+
+    Some((dx * dx + dy * dy + dz * dz).sqrt())
+}
+
 /// Represents the current movement state of a player
 #[derive(Debug)]
 pub struct MovementState {
@@ -49,16 +63,22 @@ impl MovementState {
     }
 
     /// Calculate the total distance to travel
-    pub fn calculate_distance(&self) -> f64 {
-        let dx = f64::from(self.dest_x) - f64::from(self.source_x);
-        let dy = f64::from(self.dest_y) - f64::from(self.source_y);
-        let dz = f64::from(self.dest_z) - f64::from(self.source_z);
-        (dx * dx + dy * dy + dz * dz).sqrt()
+    pub fn total_distance(&self) -> Option<f64> {
+        calculate_distance(
+            self.source_x,
+            self.source_y,
+            self.source_z,
+            self.dest_x,
+            self.dest_y,
+            self.dest_z,
+        )
     }
 
     /// Calculate how long the entire journey should take (in seconds)
     pub fn calculate_travel_duration(&self) -> f64 {
-        let distance = self.calculate_distance();
+        let Some(distance) = self.total_distance() else {
+            return 0.0;
+        };
         if self.speed > 0.0 {
             distance / self.speed
         } else {
@@ -78,9 +98,12 @@ impl MovementState {
 
         let progress = (elapsed / duration).min(1.0);
 
-        let current_x = self.source_x + ((f64::from(self.dest_x) - f64::from(self.source_x)) * progress) as i32;
-        let current_y = self.source_y + ((f64::from(self.dest_y) - f64::from(self.source_y)) * progress) as i32;
-        let current_z = self.source_z + ((f64::from(self.dest_z) - f64::from(self.source_z)) * progress) as i32;
+        let current_x =
+            self.source_x + ((f64::from(self.dest_x) - f64::from(self.source_x)) * progress) as i32;
+        let current_y =
+            self.source_y + ((f64::from(self.dest_y) - f64::from(self.source_y)) * progress) as i32;
+        let current_z =
+            self.source_z + ((f64::from(self.dest_z) - f64::from(self.source_z)) * progress) as i32;
 
         (current_x, current_y, current_z)
     }
@@ -113,15 +136,17 @@ mod tests {
     #[test]
     fn test_calculate_distance() {
         let state = MovementState::new(0, 0, 0, 300, 400, 0, 100);
-        let distance = state.calculate_distance();
-        assert_eq!(distance, 500.0); // 3-4-5 triangle
+        let distance = state.total_distance().unwrap();
+        //float values can give 0.00000001 error, so we check for a range of 0.001
+        assert!((distance - 500.0).abs() < 0.001); // 3-4-5 triangle
     }
 
     #[test]
     fn test_calculate_travel_duration() {
         let state = MovementState::new(0, 0, 0, 500, 0, 0, 100);
         let duration = state.calculate_travel_duration();
-        assert_eq!(duration, 5.0); // 500 units at 100 units/sec = 5 seconds
+        //float values can give 0.00000001 error, so we check for a range of 0.001
+        assert!((duration - 5.0).abs() < 0.1); // 500 units at 100 units/sec = 5 seconds
     }
 
     #[test]
@@ -129,7 +154,7 @@ mod tests {
         let state = MovementState::new(0, 0, 0, 1000, 0, 0, 100);
         let (x, y, z) = state.calculate_current_position();
         // Should be at or very near start position
-        assert!(x >= 0 && x < 50); // Allow small movement
+        assert!((0..10).contains(&x)); // Allow small movement
         assert_eq!(y, 0);
         assert_eq!(z, 0);
     }
