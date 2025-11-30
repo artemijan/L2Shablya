@@ -92,20 +92,13 @@ impl Message<RequestMoveToLocation> for PlayerClient {
                 distance,
                 cfg.max_movement_distance
             );
-            bail!("Movement distance exceeds maximum allowed");
+            return Ok(());
         }
         
         // Start or restart movement
         let (mut movement, source_x, source_y, source_z) = self.start_movement(msg.x_to, msg.y_to, msg.z_to)?;
         
-        // Send initial movement packet immediately
-        let initial_packet = CharMoveToLocation::new(
-            self.try_get_selected_char()?,
-            msg.x_to,
-            msg.y_to,
-            msg.z_to,
-        )?;
-        self.controller.broadcast_packet(initial_packet);
+
 
         // Spawn periodic broadcast task
         let actor_ref = ctx.actor_ref().clone();
