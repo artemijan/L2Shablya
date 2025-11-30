@@ -50,9 +50,9 @@ impl MovementState {
 
     /// Calculate the total distance to travel
     pub fn calculate_distance(&self) -> f64 {
-        let dx = f64::from(self.dest_x - self.source_x);
-        let dy = f64::from(self.dest_y - self.source_y);
-        let dz = f64::from(self.dest_z - self.source_z);
+        let dx = f64::from(self.dest_x) - f64::from(self.source_x);
+        let dy = f64::from(self.dest_y) - f64::from(self.source_y);
+        let dz = f64::from(self.dest_z) - f64::from(self.source_z);
         (dx * dx + dy * dy + dz * dz).sqrt()
     }
 
@@ -78,9 +78,9 @@ impl MovementState {
 
         let progress = (elapsed / duration).min(1.0);
 
-        let current_x = self.source_x + ((self.dest_x - self.source_x) as f64 * progress) as i32;
-        let current_y = self.source_y + ((self.dest_y - self.source_y) as f64 * progress) as i32;
-        let current_z = self.source_z + ((self.dest_z - self.source_z) as f64 * progress) as i32;
+        let current_x = self.source_x + ((f64::from(self.dest_x) - f64::from(self.source_x)) * progress) as i32;
+        let current_y = self.source_y + ((f64::from(self.dest_y) - f64::from(self.source_y)) * progress) as i32;
+        let current_z = self.source_z + ((f64::from(self.dest_z) - f64::from(self.source_z)) * progress) as i32;
 
         (current_x, current_y, current_z)
     }
