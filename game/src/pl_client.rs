@@ -1,5 +1,7 @@
 use crate::controller::GameController;
 use crate::cp_factory::build_client_packet;
+use crate::movement::MovementState;
+use crate::packets::to_client::CharMoveToLocation;
 use anyhow::{anyhow, bail};
 use bytes::BytesMut;
 use entities::entities::{character, user};
@@ -66,6 +68,7 @@ pub struct PlayerClient {
     pub packet_sender: Option<ActorRef<ConnectionActor<Self>>>,
     session_key: Option<SessionKey>,
     user: Option<user::Model>,
+    movement_state: Option<MovementState>,
 }
 
 impl Debug for PlayerClient {
@@ -77,6 +80,17 @@ impl Debug for PlayerClient {
     }
 }
 impl PlayerClient {
+    /// Get the player's effective current position used as a starting point for movement
+    /// If there is an existing movement, we return its interpolated current position;
+    /// otherwise we fall back to the stored player coordinates.
+    pub(crate) fn effective_current_position(&self) -> anyhow::Result<(i32, i32, i32)> {
+        if let Some(movement) = &self.movement_state {
+            Ok(movement.calculate_current_position())
+        } else {
+            let player = self.try_get_selected_char()?;
+            Ok((player.get_x(), player.get_y(), player.get_z()))
+        }
+    }
     pub fn new(ip: Ipv4Addr, controller: Arc<GameController>, db_pool: DBPool) -> Self {
         Self {
             status: ClientStatus::Connected,
@@ -90,6 +104,7 @@ impl PlayerClient {
             session_key: None,
             selected_char: None,
             packet_sender: None,
+            movement_state: None,
         }
     }
 
@@ -314,6 +329,107 @@ impl PlayerClient {
         let data = self.prepare_packet_data(packet)?;
         send_delayed_packet(self.packet_sender.as_ref(), data.freeze(), delay).await
     }
+
+    /// Start or restart player movement
+    pub fn start_movement(
+        &mut self,
+        dest_x: i32,
+        dest_y: i32,
+        dest_z: i32,
+        actor_ref: ActorRef<PlayerClient>,
+    ) -> anyhow::Result<(i32, i32, i32)> {
+        // Compute effective current position consistent with validation logic
+        let (current_x, current_y, current_z) = self.effective_current_position()?;
+
+        // Cancel existing movement if any
+        if let Some(mut existing_movement) = self.movement_state.take() {
+            existing_movement.cancel_task();
+        }
+
+        // Get player speed
+        let player = self.try_get_selected_char()?;
+        let speed = if player.is_running() {
+            player.get_run_speed()
+        } else {
+            player.get_walk_speed()
+        };
+
+        // Create a new movement state
+        let mut movement = MovementState::new(
+            current_x, current_y, current_z, dest_x, dest_y, dest_z, speed,
+        );
+
+        // Spawn periodic broadcast task
+        let controller = self.controller.clone();
+
+        let task_handle = tokio::spawn(async move {
+            let mut interval = tokio::time::interval(std::time::Duration::from_millis(300));
+
+            loop {
+                // Check movement state BEFORE waiting
+                let result = actor_ref.ask(GetMovementPosition).await;
+
+                if let Ok(Some((_x, _y, _z, has_arrived))) = result {
+                    if has_arrived {
+                        // Arrived at destination, stop broadcasting
+                        info!(
+                            "Player arrived at destination ({}, {}, {})",
+                            dest_x, dest_y, dest_z
+                        );
+                        break;
+                    }
+
+                    // Broadcast current position
+                    if let Ok(player) = actor_ref.ask(GetCharInfo).await
+                        && let Ok(packet) = CharMoveToLocation::new(&player, dest_x, dest_y, dest_z)
+                    {
+                        controller.broadcast_packet(packet);
+                    } else {
+                        error!("Error while broadcasting movement packet");
+                    }
+                } else {
+                    // Error or no movement state, stop a task
+                    break;
+                }
+
+                // Wait for the next tick
+                interval.tick().await;
+            }
+        });
+
+        // Store the task handle in a movement state and set it in a client
+        movement.task_handle = Some(task_handle);
+        self.movement_state = Some(movement);
+
+        Ok((current_x, current_y, current_z))
+    }
+
+    /// Stop current movement and return the current interpolated position
+    pub fn stop_movement(&mut self) -> Option<(i32, i32, i32)> {
+        if let Some(mut movement) = self.movement_state.take() {
+            // Calculate current position at the time of stopping
+            let (x, y, z) = movement.calculate_current_position();
+
+            // Stop periodic task
+            movement.cancel_task();
+
+            // Persist the position to the selected character so server state matches
+            match self.try_get_selected_char_mut() {
+                Ok(player) => {
+                    if let Err(err) = player.set_location(x, y, z) {
+                        error!("Failed to persist player position on stop_movement: {err}");
+                    }
+                }
+                Err(err) => {
+                    error!("Failed to get selected character on stop_movement: {err}");
+                }
+            }
+
+            Some((x, y, z))
+        } else {
+            None
+        }
+    }
 }
 
 impl Actor for PlayerClient {
@@ -457,5 +573,33 @@ impl Message<GetCharInfo> for PlayerClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> Self::Reply {
         Ok(self.try_get_selected_char()?.clone())
+    }
+}
+
+/// Message to get current movement position and status
+#[derive(Debug)]
+pub struct GetMovementPosition;
+
+impl Message<GetMovementPosition> for PlayerClient {
+    type Reply = anyhow::Result<Option<(i32, i32, i32, bool)>>;
+
+    async fn handle(
+        &mut self,
+        _: GetMovementPosition,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        if let Some(movement) = self.movement_state.as_ref() {
+            let (x, y, z) = movement.calculate_current_position();
+            let has_arrived = movement.has_arrived();
+
+            // Update player's actual position
+            if let Ok(player) = self.try_get_selected_char_mut() {
+                let _ = player.set_location(x, y, z);
+            }
+
+            Ok(Some((x, y, z, has_arrived)))
+        } else {
+            Ok(None)
+        }
     }
 }

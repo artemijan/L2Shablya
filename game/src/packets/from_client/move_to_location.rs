@@ -1,9 +1,9 @@
-use crate::packets::to_client::CharMoveToLocation;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use tracing::{info, instrument};
+use tracing::{instrument, warn};
+use crate::movement::calculate_distance;
 
 use crate::pl_client::PlayerClient;
 
@@ -36,22 +36,49 @@ impl ReadablePacket for RequestMoveToLocation {
 
 impl Message<RequestMoveToLocation> for PlayerClient {
     type Reply = anyhow::Result<()>;
-    #[instrument(skip(self, _ctx))]
+    #[instrument(skip(self, ctx))]
     async fn handle(
         &mut self,
         msg: RequestMoveToLocation,
-        _ctx: &mut Context<Self, Self::Reply>,
+        ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        info!("Received MoveToLocation packet {:?}", msg);
         //TODO check with geodata if the location is valid.
-        //todo: we need to 
-        {
-            let selected_char = self.try_get_selected_char_mut()?;
-            selected_char.set_location(msg.x_to, msg.y_to, msg.z_to)?;
+
+        // Get the effective current position for distance validation
+        // This aligns with start_movement starting point logic (mid-move retargets included)
+        let (current_x, current_y, current_z) = self.effective_current_position()?;
+
+        // Calculate distance
+        let Some(distance) = calculate_distance(
+            current_x, current_y, current_z, msg.x_to, msg.y_to, msg.z_to,
+        ) else {
+            let player = self.try_get_selected_char()?;
+            warn!(
+                "Player {} attempted movement causing coordinate overflow. Pos: ({},{},{}) -> Dest: ({},{},{})",
+                player.char_model.name,
+                current_x,
+                current_y,
+                current_z,
+                msg.x_to,
+                msg.y_to,
+                msg.z_to
+            );
+            return Ok(());
+        };
+
+        // Check against max distance from config
+        let cfg = self.controller.get_cfg();
+        if cfg.max_movement_distance > 0 && distance > f64::from(cfg.max_movement_distance) {
+            let player = self.try_get_selected_char()?;
+            warn!(
+                "Player {} attempted to move excessive distance: {:.2} (max: {})",
+                player.char_model.name, distance, cfg.max_movement_distance
+            );
+            return Ok(());
         }
-        let p =
-            CharMoveToLocation::new(self.try_get_selected_char()?, msg.x_to, msg.y_to, msg.z_to)?;
-        self.controller.broadcast_packet(p); //broadcast to all players including self
+
+        self.start_movement(msg.x_to, msg.y_to, msg.z_to, ctx.actor_ref().clone())?;
+
         Ok(())
     }
 }
