@@ -1,4 +1,3 @@
-use kameo::actor::ActorRef;
 use std::time::Instant;
 use tokio::task::JoinHandle;
 
@@ -9,18 +8,18 @@ pub struct MovementState {
     pub source_x: i32,
     pub source_y: i32,
     pub source_z: i32,
-    
+
     /// Destination position (x, y, z)
     pub dest_x: i32,
     pub dest_y: i32,
     pub dest_z: i32,
-    
+
     /// When the movement started
     pub start_time: Instant,
-    
+
     /// Movement speed in game units per second
     pub speed: f64,
-    
+
     /// Handle to the periodic broadcast task
     pub task_handle: Option<JoinHandle<()>>,
 }

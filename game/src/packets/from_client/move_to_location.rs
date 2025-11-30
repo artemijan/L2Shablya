@@ -74,9 +74,8 @@ impl Message<RequestMoveToLocation> for PlayerClient {
             tick.tick().await; // Skip first immediate tick
 
             loop {
-                tick.tick().await;
-
-                // Get current movement state via actor
+                // Check movement state BEFORE waiting, ensuring at least one update
+                // even for very short movements
                 let result = actor_ref
                     .ask(GetMovementPosition)
                     .await;
@@ -95,6 +94,9 @@ impl Message<RequestMoveToLocation> for PlayerClient {
                                 controller.broadcast_packet(packet);
                             }
                         }
+                        
+                        // Wait for next tick after sending update
+                        tick.tick().await;
                     }
                     Ok(None) => {
                         // Movement was stopped/cancelled
