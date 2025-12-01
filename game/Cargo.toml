@@ -26,9 +26,7 @@ kameo.workspace = true
 bytes.workspace = true
 dotenvy.workspace = true
 [dev-dependencies]
-ntest.workspace = true
 test-utils = { path = "../test-utils" }
 entities = { path = "../entities", features = ["test-factories"] }
-
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
