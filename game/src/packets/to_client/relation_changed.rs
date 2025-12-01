@@ -19,7 +19,6 @@ pub struct RelationChanged {
 
 impl RelationChanged {
     const PACKET_ID: u8 = 0xCE;
-    const EX_PACKET_ID: Option<u16> = None;
     const SEND_DEFAULT: u8 = 0x01;
     const SEND_ONE: u8 = 0x02;
     const SEND_MULTI: u8 = 0x04;

@@ -2,8 +2,8 @@ use crate::dto::player::GSCharsInfo;
 use crate::login_client::LoginClient;
 use l2_core::shared_packets::common::{LoginServerOpcodes, ServerData, ServerStatus};
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use std::collections::HashMap;
 use macro_common::SendablePacket;
+use std::collections::HashMap;
 
 #[derive(Debug, Clone, SendablePacket)]
 pub struct ServerList {
@@ -99,9 +99,7 @@ mod tests {
             GSInfo::new(
                 1,
                 true,
-                false,
                 9106,
-                true,
                 1,
                 false,
                 1,

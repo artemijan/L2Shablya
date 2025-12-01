@@ -19,9 +19,7 @@ impl Message<RequestAuthGS> for GameServerClient {
         let gsi = GSInfo::new(
             msg.desired_id,
             msg.accept_alternative_id,
-            msg.host_reserved,
             msg.port,
-            true,
             0,
             true,
             0,

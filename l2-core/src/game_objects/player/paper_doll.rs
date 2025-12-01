@@ -1,5 +1,4 @@
 use entities::dao::item::{ItemVariables, LocType};
-use entities::entities::item;
 
 #[repr(i32)]
 #[derive(Debug, Clone, Copy, PartialEq)]

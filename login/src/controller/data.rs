@@ -34,10 +34,7 @@ impl LoginController {
     pub fn get_config(&self) -> &login::LoginServerConfig {
         &self.config
     }
-    
-    pub fn get_game_server(&self, gs_id: u8) -> Option<GSInfo> {
-        self.game_servers.get(&gs_id).map(|gs| gs.clone())
-    }
+
     pub fn get_random_rsa_key_pair(&self) -> &ScrambledRSAKeyPair {
         let mut rng = rand::thread_rng();
         let random_number: usize = rng.gen_range(0..self.key_pairs.len());
@@ -68,7 +65,7 @@ mod test {
     async fn test_login_controller() {
         let config = Arc::new(LoginServerConfig::load("../test_data/test_config.yaml"));
         let controller = LoginController::new(config);
-        let gs = controller.get_game_server(1);
+        let gs = controller.game_servers.get(&1);
         assert!(gs.is_none());
         assert!(controller.players.is_empty());
         assert!(controller.ip_ban_list.is_empty());

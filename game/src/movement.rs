@@ -87,6 +87,7 @@ impl MovementState {
     }
 
     /// Calculate the current interpolated position based on elapsed time
+    #[allow(clippy::cast_possible_truncation)]
     pub fn calculate_current_position(&self) -> (i32, i32, i32) {
         let elapsed = self.start_time.elapsed().as_secs_f64();
         let duration = self.calculate_travel_duration();

@@ -11,9 +11,7 @@ use std::str::FromStr;
 pub struct GSInfo {
     id: u8,
     accept_alternative_id: bool,
-    host_reserved: bool,
     port: u16,
-    is_authed: bool,
     status: i32,
     is_pvp: bool,
     server_type: i32,
@@ -33,9 +31,7 @@ impl GSInfo {
     pub fn new(
         id: u8,
         accept_alternative_id: bool,
-        host_reserved: bool,
         port: u16,
-        is_authed: bool,
         status: i32,
         is_pvp: bool,
         server_type: i32,
@@ -49,9 +45,7 @@ impl GSInfo {
         Ok(GSInfo {
             id,
             accept_alternative_id,
-            host_reserved,
             port,
-            is_authed,
             status,
             is_pvp,
             server_type,
@@ -71,9 +65,7 @@ impl GSInfo {
         }
         Ipv4Addr::LOCALHOST
     }
-    pub fn hex(&self) -> String {
-        BigInt::from_signed_bytes_be(&self.hex_id).to_str_radix(16)
-    }
+
     pub fn hex_int(&self) -> BigInt {
         BigInt::from_signed_bytes_be(&self.hex_id)
     }
@@ -84,15 +76,11 @@ impl GSInfo {
     pub fn accept_alternative_id(&self) -> bool {
         self.accept_alternative_id
     }
-    pub fn is_host_reserved(&self) -> bool {
-        self.host_reserved
-    }
+
     pub fn get_port(&self) -> u16 {
         self.port
     }
-    pub fn is_authed(&self) -> bool {
-        self.is_authed
-    }
+
     pub fn get_status(&self) -> u8 {
         self.status as u8
     }
@@ -126,12 +114,7 @@ impl GSInfo {
     pub fn set_server_status(&mut self, status: i32) {
         self.status = status;
     }
-    pub fn get_hex_id(&self) -> Vec<u8> {
-        self.hex_id.clone()
-    }
-    pub fn get_hosts(&self) -> Vec<ServerHost> {
-        self.hosts.clone()
-    }
+
     ///
     /// This function takes as an input an iterable of strings and try to compile a list of pairs:
     /// Subnet / Ip

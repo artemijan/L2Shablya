@@ -6,7 +6,6 @@ use entities::entities::item::Model;
 use log::error;
 use serde_json::Value;
 use std::collections::HashMap;
-use std::sync::Arc;
 
 #[repr(u8)]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Ord, PartialOrd)]

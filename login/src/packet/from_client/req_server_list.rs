@@ -84,9 +84,7 @@ mod tests {
             GSInfo::new(
                 1,
                 true,
-                false,
                 9106,
-                true,
                 1,
                 false,
                 1,

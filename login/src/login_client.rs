@@ -56,6 +56,8 @@ impl LoginClient {
         let data = buffer.take();
         send_packet_blocking(self.packet_sender.as_ref(), data.freeze()).await
     }
+    
+    #[allow(unused)]
     pub async fn send_packet_no_wait(&self, packet: impl SendablePacket) -> anyhow::Result<()> {
         let buffer = packet.get_buffer();
         let data = buffer.take();

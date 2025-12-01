@@ -93,9 +93,7 @@ mod tests {
             GSInfo::new(
                 server_id,
                 true,
-                false,
                 9106,
-                true,
                 1,
                 false,
                 1,

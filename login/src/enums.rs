@@ -1,6 +1,5 @@
 use l2_core::shared_packets::common::GSLoginFailReasons;
 use strum::Display;
-use tracing::{error, info};
 
 #[derive(Debug, Clone, Display, Eq, PartialEq, Hash, Copy, PartialOrd, Ord)]
 pub enum GS {
