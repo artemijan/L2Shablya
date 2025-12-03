@@ -106,6 +106,7 @@ mod tests {
     }
 
     #[test]
+    #[serial_test::serial]
     fn test_allocation() {
         let factory = IdFactory::instance();
         factory.reset_for_tests();
@@ -116,6 +117,7 @@ mod tests {
     }
 
     #[test]
+    #[serial_test::serial]
     fn test_reuse() {
         let factory = IdFactory::instance();
         factory.reset_for_tests();

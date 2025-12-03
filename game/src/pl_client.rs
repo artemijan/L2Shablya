@@ -338,6 +338,9 @@ impl PlayerClient {
         dest_z: i32,
         actor_ref: ActorRef<PlayerClient>,
     ) -> anyhow::Result<(i32, i32, i32)> {
+        if self.status != ClientStatus::InGame {
+            bail!("Can't start movement. PlayerClient is not in game");
+        }
         // Compute effective current position consistent with validation logic
         let (current_x, current_y, current_z) = self.effective_current_position()?;
 
@@ -363,7 +366,7 @@ impl PlayerClient {
         let controller = self.controller.clone();
 
         let task_handle = tokio::spawn(async move {
-            let mut interval = tokio::time::interval(std::time::Duration::from_millis(300));
+            let mut interval = tokio::time::interval(Duration::from_millis(300));
 
             loop {
                 // Check movement state BEFORE waiting
@@ -388,7 +391,7 @@ impl PlayerClient {
                         error!("Error while broadcasting movement packet");
                     }
                 } else {
-                    // Error or no movement state, stop a task
+                    // Error or no movement state, or movement is not allowed, stop a task
                     break;
                 }
 
@@ -588,6 +591,10 @@ impl Message<GetMovementPosition> for PlayerClient {
         _: GetMovementPosition,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> Self::Reply {
+        if self.status != ClientStatus::InGame {
+            self.stop_movement();
+            bail!("Can't get movement position. PlayerClient is not in game");
+        }
         if let Some(movement) = self.movement_state.as_ref() {
             let (x, y, z) = movement.calculate_current_position();
             let has_arrived = movement.has_arrived();

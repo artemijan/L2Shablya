@@ -1,5 +1,5 @@
 use crate::packets::to_client::{CharSelectionInfo, DeleteObject, RestartResponse};
-use crate::pl_client::PlayerClient;
+use crate::pl_client::{ClientStatus, PlayerClient};
 use bytes::BytesMut;
 use entities::entities::character;
 use kameo::message::Context;
@@ -28,12 +28,12 @@ impl Message<RequestRestart> for PlayerClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo: if can logout (olymp, pvp flag, events, etc.)
-        self.stop_movement();
         let session_id = self.try_get_session_key()?.get_play_session_id();
         let chars = self.try_get_account_chars()?;
         let user_name = self.try_get_user()?.username.clone();
         let p = CharSelectionInfo::new(&user_name.clone(), session_id, &self.controller, chars)?;
         let player = self.try_get_selected_char()?.clone(); // we clone it to avoid borrow checker issues with reference to self
+        self.set_status(ClientStatus::Authenticated);
         self.controller.broadcast_packet_with_filter(
             DeleteObject::new(player.get_object_id())?,
             Some(Box::new(move |acc, _| !acc.eq(&user_name))),

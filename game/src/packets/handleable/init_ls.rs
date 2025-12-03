@@ -38,7 +38,6 @@ mod tests {
     use l2_core::config::gs::GSServerConfig;
     use l2_core::crypt::rsa::ScrambledRSAKeyPair;
     use l2_core::traits::ServerConfig;
-    use ntest::timeout;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
     use tokio::io::{split, AsyncReadExt};
