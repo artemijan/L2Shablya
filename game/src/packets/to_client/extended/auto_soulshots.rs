@@ -8,8 +8,8 @@ pub struct AutoSoulShots {
 }
 
 impl AutoSoulShots {
-    const PACKET_ID: u8 = 0xFE;
-    const EX_PACKET_ID: u16 = 0x0C;
+    pub const PACKET_ID: u8 = 0xFE;
+    pub const EX_PACKET_ID: u16 = 0x0C;
 
     pub fn new(item_id: i32, enable: bool, the_type: i32) -> anyhow::Result<Self> {
         let mut inst = Self {

@@ -10,7 +10,7 @@ pub struct AcquireSkillList {
 }
 
 impl AcquireSkillList {
-    const PACKET_ID: u8 = 0x90;
+    pub const PACKET_ID: u8 = 0x90;
     pub fn new(_p: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),

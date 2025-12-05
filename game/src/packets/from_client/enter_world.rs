@@ -4,8 +4,8 @@ use crate::packets::to_client::extended::{
     SubclassInfo, SubclassInfoType, UISettings, UnreadMailCount, VitalityInfo,
 };
 use crate::packets::to_client::{
-    AbnormalStatusUpdate, AcquireSkillList, CharEtcStatusUpdate, FriendList, HennaInfo,
-    ItemList, MacroList, MoveTo, QuestList, ShortcutsInit, SkillCoolTime, SkillList, SystemMessage,
+    AbnormalStatusUpdate, AcquireSkillList, CharEtcStatusUpdate, FriendList, HennaInfo, ItemList,
+    MacroList, MoveTo, QuestList, ShortcutsInit, SkillCoolTime, SkillList, SystemMessage,
     SystemMessageType, UserInfo,
 };
 use crate::pl_client::{ClientStatus, DoLater, PlayerClient};
@@ -145,17 +145,6 @@ impl Message<EnterWorld> for PlayerClient {
         self.send_packet(CharEtcStatusUpdate::new(&player)?).await?;
         //todo: again send clan packets (please check why we need to send it twice!!!)
         if player.char_model.clan_id.is_some() {
-            // clan.broadcastToOnlineMembers(new PledgeShowMemberListUpdate(player));
-            // PledgeShowMemberListAll.sendAllTo(player);
-            // clan.broadcastToOnlineMembers(new ExPledgeCount(clan));
-            // player.sendPacket(new PledgeSkillList(clan));
-            // final ClanHall ch = ClanHallData.getInstance().getClanHallByClan(clan);
-            // if ((ch != null) && (ch.getCostFailDay() > 0))
-            // {
-            //     final SystemMessage sm = new SystemMessage(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW);
-            //     sm.addInt(ch.getLease());
-            //     player.sendPacket(sm);
-            // }
             todo!("Clan packets");
         } else {
             self.send_packet(PledgeWaitingListAlarm::new()?).await?;
@@ -232,5 +221,426 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: finish entering the world
         //todo: run PCafe points program
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::controller::GameController;
+    use crate::ls_client::LoginServerClient;
+    use crate::pl_client::ClientStatus;
+    use crate::test_utils::test::{
+        get_gs_config, spawn_custom_ls_client_actor, spawn_custom_player_client_actor,
+    };
+    use entities::entities::user;
+    use entities::test_factories::factories::{char_factory, user_factory};
+    use l2_core::game_objects::player::Player;
+    use std::collections::{HashMap, VecDeque};
+    use std::net::Ipv4Addr;
+    use std::sync::Arc;
+    use test_utils::utils::{get_test_db, DBPool};
+    use tokio::io::{split, AsyncReadExt, DuplexStream};
+    use tokio::time::{sleep, timeout};
+
+    async fn prepare_pl() -> PlayerClient {
+        let pool = get_test_db().await;
+        let cfg = Arc::new(get_gs_config());
+        let controller = Arc::new(GameController::from_config(cfg).await);
+        PlayerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool.clone())
+    }
+
+    async fn create_user(pool: &DBPool) -> user::Model {
+        user_factory(pool, |mut u| {
+            u.username = String::from("test");
+            u
+        })
+        .await
+    }
+
+    // create a simple character for tests
+    async fn create_char(pl: &PlayerClient, user_id: i32) -> Player {
+        let char_model = char_factory(&pl.db_pool, |mut c| {
+            c.user_id = user_id;
+            c.name = "TestChar".to_owned();
+            c
+        })
+        .await;
+        let tmpl = pl
+            .controller
+            .class_templates
+            .try_get_template(char_model.class_id)
+            .unwrap()
+            .clone();
+        Player::new(char_model, vec![], tmpl)
+    }
+
+    fn enter_world_with_ip(ip: [u8; 4]) -> EnterWorld {
+        EnterWorld {
+            tracert: [ip, [1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3], [4, 4, 4, 4]],
+        }
+    }
+    /// Read a single framed packet from the client stream: [u16_le len][body]
+    async fn read_one_packet(stream: &mut DuplexStream) -> anyhow::Result<Vec<u8>> {
+        let mut len_buf = [0u8; 2];
+        stream.read_exact(&mut len_buf).await?; // will error on EOF
+        let body_len = u16::from_le_bytes(len_buf) as usize;
+        anyhow::ensure!(body_len >= 2, "Invalid frame size: {}", body_len);
+        let mut body = vec![0u8; body_len - 2];
+        stream.read_exact(&mut body).await?;
+        Ok(body)
+    }
+
+    /// Collect packets until there is a quiet period (idle_timeout) after a grace wait
+    async fn collect_packets_with_idle_timeout(
+        client_rx: &mut DuplexStream,
+        initial_grace: Duration,
+        idle_timeout: Duration,
+    ) -> anyhow::Result<Vec<Vec<u8>>> {
+        // Give EnterWorld time to schedule and send the delayed packets
+        if !initial_grace.is_zero() {
+            sleep(initial_grace).await;
+        }
+
+        let mut packets = Vec::new();
+        loop {
+            // Try to read the next packet; if no packet arrives for idle_timeout, stop
+            match timeout(idle_timeout, read_one_packet(client_rx)).await {
+                Ok(Ok(pkt)) => packets.push(pkt),
+                Ok(Err(e)) => {
+                    // Stream closed – finish
+                    return Err(e);
+                }
+                Err(_) => break, // idle timeout elapsed, assume no more packets for now
+            }
+        }
+        Ok(packets)
+    }
+
+    /// Extract L2 packet ID for assertion. Normal packets start with 1 byte.
+    /// Extended packets start with 0xFE then a u16_le subtype.
+    fn packet_id(body: &[u8]) -> String {
+        if body.is_empty() {
+            return "<empty>".into();
+        }
+        if body[0] == 0xFE {
+            if body.len() >= 3 {
+                let sub = u16::from_le_bytes([body[1], body[2]]);
+                format!("0x{sub:04X}")
+            } else {
+                "FE:<unknown>".into()
+            }
+        } else {
+            format!("0x{:02X}", body[0])
+        }
+    }
+
+    #[tokio::test]
+    async fn test_error_when_not_entering_state() {
+        let pack = enter_world_with_ip([127, 0, 0, 1]);
+        let (_client, server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let mut pl_client = prepare_pl().await;
+        pl_client.set_status(ClientStatus::Authenticated);
+        let player_actor = spawn_custom_player_client_actor(
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+            r,
+            w,
+            Some(pl_client),
+        )
+        .await;
+        let res = player_actor.ask(pack).await;
+        assert!(res.is_err());
+    }
+
+    #[tokio::test]
+    async fn test_error_missing_user() {
+        let pack = enter_world_with_ip([127, 0, 0, 1]);
+        let (_client, server) = tokio::io::duplex(1024);
+        let (_ls_client_stream, ls_server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let (ls_r, ls_w) = split(ls_server);
+        let mut pl_client = prepare_pl().await;
+        pl_client.set_status(ClientStatus::Entering);
+        // spawn LS actor so we pass try_get_ls_actor and fail on missing user
+        let ls_client = LoginServerClient::new(
+            Ipv4Addr::LOCALHOST,
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+        );
+        let ls_actor = spawn_custom_ls_client_actor(
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+            ls_r,
+            ls_w,
+            Some(ls_client),
+        )
+        .await;
+        pl_client.controller.set_ls_actor(ls_actor).await;
+
+        let player_actor = spawn_custom_player_client_actor(
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+            r,
+            w,
+            Some(pl_client),
+        )
+        .await;
+        let res = player_actor.ask(pack).await;
+        assert!(res.is_err());
+    }
+
+    #[tokio::test]
+    async fn test_error_missing_selected_char() {
+        let pack = enter_world_with_ip([127, 0, 0, 1]);
+        let (_client, server) = tokio::io::duplex(1024);
+        let (_ls_client_stream, ls_server) = tokio::io::duplex(1024);
+        let (r, w) = split(server);
+        let (ls_r, ls_w) = split(ls_server);
+        let mut pl_client = prepare_pl().await;
+        pl_client.set_status(ClientStatus::Entering);
+        let user = create_user(&pl_client.db_pool).await;
+        pl_client.set_user(user);
+        // Spawn LS actor so we proceed to selected char check
+        let ls_client = LoginServerClient::new(
+            Ipv4Addr::LOCALHOST,
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+        );
+        let ls_actor = spawn_custom_ls_client_actor(
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+            ls_r,
+            ls_w,
+            Some(ls_client),
+        )
+        .await;
+        pl_client.controller.set_ls_actor(ls_actor).await;
+        // Have characters but do not select, to trigger try_get_selected_char error
+        pl_client.set_account_chars(vec![]);
+
+        let player_actor = spawn_custom_player_client_actor(
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+            r,
+            w,
+            Some(pl_client),
+        )
+        .await;
+        let res = player_actor.ask(pack).await;
+        assert!(res.is_err());
+    }
+
+    #[tokio::test]
+    #[allow(clippy::too_many_lines)]
+    async fn test_handle_ok_status_and_tracert() {
+        let pack = enter_world_with_ip([127, 0, 0, 1]);
+        let (mut client_rx, server) = tokio::io::duplex(4096);
+        let (_ls_client_stream, ls_server) = tokio::io::duplex(4096);
+        let (r, w) = split(server);
+        let (ls_r, ls_w) = split(ls_server);
+        let mut pl_client = prepare_pl().await;
+        pl_client.set_status(ClientStatus::Entering);
+        let user = create_user(&pl_client.db_pool).await;
+        let player = create_char(&pl_client, user.id).await;
+        pl_client.set_user(user);
+        pl_client.set_account_chars(vec![player]);
+        pl_client.select_char(0);
+
+        // Login server actor required for tracert tell
+        let controller = pl_client.controller.clone();
+        let pool = controller.get_db_pool().clone();
+        let ls_client = LoginServerClient::new(Ipv4Addr::LOCALHOST, controller.clone(), pool);
+        let ls_actor = spawn_custom_ls_client_actor(
+            controller.clone(),
+            controller.get_db_pool().clone(),
+            ls_r,
+            ls_w,
+            Some(ls_client),
+        )
+        .await;
+        controller.set_ls_actor(ls_actor).await;
+
+        let player_actor = spawn_custom_player_client_actor(
+            pl_client.controller.clone(),
+            pl_client.db_pool.clone(),
+            r,
+            w,
+            Some(pl_client),
+        )
+        .await;
+        let res = player_actor.ask(pack).await;
+        assert!(res.is_ok());
+        // Collect packets: wait long enough to include DoLater(500ms) packets
+        let frames = collect_packets_with_idle_timeout(
+            &mut client_rx,
+            Duration::from_millis(650), // initial grace
+            Duration::from_millis(200), // idle timeout
+        )
+        .await
+        .expect("collect packets");
+
+        let ids: Vec<String> = frames.iter().map(|b| packet_id(b)).collect();
+        let mut positions = HashMap::new();
+        for (index, item) in ids.iter().enumerate() {
+            positions
+                .entry(item)
+                .or_insert(VecDeque::new())
+                .push_back(index);
+        }
+        let mut pos = |tag: &str| {
+            let poss = positions.get_mut(&tag.to_string()).unwrap();
+            poss.pop_front().unwrap()
+        };
+
+        // Replace these with the actual IDs in your protocol
+        // For example, if UserInfo is 0x32, write "32"; if extended, use "FE:xxxx"
+        let user_info = pos(&packet_id(&UserInfo::PACKET_ID.to_le_bytes()));
+        let vitality = pos(&packet_id(
+            &VitalityInfo::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(VitalityInfo::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+        let ui_settings = pos(&packet_id(
+            &UISettings::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(UISettings::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+        let macro_list = pos(&packet_id(&MacroList::PACKET_ID.to_le_bytes()));
+        let bookmark = pos(&packet_id(
+            &BookmarkInfo::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(BookmarkInfo::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+        let item_list = pos(&packet_id(&ItemList::PACKET_ID.to_le_bytes()));
+        let quest_items = pos(&packet_id(
+            &QuestItemList::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(QuestItemList::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+        let shortcuts_init = pos(&packet_id(&ShortcutsInit::PACKET_ID.to_le_bytes()));
+        let basic_action_list = pos(&packet_id(
+            &BasicActionList::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(BasicActionList::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+
+        let char_etc_status_update = pos(&packet_id(&CharEtcStatusUpdate::PACKET_ID.to_le_bytes()));
+        let pledge_waiting_list_alarm = pos(&packet_id(
+            &PledgeWaitingListAlarm::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(
+                    PledgeWaitingListAlarm::EX_PACKET_ID
+                        .to_le_bytes()
+                        .into_iter(),
+                )
+                .collect::<Vec<_>>(),
+        ));
+        let subclass_info = pos(&packet_id(
+            &SubclassInfo::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(SubclassInfo::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+        let inventory_weight = pos(&packet_id(
+            &InventoryWeight::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(InventoryWeight::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+        let inventory_adena_info = pos(&packet_id(
+            &InventoryAdenaInfo::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(InventoryAdenaInfo::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+        let equipped_items = pos(&packet_id(
+            &EquippedItems::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(EquippedItems::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+        let quest_list = pos(&packet_id(&QuestList::PACKET_ID.to_le_bytes()));
+        let rotation = pos(&packet_id(
+            &Rotation::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(Rotation::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+
+        let friend_list = pos(&packet_id(&FriendList::PACKET_ID.to_le_bytes()));
+        let skill_cool_time = pos(&packet_id(&SkillCoolTime::PACKET_ID.to_le_bytes()));
+        let user_info_2 = pos(&packet_id(&UserInfo::PACKET_ID.to_le_bytes()));
+        let set_compas_zone_code = pos(&packet_id(
+            &SetCompasZoneCode::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(SetCompasZoneCode::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        ));
+        let sh_id = packet_id(
+            &AutoSoulShots::PACKET_ID
+                .to_le_bytes()
+                .into_iter()
+                .chain(AutoSoulShots::EX_PACKET_ID.to_le_bytes().into_iter())
+                .collect::<Vec<_>>(),
+        );
+        let move_to = pos(&packet_id(&MoveTo::PACKET_ID.to_le_bytes()));
+        let auto_soul_shots_1 = pos(&sh_id);
+        let auto_soul_shots_2 = pos(&sh_id);
+        let auto_soul_shots_3 = pos(&sh_id);
+        let auto_soul_shots_4 = pos(&sh_id);
+        let abnormal_status_update =
+            pos(&packet_id(&AbnormalStatusUpdate::PACKET_ID.to_le_bytes()));
+        let system_message = pos(&packet_id(&SystemMessage::PACKET_ID.to_le_bytes()));
+        let skill_list_2 = pos(&packet_id(&SkillList::PACKET_ID.to_le_bytes()));
+        let aq_skill_list = pos(&packet_id(&AcquireSkillList::PACKET_ID.to_le_bytes()));
+
+        assert!(user_info < vitality);
+        assert!(vitality < ui_settings);
+        assert!(ui_settings < macro_list);
+        assert!(macro_list < bookmark);
+        assert!(bookmark < item_list);
+        assert!(item_list < quest_items);
+        assert!(quest_items < shortcuts_init);
+        assert!(shortcuts_init < basic_action_list);
+        assert!(basic_action_list < char_etc_status_update);
+        assert!(char_etc_status_update < pledge_waiting_list_alarm);
+        assert!(pledge_waiting_list_alarm < subclass_info);
+        assert!(subclass_info < inventory_weight);
+        assert!(inventory_weight < inventory_adena_info);
+        assert!(inventory_adena_info < equipped_items);
+        assert!(equipped_items < quest_list);
+        assert!(quest_list < rotation);
+        assert!(rotation < friend_list);
+        assert!(friend_list < skill_cool_time);
+        assert!(skill_cool_time < user_info_2);
+        assert!(user_info_2 < set_compas_zone_code);
+        assert!(set_compas_zone_code < move_to);
+        assert!(move_to < auto_soul_shots_1);
+        assert!(auto_soul_shots_1 < auto_soul_shots_2);
+        assert!(auto_soul_shots_2 < auto_soul_shots_3);
+        assert!(auto_soul_shots_3 < auto_soul_shots_4);
+        assert!(auto_soul_shots_4 < abnormal_status_update);
+        assert!(abnormal_status_update < system_message);
+        assert!(system_message < skill_list_2);
+        assert!(skill_list_2 < aq_skill_list);
     }
 }

@@ -9,8 +9,8 @@ pub struct Rotation {
 }
 
 impl Rotation {
-    const PACKET_ID: u8 = 0xFE;
-    const EX_PACKET_ID: u16 = 0xC2;
+    pub const PACKET_ID: u8 = 0xFE;
+    pub const EX_PACKET_ID: u16 = 0xC2;
 
     pub fn new(player: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {

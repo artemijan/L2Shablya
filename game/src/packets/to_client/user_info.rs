@@ -21,8 +21,8 @@ pub struct UserInfo {
 
 #[allow(unused)]
 impl UserInfo {
-    const PACKET_ID: u8 = 0x32;
-    const EX_PACKET_ID: Option<u16> = None;
+    pub const PACKET_ID: u8 = 0x32;
+    pub const EX_PACKET_ID: Option<u16> = None;
 
     #[allow(clippy::too_many_lines)]
     pub async fn new(

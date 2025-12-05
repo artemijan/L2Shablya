@@ -19,7 +19,7 @@ pub struct SystemMessage {
 }
 
 impl SystemMessage {
-    const PACKET_ID: u8 = 0x62;
+    pub const PACKET_ID: u8 = 0x62;
     pub fn new(msg: SystemMessageType) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),

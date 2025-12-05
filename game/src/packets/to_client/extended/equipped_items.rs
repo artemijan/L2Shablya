@@ -13,8 +13,8 @@ pub struct EquippedItems {
 }
 
 impl EquippedItems {
-    const PACKET_ID: u8 = 0xFE;
-    const EX_PACKET_ID: u16 = 0x156;
+    pub const PACKET_ID: u8 = 0xFE;
+    pub const EX_PACKET_ID: u16 = 0x156;
     pub fn new(p: &Player, with_all_slots: bool) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),

@@ -16,8 +16,8 @@ pub struct SubclassInfo {
 }
 
 impl SubclassInfo {
-    const PACKET_ID: u8 = 0xFE;
-    const EX_PACKET_ID: u16 = 0xEA;
+    pub const PACKET_ID: u8 = 0xFE;
+    pub const EX_PACKET_ID: u16 = 0xEA;
     pub fn new(p: &Player, the_type: SubclassInfoType) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),

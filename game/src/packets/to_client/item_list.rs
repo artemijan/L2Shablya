@@ -11,7 +11,7 @@ pub struct ItemList {
 }
 
 impl ItemList {
-    const PACKET_ID: u8 = 0x11;
+    pub const PACKET_ID: u8 = 0x11;
 
     pub fn new(p: &Player, show_window: bool) -> anyhow::Result<Self> {
         let mut inst = Self {

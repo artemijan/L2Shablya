@@ -8,7 +8,7 @@ pub struct ShortcutsInit {
 }
 
 impl ShortcutsInit {
-    const PACKET_ID: u8 = 0x45;
+    pub const PACKET_ID: u8 = 0x45;
 
     pub fn new(_p: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {

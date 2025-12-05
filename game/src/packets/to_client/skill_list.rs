@@ -9,7 +9,7 @@ pub struct SkillList {
 }
 
 impl SkillList {
-    const PACKET_ID: u8 = 0x5F;
+    pub const PACKET_ID: u8 = 0x5F;
     pub fn empty() -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),

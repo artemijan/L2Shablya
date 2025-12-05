@@ -9,7 +9,7 @@ pub struct FriendList {
 }
 
 impl FriendList {
-    const PACKET_ID: u8 = 0x75;
+    pub const PACKET_ID: u8 = 0x75;
 
     pub fn new(_player: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {

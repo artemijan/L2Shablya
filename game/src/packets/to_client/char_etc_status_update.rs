@@ -9,7 +9,7 @@ pub struct CharEtcStatusUpdate {
 
 #[allow(unused)]
 impl CharEtcStatusUpdate {
-    const PACKET_ID: u8 = 0xF9;
+    pub const PACKET_ID: u8 = 0xF9;
     const EX_PACKET_ID: Option<u16> = None;
     pub fn new(p: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {

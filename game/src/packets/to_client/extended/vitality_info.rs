@@ -13,8 +13,8 @@ pub struct VitalityInfo {
 }
 
 impl VitalityInfo {
-    const PACKET_ID: u8 = 0xFE;
-    const EX_PACKET_ID: u16 = 0x118;
+    pub const PACKET_ID: u8 = 0xFE;
+    pub const EX_PACKET_ID: u16 = 0x118;
 
 
     pub fn new(player: &Player, config: &GSServerConfig) -> anyhow::Result<Self> {

@@ -9,7 +9,7 @@ pub struct QuestList {
 }
 
 impl QuestList {
-    const PACKET_ID: u8 = 0x86;
+    pub const PACKET_ID: u8 = 0x86;
 
     pub fn new(p: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {

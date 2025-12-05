@@ -9,7 +9,7 @@ pub struct AbnormalStatusUpdate {
 }
 
 impl AbnormalStatusUpdate {
-    const PACKET_ID: u8 = 0x85;
+    pub const PACKET_ID: u8 = 0x85;
 
     pub fn new(_: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {

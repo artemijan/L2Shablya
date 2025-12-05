@@ -9,8 +9,8 @@ pub struct BasicActionList {
 }
 
 impl BasicActionList {
-    const PACKET_ID: u8 = 0xFE;
-    const EX_PACKET_ID: u16 = 0x60;
+    pub const PACKET_ID: u8 = 0xFE;
+    pub const EX_PACKET_ID: u16 = 0x60;
 
     pub fn new(al: &ActionList) -> anyhow::Result<Self> {
         //todo: optimization, this is static packet we should cache it

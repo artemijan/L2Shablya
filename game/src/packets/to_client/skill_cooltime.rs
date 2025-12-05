@@ -10,7 +10,7 @@ pub struct SkillCoolTime {
 }
 
 impl SkillCoolTime {
-    const PACKET_ID: u8 = 0xC7;
+    pub const PACKET_ID: u8 = 0xC7;
     pub fn new(_: &Player) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),

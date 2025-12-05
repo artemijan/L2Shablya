@@ -29,7 +29,7 @@ pub struct MacroList {
 }
 
 impl MacroList {
-    const PACKET_ID: u8 = 0xE8;
+    pub const PACKET_ID: u8 = 0xE8;
 
     pub fn list_macros(p: &Player) -> anyhow::Result<Vec<Self>> {
         let macros = p.get_macros();
