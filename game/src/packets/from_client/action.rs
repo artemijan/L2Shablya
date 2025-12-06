@@ -1,11 +1,11 @@
 use crate::packets::to_client::TargetSelected;
-use crate::pl_client::PlayerClient;
+use crate::pl_client::{GetCharInfo, PlayerClient};
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use tracing::instrument;
+use tracing::{error, instrument};
 
 #[derive(Debug, Clone)]
 pub struct Action {
@@ -46,10 +46,32 @@ impl Message<Action> for PlayerClient {
         msg: Action,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        let player = self.try_get_selected_char()?;
-        print!("{player:?}");
-        self.send_packet(TargetSelected::new(msg.object_id, 0)?)
-            .await?;
+        let level = self.try_get_selected_char()?.char_model.level;
+        match msg.action {
+            0 => {
+                if let Some(target_actor) = self.controller.get_player_by_object_id(msg.object_id) {
+                    // store selected target mapping
+                    let other_pl = target_actor.ask(GetCharInfo).await?;
+                    self.selected_target = Some((msg.object_id, target_actor));
+                    // notify client about target selection
+                    self.send_packet(TargetSelected::new(
+                        msg.object_id,
+                        i16::from(level - other_pl.char_model.level),
+                    )?)
+                    .await?;
+                } else {
+                    // the target not found in world registry; ignore or clear selection
+                    self.selected_target = None;
+                }
+            }
+            1 => { //shift
+            }
+            _ => {
+                //invalid action
+                error!("Invalid action: {}", msg.action);
+            }
+        }
+
         Ok(())
     }
 }

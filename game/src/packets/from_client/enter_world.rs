@@ -191,6 +191,10 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: send message about premium items (maybe premium account or so?)
         //todo: check if offline trade and cancel it
 
+        // register this player by global object_id in world registry
+        self.controller
+            .register_player_object(player.get_object_id(), ctx.actor_ref().clone());
+
         self.controller
             .add_player_to_world(&player, ctx.actor_ref())
             .await?;

@@ -10,14 +10,14 @@ pub struct TargetSelected {
 impl TargetSelected {
     pub const PACKET_ID: u8 = 0xB9;
 
-    pub fn new(target_id: i32, level_diff: u8) -> anyhow::Result<Self> {
+    pub fn new(target_id: i32, level_diff: i16) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
         };
         inst.buffer.write(Self::PACKET_ID)?;
         inst.buffer.write_i32(1)?; // Grand Crusade
         inst.buffer.write_i32(target_id)?;
-        inst.buffer.write_u16(level_diff)?;
+        inst.buffer.write_i16(level_diff)?;
         inst.buffer.write_i32(0)?;
         Ok(inst)
     }

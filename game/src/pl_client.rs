@@ -468,6 +468,10 @@ impl Actor for PlayerClient {
         err: PanicError,
     ) -> anyhow::Result<ControlFlow<ActorStopReason>> {
         error!("Player client {} panicked: {:?}", self.ip, &err);
+        // Ensure we cleanup world registries even on panic
+        if let Ok(player) = self.try_get_selected_char() {
+            self.controller.unregister_player_object(player.get_object_id());
+        }
         if let Some(sender) = self.packet_sender.take() {
             let _ = sender.stop_gracefully().await;
             sender.wait_for_shutdown().await;
@@ -493,6 +497,10 @@ impl Actor for PlayerClient {
                 let _ = s.stop_gracefully().await; //ignore errors is it is already dead
             }
             s.wait_for_shutdown().await;
+        }
+        // Always attempt to unregister the player from world registry if we have it
+        if let Ok(player) = self.try_get_selected_char() {
+            self.controller.unregister_player_object(player.get_object_id());
         }
         let Some(user) = self.user.as_ref() else {
             return Ok(());
