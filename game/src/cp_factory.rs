@@ -1,3 +1,4 @@
+use crate::packets::from_client::action::Action;
 use crate::packets::from_client::auth::AuthLogin;
 use crate::packets::from_client::char_create::CreateCharRequest;
 use crate::packets::from_client::char_restore::RestoreChar;
@@ -48,6 +49,7 @@ pub enum PlayerPackets {
     ReqSkillCoolTime(ReqSkillCoolTime),
     ValidatePosition(ValidatePosition),
     StopMove(StopMove),
+    Action(Action),
 }
 
 pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
@@ -68,7 +70,9 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         CreateCharRequest::PACKET_ID => Ok(PlayerPackets::CreateCharRequest(
             CreateCharRequest::read(data)?,
         )),
-        RequestMoveToLocation::PACKET_ID => Ok(PlayerPackets::MoveToLocation(RequestMoveToLocation::read(data)?)),
+        RequestMoveToLocation::PACKET_ID => Ok(PlayerPackets::MoveToLocation(
+            RequestMoveToLocation::read(data)?,
+        )),
         RequestRestart::PACKET_ID => Ok(PlayerPackets::ReqRestart(RequestRestart::read(data)?)),
         Logout::PACKET_ID => Ok(PlayerPackets::Logout(Logout::read(data)?)),
         DeleteChar::PACKET_ID => Ok(PlayerPackets::DeleteChar(DeleteChar::read(data)?)),
@@ -81,6 +85,7 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         ReqSkillCoolTime::PACKET_ID => Ok(PlayerPackets::ReqSkillCoolTime(ReqSkillCoolTime::read(
             data,
         )?)),
+        Action::PACKET_ID => Ok(PlayerPackets::Action(Action::read(data)?)),
         0xD0 => build_ex_client_packet(data),
         _ => {
             error!("Unknown Player packet ID: 0x{:02X}", packet_id[0]);

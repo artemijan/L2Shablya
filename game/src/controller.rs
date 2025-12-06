@@ -37,6 +37,8 @@ pub struct GameController {
     pub base_stats_table: BaseStat,
     pub hero_list: DashMap<i32, character::Model>,
     pub clan_ally_manager: Arc<RwLock<ClanAllyManager>>,
+    // Global registry: world object_id -> player actor
+    player_by_object_id: DashMap<i32, ActorRef<PlayerClient>>,
 }
 
 impl GameController {
@@ -58,6 +60,7 @@ impl GameController {
             hero_list: DashMap::new(),
             online_chars: DashMap::new(),
             clan_ally_manager: Arc::new(RwLock::new(ClanAllyManager::new(db_pool.clone()).await)),
+            player_by_object_id: DashMap::new(),
         }
     }
     pub async fn set_ls_actor(&self, actor: ActorRef<LoginServerClient>) {
@@ -178,6 +181,22 @@ impl GameController {
     pub fn broadcast_packet(&self, packet: impl SendablePacket + Clone + Send + 'static) {
         self.broadcast_packet_with_filter(packet, None);
     }
+
+    /// Register a player actor by its global `object_id`.
+    /// Returns previous actor if any was registered for that id.
+    pub fn register_player_object(&self, object_id: i32, actor: ActorRef<PlayerClient>) -> Option<ActorRef<PlayerClient>> {
+        self.player_by_object_id.insert(object_id, actor)
+    }
+
+    /// Remove a player from the registry by its `object_id`.
+    pub fn unregister_player_object(&self, object_id: i32) {
+        self.player_by_object_id.remove(&object_id);
+    }
+
+    /// Get a player actor by global `object_id`.
+    pub fn get_player_by_object_id(&self, object_id: i32) -> Option<ActorRef<PlayerClient>> {
+        self.player_by_object_id.get(&object_id).map(|r| r.clone())
+    }
 }
 
 #[cfg(test)]
@@ -201,6 +220,7 @@ impl GameController {
             hero_list: DashMap::new(),
             online_chars: DashMap::new(),
             clan_ally_manager: Arc::new(RwLock::new(ClanAllyManager::default())),
+            player_by_object_id: DashMap::new(),
         }
     }
 }
