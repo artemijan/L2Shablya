@@ -7,6 +7,7 @@ pub mod test {
     use kameo::actor::{ActorRef, Spawn};
     use kameo::message::{Context, Message};
     use kameo::Actor;
+    use std::env;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
     use tokio::io::{DuplexStream, ReadHalf, WriteHalf};
@@ -16,13 +17,13 @@ pub mod test {
     impl Message<GetState> for LoginClient {
         type Reply = Arc<Self>;
         async fn handle(
-            &mut self,
-            _: GetState,
-            _ctx: &mut Context<Self, Self::Reply>,
-        ) -> Self::Reply {
+             &mut self,
+             _: GetState,
+             _ctx: &mut Context<Self, Self::Reply>,
+         ) -> Self::Reply {
             Arc::new(self.clone())
-        }
-    }
+          }
+       }
 
     pub async fn spawn_custom_login_client_actor(
         lc: Arc<LoginController>,
@@ -30,26 +31,26 @@ pub mod test {
         r: ReadHalf<DuplexStream>,
         w: WriteHalf<DuplexStream>,
         login_client: Option<LoginClient>,
-    ) -> ActorRef<LoginClient> {
+      ) -> ActorRef<LoginClient> {
         let ip = Ipv4Addr::LOCALHOST;
         let player;
         if let Some(client) = login_client {
             player = client;
-        } else {
+          } else {
             player = LoginClient::new(ip, lc, db);
-        }
+          }
         let player_actor = LoginClient::spawn((player, Box::new(r), Box::new(w)));
         player_actor.wait_for_startup().await;
         player_actor
-    }
+      }
     pub async fn spawn_login_client_actor(
         lc: Arc<LoginController>,
         db: DBPool,
         r: ReadHalf<DuplexStream>,
         w: WriteHalf<DuplexStream>,
-    ) -> ActorRef<LoginClient> {
+      ) -> ActorRef<LoginClient> {
         spawn_custom_login_client_actor(lc, db, r, w, None).await
-    }
+      }
 
     pub async fn spawn_custom_gs_client_actor(
         lc: Arc<LoginController>,
@@ -57,24 +58,24 @@ pub mod test {
         r: ReadHalf<DuplexStream>,
         w: WriteHalf<DuplexStream>,
         gs_client: Option<GameServerClient>,
-    ) -> ActorRef<GameServerClient> {
+      ) -> ActorRef<GameServerClient> {
         let ip = Ipv4Addr::LOCALHOST;
         let gs;
         if let Some(client) = gs_client {
             gs = client;
-        } else {
+          } else {
             gs = GameServerClient::new(ip, lc, db);
-        }
+          }
         let gs_actor = GameServerClient::spawn((gs, Box::new(r), Box::new(w)));
         gs_actor.wait_for_startup().await;
         gs_actor
-    }
+      }
     pub async fn spawn_gs_client_actor(
         lc: Arc<LoginController>,
         db: DBPool,
         r: ReadHalf<DuplexStream>,
         w: WriteHalf<DuplexStream>,
-    ) -> ActorRef<GameServerClient> {
+      ) -> ActorRef<GameServerClient> {
         spawn_custom_gs_client_actor(lc, db, r, w, None).await
-    }
+      }
 }

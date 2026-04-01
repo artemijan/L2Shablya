@@ -54,13 +54,13 @@ pub struct GSServerConfig {
 }
 
 fn default_chars_on_acc() -> u8 {
-    7
+     7
 }
 fn default_vitality_max_items_allowed() -> u32 {
-    999
+     999
 }
 fn default_max_movement_distance() -> u32 {
-    15000
+     15000
 }
 fn deserialize_hex_to_bigint<'de, D>(deserializer: D) -> Result<BigInt, D::Error>
 where
@@ -79,83 +79,87 @@ where
 }
 
 impl GSServerConfig {
-    #[must_use]
+     #[must_use]
     pub fn get_hosts(&self) -> Vec<String> {
         self.ip_config
-            .iter()
-            .flat_map(|h| vec![h.subnet.to_string(), h.ip.to_string()])
-            .collect()
-    }
+              .iter()
+              .flat_map(|h| vec![h.subnet.to_string(), h.ip.to_string()])
+              .collect()
+     }
     fn auto_ip_config(&mut self) {
-        // Get all network interfaces
+         // Get all network interfaces
         let interfaces = datalink::interfaces();
-        // Filter and collect pairs of (subnet, IP address)
+          // Filter and collect pairs of (subnet, IP address)
         for i_face in &interfaces {
             for ip in &i_face.ips {
                 if let pnet::ipnetwork::IpNetwork::V4(ipv4) = ip {
                     self.ip_config.push(ServerHost {
                         ip: ipv4.ip(),
                         subnet: *ipv4,
-                    });
-                }
-            }
-        }
+                     });
+                 }
+              }
+          }
         let Ok(resp) = blocking::get("https://checkip.amazonaws.com/") else {
             return;
-        };
+         };
         if !resp.status().is_success() {
             return;
-        }
+         }
         let Ok(external_ip) = resp.text() else {
             return;
-        };
+         };
         if let Ok(ip) = Ipv4Addr::from_str(external_ip.trim()) {
             self.ip_config.push(ServerHost {
                 ip,
                 subnet: "0.0.0.0/0"
-                    .parse()
-                    .expect("WTF: can not parse statically defined ip address"),
-            });
-        } else {
+                      .parse()
+                      .expect("WTF: can not parse statically defined ip address"),
+             });
+              } else {
             error!("Failed to parse external IP address: {external_ip}");
-        }
-    }
+          }
+     }
 }
 
 impl ServerConfig for GSServerConfig {
     fn load(file_name: &str) -> Self {
-        let file = File::open(file_name).unwrap_or_else(|e| {
+          // Get config path from L2_CONFIG env variable or use default "./"
+        let config_base = env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string());
+        let config_path = std::path::PathBuf::from(config_base).join(file_name);
+        
+        let file = File::open(&config_path).unwrap_or_else(|e| {
             let cwd = env::current_dir().map_or_else(
-                |_| "unknown directory".to_string(),
-                |path| path.display().to_string(),
-            );
+                  |_| "unknown directory".to_string(),
+                  |path| path.display().to_string(),
+               );
             panic!("Failed to open config file: {file_name} (searched in {cwd}). Error: {e}");
-        });
+          });
         let reader = BufReader::new(file);
         let mut config: GSServerConfig = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
             panic!("Unable to parse {file_name}, the format is incorrect, {e}")
-        });
+          });
         info!("Configuration ok, starting application: {}", config.name);
         if config.ip_config.is_empty() {
             info!("Missing ip config, using autoconfiguration");
             config.auto_ip_config();
             assert!(!config.ip_config.is_empty());
-        }
+          }
         config
-    }
+     }
 
     fn from_string(conf: &str) -> Self {
         serde_yaml::from_str::<GSServerConfig>(conf)
-            .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
-    }
+              .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
+     }
 
     fn runtime(&self) -> Option<&Runtime> {
         self.runtime.as_ref()
-    }
+     }
 
     fn database(&self) -> &Database {
-        &self.database
-    }
+          &self.database
+     }
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -191,10 +195,10 @@ mod test {
 
     use super::GSServerConfig;
 
-    #[test]
+     #[test]
     fn test_gs_config() {
-        let conf = GSServerConfig::load("../config/game.yaml");
+        let conf = GSServerConfig::load("config/game.yaml");
         assert_eq!(conf.name, "Game server");
         assert!(conf.get_hosts().len() > 1); //at least 127.0.0.1/8, 127.0.0.1
-    }
+     }
 }

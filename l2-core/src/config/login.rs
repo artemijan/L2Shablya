@@ -22,29 +22,33 @@ pub struct LoginServerConfig {
 
 impl ServerConfig for LoginServerConfig {
     fn load(file_name: &str) -> Self {
-        let file = File::open(file_name).unwrap_or_else(|e| {
+         // Get config path from L2_CONFIG env variable or use default "./"
+        let config_base = env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string());
+        let config_path = std::path::PathBuf::from(config_base).join(file_name);
+        
+        let file = File::open(&config_path).unwrap_or_else(|e| {
             let cwd = env::current_dir()
-                .map_or_else(|_| "unknown".to_string(), |path| path.display().to_string());
-            panic!("Failed to open config file: {file_name}. Error: {e}. Current directory: {cwd}");
-        });
+                 .map_or_else(|_| "unknown".to_string(), |path| path.display().to_string());
+            panic!("Failed to open config file: {file_name} (searched in {cwd}). Error: {e}. Current directory: {cwd}");
+         });
         let reader = BufReader::new(file);
         let config: LoginServerConfig = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
             panic!("Unable to parse {file_name}, the format is incorrect, {e}")
-        });
+         });
         info!("Configuration ok, starting application: {}", config.name);
         config
-    }
+     }
     fn from_string(conf: &str) -> Self {
         serde_yaml::from_str::<LoginServerConfig>(conf)
-            .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
-    }
+             .unwrap_or_else(|e| panic!("Unable to parse {conf}, the format is incorrect, {e}"))
+     }
 
     fn runtime(&self) -> Option<&Runtime> {
         self.runtime.as_ref()
-    }
+     }
     fn database(&self) -> &Database {
-        &self.database
-    }
+         &self.database
+     }
 }
 
 // Custom deserialization function to validate that all keys in the HashMap are valid hex strings
@@ -52,24 +56,24 @@ fn validate_allowed_gs_keys<'de, D>(deserializer: D) -> Result<Option<Vec<BigInt
 where
     D: Deserializer<'de>,
 {
-    // Deserialize the list of strings
+     // Deserialize the list of strings
     let list: Option<Vec<String>> = Option::deserialize(deserializer)?;
 
     if let Some(severs) = list {
-        // Try to convert the keys into BigInt, returning an error if any are invalid
+         // Try to convert the keys into BigInt, returning an error if any are invalid
         let mut converted = Vec::new();
         for key in severs {
             match BigInt::from_str_radix(&key, 16) {
                 Ok(big_int) => converted.push(big_int),
                 Err(_) => {
                     return Err(serde::de::Error::custom(format!(
-                        "Invalid hex key: '{key}'"
-                    )));
-                }
-            }
-        }
+                         "Invalid hex key: '{key}'"
+                     )));
+                 }
+             }
+         }
         return Ok(Some(converted));
-    }
+     }
 
     Ok(None)
 }
@@ -104,18 +108,19 @@ pub struct GSMessages {
 }
 
 #[cfg(test)]
+#[cfg(test)]
 mod tests {
     use crate::config::login::LoginServerConfig;
     use crate::traits::ServerConfig;
 
-    #[test]
+        #[test]
     fn test_config_load() {
-        let cfg = LoginServerConfig::load("../config/login.yaml");
+        let cfg = LoginServerConfig::load("config/login.yaml");
         assert_eq!(cfg.name, "Login server");
     }
-    #[test]
-    #[should_panic(expected = "Failed to open config file: ./login.yaml. Error: No such file or directory (os error 2).")]
+        #[test]
+        #[should_panic(expected = "Failed to open config file")]
     fn test_config_load_err() {
-        LoginServerConfig::load("./login.yaml");
+        LoginServerConfig::load("config/nonexistent.yaml");
     }
 }
