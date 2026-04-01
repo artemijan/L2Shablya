@@ -198,7 +198,7 @@ mod tests {
         let (_client, server) = tokio::io::duplex(1024);
         let (_client2, server2) = tokio::io::duplex(1024);
         let config_base = std::env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string());
-        let config_path = format!("{}/config/login.yaml", config_base);
+        let config_path = format!("{config_base}/config/login.yaml");
         let cfg = LoginServerConfig::from_string(&std::fs::read_to_string(&config_path).expect("Failed to read login.yaml"));
         let lc = Arc::new(LoginController::new(Arc::new(cfg)));
         let (r, w) = split(server);

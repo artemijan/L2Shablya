@@ -184,7 +184,11 @@ impl GameController {
 
     /// Register a player actor by its global `object_id`.
     /// Returns previous actor if any was registered for that id.
-    pub fn register_player_object(&self, object_id: i32, actor: ActorRef<PlayerClient>) -> Option<ActorRef<PlayerClient>> {
+    pub fn register_player_object(
+        &self,
+        object_id: i32,
+        actor: ActorRef<PlayerClient>,
+    ) -> Option<ActorRef<PlayerClient>> {
         self.player_by_object_id.insert(object_id, actor)
     }
 

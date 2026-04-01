@@ -16,7 +16,6 @@ impl VitalityInfo {
     pub const PACKET_ID: u8 = 0xFE;
     pub const EX_PACKET_ID: u16 = 0x118;
 
-
     pub fn new(player: &Player, config: &GSServerConfig) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
@@ -42,6 +41,7 @@ impl VitalityInfo {
 #[cfg(test)]
 mod test {
     use crate::controller::GameController;
+    use crate::packets::to_client::extended::VitalityInfo;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
@@ -50,7 +50,6 @@ mod test {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use crate::packets::to_client::extended::VitalityInfo;
 
     #[tokio::test]
     async fn test_write_vitality_info() {
@@ -63,7 +62,7 @@ mod test {
         })
             .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
-            "../../../../config/game.yaml"
+            "../../../../../config/game.yaml"
         )));
         let controller = GameController::from_config(cfg.clone()).await;
         let template = controller

@@ -53,7 +53,7 @@ impl GSStatusUpdate {
                 i32::from(self.use_square_brackets),
              ),
             (Self::MAX_PLAYERS, self.max_players as i32),
-            (Self::SERVER_AGE, self.server_age as i32),
+            (Self::SERVER_AGE, i32::from(self.server_age)),
          ];
         self.buffer.write_u32(fields.len() as u32)?;
         for (f, v) in fields {

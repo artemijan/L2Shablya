@@ -51,7 +51,7 @@ mod test {
         })
         .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
-            "../../../../config/game.yaml"
+            "../../../../../config/game.yaml"
         )));
         let controller = GameController::from_config(cfg).await;
         let template = controller

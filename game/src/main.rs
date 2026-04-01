@@ -10,6 +10,7 @@ use l2_core::traits::ServerConfig;
 use l2_core::utils::bootstrap_tokio_runtime;
 use sea_orm::sqlx::any::install_default_drivers;
 use std::env;
+use std::path::PathBuf;
 use std::sync::Arc;
 use kameo::actor::Spawn;
 use tracing::error;
@@ -41,8 +42,10 @@ pub fn main() {
           .init();
 
       // Get config path from L2_CONFIG env variable or use default "./"
-    let config_base = env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string());
-    let cfg = Arc::new(GSServerConfig::load(&format!("{}/config/game.yaml", config_base)));
+    let mut config_path = PathBuf::from(env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string()));
+    config_path.push("config");
+    config_path.push("game.yaml");
+    let cfg = Arc::new(GSServerConfig::load(&config_path));
     install_default_drivers();
     dotenv().ok();
 

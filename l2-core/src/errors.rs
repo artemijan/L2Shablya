@@ -1,4 +1,3 @@
-use log::error;
 use thiserror::Error;
 
 #[non_exhaustive]

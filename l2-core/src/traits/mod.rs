@@ -1,5 +1,6 @@
 pub mod conversion;
 use std::future::Future;
+use std::path::PathBuf;
 use crate::crypt::login::Encryption;
 use crate::dto::{Database, Runtime};
 use crate::network::connection::{
@@ -27,7 +28,7 @@ pub trait Shutdown {
 }
 
 pub trait ServerConfig {
-    fn load(path: &str) -> Self;
+    fn load(path: &PathBuf) -> Self;
     fn from_string(content: &str) -> Self;
     fn runtime(&self) -> Option<&Runtime>;
     fn database(&self) -> &Database;

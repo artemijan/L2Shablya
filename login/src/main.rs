@@ -2,6 +2,7 @@ mod login_client;
 use crate::controller::LoginController;
 use crate::gs_client::GameServerClient;
 use dotenvy::dotenv;
+use kameo::actor::Spawn;
 use l2_core::config::login::LoginServerConfig;
 use l2_core::network::listener::ConnectionListener;
 use l2_core::new_db_pool;
@@ -10,8 +11,8 @@ use l2_core::utils::bootstrap_tokio_runtime;
 use login_client::LoginClient;
 use sea_orm::sqlx::any::install_default_drivers;
 use std::env;
+use std::path::PathBuf;
 use std::sync::Arc;
-use kameo::actor::Spawn;
 use tracing::error;
 
 mod controller;
@@ -23,16 +24,18 @@ mod test_utils;
 
 fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt()
-          .compact()
-          .with_file(true)
-          .with_line_number(true)
-          .with_thread_ids(true)
-          .with_target(false)
-          .init();
+        .compact()
+        .with_file(true)
+        .with_line_number(true)
+        .with_thread_ids(true)
+        .with_target(false)
+        .init();
 
-       // Get config path from L2_CONFIG env variable or use default "./"
-    let config_base = env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string());
-    let cfg = Arc::new(LoginServerConfig::load(&format!("{}/config/login.yaml", config_base)));
+    // Get config path from L2_CONFIG env variable or use default "./"
+    let mut config_path = PathBuf::from(env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string()));
+    config_path.push("config");
+    config_path.push("login.yaml");
+    let cfg = Arc::new(LoginServerConfig::load(&config_path));
     install_default_drivers();
     dotenv().ok();
 
@@ -44,11 +47,11 @@ fn main() -> anyhow::Result<()> {
         let clients_listener = ConnectionListener {
             name: "PlayerListener".to_string(),
             cfg: cfg.listeners.clients.connection.clone(),
-          };
+        };
         let gs_listener = ConnectionListener {
             name: "GSListener".to_string(),
             cfg: cfg.listeners.game_servers.connection.clone(),
-          };
+        };
         let cloned_pool = pool.clone();
         let cloned_controller = controller.clone();
         let mut clients_handle = clients_listener.run(async move |stream, addr| {
@@ -58,11 +61,11 @@ fn main() -> anyhow::Result<()> {
                     addr,
                     cloned_controller, // Use the cloned values
                     cloned_pool,
-                 ),
+                ),
                 Box::new(reader),
                 Box::new(writer),
-              ));
-           })?;
+            ));
+        })?;
 
         let cloned_controller = controller.clone();
         let cloned_pool = pool.clone();
@@ -73,25 +76,25 @@ fn main() -> anyhow::Result<()> {
                     ipv4,
                     cloned_controller, // Use the cloned values
                     cloned_pool,
-                 ),
+                ),
                 Box::new(reader),
                 Box::new(writer),
-              ));
-           })?;
+            ));
+        })?;
         tokio::select! {
-            Err(e) = &mut clients_handle => {
-                error!("Client handler exited unexpectedly: {e}");
-              }
-            Err(e) = &mut gs_handle => {
-                error!("Game server handler exited unexpectedly: {e}");
-              }
-          }
+          Err(e) = &mut clients_handle => {
+              error!("Client handler exited unexpectedly: {e}");
+            }
+          Err(e) = &mut gs_handle => {
+              error!("Game server handler exited unexpectedly: {e}");
+            }
+        }
         if !clients_handle.is_finished() {
             clients_handle.abort();
-          }
+        }
         if !gs_handle.is_finished() {
             gs_handle.abort();
-          }
+        }
         Ok(())
-      })
+    })
 }
