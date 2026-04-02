@@ -6,7 +6,7 @@ use serde::{Deserialize, Deserializer};
 use std::env;
 use std::fs::File;
 use std::io::BufReader;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use tracing::info;
 
 #[derive(Debug, Clone, Deserialize)]
@@ -22,10 +22,11 @@ pub struct LoginServerConfig {
 }
 
 impl ServerConfig for LoginServerConfig {
-    fn load(file_name: &PathBuf) -> Self {
+    fn load(file_name: &Path) -> Self {
         // Get config path from L2_CONFIG env variable or use default "./"
-        let config_base = env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string());
-        let config_path = PathBuf::from(config_base).join(file_name);
+        let mut config_base = PathBuf::from(env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string()));
+        config_base.push("config");
+        let config_path = config_base.join(file_name);
 
         let file = File::open(&config_path).unwrap_or_else(|e| {
             let cwd = env::current_dir()
@@ -34,7 +35,10 @@ impl ServerConfig for LoginServerConfig {
          });
         let reader = BufReader::new(file);
         let config: LoginServerConfig = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
-            panic!("Unable to parse {}, the format is incorrect, {e}", file_name.display())
+            panic!(
+                "Unable to parse {}, the format is incorrect, {e}",
+                file_name.display()
+            )
         });
         info!("Configuration ok, starting application: {}", config.name);
         config
@@ -117,12 +121,12 @@ mod tests {
 
     #[test]
     fn test_config_load() {
-        let cfg = LoginServerConfig::load(&PathBuf::from("config/login.yaml"));
+        let cfg = LoginServerConfig::load(&PathBuf::from("login.yaml"));
         assert_eq!(cfg.name, "Login server");
     }
     #[test]
     #[should_panic(expected = "Failed to open config file")]
     fn test_config_load_err() {
-        LoginServerConfig::load(&PathBuf::from("config/nonexistent.yaml"));
+        LoginServerConfig::load(&PathBuf::from("nonexistent.yaml"));
     }
 }

@@ -10,8 +10,7 @@ use l2_core::traits::ServerConfig;
 use l2_core::utils::bootstrap_tokio_runtime;
 use login_client::LoginClient;
 use sea_orm::sqlx::any::install_default_drivers;
-use std::env;
-use std::path::PathBuf;
+use std::path::Path;
 use std::sync::Arc;
 use tracing::error;
 
@@ -32,10 +31,7 @@ fn main() -> anyhow::Result<()> {
         .init();
 
     // Get config path from L2_CONFIG env variable or use default "./"
-    let mut config_path = PathBuf::from(env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string()));
-    config_path.push("config");
-    config_path.push("login.yaml");
-    let cfg = Arc::new(LoginServerConfig::load(&config_path));
+    let cfg = Arc::new(LoginServerConfig::load(Path::new("login.yaml")));
     install_default_drivers();
     dotenv().ok();
 
