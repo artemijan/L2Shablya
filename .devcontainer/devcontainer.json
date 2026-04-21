@@ -14,9 +14,10 @@
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "qwen3.5:35b-a3b-coding-nvfp4",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "qwen3.5:35b-a3b-coding-nvfp4",
   },
-  "runArgs": ["-p", "0.0.0.0:2106:2106", "-p", "0.0.0.0:7777:7777"],
   "mounts": [
     "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume",
+    "source=${localEnv:HOME}/dev/l2/interlude_classic,target=/workspaces/interlude_classic,type=bind,readonly",
+    "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,readonly",
   ],
   "customizations": {
     "vscode": {
