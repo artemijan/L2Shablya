@@ -168,13 +168,13 @@ impl SkillTreesData {
     }
 
     #[must_use]
-    pub fn get_initial_skills(&self, class_id: Class) -> Vec<TreeSkill> {
+    pub fn get_initial_skills(&self, class_id: Class, char_level: u8) -> Vec<TreeSkill> {
         let mut initial_skills = Vec::new();
 
         // 1. Get skills from the class-specific tree
         if let Some(tree) = self.class_skill_trees.get(&class_id) {
             for skill in tree.skills.values() {
-                if skill.auto_get {
+                if skill.auto_get && char_level >= skill.get_level {
                     initial_skills.push(skill.clone());
                 }
             }
@@ -182,7 +182,7 @@ impl SkillTreesData {
 
         // 2. Get skills from the common tree (if applicable)
         for skill in self.common_skill_trees.skills.values() {
-            if skill.auto_get {
+            if skill.auto_get && char_level >= skill.get_level {
                 initial_skills.push(skill.clone());
             }
         }

@@ -110,7 +110,7 @@ impl Message<CreateCharRequest> for PlayerClient {
             template.initialize_character(&mut char, &self.controller.base_stats_table)?;
             match character::Model::create_char(&self.db_pool, char).await {
                 Ok(inst) => {
-                    let initial_skills = self.controller.skill_trees_data.get_initial_skills(msg.class_id);
+                    let initial_skills = self.controller.skill_trees_data.get_initial_skills(msg.class_id, inst.level);
                     let db_skills: Vec<skill::Model> = initial_skills.into_iter().map(|s| skill::Model {
                         id: s.skill_id() as i32,
                         char_id: inst.id,

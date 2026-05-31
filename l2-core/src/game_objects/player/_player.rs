@@ -273,6 +273,24 @@ impl Player {
         0u8
     }
 
+    #[must_use]
+    pub fn get_expertise_level(&self) -> u8 {
+        let level = self.char_model.level;
+        if level >= 76 {
+            5 // S
+        } else if level >= 61 {
+            4 // A
+        } else if level >= 52 {
+            3 // B
+        } else if level >= 40 {
+            2 // C
+        } else if level >= 20 {
+            1 // D
+        } else {
+            0 // None
+        }
+    }
+
     /// Armor Grade Penalty [1-4]
     #[must_use]
     pub fn get_expertise_armor_penalty(&self) -> u8 {
