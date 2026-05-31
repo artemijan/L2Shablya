@@ -13,6 +13,7 @@ use l2_core::data::action_list::ActionList;
 use l2_core::data::base_stat::BaseStat;
 use l2_core::data::char_template::ClassTemplates;
 use l2_core::data::exp_table::ExpTable;
+use l2_core::data::skills::SkillsData;
 use l2_core::data::SkillTreesData;
 use l2_core::game_objects::player::Player;
 use l2_core::network::connection::HandleOutboundPacket;
@@ -35,6 +36,7 @@ pub struct GameController {
     ls_actor: Arc<RwLock<Option<ActorRef<LoginServerClient>>>>,
     online_chars: DashMap<String, Option<ActorRef<PlayerClient>>>,
     pub base_stats_table: BaseStat,
+    pub skills: SkillsData,
     pub hero_list: DashMap<i32, character::Model>,
     pub clan_ally_manager: Arc<RwLock<ClanAllyManager>>,
     // Global registry: world object_id -> player actor
@@ -48,6 +50,7 @@ impl GameController {
         let action_list = ActionList::load();
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
+        let skills = SkillsData::load();
         GameController {
             exp_table,
             db_pool: db_pool.clone(),
@@ -56,6 +59,7 @@ impl GameController {
             action_list,
             skill_trees_data,
             base_stats_table: base_stats,
+            skills,
             class_templates: Arc::new(class_templates),
             hero_list: DashMap::new(),
             online_chars: DashMap::new(),
@@ -225,6 +229,7 @@ impl GameController {
             online_chars: DashMap::new(),
             clan_ally_manager: Arc::new(RwLock::new(ClanAllyManager::default())),
             player_by_object_id: DashMap::new(),
+            skills: Default::default(),
         }
     }
 }
