@@ -122,7 +122,7 @@ impl Message<EnterWorld> for PlayerClient {
 
         self.send_packet(BasicActionList::new(&self.controller.action_list)?)
             .await?;
-        self.send_packet(SkillList::empty()?).await?;
+        // self.send_packet(SkillList::new(&player)?).await?;
         //todo: AuthGG check?
 
         self.send_packet(HennaInfo::new(&player)?).await?;
@@ -276,7 +276,7 @@ mod tests {
             .try_get_template(char_model.class_id)
             .unwrap()
             .clone();
-        Player::new(char_model, vec![], tmpl)
+        Player::new(char_model, vec![], tmpl, None)
     }
 
     fn enter_world_with_ip(ip: [u8; 4]) -> EnterWorld {

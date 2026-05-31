@@ -41,7 +41,7 @@ mod test {
         };
         let templates = ClassTemplates::load();
         let temp = templates.try_get_template(inst.class_id).unwrap().clone();
-        let char = Player::new(inst, vec![], temp);
+        let char = Player::new(inst, vec![], temp, None);
         let mut packet = AcquireSkillList::new(&char).unwrap();
         assert_eq!(
             [144, 0, 0],

@@ -165,6 +165,7 @@ mod tests {
             inst,
             vec![],
             templates.try_get_template(class_id).unwrap().clone(),
+            None,
         );
         let cfg = get_gs_config();
         let controller = Arc::new(GameController::from_config(Arc::new(cfg)).await);

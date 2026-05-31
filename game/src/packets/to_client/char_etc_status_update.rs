@@ -61,7 +61,7 @@ mod test {
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
-        let player = Player::new(char, vec![], template.clone());
+        let player = Player::new(char, vec![], template.clone(), None);
         let p = CharEtcStatusUpdate::new(&player).unwrap();
         assert_eq!(
             [249, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

@@ -26,9 +26,13 @@ pub trait ConfigFileLoader: DeserializeOwned + Loadable {
             )
         });
 
-        let config_name = type_name::<Self>();
-        let inst: Self = serde_yaml::from_str(&file_content)
-            .unwrap_or_else(|e| panic!("Can't parse {config_name}, because of: {e}"));
+        let inst: Self = serde_yaml::from_str(&file_content).unwrap_or_else(|e| {
+            panic!(
+                "Can't parse {} (resolved path: {}), because of: {e}",
+                type_name::<Self>(),
+                config_path.display()
+            )
+        });
 
         inst.post_load();
         inst
@@ -59,9 +63,12 @@ pub trait ConfigDirLoader: Loadable + Default + LoadFileHandler {
             })
         {
             let path = entry.path();
-            let file = fs::read_to_string(path).expect("Cannot read file");
-            let inst: Self::TargetConfigType =
-                serde_yaml::from_str(&file).expect("Can't parse YAML file");
+            let file = fs::read_to_string(path).unwrap_or_else(|e| {
+                panic!("Cannot read file {}, because of: {e}", path.display())
+            });
+            let inst: Self::TargetConfigType = serde_yaml::from_str(&file).unwrap_or_else(|e| {
+                panic!("Can't parse YAML file {}, because of: {e}", path.display())
+            });
             config.for_each(inst);
         }
 

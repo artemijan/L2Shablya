@@ -53,7 +53,7 @@ mod tests {
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
-        let mut player = Player::new(char, vec![], template.clone());
+        let mut player = Player::new(char, vec![], template.clone(), None);
         player.object_id = ObjectId::new(268_476_205);
         let p = InventoryWeight::new(&player).unwrap();
         assert_eq!(

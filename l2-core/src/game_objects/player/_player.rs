@@ -78,6 +78,7 @@ impl Player {
         char_model: character::Model,
         items: Vec<item::Model>,
         template: Arc<CharTemplate>,
+        skills: Option<Vec<Skill>>,
     ) -> Self {
         let inventory = Inventory::from_items(items);
         let paperdoll = PaperDoll::restore_visible_inventory(&inventory.items);
@@ -106,7 +107,7 @@ impl Player {
             paperdoll,
             quests: Vec::new(),
             team: Team::None,
-            skills: None,
+            skills,
             mailbox: Vec::new(),
             siege_state: 0,
             appearance: Appearance,
@@ -1121,7 +1122,7 @@ mod tests {
         let items = vec![item1, item2];
         let templates = ClassTemplates::load();
         let temp = templates.try_get_template(char.class_id).unwrap();
-        let char_info = Player::new(char, items, temp.clone());
+        let char_info = Player::new(char, items, temp.clone(), None);
         let weapon = char_info.get_weapon().unwrap();
         let augmentation = weapon.item_model.get_augmentation().unwrap();
         assert_eq!((9, 3, 5), augmentation);

@@ -163,7 +163,7 @@ mod tests {
             .class_templates
             .try_get_template(char_model.class_id)
             .unwrap();
-        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone())]);
+        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone(), None)]);
         pl_client.set_session_key(SessionKey::new());
         let pl_actor = spawn_custom_player_client_actor(
             pl_client.controller.clone(),
@@ -195,7 +195,7 @@ mod tests {
             .class_templates
             .try_get_template(char_model.class_id)
             .unwrap();
-        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone())]);
+        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone(), None)]);
         // intentionally do NOT set session key
         let pl_actor = spawn_custom_player_client_actor(
             pl_client.controller.clone(),
@@ -224,7 +224,7 @@ mod tests {
             .class_templates
             .try_get_template(char_model.class_id)
             .unwrap();
-        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone())]);
+        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone(), None)]);
         pl_client.set_session_key(SessionKey::new());
         let pl_actor = spawn_custom_player_client_actor(
             pl_client.controller.clone(),

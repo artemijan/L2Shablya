@@ -69,7 +69,7 @@ mod test {
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
-        let player = Player::new(char, vec![], template.clone());
+        let player = Player::new(char, vec![], template.clone(), None);
         let p = VitalityInfo::new(&player, &cfg).unwrap();
         assert_eq!(
             [254, 24, 1, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 231, 3, 231, 3],

@@ -4,11 +4,12 @@ use crate::packets::utils::validate_can_create_char;
 use crate::pl_client::{ClientStatus, PlayerClient};
 use anyhow::bail;
 use bytes::BytesMut;
-use entities::entities::character;
+use entities::entities::{character, skill};
 use kameo::message::Context;
 use kameo::prelude::Message;
 use l2_core::data::char_template::CharTemplate;
 use l2_core::data::classes::mapping::Class;
+use l2_core::game_objects::creature::skill::Skill as SkillObject;
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
@@ -109,7 +110,21 @@ impl Message<CreateCharRequest> for PlayerClient {
             template.initialize_character(&mut char, &self.controller.base_stats_table)?;
             match character::Model::create_char(&self.db_pool, char).await {
                 Ok(inst) => {
-                    self.add_character(Player::new(inst, vec![], template.clone()))?;
+                    let initial_skills = self.controller.skill_trees_data.get_initial_skills(msg.class_id);
+                    let db_skills: Vec<skill::Model> = initial_skills.into_iter().map(|s| skill::Model {
+                        id: s.skill_id() as i32,
+                        char_id: inst.id,
+                        level: s.skill_level() as i16,
+                        sub_level: 0,
+                        class_index: 0,
+                    }).collect();
+
+                    if let Err(e) = skill::Model::insert_skills(&self.db_pool, db_skills.clone()).await {
+                        error!(?e, "Failed to insert initial skills");
+                    }
+
+                    let player_skills: Vec<SkillObject> = db_skills.into_iter().map(SkillObject::from_model).collect();
+                    self.add_character(Player::new(inst, vec![], template.clone(), Some(player_skills)))?;
                     self.send_packet(CreateCharOk::new()?).await
                 }
                 Err(DbErr::RecordNotInserted) => {
