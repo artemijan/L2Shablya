@@ -122,7 +122,6 @@ impl Message<EnterWorld> for PlayerClient {
 
         self.send_packet(BasicActionList::new(&self.controller.action_list)?)
             .await?;
-        // self.send_packet(SkillList::new(&player)?).await?;
         //todo: AuthGG check?
 
         self.send_packet(HennaInfo::new(&player)?).await?;
