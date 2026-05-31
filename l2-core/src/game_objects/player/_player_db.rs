@@ -1,7 +1,8 @@
 use crate::data::char_template::ClassTemplates;
+use crate::game_objects::creature::skill::Skill;
 use crate::game_objects::player::Player;
 use entities::dao::item::LocType;
-use entities::entities::character;
+use entities::entities::{character, skill};
 use entities::DBPool;
 
 impl Player {
@@ -16,15 +17,15 @@ impl Player {
         // Fetch user characters from the database
         let characters =
             character::Model::load_chars_with_data(db_pool, acc_name, LocType::Paperdoll).await?;
-        let players = characters
-            .into_iter()
-            .map(|(ch, items, clan)| {
-                let template = templates.try_get_template(ch.class_id)?;
-                let mut p = Player::new(ch, items, template.clone());
-                p.clan = clan;
-                Ok(p)
-            })
-            .collect::<anyhow::Result<Vec<Player>>>()?;
+        let mut players = Vec::with_capacity(characters.len());
+        for (ch, items, clan) in characters {
+            let template = templates.try_get_template(ch.class_id)?;
+            let skills = skill::Model::char_skills(db_pool, ch.id).await?;
+            let player_skills: Vec<Skill> = skills.into_iter().map(Skill::from_model).collect();
+            let mut p = Player::new(ch, items, template.clone(), Some(player_skills));
+            p.clan = clan;
+            players.push(p);
+        }
         Ok(players)
     }
 }

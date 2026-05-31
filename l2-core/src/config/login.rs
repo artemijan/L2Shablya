@@ -6,6 +6,7 @@ use serde::{Deserialize, Deserializer};
 use std::env;
 use std::fs::File;
 use std::io::BufReader;
+use std::path::{Path, PathBuf};
 use tracing::info;
 
 #[derive(Debug, Clone, Deserialize)]
@@ -21,15 +22,23 @@ pub struct LoginServerConfig {
 }
 
 impl ServerConfig for LoginServerConfig {
-    fn load(file_name: &str) -> Self {
-        let file = File::open(file_name).unwrap_or_else(|e| {
+    fn load(file_name: &Path) -> Self {
+        // Get config path from L2_CONFIG env variable or use default "./"
+        let mut config_base = PathBuf::from(env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string()));
+        config_base.push("config");
+        let config_path = config_base.join(file_name);
+
+        let file = File::open(&config_path).unwrap_or_else(|e| {
             let cwd = env::current_dir()
-                .map_or_else(|_| "unknown".to_string(), |path| path.display().to_string());
-            panic!("Failed to open config file: {file_name}. Error: {e}. Current directory: {cwd}");
-        });
+                 .map_or_else(|_| "unknown".to_string(), |path| path.display().to_string());
+            panic!("Failed to open config file: {} (searched in {cwd}). Error: {e}. Current directory: {cwd}", file_name.display());
+         });
         let reader = BufReader::new(file);
         let config: LoginServerConfig = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
-            panic!("Unable to parse {file_name}, the format is incorrect, {e}")
+            panic!(
+                "Unable to parse {}, the format is incorrect, {e}",
+                file_name.display()
+            )
         });
         info!("Configuration ok, starting application: {}", config.name);
         config
@@ -104,18 +113,20 @@ pub struct GSMessages {
 }
 
 #[cfg(test)]
+#[cfg(test)]
 mod tests {
     use crate::config::login::LoginServerConfig;
     use crate::traits::ServerConfig;
+    use std::path::PathBuf;
 
     #[test]
     fn test_config_load() {
-        let cfg = LoginServerConfig::load("../config/login.yaml");
+        let cfg = LoginServerConfig::load(&PathBuf::from("login.yaml"));
         assert_eq!(cfg.name, "Login server");
     }
     #[test]
-    #[should_panic(expected = "Failed to open config file: ./login.yaml. Error: No such file or directory (os error 2).")]
+    #[should_panic(expected = "Failed to open config file")]
     fn test_config_load_err() {
-        LoginServerConfig::load("./login.yaml");
+        LoginServerConfig::load(&PathBuf::from("nonexistent.yaml"));
     }
 }

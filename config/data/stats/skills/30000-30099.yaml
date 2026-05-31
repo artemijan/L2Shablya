@@ -1,0 +1,2344 @@
+skill:
+- '@id': '30000'
+  '@toLevel': '1'
+  '@name': 'Hydro Attack: Debuff'
+  '@fromLevel': null
+  '@displayId': null
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': TriggerSkillBySkill
+      castSkillId:
+        $value: null
+        value: []
+        $text: '30001'
+      chance:
+        $value: null
+        value: []
+        $text: '100'
+      skillId:
+        $value: null
+        value: []
+        $text: '30002'
+      skillLevel:
+        $value: null
+        value: []
+        $text: '1'
+      skillLevelScaleTo:
+        $value: null
+        value: []
+        $text: '3'
+      targetType:
+        $value: null
+        value: []
+        $text: TARGET
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill11011
+  operateType:
+    $value: null
+    value: []
+    $text: P
+- '@id': '30001'
+  '@toLevel': '28'
+  '@name': Hydro Attack
+  '@fromLevel': null
+  '@displayId': null
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange:
+    $value: null
+    value: []
+    $text: '80'
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-692'
+  effectRange:
+    $value: null
+    value: []
+    $text: '400'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': MagicalAttack
+      debuffModifier:
+        $value: null
+        value: []
+        $text: '1.1'
+      power: {}
+  hitTime:
+    $value: null
+    value: []
+    $text: '500'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30001
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicCriticalRate: {}
+  magicLevel: {}
+  mpConsume: {}
+  mpInitialConsume: {}
+  nextAction:
+    $value: null
+    value: []
+    $text: CAST
+  operateType:
+    $value: null
+    value: []
+    $text: A1
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30002'
+  '@toLevel': '3'
+  '@name': Storm Sign
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel: {}
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: STORM_SIGN
+  abnormalVisualEffect: {}
+  activateRate:
+    $value: null
+    value: []
+    $text: '100'
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-100'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': MagicalDefence
+      amount:
+        $value: null
+        value: []
+        $text: '-30'
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30027
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '4'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30003'
+  '@toLevel': '20'
+  '@name': Hydro Flare
+  '@fromLevel': null
+  '@displayId': null
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange:
+    $value: null
+    value: []
+    $text: '80'
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': OpCheckAbnormal
+      hasAbnormal:
+        $value: null
+        value: []
+        $text: 'true'
+      level:
+        $value: null
+        value: []
+        $text: '3'
+      type:
+        $value: null
+        value: []
+        $text: STORM_SIGN
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-696'
+  effectRange:
+    $value: null
+    value: []
+    $text: '400'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': DispelBySlot
+      dispel:
+        $value: null
+        value: []
+        $text: STORM_SIGN,3
+  hitTime:
+    $value: null
+    value: []
+    $text: '4000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30003
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicCriticalRate: {}
+  magicLevel: {}
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A1
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '10000'
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30004'
+  '@toLevel': '25'
+  '@name': Hydro Strike
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: STUN
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: WIND_STUN
+  activateRate: {}
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange:
+    $value: null
+    value: []
+    $text: '80'
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-696'
+  effectRange:
+    $value: null
+    value: []
+    $text: '400'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@fromLevel': '21'
+      '@fromSubLevel': '3001'
+      '@name': MagicalDefence
+      '@toLevel': '25'
+      '@toSubLevel': '3020'
+      amount: {}
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  hitTime:
+    $value: null
+    value: []
+    $text: '3000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30004
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicLevel: {}
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+  trait:
+    $value: null
+    value: []
+    $text: KNOCKBACK
+- '@id': '30005'
+  '@toLevel': '4'
+  '@name': Storm Sign
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '4'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: STORM_SIGN
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: STORM_SIGN2
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-100'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': MagicalDefence
+      amount:
+        $value: null
+        value: []
+        $text: '-50'
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30027
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '4'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30006'
+  '@toLevel': '11'
+  '@name': Storm Rage
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalType:
+    $value: null
+    value: []
+    $text: STUN
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: KNOCKBACK
+  activateRate: {}
+  affectLimit:
+    $value: null
+    value: []
+    $text: 5-10
+  affectObject:
+    $value: null
+    value: []
+    $text: NOT_FRIEND
+  affectRange:
+    $value: null
+    value: []
+    $text: '100'
+  affectScope:
+    $value: null
+    value: []
+    $text: POINT_BLANK
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-687'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': MagicalAttack
+      debuffModifier:
+        $value: null
+        value: []
+        $text: '1.1'
+      power: {}
+  hitTime:
+    $value: null
+    value: []
+    $text: '1800'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30006
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicCriticalRate: {}
+  magicLevel: {}
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A1
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '30000'
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+  trait:
+    $value: null
+    value: []
+    $text: KNOCKBACK
+- '@id': '30007'
+  '@toLevel': '15'
+  '@name': Hydro Drain
+  '@fromLevel': null
+  '@displayId': null
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange:
+    $value: null
+    value: []
+    $text: '80'
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': OpCheckAbnormal
+      hasAbnormal:
+        $value: null
+        value: []
+        $text: 'true'
+      level:
+        $value: null
+        value: []
+        $text: '3'
+      type:
+        $value: null
+        value: []
+        $text: STORM_SIGN
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-696'
+  effectRange:
+    $value: null
+    value: []
+    $text: '400'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': DispelBySlot
+      dispel:
+        $value: null
+        value: []
+        $text: STORM_SIGN,3
+  hitTime:
+    $value: null
+    value: []
+    $text: '4000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30007
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicCriticalRate: {}
+  magicLevel: {}
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A1
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '10000'
+  selfEffects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': ManaHealPercent
+      power:
+        $value: null
+        value: []
+        $text: '5'
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30008'
+  '@toLevel': '5'
+  '@name': Wind Blend
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel: {}
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: WIND_BLEND
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: WIND_BLEND
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  effectPoint:
+    $value: null
+    value: []
+    $text: '687'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': MagicalDefence
+      amount: {}
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  endEffects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': CallSkill
+      skillId:
+        $value: null
+        value: []
+        $text: '19227'
+      skillLevel: {}
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30008
+  isMagic:
+    $value: null
+    value: []
+    $text: '22'
+  magicLevel: {}
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  reuseDelay: {}
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30009'
+  '@toLevel': '10'
+  '@name': Deceptive Blink
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel: {}
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: HIDE
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: DECEPTIVE_BLINK
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '687'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': TriggerSkillByAttack
+      allowNormalAttack:
+        $value: null
+        value: []
+        $text: 'true'
+      allowSkillAttack:
+        $value: null
+        value: []
+        $text: 'true'
+      attackerType:
+        $value: null
+        value: []
+        $text: Creature
+      chance:
+        $value: null
+        value: []
+        $text: '100'
+      isCritical:
+        $value: null
+        value: []
+        $text: 'false'
+      minDamage:
+        $value: null
+        value: []
+        $text: '1'
+      skillId:
+        $value: null
+        value: []
+        $text: '14839'
+      skillLevel:
+        $value: null
+        value: []
+        $text: '1'
+      targetType:
+        $value: null
+        value: []
+        $text: SELF
+  hitTime:
+    $value: null
+    value: []
+    $text: '1000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30009
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  itemConsumeCount:
+    $value: null
+    value: []
+    $text: '10'
+  itemConsumeId:
+    $value: null
+    value: []
+    $text: '3031'
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  removedOnDamage:
+    $value: null
+    value: []
+    $text: 'true'
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '15000'
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30010'
+  '@toLevel': '2'
+  '@name': Windy Refuge
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime: {}
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: WIND_HIDE
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  blockedInOlympiad:
+    $value: null
+    value: []
+    $text: 'true'
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '687'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@fromLevel': '1'
+      '@fromSubLevel': '2001'
+      '@name': Heal
+      '@toLevel': '2'
+      '@toSubLevel': '2020'
+      power: {}
+  hitTime:
+    $value: null
+    value: []
+    $text: '1000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30010
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicLevel: {}
+  mpConsume:
+    $value: null
+    value: []
+    $text: '40'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  removedOnDamage:
+    $value: null
+    value: []
+    $text: 'true'
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '180000'
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30011'
+  '@toLevel': '15'
+  '@name': Threatening Wind
+  '@fromLevel': null
+  '@displayId': null
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange:
+    $value: null
+    value: []
+    $text: '600'
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-687'
+  effectRange:
+    $value: null
+    value: []
+    $text: '1200'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': CallSkill
+      skillId:
+        $value: null
+        value: []
+        $text: '30002'
+      skillLevel:
+        $value: null
+        value: []
+        $text: '3'
+  hitTime:
+    $value: null
+    value: []
+    $text: '1200'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30011
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicLevel: {}
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A1
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '15000'
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30012'
+  '@toLevel': '25'
+  '@name': Air Rush
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: STUN
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: KNOCKDOWN
+  activateRate: {}
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange: {}
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': OpCheckCastRange
+      distance:
+        $value: null
+        value: []
+        $text: '200'
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-696'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': BlockActions
+  hitTime:
+    $value: null
+    value: []
+    $text: '1000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30012
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: DA2
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '7000'
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+  trait:
+    $value: null
+    value: []
+    $text: KNOCKBACK
+- '@id': '30013'
+  '@toLevel': '1'
+  '@name': Switch Places
+  '@fromLevel': null
+  '@displayId': null
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange:
+    $value: null
+    value: []
+    $text: '900'
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': OpTargetPc
+  coolTime:
+    $value: null
+    value: []
+    $text: '300'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-709'
+  effectRange:
+    $value: null
+    value: []
+    $text: '1400'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': BlinkSwap
+  hitTime:
+    $value: null
+    value: []
+    $text: '1200'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30005
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  mpConsume:
+    $value: null
+    value: []
+    $text: '705'
+  operateType:
+    $value: null
+    value: []
+    $text: A1
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '300000'
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30014'
+  '@toLevel': '15'
+  '@name': Compelling Wind
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: COMPELLING_WIND
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: PSY_POWER
+  activateRate: {}
+  affectScope:
+    $value: null
+    value: []
+    $text: RANGE
+  basicProperty:
+    $value: null
+    value: []
+    $text: MAGIC
+  castRange: {}
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-1371'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@fromLevel': '11'
+      '@fromSubLevel': '2001'
+      '@name': MagicalDefence
+      '@toLevel': '15'
+      '@toSubLevel': '2020'
+      amount: {}
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  hitTime:
+    $value: null
+    value: []
+    $text: '1200'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30014
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '10000'
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY_ONLY
+  trait:
+    $value: null
+    value: []
+    $text: PSYCHIC
+- '@id': '30015'
+  '@toLevel': '1'
+  '@name': Mass Compelling Wind
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: COMPELLING_WIND
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: PSY_POWER
+  affectObject:
+    $value: null
+    value: []
+    $text: NOT_FRIEND
+  affectScope:
+    $value: null
+    value: []
+    $text: POINT_BLANK
+  castRange:
+    $value: null
+    value: []
+    $text: '1100'
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-1371'
+  hitTime:
+    $value: null
+    value: []
+    $text: '1200'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill0028
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30016'
+  '@toLevel': '4'
+  '@name': Eye of the Storm
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime: {}
+  abnormalType:
+    $value: null
+    value: []
+    $text: EYE_STORM
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '687'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@fromLevel': '3'
+      '@fromSubLevel': '2001'
+      '@name': MAtk
+      '@toLevel': '4'
+      '@toSubLevel': '2020'
+      amount: {}
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  hitTime:
+    $value: null
+    value: []
+    $text: '1000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30016
+  isMagic:
+    $value: null
+    value: []
+    $text: '22'
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '300000'
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30017'
+  '@toLevel': '4'
+  '@name': Squall
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel: {}
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '600'
+  abnormalType:
+    $value: null
+    value: []
+    $text: SQUALL
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: SQUALL
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '2'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@fromLevel': '3'
+      '@fromSubLevel': '2001'
+      '@name': MagicalDefence
+      '@toLevel': '4'
+      '@toSubLevel': '2020'
+      amount: {}
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  hitTime:
+    $value: null
+    value: []
+    $text: '1000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30017
+  isMagic:
+    $value: null
+    value: []
+    $text: '22'
+  magicLevel: {}
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '30000'
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30018'
+  '@toLevel': '1'
+  '@name': Windy Illusion
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '10'
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: WIND_ILLUSION
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '100'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': DispelByCategory
+      max:
+        $value: null
+        value: []
+        $text: '10'
+      rate:
+        $value: null
+        value: []
+        $text: '100'
+      slot:
+        $value: null
+        value: []
+        $text: DEBUFF
+  hitTime:
+    $value: null
+    value: []
+    $text: '500'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30018
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  mpConsume:
+    $value: null
+    value: []
+    $text: '41'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '300000'
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30019'
+  '@toLevel': '11'
+  '@name': Sayha's Word
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel: {}
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '10'
+  activateRate: {}
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange:
+    $value: null
+    value: []
+    $text: '80'
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-687'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': MagicalAttackSpeed
+      amount:
+        $value: null
+        value: []
+        $text: '-30'
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  hitTime:
+    $value: null
+    value: []
+    $text: '5500'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30019
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicLevel: {}
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '15000'
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30020'
+  '@toLevel': '1'
+  '@name': Sayha's Fury
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime: {}
+  abnormalType:
+    $value: null
+    value: []
+    $text: SAYHA_FURY
+  abnormalVisualEffect:
+    $value: null
+    value: []
+    $text: SAYHA_FURY
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '2'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@fromLevel': '1'
+      '@fromSubLevel': '3001'
+      '@name': MagicalDefence
+      '@toLevel': '1'
+      '@toSubLevel': '3020'
+      amount: {}
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  hitTime:
+    $value: null
+    value: []
+    $text: '1000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30020
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  mpConsume:
+    $value: null
+    value: []
+    $text: '40'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '300000'
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30022'
+  '@toLevel': '2'
+  '@name': Sayha's Blessing
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime: {}
+  abnormalType:
+    $value: null
+    value: []
+    $text: SAYHA_BLESSING
+  affectObject:
+    $value: null
+    value: []
+    $text: FRIEND
+  affectRange:
+    $value: null
+    value: []
+    $text: '1000'
+  affectScope:
+    $value: null
+    value: []
+    $text: PARTY
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '687'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@fromLevel': '1'
+      '@fromSubLevel': '2001'
+      '@name': MAtk
+      '@toLevel': '2'
+      '@toSubLevel': '2020'
+      amount: {}
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  hitTime:
+    $value: null
+    value: []
+    $text: '5500'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30022
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicLevel: {}
+  mpConsume: {}
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '300000'
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30023'
+  '@toLevel': '1'
+  '@name': Decoy Lock
+  '@fromLevel': null
+  '@displayId': null
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-102'
+  hitTime:
+    $value: null
+    value: []
+    $text: '1000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill0000
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+- '@id': '30026'
+  '@toLevel': '4'
+  '@name': Lightning Squall
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '3'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: SPEED_DOWN
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange:
+    $value: null
+    value: []
+    $text: '1100'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-711'
+  effectRange:
+    $value: null
+    value: []
+    $text: '1600'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': Speed
+      amount:
+        $value: null
+        value: []
+        $text: '-20'
+      mode:
+        $value: null
+        value: []
+        $text: DIFF
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30026
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '4'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30027'
+  '@toLevel': '1'
+  '@name': Destructive Bolt
+  '@fromLevel': null
+  '@displayId': null
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  castRange:
+    $value: null
+    value: []
+    $text: '1100'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-711'
+  effectRange:
+    $value: null
+    value: []
+    $text: '1400'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': CallSkill
+      chance:
+        $value: null
+        value: []
+        $text: '10'
+      skillId:
+        $value: null
+        value: []
+        $text: '30005'
+      skillLevel:
+        $value: null
+        value: []
+        $text: '4'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30026
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '4'
+  operateType:
+    $value: null
+    value: []
+    $text: A1
+  targetType:
+    $value: null
+    value: []
+    $text: ENEMY
+- '@id': '30029'
+  '@toLevel': '4'
+  '@name': Divine Storm
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  abnormalType:
+    $value: null
+    value: []
+    $text: DIVINE_STORM
+  activateRate: {}
+  affectLimit:
+    $value: null
+    value: []
+    $text: 10-10
+  affectObject:
+    $value: null
+    value: []
+    $text: NOT_FRIEND
+  affectRange:
+    $value: null
+    value: []
+    $text: '200'
+  affectScope:
+    $value: null
+    value: []
+    $text: POINT_BLANK
+  conditions:
+    $value: null
+    value: []
+    condition:
+      $value: null
+      value: []
+      '@name': EquipWeapon
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  coolTime:
+    $value: null
+    value: []
+    $text: '500'
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-707'
+  effectRange:
+    $value: null
+    value: []
+    $text: '400'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': CallSkill
+      skillId:
+        $value: null
+        value: []
+        $text: '30030'
+      skillLevel:
+        $value: null
+        value: []
+        $text: '1'
+  hitTime:
+    $value: null
+    value: []
+    $text: '2000'
+  icon:
+    $value: null
+    value: []
+    $text: icon.iconskill30007
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '1'
+  magicCriticalRate: {}
+  magicLevel: {}
+  mpConsume:
+    $value: null
+    value: []
+    $text: '1405'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  reuseDelay:
+    $value: null
+    value: []
+    $text: '30000'
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30030'
+  '@toLevel': '1'
+  '@name': Storm Captivity
+  '@fromLevel': null
+  '@displayId': null
+  abnormalLevel:
+    $value: null
+    value: []
+    $text: '1'
+  abnormalTime:
+    $value: null
+    value: []
+    $text: '5'
+  affectScope:
+    $value: null
+    value: []
+    $text: SINGLE
+  basicProperty:
+    $value: null
+    value: []
+    $text: NONE
+  effectPoint:
+    $value: null
+    value: []
+    $text: '-707'
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': DamOverTime
+      power:
+        $value: null
+        value: []
+        $text: '480'
+      ticks:
+        $value: null
+        value: []
+        $text: '1'
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill1042
+  isDebuff:
+    $value: null
+    value: []
+    $text: 'true'
+  isMagic:
+    $value: null
+    value: []
+    $text: '2'
+  isTriggeredSkill:
+    $value: null
+    value: []
+    $text: 'true'
+  magicCriticalRate:
+    $value: null
+    value: []
+    $text: '-5'
+  operateType:
+    $value: null
+    value: []
+    $text: A2
+  targetType:
+    $value: null
+    value: []
+    $text: SELF
+- '@id': '30031'
+  '@toLevel': '1'
+  '@name': Magic Potential
+  '@fromLevel': null
+  '@displayId': null
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': AddMaxMagicCriticalRate
+      amount:
+        $value: null
+        value: []
+        $text: '350'
+      mode:
+        $value: null
+        value: []
+        $text: DIFF
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30025
+  magicLevel:
+    $value: null
+    value: []
+    $text: '85'
+  operateType:
+    $value: null
+    value: []
+    $text: P
+- '@id': '30040'
+  '@toLevel': '17'
+  '@name': Eminent Blunt Weapon Mastery
+  '@fromLevel': null
+  '@displayId': null
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': MagicCriticalDamage
+      amount: {}
+      mode:
+        $value: null
+        value: []
+        $text: PER
+      weaponType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: BLUNT
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30023
+  operateType:
+    $value: null
+    value: []
+    $text: P
+- '@id': '30041'
+  '@toLevel': '17'
+  '@name': Eminent Robe Mastery
+  '@fromLevel': null
+  '@displayId': null
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': ResistDDMagic
+      amount: {}
+      armorType:
+        $value: null
+        value: []
+        item:
+          $value: null
+          value: []
+          $text: MAGIC
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill30024
+  operateType:
+    $value: null
+    value: []
+    $text: P
+- '@id': '30042'
+  '@toLevel': '13'
+  '@name': Eminent Quick Recovery
+  '@fromLevel': null
+  '@displayId': null
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': Reuse
+      amount: {}
+      magicType:
+        $value: null
+        value: []
+        $text: '22'
+      mode:
+        $value: null
+        value: []
+        $text: PER
+  icon: {}
+  operateType:
+    $value: null
+    value: []
+    $text: P
+- '@id': '30043'
+  '@toLevel': '11'
+  '@name': Eminent Attribute Resistance
+  '@fromLevel': null
+  '@displayId': null
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': DefenceAttribute
+      amount: {}
+      attribute:
+        $value: null
+        value: []
+        $text: HOLY
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill11006
+  magicLevel: {}
+  operateType:
+    $value: null
+    value: []
+    $text: P
+- '@id': '30044'
+  '@toLevel': '2'
+  '@name': Eminent Trait Resistance
+  '@fromLevel': null
+  '@displayId': null
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': DefenceTrait
+      DERANGEMENT:
+        $value: null
+        value: []
+        $text: '30'
+      HATE: {}
+      HOLD:
+        $value: null
+        value: []
+        $text: '30'
+      PULL: {}
+      ZONE: {}
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill10005
+  operateType:
+    $value: null
+    value: []
+    $text: P
+- '@id': '30045'
+  '@toLevel': '3'
+  '@name': Eminent Ability
+  '@fromLevel': null
+  '@displayId': null
+  effects:
+    $value: null
+    value: []
+    effect:
+      $value: null
+      value: []
+      '@name': StatUp
+      amount: {}
+      stat:
+        $value: null
+        value: []
+        $text: INT
+  icon:
+    $value: null
+    value: []
+    $text: icon.skill11253
+  magicLevel: {}
+  operateType:
+    $value: null
+    value: []
+    $text: P

@@ -13,6 +13,7 @@ use std::env;
 use std::fs::File;
 use std::io::BufReader;
 use std::net::Ipv4Addr;
+use std::path::{Path, PathBuf};
 use std::str::FromStr;
 
 #[allow(clippy::struct_excessive_bools)]
@@ -123,17 +124,29 @@ impl GSServerConfig {
 }
 
 impl ServerConfig for GSServerConfig {
-    fn load(file_name: &str) -> Self {
-        let file = File::open(file_name).unwrap_or_else(|e| {
+    fn load(file_name: &Path) -> Self {
+        // Get config path from L2_CONFIG env variable or use default "./"
+        let mut config_base =
+            PathBuf::from(env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string()));
+        config_base.push("config");
+        let config_path = config_base.join(file_name);
+
+        let file = File::open(&config_path).unwrap_or_else(|e| {
             let cwd = env::current_dir().map_or_else(
                 |_| "unknown directory".to_string(),
                 |path| path.display().to_string(),
             );
-            panic!("Failed to open config file: {file_name} (searched in {cwd}). Error: {e}");
+            panic!(
+                "Failed to open config file: {} (searched in {cwd}). Error: {e}",
+                file_name.display()
+            );
         });
         let reader = BufReader::new(file);
         let mut config: GSServerConfig = serde_yaml::from_reader(reader).unwrap_or_else(|e| {
-            panic!("Unable to parse {file_name}, the format is incorrect, {e}")
+            panic!(
+                "Unable to parse {}, the format is incorrect, {e}",
+                file_name.display()
+            )
         });
         info!("Configuration ok, starting application: {}", config.name);
         if config.ip_config.is_empty() {
@@ -188,12 +201,13 @@ pub struct Rates {
 #[cfg(test)]
 mod test {
     use crate::traits::ServerConfig;
+    use std::path::PathBuf;
 
     use super::GSServerConfig;
 
     #[test]
     fn test_gs_config() {
-        let conf = GSServerConfig::load("../config/game.yaml");
+        let conf = GSServerConfig::load(&PathBuf::from("game.yaml"));
         assert_eq!(conf.name, "Game server");
         assert!(conf.get_hosts().len() > 1); //at least 127.0.0.1/8, 127.0.0.1
     }

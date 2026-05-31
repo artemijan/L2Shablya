@@ -1,11 +1,11 @@
-use bytes::BytesMut;
+use crate as l2_core;
 use crate::config::gs::GSServerConfig;
 use crate::shared_packets::common::ReadablePacket;
 use crate::shared_packets::read::ReadablePacketBuffer;
 use crate::shared_packets::write::SendablePacketBuffer;
-use num_traits::ToBytes;
+use bytes::BytesMut;
 use macro_common::SendablePacket;
-use crate as l2_core;
+use num_traits::ToBytes;
 
 #[derive(Clone, Debug, Default, SendablePacket)]
 pub struct RequestAuthGS {
@@ -87,10 +87,10 @@ impl ReadablePacket for RequestAuthGS {
 
 #[cfg(test)]
 mod tests {
-    use bytes::BytesMut;
     use crate::shared_packets::common::ReadablePacket;
     use crate::shared_packets::gs_2_ls::RequestAuthGS;
     use crate::shared_packets::write::SendablePacketBuffer;
+    use bytes::BytesMut;
     fn get_bytes() -> [u8; 74] {
         [
             74, 0, 1, 3, 1, 0, 58, 8, 57, 27, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 49, 0, 50, 0, 55, 0,

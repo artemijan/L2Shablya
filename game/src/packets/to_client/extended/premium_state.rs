@@ -38,21 +38,21 @@ mod test {
     async fn test_premium_state() {
         let db_pool = get_test_db().await;
         let user = user_factory(&db_pool, |u| u).await;
-        let mut char = char_factory(&db_pool, |mut m| {
+        let char = char_factory(&db_pool, |mut m| {
             m.name = "Adelante".to_string();
             m.user_id = user.id;
             m
         })
             .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
-            "../../../../config/game.yaml"
+            "../../../../../config/game.yaml"
         )));
         let controller = GameController::from_config(cfg.clone()).await;
         let template = controller
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
-        let mut player = Player::new(char, vec![], template.clone());
+        let mut player = Player::new(char, vec![], template.clone(), None);
         player.object_id = ObjectId::new(268_476_209);
         let p = PremiumState::new(&player).unwrap();
         assert_eq!(

@@ -1,0 +1,31 @@
+{
+    "name": "Claude Code Sandbox",
+    "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:1": {}
+    },
+    "containerEnv": {
+        // 1. Point to your Mac's GPU-powered Ollama
+        "ANTHROPIC_BASE_URL": "http://host.docker.internal:11434",
+        // 3. Keep this as a dummy value or empty string
+        "ANTHROPIC_API_KEY": "local-ollama",
+        // THE FIX: Point all internal tiers to your local model
+        "ANTHROPIC_DEFAULT_HAIKU_MODEL": "qwen3.5:35b-a3b-coding-nvfp4",
+        "ANTHROPIC_DEFAULT_SONNET_MODEL": "qwen3.5:35b-a3b-coding-nvfp4",
+        "ANTHROPIC_DEFAULT_OPUS_MODEL": "qwen3.5:35b-a3b-coding-nvfp4"
+    },
+    "mounts": [
+        "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume",
+        "source=${localEnv:HOME}/dev/l2/interlude_classic,target=/workspaces/interlude_classic,type=bind,readonly",
+        "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,readonly"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": ["ms-azuretools.vscode-docker"]
+        }
+    },
+    // FIX: This creates the folder and gives 'node' ownership as the root user
+    "onCreateCommand": "mkdir -p /home/node/.claude && chown -R node:node /home/node/.claude",
+    "postCreateCommand": "npm install -g @anthropic-ai/claude-code",
+    "remoteUser": "node"
+}

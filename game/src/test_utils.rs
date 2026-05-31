@@ -2,18 +2,29 @@
 pub mod test {
     use crate::controller::GameController;
     use crate::ls_client::LoginServerClient;
+    use crate::pl_client::PlayerClient;
     use entities::DBPool;
     use kameo::actor::{ActorRef, Spawn};
-    use kameo::Actor;
     use l2_core::config::gs::GSServerConfig;
     use l2_core::traits::ServerConfig;
     use std::net::Ipv4Addr;
-    use std::sync::Arc;
+    use std::path::PathBuf;
+    use std::sync::{Arc, OnceLock};
     use tokio::io::{DuplexStream, ReadHalf, WriteHalf};
-    use crate::pl_client::PlayerClient;
-
+    static CONFIG: OnceLock<GSServerConfig> = OnceLock::new();
     pub fn get_gs_config() -> GSServerConfig {
-        GSServerConfig::from_string(include_str!("../../config/game.yaml"))
+        CONFIG
+            .get_or_init(|| {
+                // Use CARGO_MANIFEST_DIR to find the workspace root safely
+                let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+                path.pop();
+                path.push("config");
+                path.push("game.yaml");
+                let content = std::fs::read_to_string(&path)
+                    .unwrap_or_else(|_| panic!("Could not find config at {}", path.display()));
+                GSServerConfig::from_string(&content)
+            })
+            .clone()
     }
 
     pub async fn spawn_custom_ls_client_actor(

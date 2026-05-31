@@ -86,7 +86,7 @@ mod tests {
         };
         let templates = ClassTemplates::load();
         let temp = templates.try_get_template(inst.class_id).unwrap().clone();
-        let mut char = Player::new(inst, vec![], temp);
+        let mut char = Player::new(inst, vec![], temp, None);
         char.object_id = ObjectId::new(268_476_207);
         let mut packet = CharSelected::new(&char, 9998, 286).unwrap();
         assert_eq!(

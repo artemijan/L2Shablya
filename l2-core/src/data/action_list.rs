@@ -3,7 +3,7 @@ use serde::Deserialize;
 use crate as l2_core;
 
 #[derive(Debug, Clone, Deserialize)]
-#[config_file(path = "config/data/action_list.yaml")]
+#[config_file(path = "config/data/action_list.yaml", msg = "Action list loaded")]
 pub struct ActionList {
     pub actions: Vec<Action>,
 }

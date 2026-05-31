@@ -90,6 +90,16 @@ impl TreeSkill {
     pub fn hash(&self) -> u64 {
         (u64::from(self.skill_id) * 4_294_967_296_u64) + u64::from(self.skill_level)
     }
+
+    #[must_use]
+    pub fn skill_id(&self) -> u32 {
+        self.skill_id
+    }
+
+    #[must_use]
+    pub fn skill_level(&self) -> u8 {
+        self.skill_level
+    }
 }
 
 #[derive(Clone, Debug, Default)]
@@ -151,12 +161,37 @@ where
     Ok(map)
 }
 
-impl Loadable for SkillTreesData {
-    fn post_load(&self) {
+impl SkillTreesData {
+    pub fn post_load(&self) {
         info!("Loaded class skill trees for {} classes.", self.class_skill_trees.len());
         info!("Loaded {} skills for common tree.", self.common_skill_trees.skills.len());
     }
+
+    #[must_use]
+    pub fn get_initial_skills(&self, class_id: Class, char_level: u8) -> Vec<TreeSkill> {
+        let mut initial_skills = Vec::new();
+
+        // 1. Get skills from the class-specific tree
+        if let Some(tree) = self.class_skill_trees.get(&class_id) {
+            for skill in tree.skills.values() {
+                if skill.auto_get && char_level >= skill.get_level {
+                    initial_skills.push(skill.clone());
+                }
+            }
+        }
+
+        // 2. Get skills from the common tree (if applicable)
+        for skill in self.common_skill_trees.skills.values() {
+            if skill.auto_get && char_level >= skill.get_level {
+                initial_skills.push(skill.clone());
+            }
+        }
+
+        initial_skills
+    }
 }
+
+impl Loadable for SkillTreesData {}
 
 impl LoadFileHandler for SkillTreesData {
     type TargetConfigType = Arc<SkillTree>;

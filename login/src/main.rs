@@ -2,6 +2,7 @@ mod login_client;
 use crate::controller::LoginController;
 use crate::gs_client::GameServerClient;
 use dotenvy::dotenv;
+use kameo::actor::Spawn;
 use l2_core::config::login::LoginServerConfig;
 use l2_core::network::listener::ConnectionListener;
 use l2_core::new_db_pool;
@@ -9,8 +10,8 @@ use l2_core::traits::ServerConfig;
 use l2_core::utils::bootstrap_tokio_runtime;
 use login_client::LoginClient;
 use sea_orm::sqlx::any::install_default_drivers;
+use std::path::Path;
 use std::sync::Arc;
-use kameo::actor::Spawn;
 use tracing::error;
 
 mod controller;
@@ -29,7 +30,8 @@ fn main() -> anyhow::Result<()> {
         .with_target(false)
         .init();
 
-    let cfg = Arc::new(LoginServerConfig::load("config/login.yaml"));
+    // Get config path from L2_CONFIG env variable or use default "./"
+    let cfg = Arc::new(LoginServerConfig::load(Path::new("login.yaml")));
     install_default_drivers();
     dotenv().ok();
 
@@ -76,11 +78,11 @@ fn main() -> anyhow::Result<()> {
             ));
         })?;
         tokio::select! {
-            Err(e) = &mut clients_handle => {
-                error!("Client handler exited unexpectedly: {e}");
+          Err(e) = &mut clients_handle => {
+              error!("Client handler exited unexpectedly: {e}");
             }
-            Err(e) = &mut gs_handle => {
-                error!("Game server handler exited unexpectedly: {e}");
+          Err(e) = &mut gs_handle => {
+              error!("Game server handler exited unexpectedly: {e}");
             }
         }
         if !clients_handle.is_finished() {

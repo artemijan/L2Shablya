@@ -41,8 +41,8 @@ impl GSStatusUpdate {
         };
         inst.write_all()?;
         Ok(inst)
-    }
-    #[allow(clippy::cast_possible_truncation, clippy::cast_possible_wrap)]
+      }
+      #[allow(clippy::cast_possible_truncation, clippy::cast_possible_wrap)]
     fn write_all(&mut self) -> Result<(), anyhow::Error> {
         self.buffer.write(0x06)?;
         let fields = [
@@ -51,17 +51,17 @@ impl GSStatusUpdate {
             (
                 Self::SERVER_LIST_SQUARE_BRACKET,
                 i32::from(self.use_square_brackets),
-            ),
+             ),
             (Self::MAX_PLAYERS, self.max_players as i32),
             (Self::SERVER_AGE, i32::from(self.server_age)),
-        ];
+         ];
         self.buffer.write_u32(fields.len() as u32)?;
         for (f, v) in fields {
             self.buffer.write_i32(f)?;
             self.buffer.write_i32(v)?;
-        }
+         }
         Ok(())
-    }
+      }
 }
 
 #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
@@ -82,25 +82,25 @@ impl ReadablePacket for GSStatusUpdate {
                 Self::SERVER_LIST_STATUS => {
                     if let Some(stat) = GSStatus::from_opcode(value) {
                         instance.status = stat;
-                    }
-                }
+                     }
+                 }
                 Self::SERVER_LIST_SQUARE_BRACKET => {
                     instance.use_square_brackets = value != 0;
-                }
+                 }
                 Self::MAX_PLAYERS => {
                     instance.max_players = value as u32;
-                }
+                 }
                 Self::SERVER_TYPE => {
                     instance.server_type = value;
-                }
+                 }
                 Self::SERVER_AGE => {
                     instance.server_age = value as u8;
-                }
-                _ => {}
-            }
-        }
+                 }
+                 _ => {}
+             }
+         }
         Ok(instance)
-    }
+      }
 }
 
 #[cfg(test)]
@@ -108,9 +108,11 @@ mod test {
     use super::*;
     use crate::traits::ServerConfig;
 
-    #[test]
+      #[test]
     fn gs_status_update_new() {
-        let cfg = GSServerConfig::load("../config/game.yaml");
+        let config_base = std::env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string());
+        let config_path = format!("{}/config/game.yaml", config_base);
+        let cfg = GSServerConfig::from_string(&std::fs::read_to_string(&config_path).expect("Failed to read game.yaml"));
         let mut pack = GSStatusUpdate::new(&cfg).unwrap();
         assert!(!pack.use_square_brackets);
         assert_eq!(pack.max_players, 5000);
@@ -119,23 +121,23 @@ mod test {
         assert_eq!(pack.status, GSStatus::Auto);
         assert_eq!(
             pack.buffer.get_data_mut(false),
-            [
-                47, 0, 6, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0,
-                0, 0, 0, 0, 4, 0, 0, 0, 136, 19, 0, 0, 6, 0, 0, 0, 12, 0, 0, 0
-            ]
-        );
-    }
-    #[test]
+             [
+                 47, 0, 6, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0,
+                 0, 0, 0, 0, 4, 0, 0, 0, 136, 19, 0, 0, 6, 0, 0, 0, 12, 0, 0, 0
+             ]
+         );
+      }
+      #[test]
     fn gs_status_update_read() {
         let bytes = [
-            6, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0,
-            4, 0, 0, 0, 136, 19, 0, 0, 6, 0, 0, 0, 12, 0, 0, 0,
-        ];
+             6, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0,
+             4, 0, 0, 0, 136, 19, 0, 0, 6, 0, 0, 0, 12, 0, 0, 0,
+         ];
         let pack = GSStatusUpdate::read(BytesMut::from(&bytes[..])).unwrap();
         assert!(!pack.use_square_brackets);
         assert_eq!(pack.max_players, 5000);
         assert_eq!(pack.server_type, 1);
         assert_eq!(pack.server_age, 12);
         assert_eq!(pack.status, GSStatus::Auto);
-    }
+      }
 }

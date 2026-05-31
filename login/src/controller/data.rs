@@ -4,7 +4,7 @@ use crate::gs_client::GameServerClient;
 use dashmap::DashMap;
 use kameo::actor::ActorRef;
 use l2_core::config::login;
-use l2_core::crypt::rsa::{ScrambledRSAKeyPair, generate_rsa_key_pair};
+use l2_core::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
 use rand::Rng;
 use std::sync::Arc;
 use tracing::info;
@@ -60,10 +60,15 @@ impl LoginController {
 mod test {
     use super::*;
     use l2_core::{config::login::LoginServerConfig, traits::ServerConfig};
+    use std::path::PathBuf;
 
     #[tokio::test]
     async fn test_login_controller() {
-        let config = Arc::new(LoginServerConfig::load("../test_data/test_config.yaml"));
+        let mut config_path =
+            PathBuf::from(std::env::var("L2_CONFIG").unwrap_or_else(|_| "./".to_string()));
+        config_path.push("test_data");
+        config_path.push("test_config.yaml");
+        let config = Arc::new(LoginServerConfig::load(&config_path));
         let controller = LoginController::new(config);
         let gs = controller.game_servers.get(&1);
         assert!(gs.is_none());

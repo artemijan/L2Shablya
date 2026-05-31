@@ -46,14 +46,14 @@ mod tests {
         })
         .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
-            "../../../../config/game.yaml"
+            "../../../../../config/game.yaml"
         )));
         let controller = GameController::from_config(cfg).await;
         let template = controller
             .class_templates
             .try_get_template(Class::try_from(char.class_id).unwrap())
             .unwrap();
-        let mut player = Player::new(char, vec![], template.clone());
+        let mut player = Player::new(char, vec![], template.clone(), None);
         player.object_id = ObjectId::new(268_476_205);
         let p = InventoryWeight::new(&player).unwrap();
         assert_eq!(

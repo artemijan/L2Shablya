@@ -163,7 +163,7 @@ mod tests {
             .class_templates
             .try_get_template(char_model.class_id)
             .unwrap();
-        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone())]);
+        pl_client.set_account_chars(vec![Player::new(char_model, vec![], temp.clone(), None)]);
         let pl_actor = spawn_custom_player_client_actor(
             controller.clone(),
             pool.clone(),

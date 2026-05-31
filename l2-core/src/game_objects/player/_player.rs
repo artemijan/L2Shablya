@@ -78,6 +78,7 @@ impl Player {
         char_model: character::Model,
         items: Vec<item::Model>,
         template: Arc<CharTemplate>,
+        skills: Option<Vec<Skill>>,
     ) -> Self {
         let inventory = Inventory::from_items(items);
         let paperdoll = PaperDoll::restore_visible_inventory(&inventory.items);
@@ -106,7 +107,7 @@ impl Player {
             paperdoll,
             quests: Vec::new(),
             team: Team::None,
-            skills: None,
+            skills,
             mailbox: Vec::new(),
             siege_state: 0,
             appearance: Appearance,
@@ -270,6 +271,24 @@ impl Player {
     pub fn get_expertise_weapon_penalty(&self) -> u8 {
         //todo: implement me
         0u8
+    }
+
+    #[must_use]
+    pub fn get_expertise_level(&self) -> u8 {
+        let level = self.char_model.level;
+        if level >= 76 {
+            5 // S
+        } else if level >= 61 {
+            4 // A
+        } else if level >= 52 {
+            3 // B
+        } else if level >= 40 {
+            2 // C
+        } else if level >= 20 {
+            1 // D
+        } else {
+            0 // None
+        }
     }
 
     /// Armor Grade Penalty [1-4]
@@ -1121,7 +1140,7 @@ mod tests {
         let items = vec![item1, item2];
         let templates = ClassTemplates::load();
         let temp = templates.try_get_template(char.class_id).unwrap();
-        let char_info = Player::new(char, items, temp.clone());
+        let char_info = Player::new(char, items, temp.clone(), None);
         let weapon = char_info.get_weapon().unwrap();
         let augmentation = weapon.item_model.get_augmentation().unwrap();
         assert_eq!((9, 3, 5), augmentation);
