@@ -4,11 +4,9 @@ use crate::dto::player::GSCharsInfo;
 use crate::gs_client::GSMessages;
 use l2_core::shared_packets::common::PlayerLoginFailReasons;
 use l2_core::shared_packets::ls_2_gs::{KickPlayer, RequestChars};
-use rand::{
-    Rng,
-    distributions::{Distribution, Standard},
-};
+use rand::{prelude::Distribution, RngExt};
 use std::time::Duration;
+use rand::distr::StandardUniform;
 use tracing::{error, info};
 
 impl LoginController {
@@ -130,9 +128,9 @@ impl LoginController {
 
     pub fn generate_session_id<T>() -> T
     where
-        Standard: Distribution<T>,
+        StandardUniform: Distribution<T>,
     {
-        let mut rng = rand::thread_rng();
-        rng.r#gen()
+        let mut rng = rand::rng();
+        rng.random()
     }
 }

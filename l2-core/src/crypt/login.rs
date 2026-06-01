@@ -1,6 +1,6 @@
 use crate::errors::Packet;
 use blowfish::BlowfishLE;
-use blowfish::cipher::{BlockDecrypt, BlockEncrypt, KeyInit};
+use blowfish::cipher::{BlockCipherDecrypt, BlockCipherEncrypt, KeyInit};
 
 #[derive(Debug, Clone)]
 pub struct Encryption {
@@ -93,20 +93,24 @@ impl Encryption {
 
     #[allow(clippy::missing_errors_doc)]
     pub fn decrypt(&self, raw: &mut [u8]) -> Result<(), Packet> {
-        let size = raw.len();
-        let offset = 0;
-        if !size.is_multiple_of(8) || offset + size > raw.len() {
+        let (chunks, remainder) = raw.as_chunks_mut::<8>();
+        if !remainder.is_empty() {
             return Err(Packet::DecryptBlowfishError);
         }
-        for chunk in raw.chunks_mut(8) {
-            self.cipher.decrypt_block(chunk.into());
-        }
+        // SAFETY: `chunks` is `&mut [[u8; 8]]`, which is layout-compatible with `&mut [Block<BlowfishLE>]`
+        // as `Block<C>` is a type alias for `GenericArray<u8, U8>`. `as_chunks_mut` ensures correct alignment.
+        self.cipher.decrypt_blocks(unsafe {
+            &mut *(chunks as *mut [[u8; 8]] as *mut [blowfish::cipher::Block<BlowfishLE>])
+        });
         Ok(())
     }
     pub fn encrypt(&self, raw: &mut [u8]) {
-        for chunk in raw.chunks_mut(8) {
-            self.cipher.encrypt_block(chunk.into());
-        }
+        let (chunks, _) = raw.as_chunks_mut::<8>();
+        // SAFETY: `chunks` is `&mut [[u8; 8]]`, which is layout-compatible with `&mut [Block<BlowfishLE>]`
+        // as `Block<C>` is a type alias for `GenericArray<u8, U8>`. `as_chunks_mut` ensures correct alignment.
+        self.cipher.encrypt_blocks(unsafe {
+            &mut *(chunks as *mut [[u8; 8]] as *mut [blowfish::cipher::Block<BlowfishLE>])
+        });
     }
 }
 

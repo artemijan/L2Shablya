@@ -6,8 +6,8 @@ use crate::game_objects::player::vars::CharVariables;
 use anyhow::bail;
 use entities::entities::character;
 use macro_common::config_dir;
-use rand::prelude::SliceRandom;
-use rand::thread_rng;
+use rand::prelude::IndexedRandom;
+use rand::rng;
 use serde::{Deserialize, Deserializer};
 use serde_json::json;
 use std::collections::HashMap;
@@ -182,7 +182,7 @@ impl CharTemplate {
     /// # Errors
     /// - when no creation points are specified in the template
     pub fn get_random_loc(&self) -> anyhow::Result<&Point> {
-        let mut rng = thread_rng();
+        let mut rng = rng();
         if let Some(random_item) = self.static_data.creation_points.choose(&mut rng) {
             Ok(random_item)
         } else {

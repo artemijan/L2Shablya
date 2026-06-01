@@ -1,9 +1,9 @@
 use crate::dto::Database as DBConfig;
 use argon2::password_hash::SaltString;
 use argon2::{Argon2, PasswordHasher};
-use rand_core::OsRng;
 use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 use std::time::Duration;
+use rsa::rand_core::OsRng;
 use tokio::task::spawn_blocking;
 use tracing::instrument;
 

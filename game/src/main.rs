@@ -8,7 +8,7 @@ use l2_core::network::listener::ConnectionListener;
 use l2_core::new_db_pool;
 use l2_core::traits::ServerConfig;
 use l2_core::utils::bootstrap_tokio_runtime;
-use sea_orm::sqlx::any::install_default_drivers;
+use sqlx::any::install_default_drivers;
 use std::path::Path;
 use std::sync::Arc;
 use kameo::actor::Spawn;

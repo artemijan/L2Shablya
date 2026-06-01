@@ -5,7 +5,7 @@ use dashmap::DashMap;
 use kameo::actor::ActorRef;
 use l2_core::config::login;
 use l2_core::crypt::rsa::{generate_rsa_key_pair, ScrambledRSAKeyPair};
-use rand::Rng;
+use rand::RngExt;
 use std::sync::Arc;
 use tracing::info;
 
@@ -36,8 +36,8 @@ impl LoginController {
     }
 
     pub fn get_random_rsa_key_pair(&self) -> &ScrambledRSAKeyPair {
-        let mut rng = rand::thread_rng();
-        let random_number: usize = rng.gen_range(0..self.key_pairs.len());
+        let mut rng = rand::rng();
+        let random_number: usize = rng.random_range(0..self.key_pairs.len());
         // safe to unwrap as we 100% sure that we load all keys when booting the application
         self.key_pairs
             .get(random_number)

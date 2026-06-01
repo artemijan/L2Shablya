@@ -1,4 +1,4 @@
-use rand::Rng;
+use rand::{Rng, RngExt};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 #[allow(clippy::module_name_repetitions)]
@@ -12,12 +12,12 @@ pub struct SessionKey {
 impl SessionKey {
     #[must_use]
     pub fn new() -> Self {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         SessionKey {
-            play_ok1: rng.r#gen(),
-            play_ok2: rng.r#gen(),
-            login_ok1: rng.r#gen(),
-            login_ok2: rng.r#gen(),
+            play_ok1: rng.random(),
+            play_ok2: rng.random(),
+            login_ok1: rng.random(),
+            login_ok2: rng.random(),
         }
     }
     #[must_use]

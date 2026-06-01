@@ -1,5 +1,5 @@
 use num_traits::ToPrimitive;
-use sqlx::types::Decimal;
+use sea_orm::prelude::Decimal;
 
 pub trait ToU32Rounded {
     fn to_u32_rounded(self) -> anyhow::Result<u32>;

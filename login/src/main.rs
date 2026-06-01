@@ -9,7 +9,7 @@ use l2_core::new_db_pool;
 use l2_core::traits::ServerConfig;
 use l2_core::utils::bootstrap_tokio_runtime;
 use login_client::LoginClient;
-use sea_orm::sqlx::any::install_default_drivers;
+use sqlx::any::install_default_drivers;
 use std::path::Path;
 use std::sync::Arc;
 use tracing::error;
