@@ -4,5 +4,4 @@ pub mod classes;
 pub mod base_stat;
 pub mod action_list;
 pub mod skills;
-mod skill_tree_data;
-pub use skill_tree_data::*;
+pub mod skill_tree_data;
