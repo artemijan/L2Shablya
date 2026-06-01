@@ -269,14 +269,75 @@ impl SkillTreesData {
             return false;
         }
 
+        self.is_learnable_at_level(player, skill, char_level)
+    }
+
+    fn is_learnable_at_level(&self, player: &Player, skill: &TreeSkill, char_level: u8) -> bool {
+        // Enforce level constraint
         if char_level < skill.get_level {
             return false;
         }
 
-        self.is_learnable_at_level(player, skill, char_level)
-    }
+        // Verify player's race is allowed by skill.races
+        if !skill.races.is_empty() {
+            if let Ok(race) = player.try_get_race() {
+                if !skill.races.contains(&race) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
 
-    fn is_learnable_at_level(&self, player: &Player, skill: &TreeSkill, _target_level: u8) -> bool {
+        // Verify player's social class matches skill.social_class
+        if let Some(social_class) = skill.social_class {
+            if player.get_pledge_class() < social_class as u8 {
+                return false;
+            }
+        }
+
+        // Ensure residence/location requirements are satisfied
+        if !skill.residence_ids.is_empty() {
+            // This is a placeholder as the exact residence check depends on clan/residence implementation
+            // For now, check if player has a clan and if its ID is in residence_ids (might be wrong logic for residence_ids)
+            if let Some(clan) = &player.clan {
+                if !skill.residence_ids.contains(&(clan.id as u8)) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        // Validate dual-class level or class-specific restrictions
+        if skill.get_dual_class_level > 0 {
+            let has_dual_class_requirement = player.sub_classes.iter().any(|s| {
+                s.class_type == crate::game_objects::player::SubclassType::DualClass
+                    && s.level >= skill.get_dual_class_level
+            });
+            if !has_dual_class_requirement {
+                return false;
+            }
+        }
+
+        // Check pre_requisite_skills are owned at required levels
+        for pre_req in &skill.pre_requisite_skills {
+            let mut found = false;
+            if let Some(skills) = &player.skills {
+                for player_skill in skills {
+                    if player_skill.model.id == pre_req.skill_id as i32 {
+                        if player_skill.model.level >= pre_req.lvl as i16 {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if !found {
+                return false;
+            }
+        }
+
         // Check if player already has this skill at this level or higher
         if let Some(skills) = &player.skills {
             for player_skill in skills {
