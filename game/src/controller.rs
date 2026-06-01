@@ -14,7 +14,7 @@ use l2_core::data::base_stat::BaseStat;
 use l2_core::data::char_template::ClassTemplates;
 use l2_core::data::exp_table::ExpTable;
 use l2_core::data::skills::SkillsData;
-use l2_core::data::SkillTreesData;
+use l2_core::data::skill_tree_data::SkillTreesData;
 use l2_core::game_objects::player::Player;
 use l2_core::network::connection::HandleOutboundPacket;
 use l2_core::shared_packets::common::SendablePacket;

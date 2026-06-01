@@ -132,8 +132,9 @@ impl Message<EnterWorld> for PlayerClient {
                 delay: Duration::from_millis(500),
                 callback: Box::new(move |actor: &mut PlayerClient| {
                     Box::pin(async move {
+                        let skill_trees_data = actor.controller.skill_trees_data.clone();
                         let player = actor.try_get_selected_char_mut()?;
-                        let acquire_sl = AcquireSkillList::new(player)?;
+                        let acquire_sl = AcquireSkillList::new(player, &skill_trees_data)?;
                         let packet = SkillList::new(player)?;
                         actor.send_packet(packet).await?;
                         actor.send_packet(acquire_sl).await
