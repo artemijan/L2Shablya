@@ -199,14 +199,22 @@ where
 
 impl SkillTreesData {
     pub fn post_load(&self) {
-        info!("Loaded class skill trees for {} classes.", self.class_skill_trees.len());
-        info!("Loaded {} skills for common tree.", self.common_skill_trees.skills.len());
+        info!(
+            "Loaded class skill trees for {} classes.",
+            self.class_skill_trees.len()
+        );
+        info!(
+            "Loaded {} skills for common tree.",
+            self.common_skill_trees.skills.len()
+        );
     }
 
     #[must_use]
     pub fn get_available_skills(&self, player: &Player) -> Vec<TreeSkill> {
         let mut available_skills = Vec::new();
-        let class_id = player.char_model.class_id.try_into().unwrap_or(Class::Fighter);
+        let Ok(class_id) = player.char_model.class_id.try_into() else {
+            return available_skills;
+        };
         let char_level = player.char_model.level as u8;
 
         // 1. Get all relevant skills for this class (including parents)
@@ -243,7 +251,9 @@ impl SkillTreesData {
                     // Check if this skill would be learnable if we were at that level
                     if self.is_learnable_at_level(player, skill, next_lvl) {
                         // Avoid duplicates if it's already in available_skills (shouldn't be)
-                        if !available_skills.iter().any(|s| s.skill_id == skill.skill_id && s.skill_level == skill.skill_level) {
+                        if !available_skills.iter().any(|s| {
+                            s.skill_id == skill.skill_id && s.skill_level == skill.skill_level
+                        }) {
                             available_skills.push((*skill).clone());
                         }
                     }
