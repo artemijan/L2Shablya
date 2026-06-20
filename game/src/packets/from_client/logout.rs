@@ -8,7 +8,7 @@ use tracing::{error, info, instrument};
 pub struct Logout;
 
 impl ReadablePacket for Logout {
-    const PACKET_ID: u8 = 0x00;
+    const PACKET_ID: u8 = 0x09;
     const EX_PACKET_ID: Option<u16> = None;
     fn read(_: BytesMut) -> anyhow::Result<Self> {
         Ok(Self {})
@@ -19,7 +19,7 @@ impl Message<Logout> for PlayerClient {
     #[instrument(skip(self, ctx))]
     async fn handle(
         &mut self,
-        msg: Logout,
+        _msg: Logout,
         ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         //todo handle proper logout mechanism: olympiad,

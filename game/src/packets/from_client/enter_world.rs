@@ -125,7 +125,6 @@ impl Message<EnterWorld> for PlayerClient {
         //todo: AuthGG check?
 
         self.send_packet(HennaInfo::new(&player)?).await?;
-
         Self::do_later(
             ctx.actor_ref().clone(),
             DoLater {
@@ -133,9 +132,10 @@ impl Message<EnterWorld> for PlayerClient {
                 callback: Box::new(move |actor: &mut PlayerClient| {
                     Box::pin(async move {
                         let skill_trees_data = actor.controller.skill_trees_data.clone();
+                        let skills = &actor.controller.skills.clone();
                         let player = actor.try_get_selected_char_mut()?;
                         let acquire_sl = AcquireSkillList::new(player, &skill_trees_data)?;
-                        let packet = SkillList::new(player)?;
+                        let packet = SkillList::new(player, &skills)?;
                         actor.send_packet(packet).await?;
                         actor.send_packet(acquire_sl).await
                     })

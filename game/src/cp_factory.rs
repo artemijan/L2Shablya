@@ -1,4 +1,7 @@
 use crate::packets::from_client::action::Action;
+use crate::packets::from_client::attack::Attack;
+use crate::packets::from_client::request_magic_skill_use::RequestMagicSkillUse;
+use crate::packets::from_client::request_skill_list::RequestSkillList;
 use crate::packets::from_client::auth::AuthLogin;
 use crate::packets::from_client::char_create::CreateCharRequest;
 use crate::packets::from_client::char_restore::RestoreChar;
@@ -50,6 +53,9 @@ pub enum PlayerPackets {
     ValidatePosition(ValidatePosition),
     StopMove(StopMove),
     Action(Action),
+    Attack(Attack),
+    RequestMagicSkillUse(RequestMagicSkillUse),
+    RequestSkillList(RequestSkillList),
 }
 
 pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
@@ -86,6 +92,13 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
             data,
         )?)),
         Action::PACKET_ID => Ok(PlayerPackets::Action(Action::read(data)?)),
+        Attack::PACKET_ID => Ok(PlayerPackets::Attack(Attack::read(data)?)),
+        RequestMagicSkillUse::PACKET_ID => Ok(PlayerPackets::RequestMagicSkillUse(
+            RequestMagicSkillUse::read(data)?,
+        )),
+        RequestSkillList::PACKET_ID => Ok(PlayerPackets::RequestSkillList(RequestSkillList::read(
+            data,
+        )?)),
         0xD0 => build_ex_client_packet(data),
         _ => {
             error!("Unknown Player packet ID: 0x{:02X}", packet_id[0]);

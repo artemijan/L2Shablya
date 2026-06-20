@@ -97,6 +97,11 @@ pub struct Skill {
 
     #[serde(rename = "staticReuse")]
     pub static_reuse: Option<ValueWrapper<String>>,
+
+    #[serde(rename = "reuseDelayGroup")]
+    #[serde(default)]
+    #[serde(deserialize_with = "deserialize_wrapper_opt_from_str")]
+    pub reuse_delay_group: Option<ValueWrapper<i32>>,
 }
 
 fn deserialize_wrapper_opt_from_str<'de, T, D>(
@@ -224,6 +229,15 @@ impl l2_core::config::traits::Loadable for SkillsData {
 }
 
 impl SkillsData {
+    pub fn get_skill(&self, skill_id: u32, level: u8) -> Option<&Skill> {
+        self.skills.get(&skill_id).and_then(|levels| {
+            levels.iter().find(|s| {
+                let to_level = s.to_level;
+                let from_level = s.from_level.unwrap_or(1);
+                level >= from_level && level <= to_level
+            })
+        })
+    }
 }
 
 impl LoadFileHandler for SkillsData {
