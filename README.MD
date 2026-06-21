@@ -39,7 +39,9 @@ Always remember "Having tests opens doors to refactoring! More tests - more door
     - [x] player can enter the game world
     - [x] player can move
     - [x] player can re-enter the game
-    - [ ] player can select target
+    - [x] player can select the target
+    - [x] player can see his skills
+    - [x] player can use skills (without damage now)
     - [ ] player can send chat messages
     - ..... a lot more
 
