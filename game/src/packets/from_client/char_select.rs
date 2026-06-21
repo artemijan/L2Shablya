@@ -39,6 +39,10 @@ impl Message<SelectChar> for PlayerClient {
         self.try_get_session_key()?;
         self.try_get_user()?;
         self.try_get_char_by_slot_id(msg.char_slot)?;
+
+        self.stop_movement();
+        self.selected_target = None;
+
         let game_time = self.controller.get_game_time();
         self.set_status(ClientStatus::Entering);
         self.select_char(msg.char_slot);

@@ -61,6 +61,7 @@ impl Message<EnterWorld> for PlayerClient {
             bail!("Not in entering state")
         }
         self.stop_movement();
+        self.selected_target = None;
         self.set_status(ClientStatus::InGame);
         let mut addresses = Vec::with_capacity(5);
         for i in 0..5 {

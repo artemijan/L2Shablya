@@ -93,11 +93,15 @@ impl character::Model {
         Ok(result)
     }
 
-    pub async fn update_char(db_pool: &DBPool, char: &character::Model) -> anyhow::Result<()> {
+    pub async fn update_char(
+        db_pool: &DBPool,
+        char: &character::Model,
+    ) -> anyhow::Result<character::Model> {
         // clone is okay here, because it is small and not frequent operation
+        let now = Utc::now();
         let active_model = character::ActiveModel {
             id: ActiveValue::Set(char.id),
-            last_access: ActiveValue::Set(Some(Utc::now().into())),
+            last_access: ActiveValue::Set(Some(now.into())),
             x: ActiveValue::Set(char.x),
             y: ActiveValue::Set(char.y),
             z: ActiveValue::Set(char.z),
@@ -105,8 +109,8 @@ impl character::Model {
             // todo implement the rest
             ..Default::default()
         };
-        active_model.update(db_pool).await?;
-        Ok(())
+        let updated_model = active_model.update(db_pool).await?;
+        Ok(updated_model)
     }
 
     #[must_use]
