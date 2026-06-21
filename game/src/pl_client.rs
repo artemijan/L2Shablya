@@ -1,6 +1,7 @@
 use crate::controller::GameController;
 use crate::cp_factory::build_client_packet;
 use crate::movement::MovementState;
+use crate::packets::to_client;
 use crate::packets::to_client::CharMoveToLocation;
 use anyhow::{anyhow, bail};
 use bytes::BytesMut;
@@ -23,6 +24,8 @@ use l2_core::shared_packets::common::SendablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
 use std::fmt;
 use std::fmt::Debug;
+use l2_core::game_objects::stats::stat_enum::Stat;
+use std::collections::HashMap;
 use std::future::Future;
 use std::net::Ipv4Addr;
 use std::ops::ControlFlow;
@@ -571,6 +574,98 @@ impl Message<DoLater> for PlayerClient {
     async fn handle(&mut self, msg: DoLater, _ctx: &mut Context<Self, Self::Reply>) -> Self::Reply {
         // Execute the callback with a mutable reference to self
         (msg.callback)(self).await
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct GetStats;
+
+#[derive(Debug, Clone)]
+pub struct ApplyDamage {
+    pub damage: f64,
+    pub attacker_id: i32,
+    pub attacker_name: String,
+}
+
+#[derive(Debug, Clone)]
+pub struct FullStats {
+    pub stats: HashMap<Stat, f64>,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
+}
+
+impl Message<GetStats> for PlayerClient {
+    type Reply = anyhow::Result<FullStats>;
+    async fn handle(
+        &mut self,
+        _msg: GetStats,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        let player = self.try_get_selected_char()?;
+        Ok(FullStats {
+            stats: player.stats.cached_stats.clone(),
+            x: player.get_x(),
+            y: player.get_y(),
+            z: player.get_z(),
+        })
+    }
+}
+
+impl Message<ApplyDamage> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+    async fn handle(
+        &mut self,
+        msg: ApplyDamage,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        let (victim_id, victim_name) = {
+            let character = self.try_get_selected_char_mut()?;
+            character.stats.current_hp -= msg.damage;
+            if character.stats.current_hp < 0.0 {
+                character.stats.current_hp = 0.0;
+            }
+            (character.get_object_id(), character.get_visible_name().to_string())
+        };
+
+        // Notify victim about the damage
+        let damage_val = msg.damage as i32;
+
+        let mut sys_msg_victim = to_client::SystemMessage::new(to_client::SystemMessageType::C1HasReceivedS3DamageFromC2)?;
+        sys_msg_victim.add_param(to_client::SystemMessageParam::PcName(victim_name.clone()))?;
+        sys_msg_victim.add_param(to_client::SystemMessageParam::PcName(msg.attacker_name.clone()))?;
+        sys_msg_victim.add_param(to_client::SystemMessageParam::Int(damage_val))?;
+        sys_msg_victim.add_param(to_client::SystemMessageParam::Popup { target: victim_id, attacker: msg.attacker_id, damage: damage_val })?;
+        self.send_packet(sys_msg_victim).await?;
+
+        let (current_hp, max_hp) = {
+            let character = self.try_get_selected_char()?;
+            (character.stats.current_hp, character.get_max_hp())
+        };
+
+        // Broadcast HP update
+        let mut status_update = to_client::StatusUpdate::new(victim_id)?;
+        status_update.add_update(to_client::StatusUpdateType::CurHp, current_hp as i32)?;
+        status_update.add_update(to_client::StatusUpdateType::MaxHp, max_hp as i32)?;
+        self.controller.broadcast_packet(status_update);
+
+        // Notify attacker about damage dealt
+        if let Some(attacker_actor) = self.controller.get_player_by_object_id(msg.attacker_id) {
+            let damage = msg.damage as i32;
+            let attacker_id = msg.attacker_id;
+            let attacker_name = msg.attacker_name.clone();
+            let victim_name_clone = victim_name.clone();
+            
+            tokio::spawn(async move {
+                let mut sys_msg_attacker = to_client::SystemMessage::new(to_client::SystemMessageType::C1HasInflictedS3DamageOnC2).unwrap();
+                sys_msg_attacker.add_param(to_client::SystemMessageParam::PcName(attacker_name)).unwrap();
+                sys_msg_attacker.add_param(to_client::SystemMessageParam::PcName(victim_name_clone)).unwrap();
+                sys_msg_attacker.add_param(to_client::SystemMessageParam::Int(damage)).unwrap();
+                sys_msg_attacker.add_param(to_client::SystemMessageParam::Popup { target: victim_id, attacker: attacker_id, damage }).unwrap();
+                let _ = attacker_actor.tell(HandleOutboundPacket { packet: sys_msg_attacker }).await;
+            });
+        }
+        Ok(())
     }
 }
 

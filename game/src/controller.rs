@@ -135,20 +135,36 @@ impl GameController {
         //todo: check vehicles and send to player
         let ci1 = CharInfo::new(p1.0, &self.get_cfg())?;
         let ci2 = CharInfo::new(p2.0, &self.get_cfg())?;
-        p2.1.tell(HandleOutboundPacket { packet: ci1 }).await?;
-        p1.1.tell(HandleOutboundPacket { packet: ci2 }).await?;
+        let pkt1 = ci1;
+        let p2_actor = p2.1.clone();
+        tokio::spawn(async move {
+            let _ = p2_actor.tell(HandleOutboundPacket { packet: pkt1 }).await;
+        });
+
+        let pkt2 = ci2;
+        let p1_actor = p1.1.clone();
+        tokio::spawn(async move {
+            let _ = p1_actor.tell(HandleOutboundPacket { packet: pkt2 }).await;
+        });
+
         let rel1 = p1.0.get_relation(p2.0);
         let rp1 = RelationChanged::builder()
             .add_relation(p1.0, rel1, p1.0.is_auto_attackable(p2.0))
             .finish()?;
         //todo: add summon/servitors relation
-        p2.1.tell(HandleOutboundPacket { packet: rp1 }).await?;
+        let p2_actor = p2.1.clone();
+        tokio::spawn(async move {
+            let _ = p2_actor.tell(HandleOutboundPacket { packet: rp1 }).await;
+        });
 
         let rel2 = p2.0.get_relation(p1.0);
         let rp2 = RelationChanged::builder()
             .add_relation(p2.0, rel2, p2.0.is_auto_attackable(p1.0))
             .finish()?;
-        p1.1.tell(HandleOutboundPacket { packet: rp2 }).await?;
+        let p1_actor = p1.1.clone();
+        tokio::spawn(async move {
+            let _ = p1_actor.tell(HandleOutboundPacket { packet: rp2 }).await;
+        });
         Ok(())
     }
     pub fn broadcast_packet_with_filter(
