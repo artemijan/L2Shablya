@@ -45,11 +45,9 @@ impl CharSelectionInfo {
                 active_id = index;
             }
         }
-        println!("active_id: {}", active_id);
 
         for (index, char_info) in chars.iter().enumerate() {
             let char = &char_info.char_model;
-            println!("{} at index {}", char.name, index);
             buffer.write_c_utf16le_string(Some(&char.name))?;
             buffer.write_i32(char.id)?;
             buffer.write_c_utf16le_string(Some(account_name))?;
