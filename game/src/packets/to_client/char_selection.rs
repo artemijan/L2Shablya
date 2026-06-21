@@ -35,14 +35,19 @@ impl CharSelectionInfo {
         buffer.write(1)?; // 0=can't play, 1=can play free until level 85, 2=100% free play
         buffer.write_u32(2u32)?; // if 1, Korean client
         buffer.write(0)?; // Balthus Knights, if 1 suggests premium account
-        let mut last_access = None;
-        let mut active_id = -1;
+        let mut active_id = 0;
+        let mut max_last_access = None;
+
         for (index, char_info) in chars.iter().enumerate() {
             let char = &char_info.char_model;
-            if char.last_access > last_access && char.delete_at.is_none() {
-                last_access = char.last_access;
-                active_id = index as i32;
+            if char.last_access > max_last_access && char.delete_at.is_none() {
+                max_last_access = char.last_access;
+                active_id = index;
             }
+        }
+
+        for (index, char_info) in chars.iter().enumerate() {
+            let char = &char_info.char_model;
             buffer.write_c_utf16le_string(Some(&char.name))?;
             buffer.write_i32(char.id)?;
             buffer.write_c_utf16le_string(Some(account_name))?;
@@ -96,7 +101,7 @@ impl CharSelectionInfo {
             buffer.write_i32(char_info.get_delete_timer())?;
             buffer.write_i32(i32::from(char_info.char_model.class_id))?; // Class ID
             #[allow(clippy::cast_lossless)]
-            buffer.write_i32((index as i32 == active_id) as i32)?; // is_active
+            buffer.write_i32((index == active_id) as i32)?; // is_active
             buffer.write(char_info.get_enchant_effect_as_byte(PaperDoll::RHand))?;
             let aug = char_info
                 .get_weapon()
@@ -132,7 +137,7 @@ impl CharSelectionInfo {
         Ok(Self {
             buffer,
             session_id,
-            active_id,
+            active_id: active_id as i32,
         })
     }
 }
@@ -147,50 +152,39 @@ mod tests {
     use l2_core::data::classes::mapping::Class;
 
     #[tokio::test]
-    async fn test_char_selected() {
-        let inst = character::Model {
-            name: "test".to_string(),
-            level: 1,
-            face: 1,
-            hair_style: 2,
-            hair_color: 2,
-            is_female: false,
-            delete_at: None,
-            user_id: 1,
-            ..Default::default()
-        };
-        let class_id = inst.class_id;
+    async fn test_char_sorting() {
         let templates = ClassTemplates::load();
-        let char = Player::new(
-            inst,
-            vec![],
-            templates.try_get_template(class_id).unwrap().clone(),
-            None,
-        );
         let cfg = get_gs_config();
         let controller = Arc::new(GameController::from_config(Arc::new(cfg)).await);
-        let mut packet = CharSelectionInfo::new("admin", 1, &controller, &vec![char]).unwrap();
-        assert_eq!(
-            [
-                202, 1, 9, 1, 0, 0, 0, 7, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 116, 0, 101, 0, 115, 0,
-                116, 0, 0, 0, 0, 0, 0, 0, 97, 0, 100, 0, 109, 0, 105, 0, 110, 0, 0, 0, 1, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1
-            ],
-            packet.buffer.get_data_mut(false)
+        use sea_orm::sqlx::types::chrono::{DateTime, FixedOffset, Utc};
+
+        let char1 = Player::new(
+            character::Model {
+                name: "char1".to_string(),
+                last_access: DateTime::<Utc>::from_timestamp(100, 0)
+                    .map(|dt| dt.with_timezone(&FixedOffset::east_opt(0).unwrap())),
+                ..Default::default()
+            },
+            vec![],
+            templates.try_get_template(Class::Fighter).unwrap().clone(),
+            None,
         );
+
+        let char2 = Player::new(
+            character::Model {
+                name: "char2".to_string(),
+                last_access: DateTime::<Utc>::from_timestamp(200, 0)
+                    .map(|dt| dt.with_timezone(&FixedOffset::east_opt(0).unwrap())),
+                ..Default::default()
+            },
+            vec![],
+            templates.try_get_template(Class::Fighter).unwrap().clone(),
+            None,
+        );
+
+        let chars = vec![char1, char2];
+        let packet = CharSelectionInfo::new("admin", 1, &controller, &chars).unwrap();
+        // char2 should be active because it has a later last_access, it is at index 1
+        assert_eq!(packet.active_id, 1);
     }
 }

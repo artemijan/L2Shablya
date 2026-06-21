@@ -67,7 +67,7 @@ pub struct PlayerClient {
     protocol: Option<i32>,
     status: ClientStatus,
     account_chars: Option<Vec<Player>>,
-    selected_char: Option<i32>,
+    pub(crate) selected_char: Option<i32>,
     pub selected_target: Option<(i32, ActorRef<PlayerClient>)>,
     pub packet_sender: Option<ActorRef<ConnectionActor<Self>>>,
     session_key: Option<SessionKey>,
@@ -472,6 +472,7 @@ impl Actor for PlayerClient {
     ) -> anyhow::Result<ControlFlow<ActorStopReason>> {
         error!("Player client {} panicked: {:?}", self.ip, &err);
         // Ensure we cleanup world registries even on panic
+        self.stop_movement();
         if let Ok(player) = self.try_get_selected_char() {
             self.controller.unregister_player_object(player.get_object_id());
         }
@@ -495,6 +496,7 @@ impl Actor for PlayerClient {
         _reason: ActorStopReason,
     ) -> anyhow::Result<()> {
         info!("Disconnecting Client...");
+        self.stop_movement();
         if let Some(s) = self.packet_sender.as_ref() {
             if s.is_alive() {
                 let _ = s.stop_gracefully().await; //ignore errors is it is already dead

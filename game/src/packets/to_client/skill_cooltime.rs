@@ -18,7 +18,6 @@ impl SkillCoolTime {
                 active_reuses.push(reuse);
             }
         }
-        println!("Bulk reuses: {}", active_reuses.len());
         Self::create_packet(&active_reuses)
     }
 
