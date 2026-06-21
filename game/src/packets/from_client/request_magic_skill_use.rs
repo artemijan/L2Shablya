@@ -6,7 +6,7 @@ use l2_core::game_objects::stats::Formulas;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use tracing::{info, instrument};
+use tracing::{error, info, instrument};
 
 #[derive(Debug, Clone)]
 pub struct RequestMagicSkillUse {
@@ -41,16 +41,25 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
         msg: RequestMagicSkillUse,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        info!("Handling RequestMagicSkillUse: skill_id={}, ctrl={}, shift={}", msg.skill_id, msg.ctrl_pressed, msg.shift_pressed);
-        
+        info!(
+            "Handling RequestMagicSkillUse: skill_id={}, ctrl={}, shift={}",
+            msg.skill_id, msg.ctrl_pressed, msg.shift_pressed
+        );
+
         let (attacker_id, attacker_name, attacker_stats, (x, y, z), level) = {
             let player = self.try_get_selected_char()?;
             let level = player.get_skill_level(msg.skill_id).unwrap_or(1);
 
             if player.is_skill_disabled(msg.skill_id) {
                 info!("Skill {} is on cooldown", msg.skill_id);
-                let mut sm = to_client::SystemMessage::new(to_client::SystemMessageType::S1IsNotAvailableAtThisTimeBeingPreparedForReuse)?;
-                sm.add_param(to_client::SystemMessageParam::SkillName { id: msg.skill_id, level: level as i16, sub_level: 0 })?;
+                let mut sm = to_client::SystemMessage::new(
+                    to_client::SystemMessageType::S1IsNotAvailableAtThisTimeBeingPreparedForReuse,
+                )?;
+                sm.add_param(to_client::SystemMessageParam::SkillName {
+                    id: msg.skill_id,
+                    level: level as i16,
+                    sub_level: 0,
+                })?;
                 self.send_packet(sm).await?;
                 return Ok(());
             }
@@ -78,10 +87,13 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
             let skill_power = 50.0;
             if let Some(skill) = skill_data {
                 if let Some(ht) = skill.hit_time.as_ref().and_then(|v| v.text) {
-                    let m_atk_spd = attacker_stats.get(&l2_core::game_objects::stats::stat_enum::Stat::MAtkSpd).cloned().unwrap_or(333.0);
+                    let m_atk_spd = attacker_stats
+                        .get(&l2_core::game_objects::stats::stat_enum::Stat::MAtkSpd)
+                        .cloned()
+                        .unwrap_or(333.0);
                     hit_time = (ht as f64 * 333.0 / m_atk_spd) as i32;
                 }
-                
+
                 if let Some(rd) = skill.reuse_delay.as_ref().and_then(|v| v.text) {
                     reuse_delay = rd as i64;
                 }
@@ -91,13 +103,20 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                 }
             }
 
-            let client_reuse_group = if reuse_group > 0 { reuse_group } else { msg.skill_id };
+            let client_reuse_group = if reuse_group > 0 {
+                reuse_group
+            } else {
+                msg.skill_id
+            };
 
             {
                 let player = self.try_get_selected_char_mut()?;
                 player.add_skill_reuse(msg.skill_id, level as i32, reuse_delay, reuse_group);
             }
-            info!("Skill reuse added: skill_id={}, reuse_delay={}, reuse_group={}, client_group={}", msg.skill_id, reuse_delay, reuse_group, client_reuse_group);
+            info!(
+                "Skill reuse added: skill_id={}, reuse_delay={}, reuse_group={}, client_group={}",
+                msg.skill_id, reuse_delay, reuse_group, client_reuse_group
+            );
             let magic_use_packet = to_client::MagicSkillUse::new(
                 attacker_id,
                 target_id,
@@ -113,32 +132,38 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                 target_y,
                 target_z,
             )?;
-            println!("Reuse: {reuse_delay}");
             self.controller.broadcast_packet(magic_use_packet);
 
             // Calculate damage and schedule hit
-            let damage = Formulas::calc_magic_dam(&attacker_stats, &target_stats.stats, skill_power, false, false);
+            let damage = Formulas::calc_magic_dam(
+                &attacker_stats,
+                &target_stats.stats,
+                skill_power,
+                false,
+                false,
+            );
             let controller = self.controller.clone();
 
+            let magic_launched_packet = to_client::MagicSkillLaunched::new(
+                attacker_id,
+                msg.skill_id,
+                level as i32,
+                0, // casting_type
+                &[target_id],
+            )?;
             tokio::spawn(async move {
                 tokio::time::sleep(std::time::Duration::from_millis(hit_time as u64)).await;
-
-                let magic_launched_packet = to_client::MagicSkillLaunched::new(
-                    attacker_id,
-                    msg.skill_id,
-                    level as i32,
-                    0, // casting_type
-                    &[target_id],
-                ).unwrap();
-
                 controller.broadcast_packet(magic_launched_packet);
-
                 // Apply damage only when hit
-                let _ = target_actor.tell(ApplyDamage {
-                    damage,
-                    attacker_id,
-                    attacker_name,
-                }).await;
+                if let Err(err) = target_actor
+                    .tell(ApplyDamage {
+                        damage,
+                        attacker_id,
+                        attacker_name,
+                    })
+                    .await{
+                    error!("Failed to apply damage from {attacker_id} to {target_id}: {err}");
+                }
             });
         }
 

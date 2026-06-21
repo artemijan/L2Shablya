@@ -1,6 +1,6 @@
-use std::fmt;
 use crate::game_objects::stats::stat_enum::Stat;
 use std::collections::HashMap;
+use std::fmt;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Modifier {
@@ -47,11 +47,10 @@ impl fmt::Debug for StatCalculator {
 
 impl Clone for StatCalculator {
     fn clone(&self) -> Self {
-        Self {
-            base_values: self.base_values.clone(),
-            modifiers: self.modifiers.clone(),
-            finalizers: HashMap::new(), // Finalizers are currently lost on clone, but Player usually doesn't clone during gameplay
-        }
+        let mut cloned = Self::new(); // keeps built-in finalizers like PAtkFinalizer
+        cloned.base_values = self.base_values.clone();
+        cloned.modifiers = self.modifiers.clone();
+        cloned
     }
 }
 
@@ -59,7 +58,7 @@ impl StatCalculator {
     pub fn new() -> Self {
         let mut finalizers: HashMap<Stat, Box<dyn StatFinalizer>> = HashMap::new();
         finalizers.insert(Stat::PAtk, Box::new(PAtkFinalizer));
-        
+
         Self {
             base_values: HashMap::new(),
             modifiers: HashMap::new(),
@@ -69,17 +68,25 @@ impl StatCalculator {
 
     pub fn calculate_all(&self) -> HashMap<Stat, f64> {
         let mut results = HashMap::new();
-        
+
         // First pass: calculate stats that don't depend on others (or simple ones)
         // In a real implementation, we might need a dependency graph or multiple passes
-        for &stat in &[Stat::Str, Stat::Int, Stat::Dex, Stat::Wit, Stat::Con, Stat::Men] {
+        for &stat in &[
+            Stat::Str,
+            Stat::Int,
+            Stat::Dex,
+            Stat::Wit,
+            Stat::Con,
+            Stat::Men,
+        ] {
             results.insert(stat, self.calculate_stat(stat, &results));
         }
 
         // Second pass: calculate dependent stats
         // This is a simplified version
-        for stat_val in [Stat::PAtk, Stat::MAtk, Stat::PDef, Stat::MDef, Stat::MaxHp] { // Add more as needed
-             results.insert(stat_val, self.calculate_stat(stat_val, &results));
+        for stat_val in [Stat::PAtk, Stat::MAtk, Stat::PDef, Stat::MDef, Stat::MaxHp] {
+            // Add more as needed
+            results.insert(stat_val, self.calculate_stat(stat_val, &results));
         }
 
         results
@@ -99,7 +106,11 @@ impl StatCalculator {
             }
         }
 
-        let finalizer = self.finalizers.get(&stat).map(|f| f.as_ref()).unwrap_or(&DefaultFinalizer);
+        let finalizer = self
+            .finalizers
+            .get(&stat)
+            .map(|f| f.as_ref())
+            .unwrap_or(&DefaultFinalizer);
         finalizer.finalize(base, add, mul, current_stats)
     }
 }

@@ -42,7 +42,7 @@ pub enum Stat {
     MoveSpeed,
     AttackRange,
     RandomDamage,
-    
+
     // Multipliers
     PvpPhysDmg,
     PvpMagicalDmg,
