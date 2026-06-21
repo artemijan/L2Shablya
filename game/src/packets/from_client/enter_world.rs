@@ -12,6 +12,7 @@ use crate::pl_client::{ClientStatus, DoLater, PlayerClient};
 use anyhow::bail;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
+use l2_core::errors::KameoAnyhowExt;
 use l2_core::game_objects::player::user_info::UserInfoType;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerTracert;
@@ -89,7 +90,8 @@ impl Message<EnterWorld> for PlayerClient {
                 hop3,
                 hop4,
             )?)
-            .await?;
+            .await
+            .anyhow()?;
 
         let player = self.try_get_selected_char()?.clone();
         self.send_packet(UserInfo::new(&player, UserInfoType::all(), &self.controller).await?)

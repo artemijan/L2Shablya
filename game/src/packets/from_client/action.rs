@@ -2,6 +2,7 @@ use crate::packets::to_client::TargetSelected;
 use crate::pl_client::{GetCharInfo, PlayerClient};
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
+use l2_core::errors::KameoAnyhowExt;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
@@ -51,7 +52,7 @@ impl Message<Action> for PlayerClient {
             0 => {
                 if let Some(target_actor) = self.controller.get_player_by_object_id(msg.object_id) {
                     // store selected target mapping
-                    let other_pl = target_actor.ask(GetCharInfo).await?;
+                    let other_pl = target_actor.ask(GetCharInfo).await.anyhow()?;
                     self.selected_target = Some((msg.object_id, target_actor));
                     // notify client about target selection
                     self.send_packet(TargetSelected::new(

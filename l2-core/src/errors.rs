@@ -28,3 +28,18 @@ pub enum Rsa {
     #[error("Unable to read pem key")]
     ErrorReadingPem,
 }
+
+pub trait KameoAnyhowExt<T> {
+    /// Converts a Kameo SendError into an anyhow::Error
+    fn anyhow(self) -> anyhow::Result<T>;
+}
+
+impl<T, M, E> KameoAnyhowExt<T> for Result<T, kameo::error::SendError<M, E>>
+where
+    M: std::fmt::Debug,
+    E: std::fmt::Debug,
+{
+    fn anyhow(self) -> anyhow::Result<T> {
+        self.map_err(|e| anyhow::anyhow!("Actor communication error: {:?}", e))
+    }
+}

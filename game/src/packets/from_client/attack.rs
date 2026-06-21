@@ -2,11 +2,12 @@ use crate::packets::to_client;
 use crate::pl_client::{ApplyDamage, GetStats, PlayerClient};
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
+use l2_core::errors::KameoAnyhowExt;
 use l2_core::game_objects::stats::Formulas;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use tracing::{info, instrument};
+use tracing::instrument;
 
 #[derive(Debug, Clone)]
 pub struct Attack {
@@ -41,13 +42,13 @@ impl ReadablePacket for Attack {
 
 impl Message<Attack> for PlayerClient {
     type Reply = anyhow::Result<()>;
+
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
         msg: Attack,
         _ctx: &mut Context<Self, Self::Reply>,
-    ) -> anyhow::Result<()> {
-        info!("Handling AttackRequest: target_obj_id={}", msg.object_id);
+    ) -> Self::Reply {
         let player = self.try_get_selected_char()?;
         let attacker_id = player.get_object_id();
         let attacker_name = player.get_visible_name().to_string();
@@ -55,7 +56,7 @@ impl Message<Attack> for PlayerClient {
         let (x, y, z) = (player.get_x(), player.get_y(), player.get_z());
 
         if let Some(target_actor) = self.controller.get_player_by_object_id(msg.object_id) {
-            let target_stats = target_actor.ask(GetStats).await?;
+            let target_stats = target_actor.ask(GetStats).await.anyhow()?;
             let (target_x, target_y, target_z) = (target_stats.x, target_stats.y, target_stats.z);
 
             let miss = Formulas::calc_hit_miss(&attacker_stats, &target_stats.stats);
@@ -80,16 +81,15 @@ impl Message<Attack> for PlayerClient {
                 self.controller.broadcast_packet(attack_packet);
                 return Ok(());
             }
-
             let damage = Formulas::calc_phys_dam(&attacker_stats, &target_stats.stats, false, false);
-
             target_actor
                 .tell(ApplyDamage {
                     damage,
                     attacker_id,
                     attacker_name,
                 })
-                .await?;
+                .await
+                .anyhow()?;
 
             let attack_packet = to_client::Attack::new(
                 attacker_id,
@@ -106,7 +106,6 @@ impl Message<Attack> for PlayerClient {
 
             self.controller.broadcast_packet(attack_packet);
         }
-
         Ok(())
     }
 }

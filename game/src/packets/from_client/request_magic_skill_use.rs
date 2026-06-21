@@ -2,6 +2,7 @@ use crate::packets::to_client;
 use crate::pl_client::{ApplyDamage, GetStats, PlayerClient};
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
+use l2_core::errors::KameoAnyhowExt;
 use l2_core::game_objects::stats::Formulas;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
@@ -74,7 +75,7 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
         };
 
         if let Some((target_id, target_actor)) = self.selected_target.clone() {
-            let target_stats = target_actor.ask(GetStats).await?;
+            let target_stats = target_actor.ask(GetStats).await.anyhow()?;
             let (target_x, target_y, target_z) = (target_stats.x, target_stats.y, target_stats.z);
 
             let level_u8 = level as u8;
@@ -161,7 +162,8 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                         attacker_id,
                         attacker_name,
                     })
-                    .await{
+                    .await
+                    .anyhow(){
                     error!("Failed to apply damage from {attacker_id} to {target_id}: {err}");
                 }
             });

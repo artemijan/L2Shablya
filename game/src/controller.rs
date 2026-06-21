@@ -3,6 +3,7 @@ use crate::managers::ClanAllyManager;
 use crate::packets::to_client::{CharInfo, RelationChanged};
 use crate::pl_client::{GetCharInfo, PlayerClient};
 use anyhow::anyhow;
+use l2_core::errors::KameoAnyhowExt;
 use dashmap::DashMap;
 use entities::entities::character;
 use entities::DBPool;
@@ -119,7 +120,7 @@ impl GameController {
         for entry in &self.online_chars {
             if let Some(pl_actor) = entry.value()
                 && pl_actor.id() != actor_ref.id()
-                && let Ok(p2) = pl_actor.ask(GetCharInfo).await
+                && let Ok(p2) = pl_actor.ask(GetCharInfo).await.anyhow()
             {
                 self.exchange_players_info((p, actor_ref), (&p2, pl_actor))
                     .await?;
