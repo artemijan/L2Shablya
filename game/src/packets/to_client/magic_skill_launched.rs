@@ -7,7 +7,7 @@ pub struct MagicSkillLaunched {
 }
 
 impl MagicSkillLaunched {
-    pub const PACKET_ID: u8 = 0x8e;
+    pub const PACKET_ID: u8 = 0x54;
 
     pub fn new(
         char_id: i32,

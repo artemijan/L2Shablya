@@ -9,7 +9,7 @@ use l2_core::game_objects::stats::Formulas;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use tracing::{error, info, instrument};
+use tracing::{error, instrument};
 
 #[derive(Debug, Clone)]
 pub struct RequestMagicSkillUse {
@@ -54,7 +54,6 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
             let level = player.get_skill_level(msg.skill_id).unwrap_or(1);
 
             if player.is_skill_disabled(msg.skill_id) {
-                info!("Skill {} is on cooldown", msg.skill_id);
                 let mut sm = to_client::SystemMessage::new(
                     to_client::SystemMessageType::S1IsNotAvailableAtThisTimeBeingPreparedForReuse,
                 )?;
@@ -99,13 +98,7 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
             }
 
             if dist > (cast_range + 40) as f64 {
-                info!(
-                    "Target is too far, moving to target: dist={}, cast_range={}",
-                    dist, cast_range
-                );
-
                 // Start movement towards the target
-                // For simplicity, we move exactly to the target's position, but ideally it should be target_pos + cast_range
                 let pl_actor = _ctx.actor_ref().clone();
                 let (hit_x, hit_y, hit_z) = calculate_nearest_hit_point(
                     (x, y, z),
@@ -114,27 +107,11 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                     cast_range,
                 );
                 self.start_movement(hit_x, hit_y, hit_z, pl_actor)?;
-
                 let self_actor = _ctx.actor_ref().clone();
-                let msg_clone = msg.clone();
-
-                let skill_use_task = tokio::spawn(async move {
-                    // Poll for arrival
-                    loop {
-                        tokio::time::sleep(std::time::Duration::from_millis(300)).await;
-                        let pos = self_actor.ask(crate::pl_client::GetMovementPosition).await;
-                        match pos {
-                            Ok(Some((_cx, _cy, _cz, true))) => break, // Arrived
-                            Ok(Some(_)) => continue,                  // Still moving
-                            _ => return,                              // Movement stopped or error
-                        }
-                    }
-
+                self.schedule_triggered_task(PlayerTasks::ActionIntent, async move {
                     // Arrived, try to hit again
-                    let _ = self_actor.tell(msg_clone).await;
+                    let _ = self_actor.tell(msg).await;
                 });
-                self.player_tasks
-                    .insert(PlayerTasks::RequestMagicSkillUse, skill_use_task);
                 return Ok(());
             }
 
@@ -186,28 +163,16 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                 target_z,
             )?;
             self.controller.broadcast_packet(magic_use_packet);
-
-            // Calculate damage and schedule hit
-            let damage = Formulas::calc_magic_dam(
-                &attacker_stats,
-                &target_stats.stats,
-                skill_power,
-                false,
-                false,
-            );
-            let controller = self.controller.clone();
-
-            let magic_launched_packet = to_client::MagicSkillLaunched::new(
-                attacker_id,
-                msg.skill_id,
-                level as i32,
-                0, // casting_type
-                &[target_id],
-            )?;
-            controller.broadcast_packet(magic_launched_packet);
             let magic_skill_use_task = tokio::spawn(async move {
                 tokio::time::sleep(std::time::Duration::from_millis(hit_time as u64)).await;
                 // Apply damage only when hit
+                let damage = Formulas::calc_magic_dam(
+                    &attacker_stats,
+                    &target_stats.stats,
+                    skill_power,
+                    false,
+                    false,
+                );
                 if let Err(err) = target_actor
                     .tell(ApplyDamage {
                         damage,
@@ -220,8 +185,7 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                     error!("Failed to apply damage from {attacker_id} to {target_id}: {err}");
                 }
             });
-            self.player_tasks
-                .insert(PlayerTasks::MagicSkillUse, magic_skill_use_task);
+            self.schedule_task(PlayerTasks::CauseDamage, magic_skill_use_task);
         }
 
         Ok(())
