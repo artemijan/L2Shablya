@@ -31,6 +31,8 @@ mod status_update;
 mod system_message;
 mod target_selected;
 mod user_info;
+mod action_failed;
+
 pub use attack::*;
 pub use magic_skill_launched::*;
 pub use magic_skill_use::*;
@@ -63,3 +65,4 @@ pub use skill_list::*;
 pub use system_message::*;
 pub use target_selected::*;
 pub use user_info::*;
+pub use action_failed::*;

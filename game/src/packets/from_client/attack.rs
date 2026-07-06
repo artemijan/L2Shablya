@@ -1,3 +1,4 @@
+use crate::movement::calculate_distance;
 use crate::packets::to_client;
 use crate::pl_client::{ApplyDamage, GetStats, PlayerClient};
 use bytes::BytesMut;
@@ -7,7 +8,7 @@ use l2_core::game_objects::stats::Formulas;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use tracing::instrument;
+use tracing::{error, info, instrument};
 
 #[derive(Debug, Clone)]
 pub struct Attack {
@@ -58,6 +59,43 @@ impl Message<Attack> for PlayerClient {
         if let Some(target_actor) = self.controller.get_player_by_object_id(msg.object_id) {
             let target_stats = target_actor.ask(GetStats).await.anyhow()?;
             let (target_x, target_y, target_z) = (target_stats.x, target_stats.y, target_stats.z);
+
+            let dist = calculate_distance(x, y, z, target_x, target_y, target_z).unwrap_or(0.0);
+
+            if !self.check_visibility(target_x, target_y, target_z).await? {
+                return Ok(());
+            }
+
+            // Physical attack range is typically short, e.g., 40.
+            let attack_range = 40;
+            if dist > (attack_range + 40) as f64 {
+                info!("Target is too far, moving to target: dist={}, attack_range={}", dist, attack_range);
+
+                // Start movement towards the target
+                let pl_actor = _ctx.actor_ref().clone();
+                self.start_movement(target_x, target_y, target_z, pl_actor)?;
+
+                let self_actor = _ctx.actor_ref().clone();
+                let msg_clone = msg.clone();
+
+                tokio::spawn(async move {
+                    // Poll for arrival
+                    loop {
+                        tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+                        let pos = self_actor.ask(crate::pl_client::GetMovementPosition).await;
+                        match pos {
+                            Ok(Some((_cx, _cy, _cz, true))) => break, // Arrived
+                            Ok(Some(_)) => continue, // Still moving
+                            _ => return, // Movement stopped or error
+                        }
+                    }
+
+                    // Arrived, try to hit again
+                    let _ = self_actor.tell(msg_clone).await;
+                });
+
+                return Ok(());
+            }
 
             let miss = Formulas::calc_hit_miss(&attacker_stats, &target_stats.stats);
 

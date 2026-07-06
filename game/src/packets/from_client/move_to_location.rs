@@ -1,11 +1,11 @@
+use crate::movement::calculate_distance;
+use crate::packets::to_client::ActionFailed;
+use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use tracing::{instrument, warn};
-use crate::movement::calculate_distance;
-
-use crate::pl_client::PlayerClient;
 
 #[derive(Debug, Clone)]
 pub struct RequestMoveToLocation {
@@ -76,8 +76,11 @@ impl Message<RequestMoveToLocation> for PlayerClient {
             );
             return Ok(());
         }
-
-        self.start_movement(msg.x_to, msg.y_to, msg.z_to, ctx.actor_ref().clone())?;
+        if self.is_casting() {
+            self.send_packet(ActionFailed::normal()?).await?;
+        } else {
+            self.start_movement(msg.x_to, msg.y_to, msg.z_to, ctx.actor_ref().clone())?;
+        }
 
         Ok(())
     }
