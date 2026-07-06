@@ -148,14 +148,14 @@ impl PlayerClient {
     }
     pub fn remove_scheduled_task(&mut self, task_name: PlayerTasks) {
         self.player_tasks
-            .remove(&PlayerTasks::ActionIntent)
+            .remove(&task_name)
             .map(|(t, _)| t.abort());
     }
     pub fn take_scheduled_task(
         &mut self,
         task_name: PlayerTasks,
     ) -> Option<(JoinHandle<()>, Option<Arc<Notify>>)> {
-        self.player_tasks.remove(&PlayerTasks::ActionIntent)
+        self.player_tasks.remove(&task_name)
     }
     ///
     /// Simple usage:
