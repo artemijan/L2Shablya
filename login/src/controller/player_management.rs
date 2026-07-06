@@ -4,9 +4,9 @@ use crate::dto::player::GSCharsInfo;
 use crate::gs_client::GSMessages;
 use l2_core::shared_packets::common::PlayerLoginFailReasons;
 use l2_core::shared_packets::ls_2_gs::{KickPlayer, RequestChars};
-use rand::{prelude::Distribution, RngExt};
-use std::time::Duration;
 use rand::distr::StandardUniform;
+use rand::{RngExt, prelude::Distribution};
+use std::time::Duration;
 use tracing::{error, info};
 
 impl LoginController {
@@ -28,8 +28,6 @@ impl LoginController {
                 player_info.chars_on_servers.insert(
                     gs_id,
                     GSCharsInfo {
-                        char_deletion_timestamps: rc.char_deletion_timestamps,
-                        chars_to_delete: rc.delete_chars_len,
                         total_chars: rc.chars,
                     },
                 );

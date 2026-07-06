@@ -132,6 +132,7 @@ mod tests {
     }
 
     #[test]
+    #[serial_test::serial]
     fn test_cloned() {
         let factory = IdFactory::instance();
         factory.reset_for_tests();

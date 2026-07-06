@@ -51,6 +51,8 @@ pub struct GSServerConfig {
     pub vitality_max_items_allowed: u32,
     #[serde(default = "default_max_movement_distance")]
     pub max_movement_distance: u32,
+    #[serde(default = "default_max_target_distance")]
+    pub max_target_distance: u32,
     pub rates: Rates,
 }
 
@@ -62,6 +64,9 @@ fn default_vitality_max_items_allowed() -> u32 {
 }
 fn default_max_movement_distance() -> u32 {
     15000
+}
+fn default_max_target_distance() -> u32 {
+    3000
 }
 fn deserialize_hex_to_bigint<'de, D>(deserializer: D) -> Result<BigInt, D::Error>
 where

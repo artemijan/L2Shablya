@@ -3,10 +3,9 @@ use crate::managers::ClanAllyManager;
 use crate::packets::to_client::{CharInfo, RelationChanged};
 use crate::pl_client::{GetCharInfo, PlayerClient};
 use anyhow::anyhow;
-use l2_core::errors::KameoAnyhowExt;
 use dashmap::DashMap;
-use entities::entities::character;
 use entities::DBPool;
+use entities::entities::character;
 use kameo::actor::ActorRef;
 use l2_core::config::gs::GSServerConfig;
 use l2_core::config::traits::{ConfigDirLoader, ConfigFileLoader};
@@ -14,10 +13,11 @@ use l2_core::data::action_list::ActionList;
 use l2_core::data::base_stat::BaseStat;
 use l2_core::data::char_template::ClassTemplates;
 use l2_core::data::exp_table::ExpTable;
-use l2_core::data::skills::SkillsData;
-use l2_core::geoengine::GeoEngine;
 use l2_core::data::skill_tree_data::SkillTreesData;
+use l2_core::data::skills::SkillsData;
+use l2_core::errors::KameoAnyhowExt;
 use l2_core::game_objects::player::Player;
+use l2_core::geoengine::GeoEngine;
 use l2_core::network::connection::HandleOutboundPacket;
 use l2_core::shared_packets::common::SendablePacket;
 use l2_core::traits::IpBan;
@@ -76,10 +76,11 @@ impl GameController {
     pub async fn set_ls_actor(&self, actor: ActorRef<LoginServerClient>) {
         *self.ls_actor.write().await = Some(actor);
     }
-
+    #[allow(unused)]
     pub fn get_db_pool(&self) -> &DBPool {
         &self.db_pool
     }
+    #[allow(unused)]
     pub async fn get_ls_actor(&self) -> Option<ActorRef<LoginServerClient>> {
         self.ls_actor.read().await.clone()
     }
@@ -94,6 +95,7 @@ impl GameController {
     pub fn get_cfg(&self) -> Arc<GSServerConfig> {
         self.cfg.clone()
     }
+
     #[allow(clippy::unused_self)]
     pub fn get_game_time(&self) -> i32 {
         //todo time player spend in game

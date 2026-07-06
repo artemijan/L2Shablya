@@ -7,15 +7,27 @@ use tracing::instrument;
 /// Calculate Euclidean distance between two 3D points (x1,y1,z1) -> (x2,y2,z2)
 /// Returns None if coordinate subtraction overflows
 pub fn calculate_distance(x1: i32, y1: i32, z1: i32, x2: i32, y2: i32, z2: i32) -> Option<f64> {
+    // 1. Safely handle the subtraction phase
     let dx = x2.checked_sub(x1)?;
     let dy = y2.checked_sub(y1)?;
     let dz = z2.checked_sub(z1)?;
 
+    // 2. Cast to f64
     let dx = f64::from(dx);
     let dy = f64::from(dy);
     let dz = f64::from(dz);
 
-    Some((dx * dx + dy * dy + dz * dz).sqrt())
+    // 3. Use 2D hypot twice to completely avoid squaring overflow/underflow
+    // distance = sqrt((sqrt(dx^2 + dy^2))^2 + dz^2)
+    let distance_2d = dx.hypot(dy);
+    let distance_3d = distance_2d.hypot(dz);
+
+    // 4. Ensure the result is a valid, finite number
+    if distance_3d.is_finite() {
+        Some(distance_3d)
+    } else {
+        None
+    }
 }
 pub fn calculate_nearest_hit_point(
     actor: (i32, i32, i32),

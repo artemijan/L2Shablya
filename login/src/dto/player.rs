@@ -1,13 +1,11 @@
+use crate::login_client::LoginClient;
+use kameo::prelude::ActorRef;
 use l2_core::session::SessionKey;
 use std::collections::HashMap;
-use kameo::prelude::ActorRef;
-use crate::login_client::LoginClient;
 
 #[derive(Debug, Clone, Default)]
 pub struct GSCharsInfo {
     pub total_chars: u8,
-    pub chars_to_delete: u8,
-    pub char_deletion_timestamps: Vec<i64>,
 }
 
 #[derive(Debug, Clone, Default)]

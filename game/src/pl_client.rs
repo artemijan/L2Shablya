@@ -1,25 +1,26 @@
 use crate::controller::GameController;
-use crate::cp_factory::build_client_packet;
 use crate::cp_factory::PlayerPackets::StopMove;
+use crate::cp_factory::build_client_packet;
 use crate::movement::{Arrived, MovementState};
 use crate::packets::to_client;
 use crate::packets::to_client::{ActionFailed, CharMoveToLocation};
 use anyhow::{anyhow, bail};
 use bytes::BytesMut;
-use entities::entities::{character, user};
 use entities::DBPool;
+use entities::entities::{character, user};
+use kameo::Actor;
 use kameo::actor::{ActorId, ActorRef, Spawn, WeakActorRef};
 use kameo::error::{ActorStopReason, PanicError};
 use kameo::message::{Context, Message};
-use kameo::Actor;
 use l2_core::crypt::game::GameClientEncryption;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::game_objects::player::Player;
 use l2_core::game_objects::stats::stat_enum::Stat;
+use l2_core::game_objects::zone::Location;
 use l2_core::network::connection::{
-    send_delayed_packet, send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket,
-    HandleOutboundPacket,
+    ConnectionActor, HandleIncomingPacket, HandleOutboundPacket, send_delayed_packet, send_packet,
+    send_packet_blocking,
 };
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::SendablePacket;
@@ -147,9 +148,7 @@ impl PlayerClient {
         );
     }
     pub fn remove_scheduled_task(&mut self, task_name: PlayerTasks) {
-        self.player_tasks
-            .remove(&task_name)
-            .map(|(t, _)| t.abort());
+        self.player_tasks.remove(&task_name).map(|(t, _)| t.abort());
     }
     pub fn take_scheduled_task(
         &mut self,

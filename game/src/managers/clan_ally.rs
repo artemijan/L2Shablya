@@ -1,10 +1,10 @@
 use dashmap::DashMap;
-use entities::entities::clan_ally;
 use entities::DBPool;
+use entities::entities::clan_ally;
 
 #[derive(Default, Clone, Debug)]
 pub struct ClanAllyManager {
-    db_pool: DBPool,
+    _db_pool: DBPool,
     pub clan_list: DashMap<i32, clan_ally::Model>,
 }
 impl ClanAllyManager {
@@ -21,7 +21,10 @@ impl ClanAllyManager {
             .into_iter()
             .map(|c| (c.id, c))
             .collect();
-        Self { db_pool, clan_list }
+        Self {
+            _db_pool: db_pool,
+            clan_list,
+        }
     }
     #[must_use]
     pub fn is_clan_leader(&self, clan_id: i32, leader_id: i32) -> bool {
