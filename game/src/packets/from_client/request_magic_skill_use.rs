@@ -1,3 +1,4 @@
+use crate::movement::calculate_distance;
 use crate::packets::to_client;
 use crate::pl_client::{ApplyDamage, GetStats, PlayerClient};
 use bytes::BytesMut;
@@ -82,6 +83,27 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
             let skill_id_u32 = msg.skill_id as u32;
             let skill_data = self.controller.skills.get_skill(skill_id_u32, level_u8);
 
+            let mut cast_range = 40;
+            if let Some(skill) = skill_data {
+                if let Some(cr) = skill.cast_range.as_ref().and_then(|v| v.text) {
+                    cast_range = cr;
+                }
+            }
+
+            let dist = calculate_distance(x, y, z, target_x, target_y, target_z).unwrap_or(0.0);
+            if dist > (cast_range + 40) as f64 {
+                info!("Target is too far: dist={}, cast_range={}", dist, cast_range);
+                let sm = to_client::SystemMessage::new(to_client::SystemMessageType::TargetIsTooFar)?;
+                self.send_packet(sm).await?;
+                return Ok(());
+            }
+
+            if !self.controller.geo_engine.can_see(x, y, z, target_x, target_y, target_z) {
+                let sm = to_client::SystemMessage::new(to_client::SystemMessageType::CannotSeeTarget)?;
+                self.send_packet(sm).await?;
+                return Ok(());
+            }
+
             let mut hit_time = 1000;
             let mut reuse_delay = 0;
             let mut reuse_group = -1;
@@ -114,10 +136,6 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                 let player = self.try_get_selected_char_mut()?;
                 player.add_skill_reuse(msg.skill_id, level as i32, reuse_delay, reuse_group);
             }
-            info!(
-                "Skill reuse added: skill_id={}, reuse_delay={}, reuse_group={}, client_group={}",
-                msg.skill_id, reuse_delay, reuse_group, client_reuse_group
-            );
             let magic_use_packet = to_client::MagicSkillUse::new(
                 attacker_id,
                 target_id,

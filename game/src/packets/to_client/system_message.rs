@@ -13,6 +13,8 @@ pub enum SystemMessageType {
     C1HasReceivedS3DamageThroughC2 = 2263, // $c1 has received $s3 damage through $c2.
     S1_2 = 1983,                     // $s1
     S1IsNotAvailableAtThisTimeBeingPreparedForReuse = 48, // $s1 is not available at this time: being prepared for reuse.
+    TargetIsTooFar = 22,             // Your target is too far away.
+    CannotSeeTarget = 181,           // Cannot see target.
 }
 
 impl From<SystemMessageType> for u16 {

@@ -21,6 +21,7 @@ pub mod traits;
 pub mod bitmask;
 pub mod game_objects;
 pub mod utils;
+pub mod geoengine;
 pub mod data;
 pub mod id_factory;
 

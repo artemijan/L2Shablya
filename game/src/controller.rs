@@ -15,11 +15,13 @@ use l2_core::data::base_stat::BaseStat;
 use l2_core::data::char_template::ClassTemplates;
 use l2_core::data::exp_table::ExpTable;
 use l2_core::data::skills::SkillsData;
+use l2_core::geoengine::GeoEngine;
 use l2_core::data::skill_tree_data::SkillTreesData;
 use l2_core::game_objects::player::Player;
 use l2_core::network::connection::HandleOutboundPacket;
 use l2_core::shared_packets::common::SendablePacket;
 use l2_core::traits::IpBan;
+use std::path::Path;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use tracing::{info, warn};
@@ -40,6 +42,7 @@ pub struct GameController {
     pub skills: SkillsData,
     pub hero_list: DashMap<i32, character::Model>,
     pub clan_ally_manager: Arc<RwLock<ClanAllyManager>>,
+    pub geo_engine: Arc<GeoEngine>,
     // Global registry: world object_id -> player actor
     player_by_object_id: DashMap<i32, ActorRef<PlayerClient>>,
 }
@@ -52,6 +55,7 @@ impl GameController {
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
         let skills = SkillsData::load();
+        let geo_engine = Arc::new(GeoEngine::new(Path::new("config/data/geo")));
         GameController {
             exp_table,
             db_pool: db_pool.clone(),
@@ -65,6 +69,7 @@ impl GameController {
             hero_list: DashMap::new(),
             online_chars: DashMap::new(),
             clan_ally_manager: Arc::new(RwLock::new(ClanAllyManager::new(db_pool.clone()).await)),
+            geo_engine,
             player_by_object_id: DashMap::new(),
         }
     }
@@ -233,6 +238,7 @@ impl GameController {
         let skill_trees_data = SkillTreesData::load();
         let class_templates = ClassTemplates::load();
         let base_stats = BaseStat::load();
+        let geo_engine = Arc::new(GeoEngine::new(Path::new("config/data/geo")));
         GameController {
             db_pool: get_test_db().await,
             exp_table,
@@ -247,6 +253,7 @@ impl GameController {
             clan_ally_manager: Arc::new(RwLock::new(ClanAllyManager::default())),
             player_by_object_id: DashMap::new(),
             skills: Default::default(),
+            geo_engine,
         }
     }
 }
