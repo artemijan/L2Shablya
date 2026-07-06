@@ -174,15 +174,14 @@ impl Message<Arrived> for PlayerClient {
     #[instrument(skip(self, _ctx))]
     async fn handle(
         &mut self,
-        msg: Arrived,
+        _msg: Arrived,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         let task = self.take_scheduled_task(PlayerTasks::ActionIntent);
-        if let Some((handle, trigger)) = task
+        if let Some((_, trigger)) = task
             && let Some(t) = trigger
         {
-            t.notify_one();
-            let _ = handle.await; //we don't need task result as it's fire and forget
+            t.notify_one(); //this will continue stopped task
         }
         Ok(())
     }
