@@ -14,6 +14,39 @@ pub fn calculate_distance(x1: i32, y1: i32, z1: i32, x2: i32, y2: i32, z2: i32) 
 
     Some((dx * dx + dy * dy + dz * dz).sqrt())
 }
+pub fn calculate_nearest_hit_point(
+    actor: (i32, i32, i32),
+    target: (i32, i32, i32),
+    dist: f64,
+    cast_range: i32,
+) -> (i32, i32, i32) {
+    // If we are already close enough, or distance is invalid, don't move
+    if dist <= 0.0 || dist <= cast_range as f64 {
+        return target;
+    }
+
+    let (actor_x, actor_y, actor_z) = (actor.0 as f64, actor.1 as f64, actor.2 as f64);
+
+    // Calculate directional vector components
+    let dir_x = target.0 as f64 - actor_x;
+    let dir_y = target.1 as f64 - actor_y;
+    let dir_z = target.2 as f64 - actor_z;
+
+    // Normalize the vector to unit length (1.0)
+    let unit_x = dir_x / dist;
+    let unit_y = dir_y / dist;
+    let unit_z = dir_z / dist;
+
+    // Determine total distance we need to walk to hit the range boundary
+    let travel_dist = dist - cast_range as f64;
+
+    // Add movement to current position using f64 math, then round cleanly to i32
+    (
+        (actor_x + (unit_x * travel_dist)).round() as i32,
+        (actor_y + (unit_y * travel_dist)).round() as i32,
+        (actor_z + (unit_z * travel_dist)).round() as i32,
+    )
+}
 
 /// Represents the current movement state of a player
 #[derive(Debug)]

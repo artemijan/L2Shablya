@@ -1,6 +1,7 @@
-use crate::movement::calculate_distance;
+use crate::movement::{calculate_distance, calculate_nearest_hit_point};
 use crate::packets::to_client;
-use crate::pl_client::{ApplyDamage, GetStats, PlayerClient};
+use crate::packets::to_client::ActionFailed;
+use crate::pl_client::{ApplyDamage, GetStats, PlayerClient, PlayerTasks};
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
 use l2_core::errors::KameoAnyhowExt;
@@ -43,10 +44,10 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
         msg: RequestMagicSkillUse,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        info!(
-            "Handling RequestMagicSkillUse: skill_id={}, ctrl={}, shift={}",
-            msg.skill_id, msg.ctrl_pressed, msg.shift_pressed
-        );
+        if self.is_casting() {
+            self.send_packet(ActionFailed::normal()?).await?;
+            return Ok(());
+        }
 
         let (attacker_id, attacker_name, attacker_stats, (x, y, z), level) = {
             let player = self.try_get_selected_char()?;
@@ -81,6 +82,13 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
 
             let level_u8 = level as u8;
             let skill_id_u32 = msg.skill_id as u32;
+
+            let dist = calculate_distance(x, y, z, target_x, target_y, target_z).unwrap_or(0.0);
+
+            if !self.check_visibility(target_x, target_y, target_z).await? {
+                return Ok(());
+            }
+
             let skill_data = self.controller.skills.get_skill(skill_id_u32, level_u8);
 
             let mut cast_range = 40;
@@ -90,17 +98,43 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                 }
             }
 
-            let dist = calculate_distance(x, y, z, target_x, target_y, target_z).unwrap_or(0.0);
             if dist > (cast_range + 40) as f64 {
-                info!("Target is too far: dist={}, cast_range={}", dist, cast_range);
-                let sm = to_client::SystemMessage::new(to_client::SystemMessageType::TargetIsTooFar)?;
-                self.send_packet(sm).await?;
-                return Ok(());
-            }
+                info!(
+                    "Target is too far, moving to target: dist={}, cast_range={}",
+                    dist, cast_range
+                );
 
-            if !self.controller.geo_engine.can_see(x, y, z, target_x, target_y, target_z) {
-                let sm = to_client::SystemMessage::new(to_client::SystemMessageType::CannotSeeTarget)?;
-                self.send_packet(sm).await?;
+                // Start movement towards the target
+                // For simplicity, we move exactly to the target's position, but ideally it should be target_pos + cast_range
+                let pl_actor = _ctx.actor_ref().clone();
+                let (hit_x, hit_y, hit_z) = calculate_nearest_hit_point(
+                    (x, y, z),
+                    (target_x, target_y, target_z),
+                    dist,
+                    cast_range,
+                );
+                self.start_movement(hit_x, hit_y, hit_z, pl_actor)?;
+
+                let self_actor = _ctx.actor_ref().clone();
+                let msg_clone = msg.clone();
+
+                let skill_use_task = tokio::spawn(async move {
+                    // Poll for arrival
+                    loop {
+                        tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+                        let pos = self_actor.ask(crate::pl_client::GetMovementPosition).await;
+                        match pos {
+                            Ok(Some((_cx, _cy, _cz, true))) => break, // Arrived
+                            Ok(Some(_)) => continue,                  // Still moving
+                            _ => return,                              // Movement stopped or error
+                        }
+                    }
+
+                    // Arrived, try to hit again
+                    let _ = self_actor.tell(msg_clone).await;
+                });
+                self.player_tasks
+                    .insert(PlayerTasks::RequestMagicSkillUse, skill_use_task);
                 return Ok(());
             }
 
@@ -170,9 +204,9 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                 0, // casting_type
                 &[target_id],
             )?;
-            tokio::spawn(async move {
+            controller.broadcast_packet(magic_launched_packet);
+            let magic_skill_use_task = tokio::spawn(async move {
                 tokio::time::sleep(std::time::Duration::from_millis(hit_time as u64)).await;
-                controller.broadcast_packet(magic_launched_packet);
                 // Apply damage only when hit
                 if let Err(err) = target_actor
                     .tell(ApplyDamage {
@@ -181,10 +215,13 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                         attacker_name,
                     })
                     .await
-                    .anyhow(){
+                    .anyhow()
+                {
                     error!("Failed to apply damage from {attacker_id} to {target_id}: {err}");
                 }
             });
+            self.player_tasks
+                .insert(PlayerTasks::MagicSkillUse, magic_skill_use_task);
         }
 
         Ok(())

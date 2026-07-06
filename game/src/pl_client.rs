@@ -2,7 +2,7 @@ use crate::controller::GameController;
 use crate::cp_factory::build_client_packet;
 use crate::movement::MovementState;
 use crate::packets::to_client;
-use crate::packets::to_client::CharMoveToLocation;
+use crate::packets::to_client::{ActionFailed, CharMoveToLocation};
 use anyhow::{anyhow, bail};
 use bytes::BytesMut;
 use entities::entities::{character, user};
@@ -15,6 +15,7 @@ use l2_core::crypt::game::GameClientEncryption;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::game_objects::player::Player;
+use l2_core::game_objects::stats::stat_enum::Stat;
 use l2_core::network::connection::{
     send_delayed_packet, send_packet, send_packet_blocking, ConnectionActor, HandleIncomingPacket,
     HandleOutboundPacket,
@@ -22,10 +23,9 @@ use l2_core::network::connection::{
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::SendablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
+use std::collections::{HashMap, VecDeque};
 use std::fmt;
 use std::fmt::Debug;
-use l2_core::game_objects::stats::stat_enum::Stat;
-use std::collections::HashMap;
 use std::future::Future;
 use std::net::Ipv4Addr;
 use std::ops::ControlFlow;
@@ -33,8 +33,9 @@ use std::pin::Pin;
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncWrite};
+use tokio::task::JoinHandle;
 use tokio::time::sleep;
-use tracing::{error, info, instrument};
+use tracing::{error, info, instrument, Instrument};
 
 type BoxedClosure = Box<
     dyn for<'a> FnOnce(
@@ -59,6 +60,13 @@ pub enum ClientStatus {
     Disconnected,
     InGame,
 }
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum PlayerTasks {
+    RequestMagicSkillUse,
+    MagicSkillUse,
+}
+
 pub struct PlayerClient {
     pub db_pool: DBPool,
     pub controller: Arc<GameController>,
@@ -73,6 +81,7 @@ pub struct PlayerClient {
     session_key: Option<SessionKey>,
     user: Option<user::Model>,
     movement_state: Option<MovementState>,
+    pub player_tasks: HashMap<PlayerTasks, JoinHandle<()>>,
 }
 
 impl Debug for PlayerClient {
@@ -110,6 +119,7 @@ impl PlayerClient {
             selected_char: None,
             packet_sender: None,
             movement_state: None,
+            player_tasks: HashMap::new(),
         }
     }
 
@@ -335,6 +345,33 @@ impl PlayerClient {
         send_delayed_packet(self.packet_sender.as_ref(), data.freeze(), delay).await
     }
 
+    /// Check visibility between player and target coordinates.
+    /// Sends a SystemMessage if not visible.
+    pub async fn check_visibility(
+        &mut self,
+        target_x: i32,
+        target_y: i32,
+        target_z: i32,
+    ) -> anyhow::Result<bool> {
+        let (x, y, z) = self.effective_current_position()?;
+        if !self
+            .controller
+            .geo_engine
+            .can_see(x, y, z, target_x, target_y, target_z)
+        {
+            let sm = to_client::SystemMessage::new(to_client::SystemMessageType::CannotSeeTarget)?;
+            self.send_packet(sm).await?;
+            return Ok(false);
+        }
+        Ok(true)
+    }
+
+    pub fn is_casting(&self) -> bool {
+        let Some(val) = self.player_tasks.get(&PlayerTasks::MagicSkillUse) else {
+            return false;
+        };
+        !val.is_finished()
+    }
     /// Start or restart player movement
     pub fn start_movement(
         &mut self,
@@ -346,6 +383,10 @@ impl PlayerClient {
         if self.status != ClientStatus::InGame {
             bail!("Can't start movement. PlayerClient is not in game");
         }
+        self.player_tasks
+            .remove(&PlayerTasks::RequestMagicSkillUse)
+            .map(|t| t.abort());
+
         // Compute effective current position consistent with validation logic
         let (current_x, current_y, current_z) = self.effective_current_position()?;
 
@@ -379,11 +420,6 @@ impl PlayerClient {
 
                 if let Ok(Some((_x, _y, _z, has_arrived))) = result {
                     if has_arrived {
-                        // Arrived at destination, stop broadcasting
-                        info!(
-                            "Player arrived at destination ({}, {}, {})",
-                            dest_x, dest_y, dest_z
-                        );
                         break;
                     }
 
@@ -474,7 +510,8 @@ impl Actor for PlayerClient {
         // Ensure we cleanup world registries even on panic
         self.stop_movement();
         if let Ok(player) = self.try_get_selected_char() {
-            self.controller.unregister_player_object(player.get_object_id());
+            self.controller
+                .unregister_player_object(player.get_object_id());
         }
         if let Some(sender) = self.packet_sender.take() {
             let _ = sender.stop_gracefully().await;
@@ -505,7 +542,8 @@ impl Actor for PlayerClient {
         }
         // Always attempt to unregister the player from world registry if we have it
         if let Ok(player) = self.try_get_selected_char() {
-            self.controller.unregister_player_object(player.get_object_id());
+            self.controller
+                .unregister_player_object(player.get_object_id());
         }
         let Some(user) = self.user.as_ref() else {
             return Ok(());
@@ -627,17 +665,28 @@ impl Message<ApplyDamage> for PlayerClient {
             if character.stats.current_hp < 0.0 {
                 character.stats.current_hp = 0.0;
             }
-            (character.get_object_id(), character.get_visible_name().to_string())
+            (
+                character.get_object_id(),
+                character.get_visible_name().to_string(),
+            )
         };
 
         // Notify victim about the damage
         let damage_val = msg.damage as i32;
 
-        let mut sys_msg_victim = to_client::SystemMessage::new(to_client::SystemMessageType::C1HasReceivedS3DamageFromC2)?;
+        let mut sys_msg_victim = to_client::SystemMessage::new(
+            to_client::SystemMessageType::C1HasReceivedS3DamageFromC2,
+        )?;
         sys_msg_victim.add_param(to_client::SystemMessageParam::PcName(victim_name.clone()))?;
-        sys_msg_victim.add_param(to_client::SystemMessageParam::PcName(msg.attacker_name.clone()))?;
+        sys_msg_victim.add_param(to_client::SystemMessageParam::PcName(
+            msg.attacker_name.clone(),
+        ))?;
         sys_msg_victim.add_param(to_client::SystemMessageParam::Int(damage_val))?;
-        sys_msg_victim.add_param(to_client::SystemMessageParam::Popup { target: victim_id, attacker: msg.attacker_id, damage: damage_val })?;
+        sys_msg_victim.add_param(to_client::SystemMessageParam::Popup {
+            target: victim_id,
+            attacker: msg.attacker_id,
+            damage: damage_val,
+        })?;
         self.send_packet(sys_msg_victim).await?;
 
         let (current_hp, max_hp) = {
@@ -657,14 +706,33 @@ impl Message<ApplyDamage> for PlayerClient {
             let attacker_id = msg.attacker_id;
             let attacker_name = msg.attacker_name.clone();
             let victim_name_clone = victim_name.clone();
-            
+
             tokio::spawn(async move {
-                let mut sys_msg_attacker = to_client::SystemMessage::new(to_client::SystemMessageType::C1HasInflictedS3DamageOnC2).unwrap();
-                sys_msg_attacker.add_param(to_client::SystemMessageParam::PcName(attacker_name)).unwrap();
-                sys_msg_attacker.add_param(to_client::SystemMessageParam::PcName(victim_name_clone)).unwrap();
-                sys_msg_attacker.add_param(to_client::SystemMessageParam::Int(damage)).unwrap();
-                sys_msg_attacker.add_param(to_client::SystemMessageParam::Popup { target: victim_id, attacker: attacker_id, damage }).unwrap();
-                let _ = attacker_actor.tell(HandleOutboundPacket { packet: sys_msg_attacker }).await;
+                let mut sys_msg_attacker = to_client::SystemMessage::new(
+                    to_client::SystemMessageType::C1HasInflictedS3DamageOnC2,
+                )
+                .unwrap();
+                sys_msg_attacker
+                    .add_param(to_client::SystemMessageParam::PcName(attacker_name))
+                    .unwrap();
+                sys_msg_attacker
+                    .add_param(to_client::SystemMessageParam::PcName(victim_name_clone))
+                    .unwrap();
+                sys_msg_attacker
+                    .add_param(to_client::SystemMessageParam::Int(damage))
+                    .unwrap();
+                sys_msg_attacker
+                    .add_param(to_client::SystemMessageParam::Popup {
+                        target: victim_id,
+                        attacker: attacker_id,
+                        damage,
+                    })
+                    .unwrap();
+                let _ = attacker_actor
+                    .tell(HandleOutboundPacket {
+                        packet: sys_msg_attacker,
+                    })
+                    .await;
             });
         }
         Ok(())
