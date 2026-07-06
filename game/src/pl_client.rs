@@ -1,6 +1,7 @@
 use crate::controller::GameController;
 use crate::cp_factory::build_client_packet;
-use crate::movement::MovementState;
+use crate::cp_factory::PlayerPackets::StopMove;
+use crate::movement::{Arrived, MovementState};
 use crate::packets::to_client;
 use crate::packets::to_client::{ActionFailed, CharMoveToLocation};
 use anyhow::{anyhow, bail};
@@ -23,7 +24,7 @@ use l2_core::network::connection::{
 use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::SendablePacket;
 use l2_core::shared_packets::gs_2_ls::PlayerLogout;
-use std::collections::{HashMap, VecDeque};
+use std::collections::HashMap;
 use std::fmt;
 use std::fmt::Debug;
 use std::future::Future;
@@ -33,9 +34,10 @@ use std::pin::Pin;
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::io::{AsyncRead, AsyncWrite};
+use tokio::sync::Notify;
 use tokio::task::JoinHandle;
 use tokio::time::sleep;
-use tracing::{error, info, instrument, Instrument};
+use tracing::{error, info, instrument};
 
 type BoxedClosure = Box<
     dyn for<'a> FnOnce(
@@ -63,8 +65,8 @@ pub enum ClientStatus {
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PlayerTasks {
-    RequestMagicSkillUse,
-    MagicSkillUse,
+    ActionIntent,
+    CauseDamage,
 }
 
 pub struct PlayerClient {
@@ -81,7 +83,7 @@ pub struct PlayerClient {
     session_key: Option<SessionKey>,
     user: Option<user::Model>,
     movement_state: Option<MovementState>,
-    pub player_tasks: HashMap<PlayerTasks, JoinHandle<()>>,
+    player_tasks: HashMap<PlayerTasks, (JoinHandle<()>, Option<Arc<Notify>>)>,
 }
 
 impl Debug for PlayerClient {
@@ -123,6 +125,38 @@ impl PlayerClient {
         }
     }
 
+    pub fn schedule_task(&mut self, task_name: PlayerTasks, task: JoinHandle<()>) {
+        self.player_tasks.insert(task_name, (task, None));
+    }
+    pub fn schedule_triggered_task(
+        &mut self,
+        task_name: PlayerTasks,
+        task: impl Future<Output = ()> + Send + 'static,
+    ) {
+        let notify_trigger = Arc::new(Notify::new());
+        let notify_waiter = notify_trigger.clone();
+        self.player_tasks.insert(
+            task_name,
+            (
+                tokio::spawn(async move {
+                    notify_waiter.notified().await;
+                    task.await;
+                }),
+                Some(notify_trigger),
+            ),
+        );
+    }
+    pub fn remove_scheduled_task(&mut self, task_name: PlayerTasks) {
+        self.player_tasks
+            .remove(&PlayerTasks::ActionIntent)
+            .map(|(t, _)| t.abort());
+    }
+    pub fn take_scheduled_task(
+        &mut self,
+        task_name: PlayerTasks,
+    ) -> Option<(JoinHandle<()>, Option<Arc<Notify>>)> {
+        self.player_tasks.remove(&PlayerTasks::ActionIntent)
+    }
     ///
     /// Simple usage:
     ///
@@ -367,10 +401,11 @@ impl PlayerClient {
     }
 
     pub fn is_casting(&self) -> bool {
-        let Some(val) = self.player_tasks.get(&PlayerTasks::MagicSkillUse) else {
-            return false;
-        };
-        !val.is_finished()
+        //todo: it's not good to rely on this, because damage can be caused by other actions not only casting magic skills
+        // but while auto attack it's possible to cancel it.
+        self.player_tasks
+            .get(&PlayerTasks::CauseDamage)
+            .is_some_and(|(handle, _)| !handle.is_finished())
     }
     /// Start or restart player movement
     pub fn start_movement(
@@ -383,9 +418,7 @@ impl PlayerClient {
         if self.status != ClientStatus::InGame {
             bail!("Can't start movement. PlayerClient is not in game");
         }
-        self.player_tasks
-            .remove(&PlayerTasks::RequestMagicSkillUse)
-            .map(|t| t.abort());
+        self.remove_scheduled_task(PlayerTasks::ActionIntent);
 
         // Compute effective current position consistent with validation logic
         let (current_x, current_y, current_z) = self.effective_current_position()?;
@@ -410,19 +443,17 @@ impl PlayerClient {
 
         // Spawn periodic broadcast task
         let controller = self.controller.clone();
-
         let task_handle = tokio::spawn(async move {
             let mut interval = tokio::time::interval(Duration::from_millis(300));
-
             loop {
                 // Check movement state BEFORE waiting
                 let result = actor_ref.ask(GetMovementPosition).await;
 
                 if let Ok(Some((_x, _y, _z, has_arrived))) = result {
                     if has_arrived {
+                        let _ = actor_ref.tell(Arrived).await;
                         break;
                     }
-
                     // Broadcast current position
                     if let Ok(player) = actor_ref.ask(GetCharInfo).await
                         && let Ok(packet) = CharMoveToLocation::new(&player, dest_x, dest_y, dest_z)

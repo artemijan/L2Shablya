@@ -1,5 +1,8 @@
+use crate::pl_client::{PlayerClient, PlayerTasks};
+use kameo::message::{Context, Message};
 use std::time::Instant;
 use tokio::task::JoinHandle;
+use tracing::instrument;
 
 /// Calculate Euclidean distance between two 3D points (x1,y1,z1) -> (x2,y2,z2)
 /// Returns None if coordinate subtraction overflows
@@ -160,6 +163,28 @@ impl MovementState {
 impl Drop for MovementState {
     fn drop(&mut self) {
         self.cancel_task();
+    }
+}
+#[derive(Clone, Debug)]
+pub struct Arrived;
+
+impl Message<Arrived> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+
+    #[instrument(skip(self, _ctx))]
+    async fn handle(
+        &mut self,
+        msg: Arrived,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> anyhow::Result<()> {
+        let task = self.take_scheduled_task(PlayerTasks::ActionIntent);
+        if let Some((handle, trigger)) = task
+            && let Some(t) = trigger
+        {
+            t.notify_one();
+            let _ = handle.await; //we don't need task result as it's fire and forget
+        }
+        Ok(())
     }
 }
 
