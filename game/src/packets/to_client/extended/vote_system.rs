@@ -7,7 +7,6 @@ use std::fmt::Debug;
 pub struct VoteSystem {
     pub buffer: SendablePacketBuffer,
 }
-
 impl VoteSystem {
     const PACKET_ID: u8 = 0xFE;
     const EX_PACKET_ID: u16 = 0xCA;
@@ -29,6 +28,7 @@ impl VoteSystem {
 #[cfg(test)]
 mod test {
     use crate::controller::GameController;
+    use crate::packets::to_client::extended::vote_system::VoteSystem;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
@@ -37,11 +37,10 @@ mod test {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use crate::packets::to_client::extended::vote_system::VoteSystem;
 
     #[tokio::test]
     #[allow(clippy::too_many_lines)]
-    async fn test_vote_system()  {
+    async fn test_vote_system() {
         let db_pool = get_test_db().await;
         let user = user_factory(&db_pool, |u| u).await;
         let char = char_factory(&db_pool, |mut m| {
@@ -61,7 +60,9 @@ mod test {
         let player = Player::new(char, vec![], template.clone(), None);
         let p = VoteSystem::new(&player).unwrap();
         assert_eq!(
-            [254, 202, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [
+                254, 202, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ],
             p.get_buffer().get_data_mut(false)[2..]
         );
     }

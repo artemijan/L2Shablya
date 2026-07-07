@@ -36,7 +36,6 @@ impl QuestList {
 
 #[cfg(test)]
 mod tests {
-    use std::str::FromStr;
     use super::*;
     use crate::controller::GameController;
     use entities::entities::quest;
@@ -44,17 +43,18 @@ mod tests {
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
     use l2_core::game_objects::player::quest::Quest;
+    use l2_core::id_factory::ObjectId;
     use l2_core::shared_packets::common::SendablePacket;
     use l2_core::traits::ServerConfig;
-    use std::sync::Arc;
     use sea_orm::JsonValue;
-    use l2_core::id_factory::ObjectId;
+    use std::str::FromStr;
+    use std::sync::Arc;
     use test_utils::utils::get_test_db;
     #[tokio::test]
     async fn test_quest_list_packet() {
         let db_pool = get_test_db().await;
         let user = user_factory(&db_pool, |u| u).await;
-        let mut char = char_factory(&db_pool, |mut m| {
+        let char = char_factory(&db_pool, |mut m| {
             m.name = "Adelante".to_string();
             m.user_id = user.id;
             m
@@ -76,8 +76,9 @@ mod tests {
                 name: "Tutorial".to_string(),
                 quest_id: 255,
                 variables: JsonValue::from_str(
-                    r#"{"state":"started","condition":1, "memoState": 1}"#
-                ).unwrap(),
+                    r#"{"state":"started","condition":1, "memoState": 1}"#,
+                )
+                .unwrap(),
             },
         });
         let p = QuestList::new(&player).unwrap();

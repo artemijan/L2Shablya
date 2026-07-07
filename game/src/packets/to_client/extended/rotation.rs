@@ -24,7 +24,6 @@ impl Rotation {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -32,21 +31,21 @@ mod tests {
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
+    use l2_core::id_factory::ObjectId;
     use l2_core::shared_packets::common::SendablePacket;
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
-    use l2_core::id_factory::ObjectId;
     use test_utils::utils::get_test_db;
     #[tokio::test]
     async fn test_rotation_packet() {
         let db_pool = get_test_db().await;
         let user = user_factory(&db_pool, |u| u).await;
-        let mut char = char_factory(&db_pool, |mut m| {
+        let char = char_factory(&db_pool, |mut m| {
             m.name = "Adelante".to_string();
             m.user_id = user.id;
             m
         })
-            .await;
+        .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../../config/game.yaml"
         )));

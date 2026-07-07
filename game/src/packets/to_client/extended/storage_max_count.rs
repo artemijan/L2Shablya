@@ -7,7 +7,6 @@ use macro_common::SendablePacket;
 pub struct StorageMaxCount {
     pub(crate) buffer: SendablePacketBuffer,
 }
-
 impl StorageMaxCount {
     const PACKET_ID: u8 = 0xFE;
     const EX_PACKET_ID: u16 = 0x2F;

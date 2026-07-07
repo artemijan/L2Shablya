@@ -54,7 +54,6 @@ impl RelationChangedBuilder {
                 multi.push(relation);
             } else {
                 self.multi = Some(vec![relation]);
-
             }
         }
         self

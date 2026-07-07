@@ -13,7 +13,6 @@ use l2_core::session::SessionKey;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::gs_2_ls::{PlayerAuthRequest, PlayerInGame};
 use l2_core::shared_packets::read::ReadablePacketBuffer;
-use l2_core::shared_packets::write::SendablePacketBuffer;
 use tracing::{error, instrument};
 
 #[derive(Debug, Clone)]
@@ -23,7 +22,6 @@ pub struct AuthLogin {
     pub play_key_2: i32,
     pub login_key_1: i32,
     pub login_key_2: i32,
-    pub buffer: SendablePacketBuffer,
 }
 
 impl ReadablePacket for AuthLogin {
@@ -42,7 +40,6 @@ impl ReadablePacket for AuthLogin {
             play_key_2,
             login_key_1,
             login_key_2,
-            buffer: SendablePacketBuffer::empty(),
         })
     }
 }
@@ -175,7 +172,6 @@ mod tests {
     };
     use entities::test_factories::factories::user_factory;
     use l2_core::shared_packets::ls_2_gs::PlayerAuthResponse;
-    use l2_core::shared_packets::write::SendablePacketBuffer;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
     use std::time::Duration;
@@ -205,7 +201,6 @@ mod tests {
             play_key_2: 0,
             login_key_1: 0,
             login_key_2: 0,
-            buffer: SendablePacketBuffer::empty(),
         };
         let ls_actor = spawn_custom_ls_client_actor(
             controller.clone(),

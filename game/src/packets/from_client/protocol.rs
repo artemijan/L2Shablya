@@ -3,11 +3,11 @@ use crate::pl_client::PlayerClient;
 use anyhow::bail;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
-use tracing::instrument;
 use l2_core::crypt::game::GameClientEncryption;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
 use l2_core::shared_packets::write::SendablePacketBuffer;
+use tracing::instrument;
 
 #[derive(Debug, Clone)]
 pub struct ProtocolVersion {
@@ -37,10 +37,7 @@ impl Message<ProtocolVersion> for PlayerClient {
     ) -> anyhow::Result<()> {
         let cfg = self.controller.get_cfg();
         if let Err(e) = self.set_protocol(msg.version) {
-            self.send_packet(
-                ProtocolResponse::fail(&cfg)?,
-            )
-            .await?;
+            self.send_packet(ProtocolResponse::fail(&cfg)?).await?;
             bail!(e);
         }
 
@@ -50,10 +47,8 @@ impl Message<ProtocolVersion> for PlayerClient {
             self.set_encryption(Some(key));
         }
 
-        self.send_packet(
-            ProtocolResponse::new(&key_bytes, true, &cfg)?,
-        )
-        .await?;
+        self.send_packet(ProtocolResponse::new(&key_bytes, true, &cfg)?)
+            .await?;
         Ok(())
     }
 }

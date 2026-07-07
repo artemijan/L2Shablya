@@ -68,21 +68,23 @@ impl MacroList {
         inst.buffer.write_i32(macro_id)?;
         inst.buffer.write(count)?;
         inst.buffer.write_bool(m.is_some())?;
-        if let Some(m) = m && update != MacroUpdateType::Delete{
-                inst.buffer.write_i32(m.id)?;
-                inst.buffer.write_c_utf16le_string(Some(&m.name))?;
-                inst.buffer.write_c_utf16le_string(Some(&m.description))?;
-                inst.buffer.write_c_utf16le_string(Some(&m.acronym))?;
-                inst.buffer.write_i32(m.icon)?;
-                inst.buffer.write(u8::try_from(m.commands.len())?)?;
-                for (i, cmd) in m.commands.iter().enumerate() {
-                    inst.buffer.write(u8::try_from(i + 1)?)?;
-                    inst.buffer.write(cmd.get_type())?;
-                    inst.buffer.write_i32(cmd.get_d1())?;
-                    inst.buffer.write_i32(cmd.get_d2())?;
-                    inst.buffer
-                        .write_c_utf16le_string(Some(cmd.get_cmd_name()))?;
-                }
+        if let Some(m) = m
+            && update != MacroUpdateType::Delete
+        {
+            inst.buffer.write_i32(m.id)?;
+            inst.buffer.write_c_utf16le_string(Some(&m.name))?;
+            inst.buffer.write_c_utf16le_string(Some(&m.description))?;
+            inst.buffer.write_c_utf16le_string(Some(&m.acronym))?;
+            inst.buffer.write_i32(m.icon)?;
+            inst.buffer.write(u8::try_from(m.commands.len())?)?;
+            for (i, cmd) in m.commands.iter().enumerate() {
+                inst.buffer.write(u8::try_from(i + 1)?)?;
+                inst.buffer.write(cmd.get_type())?;
+                inst.buffer.write_i32(cmd.get_d1())?;
+                inst.buffer.write_i32(cmd.get_d2())?;
+                inst.buffer
+                    .write_c_utf16le_string(Some(cmd.get_cmd_name()))?;
+            }
         }
         Ok(inst)
     }
@@ -90,6 +92,7 @@ impl MacroList {
 #[cfg(test)]
 mod test {
     use crate::controller::GameController;
+    use crate::packets::to_client::MacroList;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
@@ -98,7 +101,6 @@ mod test {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use crate::packets::to_client::MacroList;
 
     #[tokio::test]
     async fn test_write_macro_list() {
@@ -109,7 +111,7 @@ mod test {
             m.user_id = user.id;
             m
         })
-            .await;
+        .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));

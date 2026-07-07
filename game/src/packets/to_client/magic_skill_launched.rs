@@ -5,7 +5,6 @@ use macro_common::SendablePacket;
 pub struct MagicSkillLaunched {
     pub buffer: SendablePacketBuffer,
 }
-
 impl MagicSkillLaunched {
     pub const PACKET_ID: u8 = 0x54;
 

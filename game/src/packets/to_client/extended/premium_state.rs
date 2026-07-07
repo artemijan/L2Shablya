@@ -22,17 +22,17 @@ impl PremiumState {
 }
 #[cfg(test)]
 mod test {
+    use super::*;
     use crate::controller::GameController;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
     use l2_core::game_objects::player::Player;
+    use l2_core::id_factory::ObjectId;
     use l2_core::shared_packets::common::SendablePacket;
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
-    use l2_core::id_factory::ObjectId;
     use test_utils::utils::get_test_db;
-    use super::*;
 
     #[tokio::test]
     async fn test_premium_state() {
@@ -43,7 +43,7 @@ mod test {
             m.user_id = user.id;
             m
         })
-            .await;
+        .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../../config/game.yaml"
         )));

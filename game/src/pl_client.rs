@@ -1,9 +1,8 @@
 use crate::controller::GameController;
-use crate::cp_factory::PlayerPackets::StopMove;
 use crate::cp_factory::build_client_packet;
 use crate::movement::{Arrived, MovementState};
 use crate::packets::to_client;
-use crate::packets::to_client::{ActionFailed, CharMoveToLocation};
+use crate::packets::to_client::CharMoveToLocation;
 use anyhow::{anyhow, bail};
 use bytes::BytesMut;
 use entities::DBPool;
@@ -17,7 +16,6 @@ use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::game_objects::player::Player;
 use l2_core::game_objects::stats::stat_enum::Stat;
-use l2_core::game_objects::zone::Location;
 use l2_core::network::connection::{
     ConnectionActor, HandleIncomingPacket, HandleOutboundPacket, send_delayed_packet, send_packet,
     send_packet_blocking,

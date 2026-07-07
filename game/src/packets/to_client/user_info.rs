@@ -3,8 +3,8 @@ use l2_core::bitmask::BitMask;
 use l2_core::config::gs::GSServerConfig;
 use l2_core::data::classes::mapping::Class;
 use l2_core::game_objects::cursed_weapon::CursedWeapon;
-use l2_core::game_objects::player::user_info::UserInfoType;
 use l2_core::game_objects::player::Player;
+use l2_core::game_objects::player::user_info::UserInfoType;
 use l2_core::game_objects::zone::ZoneId;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use l2_core::traits::conversion::{ToU16Rounded, ToU32Rounded};
@@ -206,8 +206,7 @@ impl UserInfo {
         self.buffer.write_i64(char_info.char_model.sp)?;
         self.buffer.write_i64(char_info.char_model.exp)?;
         let current_threshold = exp_table.get_exp(char_info.char_model.level);
-        let next_threshold =
-            exp_table.get_exp_for_next_lvl(char_info.char_model.level);
+        let next_threshold = exp_table.get_exp_for_next_lvl(char_info.char_model.level);
         let gained = char_info.char_model.exp - current_threshold;
         let total = next_threshold - current_threshold;
         #[allow(clippy::cast_precision_loss)]
@@ -436,7 +435,7 @@ impl UserInfo {
                 relation |= 0x40;
             }
         }
-        if p.siege_state !=0 {
+        if p.siege_state != 0 {
             relation |= 0x80;
         }
         relation
@@ -446,12 +445,12 @@ impl UserInfo {
 mod tests {
     use super::*;
     use entities::test_factories::factories::{char_factory, user_factory};
+    use l2_core::id_factory::ObjectId;
     use l2_core::shared_packets::common::SendablePacket;
     use l2_core::traits::ServerConfig;
     use sea_orm::JsonValue;
     use std::str::FromStr;
     use std::sync::Arc;
-    use l2_core::id_factory::ObjectId;
     use test_utils::utils::get_test_db;
 
     #[tokio::test]
@@ -459,7 +458,7 @@ mod tests {
     async fn test_write_user_info() {
         let db_pool = get_test_db().await;
         let user = user_factory(&db_pool, |u| u).await;
-        let mut char = char_factory(&db_pool, |mut m| {
+        let char = char_factory(&db_pool, |mut m| {
             m.name = "Adelante".to_string();
             m.user_id = user.id;
             m.is_female = true;
@@ -499,7 +498,7 @@ mod tests {
             .unwrap();
         assert_eq!(p.block_size, 393);
         assert_eq!(p.mask.flags(), &[0xFF, 0xFF, 0xFE]);
-        let relation = p.get_relation(&player,false);
+        let relation = p.get_relation(&player, false);
         assert_eq!(relation, 0);
         let class_id = Class::try_from(10i8).unwrap();
         assert_eq!(class_id.get_root().id as u32, 10u32);
