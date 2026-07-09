@@ -14,10 +14,10 @@ use crate::game_objects::player::relation::RelationChanges;
 use crate::game_objects::player::vars::CharVariables;
 use crate::game_objects::player::warehouse::Warehouse;
 use crate::game_objects::player::{PlayerMacro, SubclassType, TeleportBookmark};
-use crate::game_objects::stats::creature::CreatureStats;
-use crate::game_objects::stats::stat_enum::Stat;
 use crate::game_objects::private_store_types::PrivateStoreType;
 use crate::game_objects::race::Race;
+use crate::game_objects::stats::creature::CreatureStats;
+use crate::game_objects::stats::stat_enum::Stat;
 use crate::game_objects::zone::{Location, ZoneId};
 use crate::id_factory::{IdFactory, ObjectId};
 use chrono::Utc;
@@ -89,20 +89,56 @@ impl Player {
         assert_eq!(char_model.class_id, template.class_id as i8);
         let object_id = IdFactory::instance().get_next_id();
         let mut stats = CreatureStats::new();
-        stats.calculator.base_values.insert(Stat::Str, f64::from(template.static_data.base_str));
-        stats.calculator.base_values.insert(Stat::Dex, f64::from(template.static_data.base_dex));
-        stats.calculator.base_values.insert(Stat::Con, f64::from(template.static_data.base_con));
-        stats.calculator.base_values.insert(Stat::Int, f64::from(template.static_data.base_int));
-        stats.calculator.base_values.insert(Stat::Wit, f64::from(template.static_data.base_wit));
-        stats.calculator.base_values.insert(Stat::Men, f64::from(template.static_data.base_men));
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::Str, f64::from(template.static_data.base_str));
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::Dex, f64::from(template.static_data.base_dex));
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::Con, f64::from(template.static_data.base_con));
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::Int, f64::from(template.static_data.base_int));
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::Wit, f64::from(template.static_data.base_wit));
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::Men, f64::from(template.static_data.base_men));
 
-        stats.calculator.base_values.insert(Stat::PAtk, f64::from(template.static_data.base_p_atk));
-        stats.calculator.base_values.insert(Stat::PDef, f64::from(template.static_data.base_p_def.total()));
-        stats.calculator.base_values.insert(Stat::MAtk, f64::from(template.static_data.base_m_atk));
-        stats.calculator.base_values.insert(Stat::MDef, f64::from(template.static_data.base_m_def.total()));
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::PAtk, f64::from(template.static_data.base_p_atk));
+        stats.calculator.base_values.insert(
+            Stat::PDef,
+            f64::from(template.static_data.base_p_def.total()),
+        );
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::MAtk, f64::from(template.static_data.base_m_atk));
+        stats.calculator.base_values.insert(
+            Stat::MDef,
+            f64::from(template.static_data.base_m_def.total()),
+        );
         stats.calculator.base_values.insert(Stat::MaxHp, 500.0);
-        stats.calculator.base_values.insert(Stat::PCriticalDamage, 2.0);
-        stats.calculator.base_values.insert(Stat::MCriticalDamage, 2.0);
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::PCriticalDamage, 2.0);
+        stats
+            .calculator
+            .base_values
+            .insert(Stat::MCriticalDamage, 2.0);
 
         stats.update_cache();
         stats.current_hp = stats.get_stat(Stat::MaxHp);
@@ -1005,32 +1041,42 @@ impl Player {
 
     #[must_use]
     pub fn is_skill_disabled(&self, skill_id: i32) -> bool {
-        let reuse_group = self.skill_reused.iter()
+        let reuse_group = self
+            .skill_reused
+            .iter()
             .find(|r| r.skill_id == skill_id)
             .map(|r| r.shared_reuse_group)
             .unwrap_or(-1);
 
-        self.skill_reused
-            .iter()
-            .any(|r| (r.skill_id == skill_id || (reuse_group > 0 && r.shared_reuse_group == reuse_group)) && r.has_not_passed())
-    }
-
-    #[must_use]
-    pub fn get_skill_level(&self, skill_id: i32) -> Option<u32> {
-        self.skills.as_ref().and_then(|skills| {
-            skills.iter()
-                .find(|s| s.model.id == skill_id)
-                .map(|s| s.model.level as u32)
+        self.skill_reused.iter().any(|r| {
+            (r.skill_id == skill_id || (reuse_group > 0 && r.shared_reuse_group == reuse_group))
+                && r.has_not_passed()
         })
     }
 
-    pub fn add_skill_reuse(&mut self, skill_id: i32, level: i32, reuse_delay: i64, shared_reuse_group: i32) {
+    #[must_use]
+    pub fn get_skill_level(&self, skill_id: i32) -> Option<i16> {
+        self.skills.as_ref().and_then(|skills| {
+            skills
+                .iter()
+                .find(|s| s.model.id == skill_id)
+                .map(|s| s.model.level)
+        })
+    }
+
+    pub fn add_skill_reuse(
+        &mut self,
+        skill_id: i32,
+        level: i32,
+        reuse_delay: i64,
+        shared_reuse_group: i32,
+    ) {
         if reuse_delay <= 0 {
             return;
         }
 
         let end_time = Utc::now() + chrono::Duration::milliseconds(reuse_delay);
-        
+
         // Remove existing reuse for this skill if any
         self.skill_reused.retain(|r| r.skill_id != skill_id);
 

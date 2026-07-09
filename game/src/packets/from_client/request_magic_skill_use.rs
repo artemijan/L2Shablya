@@ -1,9 +1,10 @@
 use crate::movement::{calculate_distance, calculate_nearest_hit_point};
 use crate::packets::to_client;
 use crate::packets::to_client::ActionFailed;
-use crate::pl_client::{ApplyDamage, GetStats, PlayerClient, PlayerTasks};
+use crate::pl_client::{ApplyDamage, FullStats, GetStats, PlayerClient, PlayerTasks};
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
+use l2_core::data::skills::TargetType;
 use l2_core::errors::KameoAnyhowExt;
 use l2_core::game_objects::stats::Formulas;
 use l2_core::shared_packets::common::ReadablePacket;
@@ -48,18 +49,17 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
             self.send_packet(ActionFailed::normal()?).await?;
             return Ok(());
         }
-
+        self.stop_movement();
+        let player = self.try_get_selected_char()?;
         let (attacker_id, attacker_name, attacker_stats, (x, y, z), level) = {
-            let player = self.try_get_selected_char()?;
             let level = player.get_skill_level(msg.skill_id).unwrap_or(1);
-
             if player.is_skill_disabled(msg.skill_id) {
                 let mut sm = to_client::SystemMessage::new(
                     to_client::SystemMessageType::S1IsNotAvailableAtThisTimeBeingPreparedForReuse,
                 )?;
                 sm.add_param(to_client::SystemMessageParam::SkillName {
                     id: msg.skill_id,
-                    level: level as i16,
+                    level,
                     sub_level: 0,
                 })?;
                 self.send_packet(sm).await?;
@@ -74,9 +74,31 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                 level,
             )
         };
-
-        if let Some((target_id, target_actor)) = self.selected_target.clone() {
-            let target_stats = target_actor.ask(GetStats).await.anyhow()?;
+        let skill_data = self
+            .controller
+            .skills
+            .get_skill(msg.skill_id as u32, level as u8)
+            .expect("Skill doesnt exist");
+        let selected_target = {
+            match (&skill_data.target_type, &self.selected_target) {
+                (Some(tt), Some(val)) if *tt == TargetType::SELF => {
+                    Some((player.get_object_id(), _ctx.actor_ref().clone()))
+                }
+                (_, Some(target)) => Some(target.clone()),
+                _ => None,
+            }
+        };
+        if let Some((target_id, target_actor)) = selected_target {
+            let target_stats = if target_id == player.get_object_id() {
+                FullStats {
+                    stats: player.stats.cached_stats.clone(),
+                    x: player.get_x(),
+                    y: player.get_y(),
+                    z: player.get_z(),
+                }
+            } else {
+                target_actor.ask(GetStats).await.anyhow()?
+            };
             let (target_x, target_y, target_z) = (target_stats.x, target_stats.y, target_stats.z);
 
             let level_u8 = level as u8;
@@ -163,9 +185,17 @@ impl Message<RequestMagicSkillUse> for PlayerClient {
                 target_z,
             )?;
             self.controller.broadcast_packet(magic_use_packet);
+            let magic_launched_packet = to_client::MagicSkillLaunched::new(
+                attacker_id,
+                msg.skill_id,
+                level as i32,
+                0, // casting_type
+                &[target_id],
+            )?;
+            let controller = self.controller.clone();
             let magic_skill_use_task = tokio::spawn(async move {
                 tokio::time::sleep(std::time::Duration::from_millis(hit_time as u64)).await;
-                // Apply damage only when hit
+                controller.broadcast_packet(magic_launched_packet);
                 let damage = Formulas::calc_magic_dam(
                     &attacker_stats,
                     &target_stats.stats,

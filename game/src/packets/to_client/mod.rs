@@ -32,6 +32,7 @@ mod system_message;
 mod target_selected;
 mod user_info;
 mod action_failed;
+mod target_unselected;
 
 pub use attack::*;
 pub use magic_skill_launched::*;
@@ -66,3 +67,4 @@ pub use system_message::*;
 pub use target_selected::*;
 pub use user_info::*;
 pub use action_failed::*;
+pub use target_unselected::*;

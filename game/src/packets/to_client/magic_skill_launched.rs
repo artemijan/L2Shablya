@@ -23,7 +23,7 @@ impl MagicSkillLaunched {
         inst.buffer.write_i32(char_id)?;
         inst.buffer.write_i32(skill_id)?;
         inst.buffer.write_i32(skill_level)?;
-        inst.buffer.write_i32(targets.len() as i32)?;
+        inst.buffer.write_u32(targets.len() as u32)?;
         for &target_id in targets {
             inst.buffer.write_i32(target_id)?;
         }

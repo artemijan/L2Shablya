@@ -18,3 +18,4 @@ pub mod request_skill_list;
 pub mod restart;
 pub mod stop_move;
 pub mod validate_position;
+pub mod request_cancel_target;

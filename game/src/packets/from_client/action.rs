@@ -45,22 +45,35 @@ impl Message<Action> for PlayerClient {
         msg: Action,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        let level = self.try_get_selected_char()?.char_model.level;
+        let (level, player_id) = {
+            let player = self.try_get_selected_char()?;
+            (player.char_model.level, player.get_object_id())
+        };
+
         match msg.action {
             0 => {
                 if let Some(target_actor) = self.controller.get_player_by_object_id(msg.object_id) {
                     // store selected target mapping
-                    let other_pl = target_actor.ask(GetCharInfo).await.anyhow()?;
+                    let maybe_distance;
                     let config = self.controller.get_cfg();
-                    let loc = other_pl.get_location();
-                    let maybe_distance = calculate_distance(
-                        loc.x,
-                        loc.y,
-                        loc.z,
-                        msg.origin_x,
-                        msg.origin_y,
-                        msg.origin_z,
-                    );
+                    let other_player_lvl;
+                    if player_id != msg.object_id {
+                        let other_pl = target_actor.ask(GetCharInfo).await.anyhow()?;
+                        other_player_lvl = other_pl.char_model.level;
+                        let loc = other_pl.get_location();
+                        maybe_distance = calculate_distance(
+                            loc.x,
+                            loc.y,
+                            loc.z,
+                            msg.origin_x,
+                            msg.origin_y,
+                            msg.origin_z,
+                        );
+                    } else {
+                        maybe_distance = Some(0f64);
+                        other_player_lvl = level;
+                    }
+
                     if let Some(distance) = maybe_distance
                         && distance <= config.max_target_distance as f64
                     {
@@ -68,7 +81,7 @@ impl Message<Action> for PlayerClient {
                         // notify client about target selection
                         self.send_packet(TargetSelected::new(
                             msg.object_id,
-                            i16::from(level - other_pl.char_model.level),
+                            i16::from(level - other_player_lvl),
                         )?)
                         .await?;
                     }

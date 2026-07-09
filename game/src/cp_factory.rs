@@ -1,7 +1,5 @@
 use crate::packets::from_client::action::Action;
 use crate::packets::from_client::attack::Attack;
-use crate::packets::from_client::request_magic_skill_use::RequestMagicSkillUse;
-use crate::packets::from_client::request_skill_list::RequestSkillList;
 use crate::packets::from_client::auth::AuthLogin;
 use crate::packets::from_client::char_create::CreateCharRequest;
 use crate::packets::from_client::char_restore::RestoreChar;
@@ -18,6 +16,9 @@ use crate::packets::from_client::new_char_request::NewCharacterRequest;
 use crate::packets::from_client::noop::NoOp;
 use crate::packets::from_client::protocol::ProtocolVersion;
 use crate::packets::from_client::req_skill_cooltime::ReqSkillCoolTime;
+use crate::packets::from_client::request_cancel_target::RequestCancelTarget;
+use crate::packets::from_client::request_magic_skill_use::RequestMagicSkillUse;
+use crate::packets::from_client::request_skill_list::RequestSkillList;
 use crate::packets::from_client::restart::RequestRestart;
 use crate::packets::from_client::stop_move::StopMove;
 use crate::packets::from_client::validate_position::ValidatePosition;
@@ -26,7 +27,7 @@ use bytes::BytesMut;
 use l2_core::shared_packets::common::ReadablePacket;
 use macro_common::PacketEnum;
 use strum::Display;
-use tracing::{error, info};
+use tracing::error;
 
 #[derive(Clone, Debug, Display, PacketEnum)]
 pub enum PlayerPackets {
@@ -56,6 +57,7 @@ pub enum PlayerPackets {
     Attack(Attack),
     RequestMagicSkillUse(RequestMagicSkillUse),
     RequestSkillList(RequestSkillList),
+    RequestCancelTarget(RequestCancelTarget),
 }
 
 pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> {
@@ -63,8 +65,6 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         bail!("Not enough data to build packet: {data:?}");
     }
     let packet_id = data.split_to(1); // skip 1st byte, because it's packet id
-    info!("Player packet ID: 0x{:02X}", packet_id[0]);
-
     match packet_id[0] {
         ProtocolVersion::PACKET_ID => {
             Ok(PlayerPackets::ProtocolVersion(ProtocolVersion::read(data)?))
@@ -99,6 +99,9 @@ pub fn build_client_packet(mut data: BytesMut) -> anyhow::Result<PlayerPackets> 
         RequestSkillList::PACKET_ID => Ok(PlayerPackets::RequestSkillList(RequestSkillList::read(
             data,
         )?)),
+        RequestCancelTarget::PACKET_ID => Ok(PlayerPackets::RequestCancelTarget(
+            RequestCancelTarget::read(data)?,
+        )),
         0xD0 => build_ex_client_packet(data),
         _ => {
             error!("Unknown Player packet ID: 0x{:02X}", packet_id[0]);
