@@ -1,1648 +1,1848 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '11600'
   '@toLevel': '1'
   '@name': Frenzied Prevailing Sonata
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: BUFF_SPECIAL_AURA
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PLEDGE
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11600
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: BUFF_SPECIAL_AURA
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '300'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 30}'
+  affectRange:
+    $text: '1000'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PLEDGE
+  affectObject:
+    $text: FRIEND
   mpConsume:
-    $value: null
-    value: []
     $text: '140'
   mpInitialConsume:
-    $value: null
-    value: []
     $text: '28'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '700'
+  coolTime:
+    $text: '300'
+  effectPoint:
+    $text: '687'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MpRegen
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': ReduceCancel
+      amount:
+        $text: '53'
+      mode:
+        $text: DIFF
+    - '@name': MagicMpCost
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '11601'
   '@toLevel': '1'
   '@name': Frenzied Daring Sonata
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: ENCHANTER_MOD
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PLEDGE
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '696'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DamageShield
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11601
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
+  affectRange:
+    $text: '1000'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: ENCHANTER_MOD
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '300'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 30}'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PLEDGE
+  affectObject:
+    $text: FRIEND
   mpConsume:
-    $value: null
-    value: []
     $text: '140'
   mpInitialConsume:
-    $value: null
-    value: []
     $text: '28'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '700'
+  coolTime:
+    $text: '300'
+  effectPoint:
+    $text: '696'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': VampiricAttack
+      amount:
+        $text: '8'
+      chance:
+        $text: '30'
+    - '@name': PAtk
+      amount:
+        $text: '8'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '11'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '3'
+      mode:
+        $text: PER
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '-4'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '16'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '8'
+      mode:
+        $text: PER
+    - '@name': DamageShield
+      amount:
+        $text: '10'
 - '@id': '11602'
   '@toLevel': '1'
   '@name': Frenzied Refreshing Sonata
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: SYNERGY_IS
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PLEDGE
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '696'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Reuse
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11602
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
+  affectRange:
+    $text: '1000'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: SYNERGY_IS
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '300'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 30}'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PLEDGE
+  affectObject:
+    $text: FRIEND
   mpConsume:
-    $value: null
-    value: []
     $text: '140'
   mpInitialConsume:
-    $value: null
-    value: []
     $text: '28'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '700'
+  coolTime:
+    $text: '300'
+  effectPoint:
+    $text: '696'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': Speed
+      amount:
+        $text: '20'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '3'
+      mode:
+        $text: DIFF
+    - '@name': Accuracy
+      amount:
+        $text: '4'
+      mode:
+        $text: DIFF
+    - '@name': HpRegen
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicMpCost
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': MagicMpCost
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': MagicMpCost
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '3'
+    - '@name': Reuse
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': Reuse
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '11603'
   '@toLevel': '4'
   '@name': Mass Restriction
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill11603
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '30'
   abnormalType:
-    $value: null
-    value: []
     $text: LIMIT
   activateRate:
-    $value: null
-    value: []
     $text: '60'
   affectLimit:
-    $value: null
-    value: []
     $text: 10-10
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: RANGE
   basicProperty:
-    $value: null
-    value: []
     $text: MAGIC
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-679'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': LimitCp
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '2110'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11603
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume: {}
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: ENEMY_ONLY
+  affectScope:
+    $text: RANGE
+  affectObject:
+    $text: NOT_FRIEND
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '252'
+    - '@level': '2'
+      $text: '278'
+    - '@level': '3'
+      $text: '306'
+    - '@level': '4'
+      $text: '332'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2110'
+  coolTime:
+    $text: '500'
   reuseDelay:
-    $value: null
-    value: []
     $text: '120000'
-  targetType: ENEMY_ONLY
+  isMagic:
+    $text: '1'
+  effectPoint:
+    $text: '-679'
+  isDebuff:
+    $text: 'true'
+  effects:
+    effect:
+    - '@name': LimitHp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-40'
+        - '@level': '2'
+          $text: '-50'
+        - '@level': '3'
+          $text: '-60'
+        - '@level': '4'
+          $text: '-70'
+      mode:
+        $text: PER
+    - '@name': LimitMp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-40'
+        - '@level': '2'
+          $text: '-50'
+        - '@level': '3'
+          $text: '-60'
+        - '@level': '4'
+          $text: '-70'
+      mode:
+        $text: PER
+    - '@name': LimitCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-40'
+        - '@level': '2'
+          $text: '-50'
+        - '@level': '3'
+          $text: '-60'
+        - '@level': '4'
+          $text: '-70'
+      mode:
+        $text: PER
 - '@id': '11604'
   '@toLevel': '7'
   '@name': Shocking Blow
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill11604
   affectLimit:
-    $value: null
-    value: []
     $text: 10-10
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '200'
+  operateType:
+    $text: A1
+  targetType:
+    $text: ENEMY_ONLY
   affectScope:
-    $value: null
-    value: []
     $text: RANGE
+  affectObject:
+    $text: NOT_FRIEND
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '90'
+    - '@level': '3'
+      $text: '95'
+    - '@level': '4'
+      $text: '99'
+    - '@level': '5'
+      $text: '101'
+    - '@level': '6'
+      $text: '103'
+    - '@level': '7'
+      $text: '105'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '252'
+    - '@level': '2'
+      $text: '278'
+    - '@level': '3'
+      $text: '306'
+    - '@level': '4'
+      $text: '332'
+    - '@level': '5'
+      $text: '358'
+    - '@level': '6'
+      $text: '385'
+    - '@level': '7'
+      $text: '412'
   castRange:
-    $value: null
-    value: []
     $text: '900'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpTargetPc
+  hitTime:
+    $text: '2110'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
+  reuseDelay:
+    $text: '120000'
   effectPoint:
-    $value: null
-    value: []
     $text: '-2036'
+  isMagic:
+    $text: '1'
+  conditions:
+    condition:
+      '@name': OpTargetPc
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': DispelBySlotProbability
+    - '@name': DispelBySlotProbability
       dispel:
-        $value: null
-        value: []
         $text: INVINCIBILITY_SPECIAL;INVINCIBILITY
       rate:
-        $value: null
-        value: []
         $text: '100'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2110'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11604
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  magicLevel: {}
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '120000'
-  targetType: ENEMY_ONLY
 - '@id': '11605'
   '@toLevel': '1'
   '@name': Shield Song
-  '@fromLevel': null
-  '@displayId': null
-  abnormalTime: {}
+  icon:
+    $text: icon.skill11606new
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '1800'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 90}'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  mpConsume:
+    $text: '83'
+  hitTime:
+    $text: '1000'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '566'
+  reuseDelay:
+    $text: '30000'
+  isMagic:
+    $text: '3'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
+    - '@name': DefenceTrait
+      BOW:
+        $text: '10'
+      CROSSBOW:
+        $text: '10'
+    - '@name': PhysicalDefence
       amount:
-        $value: null
-        value: []
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': ResistAbnormalByCategory
+      amount:
+        $text: '-10'
+      slot:
+        $text: DEBUFF
+    - '@name': DefenceAttribute
+      amount:
         $text: '20'
       attribute:
-        $value: null
-        value: []
+        $text: FIRE
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: WATER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: WIND
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: EARTH
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: HOLY
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
         $text: DARK
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11606new
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '83'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '30000'
-  targetType: SELF
 - '@id': '11606'
   '@toLevel': '1'
   '@name': Dance of Might
-  '@fromLevel': null
-  '@displayId': null
-  abnormalTime: {}
+  icon:
+    $text: icon.skill11605new
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '1800'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 90}'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  mpConsume:
+    $text: '83'
+  hitTime:
+    $text: '1000'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '566'
+  reuseDelay:
+    $text: '30000'
+  isMagic:
+    $text: '3'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': CriticalRate
+    - '@name': PAtk
       amount:
-        $value: null
-        value: []
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
         $text: '10'
       mode:
-        $value: null
-        value: []
         $text: DIFF
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11605new
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '83'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '30000'
-  targetType: SELF
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': CriticalRate
+      amount:
+        $text: '10'
+      mode:
+        $text: DIFF
 - '@id': '11607'
   '@toLevel': '1'
   '@name': Prevailing Song
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: BUFF_SPECIAL_AURA
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-10'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11607
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '140'
+  affectRange:
+    $text: '1000'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: BUFF_SPECIAL_AURA
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '300'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 30}'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
+  mpConsume:
+    $text: '140'
+  hitTime:
+    $text: '700'
+  coolTime:
+    $text: '300'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  magicLevel:
+    $text: '85'
+  effectPoint:
+    $text: '687'
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MpRegen
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': ReduceCancel
+      amount:
+        $text: '-53'
+      mode:
+        $text: DIFF
+    - '@name': MagicMpCost
+      amount:
+        $text: '-10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '11608'
   '@toLevel': '1'
   '@name': Daring Song
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: ENCHANTER_MOD
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '696'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DamageShield
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11608
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '140'
+  affectRange:
+    $text: '1000'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: ENCHANTER_MOD
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '300'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 30}'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
+  mpConsume:
+    $text: '140'
+  hitTime:
+    $text: '700'
+  coolTime:
+    $text: '300'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  magicLevel:
+    $text: '85'
+  effectPoint:
+    $text: '696'
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': VampiricAttack
+      amount:
+        $text: '8'
+      chance:
+        $text: '30'
+    - '@name': PAtk
+      amount:
+        $text: '8'
+      mode:
+        $text: PER
+    - '@name': MAtk
+      amount:
+        $text: '16'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '-3'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '-3'
+      mode:
+        $text: PER
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '-4'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '8'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '8'
+      mode:
+        $text: PER
+    - '@name': DamageShield
+      amount:
+        $text: '10'
 - '@id': '11609'
   '@toLevel': '1'
   '@name': Refreshing Song
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: SYNERGY_IS
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '696'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Reuse
-      amount:
-        $value: null
-        value: []
-        $text: '-10'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11609
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '140'
+  affectRange:
+    $text: '1000'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: SYNERGY_IS
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '300'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 30}'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
+  mpConsume:
+    $text: '140'
+  hitTime:
+    $text: '700'
+  coolTime:
+    $text: '300'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  magicLevel:
+    $text: '85'
+  effectPoint:
+    $text: '696'
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': Speed
+      amount:
+        $text: '20'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '3'
+      mode:
+        $text: DIFF
+    - '@name': Accuracy
+      amount:
+        $text: '4'
+      mode:
+        $text: DIFF
+    - '@name': HpRegen
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicMpCost
+      amount:
+        $text: '-20'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': MagicMpCost
+      amount:
+        $text: '-20'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': Reuse
+      amount:
+        $text: '-10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': Reuse
+      amount:
+        $text: '-10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '11610'
   '@toLevel': '1'
   '@name': Prevailing Dance
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: BUFF_SPECIAL_AURA
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-10'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11610
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '140'
+  affectRange:
+    $text: '1000'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: BUFF_SPECIAL_AURA
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '300'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 30}'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
+  mpConsume:
+    $text: '140'
+  hitTime:
+    $text: '700'
+  coolTime:
+    $text: '300'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  magicLevel:
+    $text: '85'
+  effectPoint:
+    $text: '687'
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MpRegen
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': ReduceCancel
+      amount:
+        $text: '-53'
+      mode:
+        $text: DIFF
+    - '@name': MagicMpCost
+      amount:
+        $text: '-10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '11611'
   '@toLevel': '1'
   '@name': Daring Dance
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: ENCHANTER_MOD
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '696'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DamageShield
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11611
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '140'
+  affectRange:
+    $text: '1000'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: ENCHANTER_MOD
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '300'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 30}'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
+  mpConsume:
+    $text: '140'
+  hitTime:
+    $text: '700'
+  coolTime:
+    $text: '300'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  magicLevel:
+    $text: '85'
+  effectPoint:
+    $text: '696'
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': VampiricAttack
+      amount:
+        $text: '8'
+      chance:
+        $text: '30'
+    - '@name': PAtk
+      amount:
+        $text: '8'
+      mode:
+        $text: PER
+    - '@name': MAtk
+      amount:
+        $text: '16'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '-3'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '-3'
+      mode:
+        $text: PER
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '-4'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '8'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '8'
+      mode:
+        $text: PER
+    - '@name': DamageShield
+      amount:
+        $text: '10'
 - '@id': '11612'
   '@toLevel': '1'
   '@name': Refreshing Dance
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: SYNERGY_IS
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '696'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Reuse
-      amount:
-        $value: null
-        value: []
-        $text: '-10'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11612
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '140'
+  affectRange:
+    $text: '1000'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: SYNERGY_IS
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '300'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 30}'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
+  mpConsume:
+    $text: '140'
+  hitTime:
+    $text: '700'
+  coolTime:
+    $text: '300'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  magicLevel:
+    $text: '85'
+  effectPoint:
+    $text: '696'
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': Speed
+      amount:
+        $text: '20'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '3'
+      mode:
+        $text: DIFF
+    - '@name': Accuracy
+      amount:
+        $text: '4'
+      mode:
+        $text: DIFF
+    - '@name': HpRegen
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicMpCost
+      amount:
+        $text: '-20'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': MagicMpCost
+      amount:
+        $text: '-20'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': Reuse
+      amount:
+        $text: '-10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': Reuse
+      amount:
+        $text: '-10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '11613'
   '@toLevel': '4'
   '@name': Song of Protection
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill11613
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
-  abnormalTime: {}
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '4'
+      $text: '30'
+    - '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1010'
+      $text: '{base + subIndex}'
+    - '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '1011'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 + 0.5 * subIndex}'
   abnormalType:
-    $value: null
-    value: []
     $text: PD_UP_SPECIAL
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: ULTIMATE_DEFENCE
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '319'
+    - '@level': '2'
+      $text: '427'
+    - '@level': '3'
+      $text: '534'
+    - '@level': '4'
+      $text: '640'
+  hitTime:
+    $text: '3000'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '689'
+  reuseDelay:
+    $text: '600000'
+  isMagic:
+    $text: '3'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
+    - '@name': Heal
+      power:
+        value:
+        - '@level': '1'
+          $text: '1000'
+        - '@level': '2'
+          $text: '2000'
+        - '@level': '3'
+          $text: '3000'
+        - '@level': '4'
+          $text: '5000'
+    - '@name': MagicalDefence
       amount:
-        $value: null
-        value: []
         $text: '5000'
       mode:
-        $value: null
-        value: []
         $text: DIFF
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11613
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '600000'
-  targetType: SELF
+    - '@name': PhysicalDefence
+      amount:
+        $text: '5000'
+      mode:
+        $text: DIFF
 - '@id': '11614'
   '@toLevel': '4'
   '@name': Battle Rhapsody Dance
-  '@fromLevel': null
-  '@displayId': null
-  abnormalTime: {}
+  icon:
+    $text: icon.skill11614
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '4'
+      $text: '30'
+    - '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1010'
+      $text: '{base + subIndex}'
+    - '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '1011'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 + 0.5 * subIndex}'
   abnormalType:
-    $value: null
-    value: []
     $text: RHAPSODY
+  operateType:
+    $text: A2
+  isMagic:
+    $text: '3'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '319'
+    - '@level': '2'
+      $text: '427'
+    - '@level': '3'
+      $text: '534'
+    - '@level': '4'
+      $text: '640'
+  hitTime:
+    $text: '3000'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11614
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
-  targetType: SELF
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '50'
+        - '@level': '2'
+          $text: '60'
+        - '@level': '3'
+          $text: '70'
+        - '@level': '4'
+          $text: '100'
+      mode:
+        $text: PER
+    - '@name': MAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '50'
+        - '@level': '2'
+          $text: '60'
+        - '@level': '3'
+          $text: '70'
+        - '@level': '4'
+          $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '50'
+        - '@level': '2'
+          $text: '60'
+        - '@level': '3'
+          $text: '70'
+        - '@level': '4'
+          $text: '100'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '50'
+        - '@level': '2'
+          $text: '60'
+        - '@level': '3'
+          $text: '70'
+        - '@level': '4'
+          $text: '100'
+      mode:
+        $text: PER
 - '@id': '11615'
   '@toLevel': '1'
   '@name': Battle Ditty
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: DITTY
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': TargetMyParty
-      includeMe:
-        $value: null
-        value: []
-        $text: 'true'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackAttributeAdd
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11615
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '1800'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 90}'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: DITTY
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '10'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '3031'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '181'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    $text: '181'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '687'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: TARGET
+  conditions:
+    condition:
+      '@name': TargetMyParty
+      includeMe:
+        $text: 'true'
+  effects:
+    effect:
+    - '@name': MpRegen
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': AttackAttributeAdd
+      amount:
+        $text: '10'
 - '@id': '11616'
   '@toLevel': '1'
   '@name': Protective Ditty
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: DITTY
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': TargetMyParty
-      includeMe:
-        $value: null
-        value: []
-        $text: 'true'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PvpPhysicalSkillDefenceBonus
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11616
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '1800'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 90}'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: DITTY
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '10'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '3031'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '181'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    $text: '181'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '687'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: TARGET
+  conditions:
+    condition:
+      '@name': TargetMyParty
+      includeMe:
+        $text: 'true'
+  effects:
+    effect:
+    - '@name': Speed
+      amount:
+        $text: '4'
+      mode:
+        $text: DIFF
+    - '@name': HpRegen
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDefenceBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDefenceBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDefenceBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
 - '@id': '11617'
   '@toLevel': '1'
   '@name': Frezied Battle Ditty
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: DITTY
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': TargetMyPledge
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackAttributeAdd
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11617
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '1800'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 90}'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: DITTY
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '10'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '3031'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '181'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    $text: '181'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '687'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: TARGET
+  conditions:
+    condition:
+      '@name': TargetMyPledge
+  effects:
+    effect:
+    - '@name': MpRegen
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': AttackAttributeAdd
+      amount:
+        $text: '10'
 - '@id': '11618'
   '@toLevel': '1'
   '@name': Frenzied Protective Ditty
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: DITTY
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': TargetMyPledge
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PvpPhysicalSkillDefenceBonus
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill11618
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '1800'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + subIndex * 90}'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: DITTY
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '10'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '3031'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '181'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    $text: '181'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '687'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: TARGET
+  conditions:
+    condition:
+      '@name': TargetMyPledge
+  effects:
+    effect:
+    - '@name': Speed
+      amount:
+        $text: '4'
+      mode:
+        $text: DIFF
+    - '@name': HpRegen
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDefenceBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDefenceBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDefenceBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
 - '@id': '11619'
   '@toLevel': '3'
   '@name': Soul Ditty
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill11529
   abnormalTime:
-    $value: null
-    value: []
     $text: '1800'
-  affectLimit:
-    $value: null
-    value: []
-    $text: 10-10
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
   affectRange:
-    $value: null
-    value: []
-    $text: '1000'
+  - $text: '1000'
+  - $text: '1000'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: PARTY
+  affectObject:
+    $text: FRIEND
+  affectLimit:
+    $text: 10-10
+  mpConsume:
+    $text: '140'
+  hitTime:
+    $text: '700'
   coolTime:
-    $value: null
-    value: []
     $text: '300'
   effectPoint:
-    $value: null
-    value: []
     $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalSkillPower
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11529
-  mpConsume:
-    $value: null
-    value: []
-    $text: '140'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '3'
+        - '@level': '2'
+          $text: '5'
+        - '@level': '3'
+          $text: '7'
+      mode:
+        $text: PER
+    - '@name': MAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '3'
+        - '@level': '2'
+          $text: '5'
+        - '@level': '3'
+          $text: '7'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillPower
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+      mode:
+        $text: PER
 - '@id': '11620'
   '@toLevel': '10'
   '@name': Superior Shield Mastery
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ShieldDefence
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill10003
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel: {}
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '90'
+    - '@level': '3'
+      $text: '95'
+    - '@level': '4'
+      $text: '99'
+    - '@level': '5'
+      $text: '100'
+    - '@level': '6'
+      $text: '102'
+    - '@level': '7'
+      $text: '104'
+    - '@level': '8'
+      $text: '106'
+    - '@level': '9'
+      $text: '108'
+    - '@level': '10'
+      $text: '110'
+  magicCriticalRate:
+    $text: '5'
   passiveConditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': EquipShield
+  effects:
+    effect:
+    - '@name': ShieldDefenceRate
+      amount:
+        $text: '50'
+      mode:
+        $text: PER
+    - '@name': ShieldDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '40'
+        - '@level': '2'
+          $text: '45'
+        - '@level': '3'
+          $text: '50'
+        - '@level': '4'
+          $text: '55'
+        - '@level': '5'
+          $text: '60'
+        - '@level': '6'
+          $text: '65'
+        - '@level': '7'
+          $text: '70'
+        - '@level': '8'
+          $text: '75'
+        - '@level': '9'
+          $text: '80'
+        - '@level': '10'
+          $text: '85'
+      mode:
+        $text: PER
 - '@id': '11621'
   '@toLevel': '1'
   '@name': Blessing Barrier
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill11621
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '99'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByDamage
+    - '@name': TriggerSkillByDamage
       chance:
-        $value: null
-        value: []
         $text: '80'
+      targetType:
+        $text: SELF
       minDamage:
-        $value: null
-        value: []
         $text: '1'
       skillId:
-        $value: null
-        value: []
         $text: '11622'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: SELF
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11621
-  magicLevel:
-    $value: null
-    value: []
-    $text: '99'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '11622'
   '@toLevel': '1'
   '@name': Blessing Barrier
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill11621
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: BARRIER
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: ABSORB_SHIELD
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AbsorbDamage
-      damage:
-        $value: null
-        value: []
-        $text: '20000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11621
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  magicLevel:
+    $text: '99'
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
-  targetType: TARGET
+  isMagic:
+    $text: '4'
+  effects:
+    effect:
+    - '@name': AbsorbDamage
+      damage:
+        $text: '20000'

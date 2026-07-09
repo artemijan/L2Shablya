@@ -1,195 +1,103 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '11997'
   '@toLevel': '1'
   '@name': Healer - Individual Passive
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skill0217
+  operateType:
+    $text: P
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '11998'
   '@toLevel': '1'
   '@name': Healer - Individual
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1543
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '5'
   abnormalType:
-    $value: null
-    value: []
     $text: ATTACK_TIME_DOWN_SPECIAL
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
+  operateType:
+    $text: A2
+  hitTime:
+    $text: '500'
+  reuseDelay:
+    $text: '5000'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '85'
+  reuseDelayGroup:
+    $text: '11766'
+  isMagic:
+    $text: '4'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
+    - '@name': PhysicalAttackSpeed
       amount:
-        $value: null
-        value: []
         $text: '30'
       mode:
-        $value: null
-        value: []
         $text: PER
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1543
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '5000'
-  reuseDelayGroup:
-    $value: null
-    value: []
-    $text: '11766'
-  targetType: SELF
 - '@id': '11999'
   '@toLevel': '1'
   '@name': Heavy Hit
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'true'
-      level:
-        $value: null
-        value: []
-        $text: '1'
-      type:
-        $value: null
-        value: []
-        $text: AIRBIND
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-1'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      power:
-        $value: null
-        value: []
-        $text: '184'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill10317
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  mpInitialConsume:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  mpInitialConsume:
+    $text: '1'
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '300'
   reuseDelay:
-    $value: null
-    value: []
     $text: '10000'
-  targetType: ENEMY
+  effectPoint:
+    $text: '-1'
+  magicCriticalRate:
+    $text: '5'
+  effectRange:
+    $text: '1400'
+  magicLevel:
+    $text: '85'
+  isMagic:
+    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpCheckAbnormal
+      type:
+        $text: AIRBIND
+      level:
+        $text: '1'
+      hasAbnormal:
+        $text: 'true'
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        $text: '184'

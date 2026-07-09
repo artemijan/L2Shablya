@@ -2,12 +2,12 @@ use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
 use l2_core::shared_packets::common::ReadablePacket;
-use tracing::instrument;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
+use tracing::instrument;
 
 #[derive(Debug, Clone)]
-pub struct SelectedQuestZoneId{
-    quest_zone_id:i32
+pub struct SelectedQuestZoneId {
+    quest_zone_id: i32,
 }
 
 impl ReadablePacket for SelectedQuestZoneId {

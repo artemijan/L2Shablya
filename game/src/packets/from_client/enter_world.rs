@@ -216,7 +216,7 @@ impl Message<EnterWorld> for PlayerClient {
         self.send_packet(AutoSoulShots::new(0, true, 2)?).await?;
         self.send_packet(AutoSoulShots::new(0, true, 3)?).await?;
         //todo: update abnormal visual effects
-        self.send_packet(AbnormalStatusUpdate::new(&player)?)
+        self.send_packet(AbnormalStatusUpdate::new(&player.stats.active_buffs)?)
             .await?;
         self.send_packet(SystemMessage::new(
             SystemMessageType::WelcomeToTheWorldOfLineage2,
@@ -246,8 +246,8 @@ mod tests {
     use std::collections::{HashMap, VecDeque};
     use std::net::Ipv4Addr;
     use std::sync::Arc;
-    use test_utils::utils::{get_test_db, DBPool};
-    use tokio::io::{split, AsyncReadExt, DuplexStream};
+    use test_utils::utils::{DBPool, get_test_db};
+    use tokio::io::{AsyncReadExt, DuplexStream, split};
     use tokio::time::{sleep, timeout};
 
     async fn prepare_pl() -> PlayerClient {

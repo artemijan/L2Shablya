@@ -20,9 +20,9 @@ impl QuestItemList {
         inst.buffer.write_u16(Self::EX_PACKET_ID)?;
         inst.buffer.write_u16(0u16)?; //quest items count
         //todo: implement me
-        if player.has_inventory_block(){
+        if player.has_inventory_block() {
             //todo: implement me
-        }else{
+        } else {
             inst.buffer.write_u16(0u16)?;
         }
         Ok(inst)
@@ -32,6 +32,7 @@ impl QuestItemList {
 #[cfg(test)]
 mod test {
     use crate::controller::GameController;
+    use crate::packets::to_client::extended::QuestItemList;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
@@ -40,7 +41,6 @@ mod test {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use crate::packets::to_client::extended::QuestItemList;
 
     #[tokio::test]
     async fn test_write_quest_list() {
@@ -51,7 +51,7 @@ mod test {
             m.user_id = user.id;
             m
         })
-            .await;
+        .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../../config/game.yaml"
         )));

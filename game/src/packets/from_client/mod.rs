@@ -1,6 +1,5 @@
 pub mod action;
 pub mod attack;
-pub mod request_magic_skill_use;
 pub mod auth;
 pub mod char_create;
 pub mod char_restore;
@@ -14,8 +13,9 @@ pub mod new_char_request;
 pub mod noop;
 pub mod protocol;
 pub mod req_skill_cooltime;
+pub mod request_cancel_target;
+pub mod request_magic_skill_use;
 pub mod request_skill_list;
 pub mod restart;
 pub mod stop_move;
 pub mod validate_position;
-pub mod request_cancel_target;

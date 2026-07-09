@@ -229,6 +229,14 @@ impl GameController {
     pub fn get_player_by_object_id(&self, object_id: i32) -> Option<ActorRef<PlayerClient>> {
         self.player_by_object_id.get(&object_id).map(|r| r.clone())
     }
+
+    /// Snapshot of all registered players in the world as `(object_id, actor)` pairs.
+    pub fn all_players(&self) -> Vec<(i32, ActorRef<PlayerClient>)> {
+        self.player_by_object_id
+            .iter()
+            .map(|entry| (*entry.key(), entry.value().clone()))
+            .collect()
+    }
 }
 
 #[cfg(test)]

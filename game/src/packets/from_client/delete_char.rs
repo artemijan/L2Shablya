@@ -58,7 +58,7 @@ impl Message<DeleteChar> for PlayerClient {
         let user_name = &self.try_get_user()?.username;
         let p =
             CharSelectionInfo::new(user_name, sk.get_play_session_id(), &self.controller, chars)?;
-        self.send_packet( p).await?;
+        self.send_packet(p).await?;
         Ok(())
     }
 }
@@ -78,7 +78,7 @@ mod tests {
     use sea_orm::sqlx::types::chrono::Utc;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
-    use test_utils::utils::{get_test_db, DBPool};
+    use test_utils::utils::{DBPool, get_test_db};
     use tokio::io::split;
 
     async fn prepare_pl() -> PlayerClient {
@@ -126,9 +126,7 @@ mod tests {
         let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let mut pl_client = prepare_pl().await;
-        pl_client
-            .controller
-            .add_online_account("test", None);
+        pl_client.controller.add_online_account("test", None);
         let user = user(&pl_client.db_pool).await;
         pl_client.set_status(ClientStatus::Authenticated);
         pl_client.set_user(user);
@@ -151,9 +149,7 @@ mod tests {
         let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let mut pl_client = prepare_pl().await;
-        pl_client
-            .controller
-            .add_online_account("test", None);
+        pl_client.controller.add_online_account("test", None);
         pl_client.set_status(ClientStatus::Authenticated);
         let user = user(&pl_client.db_pool).await;
         let char_model = char_marked(&pl_client.db_pool, user.id).await;
@@ -183,9 +179,7 @@ mod tests {
         let (_client, server) = tokio::io::duplex(1024);
         let (r, w) = split(server);
         let mut pl_client = prepare_pl().await;
-        pl_client
-            .controller
-            .add_online_account("test", None);
+        pl_client.controller.add_online_account("test", None);
         pl_client.set_status(ClientStatus::Authenticated);
         let user = user(&pl_client.db_pool).await;
         let char_model = char_ready(&pl_client.db_pool, user.id).await;

@@ -1,601 +1,538 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '10606'
   '@toLevel': '1'
   '@name': Gust Movement
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill11862
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: AVOID_UP_SPECIAL
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '337'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '1'
-      '@fromSubLevel': '2001'
-      '@name': MagicalDefence
-      '@toLevel': '1'
-      '@toSubLevel': '2020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11862
+  operateType:
+    $text: A2
   isMagic:
-    $value: null
-    value: []
     $text: '22'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   mpConsume:
-    $value: null
-    value: []
     $text: '38'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '337'
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
+  effects:
+    effect:
+    - '@name': SkillEvasion
+      magicType:
+        $text: '0'
+      amount:
+        $text: '90'
+    - '@name': PhysicalDefence
+      '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '1'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{0.6 + 0.4 * subIndex}'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '1'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{0.6 + 0.4 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '10607'
   '@toLevel': '1'
   '@name': Maximum Mortality
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill10607
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '60'
   abnormalType:
-    $value: null
-    value: []
     $text: MIGHT_MORTAL
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '549'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': FatalBlowRate
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill10607
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   mpConsume:
-    $value: null
-    value: []
     $text: '38'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '549'
   reuseDelay:
-    $value: null
-    value: []
     $text: '300000'
-  targetType: SELF
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
+  effects:
+    effect:
+    - '@name': FatalBlowRate
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
 - '@id': '10608'
   '@toLevel': '4'
   '@name': Superior Haste
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Reuse
-      amount: {}
-      magicType:
-        $value: null
-        value: []
-        $text: '22'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill10608
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '90'
+    - '@level': '3'
+      $text: '95'
+    - '@level': '4'
+      $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': AttackTrait
+      BLEED:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '11'
+        - '@level': '3'
+          $text: '13'
+        - '@level': '4'
+          $text: '15'
+    - '@name': Reuse
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-5'
+        - '@level': '2'
+          $text: '-6'
+        - '@level': '3'
+          $text: '-7'
+        - '@level': '4'
+          $text: '-10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': Reuse
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-5'
+        - '@level': '2'
+          $text: '-6'
+        - '@level': '3'
+          $text: '-7'
+        - '@level': '4'
+          $text: '-10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '22'
 - '@id': '10609'
   '@toLevel': '1'
   '@name': Critical Chances
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill10878
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: FOCUS_DAGGER
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  effectPoint:
-    $value: null
-    value: []
-    $text: '669'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': CriticalDamage
-      amount:
-        $value: null
-        value: []
-        $text: '304'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill10878
+  operateType:
+    $text: A2
   isMagic:
-    $value: null
-    value: []
     $text: '22'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   mpConsume:
-    $value: null
-    value: []
     $text: '36'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '2000'
+  effectPoint:
+    $text: '669'
   reuseDelay:
-    $value: null
-    value: []
     $text: '290000'
-  targetType: SELF
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
+  effects:
+    effect:
+    - '@name': CriticalDamagePosition
+      amount:
+        $text: '-30'
+      mode:
+        $text: PER
+      position:
+        $text: FRONT
+    - '@name': CriticalDamagePosition
+      amount:
+        $text: '65'
+      mode:
+        $text: PER
+      position:
+        $text: SIDE
+    - '@name': CriticalDamagePosition
+      amount:
+        $text: '50'
+      mode:
+        $text: PER
+      position:
+        $text: BACK
+    - '@name': CriticalRatePositionBonus
+      amount:
+        $text: '65'
+      mode:
+        $text: PER
+      position:
+        $text: SIDE
+    - '@name': CriticalRatePositionBonus
+      amount:
+        $text: '50'
+      mode:
+        $text: PER
+      position:
+        $text: BACK
+    - '@name': FatalBlowRate
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
+    - '@name': CriticalDamage
+      amount:
+        $text: '304'
+      mode:
+        $text: DIFF
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
 - '@id': '10610'
   '@toLevel': '1'
   '@name': Critical Expansions
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skill0819
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '10653'
   '@toLevel': '1'
   '@name': Shadow Evasion
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill5242
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: COUNTER_SKILL
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '337'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DisableSkill
-      disable:
-        $value: null
-        value: []
-        $text: '10517'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill5242
+  operateType:
+    $text: A2
   isMagic:
-    $value: null
-    value: []
     $text: '22'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   mpConsume:
-    $value: null
-    value: []
     $text: '38'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '337'
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
+  effects:
+    effect:
+    - '@name': CounterPhysicalSkill
+      amount:
+        $text: '90'
+    - '@name': PhysicalDefence
+      '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '1'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{0.6 + 0.4 * subIndex}'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '1'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{0.6 + 0.4 * subIndex}'
+      mode:
+        $text: PER
+    - '@name': DisableSkill
+      disable:
+        $text: '10517'
 - '@id': '10654'
   '@toLevel': '1'
   '@name': Maximum Mortality
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill10607
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '60'
   abnormalType:
-    $value: null
-    value: []
     $text: MIGHT_MORTAL
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '549'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': FatalBlowRate
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill10607
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   mpConsume:
-    $value: null
-    value: []
     $text: '38'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '549'
   reuseDelay:
-    $value: null
-    value: []
     $text: '300000'
-  targetType: SELF
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
+  effects:
+    effect:
+    - '@name': FatalBlowRate
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
 - '@id': '10655'
   '@toLevel': '4'
   '@name': Brutal Stab Expert
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': CriticalDamage
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill10655
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '90'
+    - '@level': '3'
+      $text: '95'
+    - '@level': '4'
+      $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': Speed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '4'
+        - '@level': '4'
+          $text: '5'
+      mode:
+        $text: DIFF
+    - '@name': CriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
 - '@id': '10656'
   '@toLevel': '1'
   '@name': Hunter From Shadow
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill10656
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: FOCUS_DAGGER
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  effectPoint:
-    $value: null
-    value: []
-    $text: '669'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': CriticalDamage
-      amount:
-        $value: null
-        value: []
-        $text: '608'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALDAGGER
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill10656
-  isMagic:
-    $value: null
-    value: []
-    $text: '22'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   mpConsume:
-    $value: null
-    value: []
     $text: '36'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '2000'
+  effectPoint:
+    $text: '669'
   reuseDelay:
-    $value: null
-    value: []
     $text: '290000'
-  targetType: SELF
+  isMagic:
+    $text: '22'
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
+  effects:
+    effect:
+    - '@name': CriticalDamagePosition
+      amount:
+        $text: '-30'
+      mode:
+        $text: PER
+      position:
+        $text: FRONT
+    - '@name': CriticalDamagePosition
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+      position:
+        $text: SIDE
+    - '@name': CriticalDamagePosition
+      amount:
+        $text: '65'
+      mode:
+        $text: PER
+      position:
+        $text: BACK
+    - '@name': CriticalRatePositionBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+      position:
+        $text: SIDE
+    - '@name': CriticalRatePositionBonus
+      amount:
+        $text: '50'
+      mode:
+        $text: PER
+      position:
+        $text: BACK
+    - '@name': FatalBlowRate
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER
+    - '@name': CriticalDamage
+      amount:
+        $text: '608'
+      mode:
+        $text: DIFF
+      weaponType:
+        item:
+        - $text: DAGGER
+        - $text: DUALDAGGER

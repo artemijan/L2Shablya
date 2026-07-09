@@ -26,18 +26,21 @@ impl Message<StopMove> for PlayerClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         info!("Received StopMove packet");
-        
+
         // Stop movement and get final interpolated position
         if let Some((final_x, final_y, final_z)) = self.stop_movement() {
             // Update player's location to the stopped position
             if let Ok(player) = self.try_get_selected_char_mut() {
                 player.set_location(final_x, final_y, final_z)?;
             }
-            info!("Movement stopped at ({}, {}, {})", final_x, final_y, final_z);
+            info!(
+                "Movement stopped at ({}, {}, {})",
+                final_x, final_y, final_z
+            );
         }
-        
+
         // TODO: Broadcast StopMove packet to nearby players once that packet is implemented
-        
+
         Ok(())
     }
 }

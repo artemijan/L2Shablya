@@ -31,9 +31,14 @@ impl SkillList {
                 inst.buffer.write_u16(skill.model.level as u16)?;
                 inst.buffer.write_u16(skill.model.sub_level as u16)?;
                 inst.buffer.write_i32(skill.model.id)?;
-                inst.buffer.write_i32(if reuse_group > 0 { reuse_group } else { skill.model.id })?;
+                inst.buffer.write_i32(if reuse_group > 0 {
+                    reuse_group
+                } else {
+                    skill.model.id
+                })?;
                 inst.buffer.write_u8(if skill.disabled { 1 } else { 0 })?;
-                inst.buffer.write_u8(if skill.can_enchant { 1 } else { 0 })?;
+                inst.buffer
+                    .write_u8(if skill.can_enchant { 1 } else { 0 })?;
             }
         } else {
             inst.buffer.write_i32(0)?;

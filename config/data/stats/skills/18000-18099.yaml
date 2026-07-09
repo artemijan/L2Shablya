@@ -1,3014 +1,2075 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '18000'
   '@toLevel': '1'
   '@name': 'Scroll of Escape: Cemetery'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCanEscape
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Teleport
-      x:
-        $value: null
-        value: []
-        $text: '186256'
-      y:
-        $value: null
-        value: []
-        $text: '20288'
-      z:
-        $value: null
-        value: []
-        $text: '-3376'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '47062'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1000'
+  isMagic:
+    $text: '2'
+  magicLevel:
+    $text: '1'
+  magicCriticalRate:
+    $text: '5'
+  conditions:
+    condition:
+    - '@name': OpAlignment
+      affectType:
+        $text: CASTER
+      alignment:
+        $text: LAWFUL
+    - '@name': OpCanEscape
+  effects:
+    effect:
+    - '@name': Teleport
+      x:
+        $text: '186256'
+      y:
+        $text: '20288'
+      z:
+        $text: '-3376'
 - '@id': '18001'
   '@toLevel': '1'
   '@name': 'Scroll of Escape: Guillotine Fortress'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1000'
 - '@id': '18002'
   '@toLevel': '1'
   '@name': 'Scroll of Escape: Orbis Temple'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1000'
 - '@id': '18003'
   '@toLevel': '1'
   '@name': 'Scroll of Escape: Heine'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1000'
 - '@id': '18004'
   '@toLevel': '1'
   '@name': 'Scroll of Escape: Valley of Saints'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  cond:
-    $value: null
-    value: []
-    '@addName': '1'
-    '@msgId': '113'
-    and:
-      $value: null
-      value: []
-      not:
-        $value: null
-        value: []
-        player:
-          $value: null
-          value: []
-          '@insideZoneId': 10501, 10502, 10503, 10504, 10505, 10506, 10507, 10508
-      player:
-        $value: null
-        value: []
-        '@canEscape': 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Teleport
-      x:
-        $value: null
-        value: []
-        $text: '78301'
-      y:
-        $value: null
-        value: []
-        $text: '-83468'
-      z:
-        $value: null
-        value: []
-        $text: '-3608'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeId:
-    $value: null
-    value: []
-    $text: '39514'
+  operateType:
+  - $text: A1
+  - $text: A1
+  targetType:
+  - $text: SELF
+  - $text: SELF
+  affectScope:
+  - $text: SINGLE
+  - $text: SINGLE
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
+  - $text: '1'
+  - $text: '1'
+  hitTime:
+    $text: '1000'
+  isMagic:
+    $text: '2'
+  itemConsumeId:
+    $text: '39514'
+  itemConsumeCount:
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  cond:
+    '@msgId': '113'
+    '@addName': '1'
+    and:
+      player:
+        '@canEscape': 'true'
+      not:
+        player:
+          '@insideZoneId': 10501, 10502, 10503, 10504, 10505, 10506, 10507, 10508
+  effects:
+    effect:
+    - '@name': Teleport
+      x:
+        $text: '78301'
+      y:
+        $text: '-83468'
+      z:
+        $text: '-3608'
 - '@id': '18005'
   '@toLevel': '1'
   '@name': 'Scroll of Escape: Forge of the Gods'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  cond:
-    $value: null
-    value: []
-    '@addName': '1'
-    '@msgId': '113'
-    and:
-      $value: null
-      value: []
-      not:
-        $value: null
-        value: []
-        player:
-          $value: null
-          value: []
-          '@insideZoneId': 10501, 10502, 10503, 10504, 10505, 10506, 10507, 10508
-      player:
-        $value: null
-        value: []
-        '@canEscape': 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Teleport
-      x:
-        $value: null
-        value: []
-        $text: '179809'
-      y:
-        $value: null
-        value: []
-        $text: '-111771'
-      z:
-        $value: null
-        value: []
-        $text: '-5832'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeId:
-    $value: null
-    value: []
-    $text: '39515'
+  operateType:
+  - $text: A1
+  - $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
+  - $text: '1'
+  - $text: '1'
+  hitTime:
+    $text: '1000'
+  isMagic:
+    $text: '2'
+  itemConsumeId:
+    $text: '39515'
+  itemConsumeCount:
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  cond:
+    '@msgId': '113'
+    '@addName': '1'
+    and:
+      player:
+        '@canEscape': 'true'
+      not:
+        player:
+          '@insideZoneId': 10501, 10502, 10503, 10504, 10505, 10506, 10507, 10508
+  effects:
+    effect:
+    - '@name': Teleport
+      x:
+        $text: '179809'
+      y:
+        $text: '-111771'
+      z:
+        $text: '-5832'
 - '@id': '18006'
   '@toLevel': '1'
   '@name': 'Scroll of Escape: Ivory Tower'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  cond:
-    $value: null
-    value: []
-    '@addName': '1'
-    '@msgId': '113'
-    and:
-      $value: null
-      value: []
-      not:
-        $value: null
-        value: []
-        player:
-          $value: null
-          value: []
-          '@insideZoneId': 10501, 10502, 10503, 10504, 10505, 10506, 10507, 10508
-      player:
-        $value: null
-        value: []
-        '@canEscape': 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Teleport
-      x:
-        $value: null
-        value: []
-        $text: '85233'
-      y:
-        $value: null
-        value: []
-        $text: '16072'
-      z:
-        $value: null
-        value: []
-        $text: '-3672'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeId:
-    $value: null
-    value: []
-    $text: '39516'
+  operateType:
+  - $text: A1
+  - $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
+  - $text: '1'
+  - $text: '1'
+  hitTime:
+    $text: '1000'
+  isMagic:
+    $text: '2'
+  itemConsumeId:
+    $text: '39516'
+  itemConsumeCount:
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  cond:
+    '@msgId': '113'
+    '@addName': '1'
+    and:
+      player:
+        '@canEscape': 'true'
+      not:
+        player:
+          '@insideZoneId': 10501, 10502, 10503, 10504, 10505, 10506, 10507, 10508
+  effects:
+    effect:
+    - '@name': Teleport
+      x:
+        $text: '85233'
+      y:
+        $text: '16072'
+      z:
+        $text: '-3672'
 - '@id': '18007'
   '@toLevel': '1'
   '@name': 'Scroll of Escape: Secret Room'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  cond:
-    $value: null
-    value: []
-    '@addName': '1'
-    '@msgId': '113'
-    and:
-      $value: null
-      value: []
-      not:
-        $value: null
-        value: []
-        player:
-          $value: null
-          value: []
-          '@insideZoneId': 10501, 10502, 10503, 10504, 10505, 10506, 10507, 10508
-      player:
-        $value: null
-        value: []
-        '@canEscape': 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Teleport
-      x:
-        $value: null
-        value: []
-        $text: '147416'
-      y:
-        $value: null
-        value: []
-        $text: '-52553'
-      z:
-        $value: null
-        value: []
-        $text: '-2733'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeId:
-    $value: null
-    value: []
-    $text: '39517'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
+  - $text: '1'
+  - $text: '1'
+  hitTime:
+    $text: '1000'
+  isMagic:
+    $text: '2'
+  itemConsumeId:
+    $text: '39517'
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  cond:
+    '@msgId': '113'
+    '@addName': '1'
+    and:
+      player:
+        '@canEscape': 'true'
+      not:
+        player:
+          '@insideZoneId': 10501, 10502, 10503, 10504, 10505, 10506, 10507, 10508
+  effects:
+    effect:
+    - '@name': Teleport
+      x:
+        $text: '147416'
+      y:
+        $text: '-52553'
+      z:
+        $text: '-2733'
 - '@id': '18008'
   '@toLevel': '1'
   '@name': 'Scroll of Escape: The Cemetery'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1000'
 - '@id': '18009'
   '@toLevel': '1'
   '@name': Tempest Stone
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '18010'
   '@toLevel': '1'
   '@name': 'Love Potion: Atk. Spd.'
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.love_potion_attack_speed
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
 - '@id': '18011'
   '@toLevel': '1'
   '@name': 'Love Potion: Casting Spd.'
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.love_potion_magic_speed
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
 - '@id': '18012'
   '@toLevel': '1'
   '@name': 'Love Potion: Speed'
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.love_potion_move_speed
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
 - '@id': '18013'
   '@toLevel': '1'
   '@name': 'Love Potion: P. Critical Rate'
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.love_potion_ad_ctr
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
 - '@id': '18014'
   '@toLevel': '1'
   '@name': 'Love Potion: M. Critical Rate'
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.love_potion_ap_ctr
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
 - '@id': '18015'
   '@toLevel': '1'
   '@name': Cruel Love
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.love_potion_sad
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
 - '@id': '18016'
   '@toLevel': '1'
   '@name': Wondrous Love
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.love_potion_blessed
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
 - '@id': '18017'
   '@toLevel': '1'
   '@name': Fortune Pocket - Stage 1
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': GiveXp
-      xp:
-        $value: null
-        value: []
-        $text: '400000'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '39629'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '1000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': GiveXp
+      xp:
+        $text: '400000'
 - '@id': '18018'
   '@toLevel': '1'
   '@name': Fortune Pocket - Stage 2
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': GiveXp
-      xp:
-        $value: null
-        value: []
-        $text: '1600000'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '39630'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '1000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': GiveXp
+      xp:
+        $text: '1600000'
 - '@id': '18019'
   '@toLevel': '1'
   '@name': Fortune Bag
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': GiveXp
-      xp:
-        $value: null
-        value: []
-        $text: '6400000'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '39631'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '5000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': GiveXp
+      xp:
+        $text: '6400000'
 - '@id': '18020'
   '@toLevel': '2'
   '@name': Fortune Bag
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '30'
-          item:
-            $value: null
-            value: []
-            '@count': '2000000'
-            '@id': '57'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '39631'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '1'
+          item:
+            '@id': '39631'
+            '@count': '10'
+        - '@chance': '4.5'
+          item:
+            '@id': '39386'
+            '@count': '1'
+        - '@chance': '3.5'
+          item:
+            '@id': '39387'
+            '@count': '1'
+        - '@chance': '0.5'
+          item:
+            '@id': '39388'
+            '@count': '1'
+        - '@chance': '2'
+          item:
+            '@id': '39720'
+            '@count': '1'
+        - '@chance': '30'
+          item:
+            '@id': '57'
+            '@count': '20000'
+        - '@chance': '30'
+          item:
+            '@id': '57'
+            '@count': '200000'
+        - '@chance': '30'
+          item:
+            '@id': '57'
+            '@count': '2000000'
 - '@id': '18021'
   '@toLevel': '1'
   '@name': Fortune Pocket - Stage 4
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': GiveSp
-      sp:
-        $value: null
-        value: []
-        $text: '80000'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '200'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '39632'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  hitTime:
+    $text: '200'
   reuseDelay:
-    $value: null
-    value: []
     $text: '1000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': GiveSp
+      sp:
+        $text: '80000'
 - '@id': '18022'
   '@toLevel': '1'
   '@name': Fortune Bag
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': GiveSp
-      sp:
-        $value: null
-        value: []
-        $text: '256000'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '200'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '39633'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  hitTime:
+    $text: '200'
   reuseDelay:
-    $value: null
-    value: []
     $text: '3000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': GiveSp
+      sp:
+        $text: '256000'
 - '@id': '18023'
   '@toLevel': '2'
   '@name': Fortune Bag
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '30'
-          item:
-            $value: null
-            value: []
-            '@count': '10000000'
-            '@id': '57'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '39633'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '4.5'
+          item:
+            '@id': '39633'
+            '@count': '10'
+        - '@chance': '2'
+          item:
+            '@id': '39389'
+            '@count': '1'
+        - '@chance': '0.5'
+          item:
+            '@id': '39390'
+            '@count': '1'
+        - '@chance': '15.5'
+          item:
+            '@id': '39720'
+            '@count': '1'
+        - '@chance': '3'
+          item:
+            '@id': '57'
+            '@count': '100000000'
+        - '@chance': '3'
+          item:
+            '@id': '57'
+            '@count': '1000000000'
+        - '@chance': '30'
+          item:
+            '@id': '57'
+            '@count': '100000'
+        - '@chance': '30'
+          item:
+            '@id': '57'
+            '@count': '1000000'
+        - '@chance': '30'
+          item:
+            '@id': '57'
+            '@count': '10000000'
 - '@id': '18024'
   '@toLevel': '24'
   '@name': Venir's Talisman
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': StatUp
-      amount: {}
-      stat:
-        $value: null
-        value: []
-        $text: LUC
   icon:
-    $value: null
-    value: []
     $text: BranchIcon.Icon.etc_allstat_talisman_i02
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '1'
+        - '@level': '7'
+          $text: '1'
+        - '@level': '8'
+          $text: '1'
+        - '@level': '9'
+          $text: '1'
+        - '@level': '10'
+          $text: '1'
+        - '@level': '11'
+          $text: '1'
+        - '@level': '12'
+          $text: '1'
+        - '@level': '13'
+          $text: '1'
+        - '@level': '14'
+          $text: '2'
+        - '@level': '15'
+          $text: '2'
+        - '@level': '16'
+          $text: '2'
+        - '@level': '17'
+          $text: '2'
+        - '@level': '18'
+          $text: '2'
+        - '@level': '19'
+          $text: '2'
+        - '@level': '20'
+          $text: '2'
+        - '@level': '21'
+          $text: '2'
+        - '@level': '22'
+          $text: '3'
+        - '@level': '23'
+          $text: '3'
+        - '@level': '24'
+          $text: '3'
+      stat:
+        $text: STR
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '1'
+        - '@level': '5'
+          $text: '1'
+        - '@level': '6'
+          $text: '1'
+        - '@level': '7'
+          $text: '1'
+        - '@level': '8'
+          $text: '1'
+        - '@level': '9'
+          $text: '1'
+        - '@level': '10'
+          $text: '1'
+        - '@level': '11'
+          $text: '1'
+        - '@level': '12'
+          $text: '2'
+        - '@level': '13'
+          $text: '2'
+        - '@level': '14'
+          $text: '2'
+        - '@level': '15'
+          $text: '2'
+        - '@level': '16'
+          $text: '2'
+        - '@level': '17'
+          $text: '2'
+        - '@level': '18'
+          $text: '2'
+        - '@level': '19'
+          $text: '2'
+        - '@level': '20'
+          $text: '3'
+        - '@level': '21'
+          $text: '3'
+        - '@level': '22'
+          $text: '3'
+        - '@level': '23'
+          $text: '3'
+        - '@level': '24'
+          $text: '3'
+      stat:
+        $text: INT
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '1'
+        - '@level': '4'
+          $text: '1'
+        - '@level': '5'
+          $text: '1'
+        - '@level': '6'
+          $text: '1'
+        - '@level': '7'
+          $text: '1'
+        - '@level': '8'
+          $text: '1'
+        - '@level': '9'
+          $text: '1'
+        - '@level': '10'
+          $text: '1'
+        - '@level': '11'
+          $text: '2'
+        - '@level': '12'
+          $text: '2'
+        - '@level': '13'
+          $text: '2'
+        - '@level': '14'
+          $text: '2'
+        - '@level': '15'
+          $text: '2'
+        - '@level': '16'
+          $text: '2'
+        - '@level': '17'
+          $text: '2'
+        - '@level': '18'
+          $text: '2'
+        - '@level': '19'
+          $text: '3'
+        - '@level': '20'
+          $text: '3'
+        - '@level': '21'
+          $text: '3'
+        - '@level': '22'
+          $text: '3'
+        - '@level': '23'
+          $text: '3'
+        - '@level': '24'
+          $text: '3'
+      stat:
+        $text: CON
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '1'
+        - '@level': '6'
+          $text: '1'
+        - '@level': '7'
+          $text: '1'
+        - '@level': '8'
+          $text: '1'
+        - '@level': '9'
+          $text: '1'
+        - '@level': '10'
+          $text: '1'
+        - '@level': '11'
+          $text: '1'
+        - '@level': '12'
+          $text: '1'
+        - '@level': '13'
+          $text: '2'
+        - '@level': '14'
+          $text: '2'
+        - '@level': '15'
+          $text: '2'
+        - '@level': '16'
+          $text: '2'
+        - '@level': '17'
+          $text: '2'
+        - '@level': '18'
+          $text: '2'
+        - '@level': '19'
+          $text: '2'
+        - '@level': '20'
+          $text: '2'
+        - '@level': '21'
+          $text: '3'
+        - '@level': '22'
+          $text: '3'
+        - '@level': '23'
+          $text: '3'
+        - '@level': '24'
+          $text: '3'
+      stat:
+        $text: DEX
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '1'
+        - '@level': '3'
+          $text: '1'
+        - '@level': '4'
+          $text: '1'
+        - '@level': '5'
+          $text: '1'
+        - '@level': '6'
+          $text: '1'
+        - '@level': '7'
+          $text: '1'
+        - '@level': '8'
+          $text: '1'
+        - '@level': '9'
+          $text: '1'
+        - '@level': '10'
+          $text: '2'
+        - '@level': '11'
+          $text: '2'
+        - '@level': '12'
+          $text: '2'
+        - '@level': '13'
+          $text: '2'
+        - '@level': '14'
+          $text: '2'
+        - '@level': '15'
+          $text: '2'
+        - '@level': '16'
+          $text: '2'
+        - '@level': '17'
+          $text: '2'
+        - '@level': '18'
+          $text: '3'
+        - '@level': '19'
+          $text: '3'
+        - '@level': '20'
+          $text: '3'
+        - '@level': '21'
+          $text: '3'
+        - '@level': '22'
+          $text: '3'
+        - '@level': '23'
+          $text: '3'
+        - '@level': '24'
+          $text: '3'
+      stat:
+        $text: WIT
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '1'
+        - '@level': '3'
+          $text: '1'
+        - '@level': '4'
+          $text: '1'
+        - '@level': '5'
+          $text: '1'
+        - '@level': '6'
+          $text: '1'
+        - '@level': '7'
+          $text: '1'
+        - '@level': '8'
+          $text: '1'
+        - '@level': '9'
+          $text: '2'
+        - '@level': '10'
+          $text: '2'
+        - '@level': '11'
+          $text: '2'
+        - '@level': '12'
+          $text: '2'
+        - '@level': '13'
+          $text: '2'
+        - '@level': '14'
+          $text: '2'
+        - '@level': '15'
+          $text: '2'
+        - '@level': '16'
+          $text: '2'
+        - '@level': '17'
+          $text: '3'
+        - '@level': '18'
+          $text: '3'
+        - '@level': '19'
+          $text: '3'
+        - '@level': '20'
+          $text: '3'
+        - '@level': '21'
+          $text: '3'
+        - '@level': '22'
+          $text: '3'
+        - '@level': '23'
+          $text: '3'
+        - '@level': '24'
+          $text: '3'
+      stat:
+        $text: MEN
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '0'
+        - '@level': '8'
+          $text: '1'
+        - '@level': '9'
+          $text: '1'
+        - '@level': '10'
+          $text: '1'
+        - '@level': '11'
+          $text: '1'
+        - '@level': '12'
+          $text: '1'
+        - '@level': '13'
+          $text: '1'
+        - '@level': '14'
+          $text: '1'
+        - '@level': '15'
+          $text: '1'
+        - '@level': '16'
+          $text: '2'
+        - '@level': '17'
+          $text: '2'
+        - '@level': '18'
+          $text: '2'
+        - '@level': '19'
+          $text: '2'
+        - '@level': '20'
+          $text: '2'
+        - '@level': '21'
+          $text: '2'
+        - '@level': '22'
+          $text: '2'
+        - '@level': '23'
+          $text: '2'
+        - '@level': '24'
+          $text: '3'
+      stat:
+        $text: CHA
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '1'
+        - '@level': '8'
+          $text: '1'
+        - '@level': '9'
+          $text: '1'
+        - '@level': '10'
+          $text: '1'
+        - '@level': '11'
+          $text: '1'
+        - '@level': '12'
+          $text: '1'
+        - '@level': '13'
+          $text: '1'
+        - '@level': '14'
+          $text: '1'
+        - '@level': '15'
+          $text: '2'
+        - '@level': '16'
+          $text: '2'
+        - '@level': '17'
+          $text: '2'
+        - '@level': '18'
+          $text: '2'
+        - '@level': '19'
+          $text: '2'
+        - '@level': '20'
+          $text: '2'
+        - '@level': '21'
+          $text: '2'
+        - '@level': '22'
+          $text: '2'
+        - '@level': '23'
+          $text: '3'
+        - '@level': '24'
+          $text: '3'
+      stat:
+        $text: LUC
 - '@id': '18048'
   '@toLevel': '1'
   '@name': Hair Accessory (LUC)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': StatUp
-      amount:
-        $value: null
-        value: []
-        $text: '3'
-      stat:
-        $value: null
-        value: []
-        $text: LUC
   icon:
-    $value: null
-    value: []
     $text: icon.etc_hairacc_pandent_i00
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        $text: '3'
+      stat:
+        $text: LUC
 - '@id': '18049'
   '@toLevel': '1'
   '@name': Hair Accessory (CHA)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': StatUp
-      amount:
-        $value: null
-        value: []
-        $text: '3'
-      stat:
-        $value: null
-        value: []
-        $text: CHA
   icon:
-    $value: null
-    value: []
     $text: icon.etc_hairacc_pandent_i00
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        $text: '3'
+      stat:
+        $text: CHA
 - '@id': '18050'
   '@toLevel': '1'
   '@name': Luck Potion
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_instant_lucky_potion_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '15'
   abnormalType:
-    $value: null
-    value: []
     $text: HP_RECOVER
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': StatUp
-      amount:
-        $value: null
-        value: []
-        $text: '5'
-      stat:
-        $value: null
-        value: []
-        $text: LUC
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_instant_lucky_potion_i00
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '20000'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        $text: '5'
+      stat:
+        $text: LUC
 - '@id': '18051'
   '@toLevel': '1'
   '@name': Prevailing Sonata - Dance
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime:
-    $value: null
-    value: []
-    $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: BUFF_SPECIAL_AURA
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-10'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_bm_sonata_cookie
-  isMagic:
-    $value: null
-    value: []
-    $text: '22'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
+  affectRange:
+    $text: '1000'
+  abnormalLevel:
+    $text: '1'
+  abnormalType:
+    $text: BUFF_SPECIAL_AURA
+  abnormalTime:
+    $text: '3600'
   operateType:
-    $value: null
-    value: []
     $text: A2
-  targetType: SELF
+  isMagic:
+    $text: '22'
+  magicLevel:
+    $text: '85'
+  effectPoint:
+    $text: '687'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': DispelBySlotProbability
+      dispel:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+      rate:
+        $text: '100'
+    - '@name': BlockAbnormalSlot
+      slot:
+        $text: DANCE_OF_BLADESTORM;SONG_OF_CHAMPION;SONG_OF_EARTH;SONG_OF_HUNTER;SONG_OF_LIFE;SONG_OF_MEDITATION;SONG_OF_RENEWAL;SONG_OF_VENGEANCE;SONG_OF_VITALITY;SONG_OF_WARDING;SONG_OF_WATER;SONG_OF_WIND;DANCE_OF_BERSERKER;DANCE_OF_CONCENTRATION;DANCE_OF_FIRE;DANCE_OF_FURY;DANCE_OF_INSPIRATION;DANCE_OF_MYSTIC;DANCE_OF_SIREN;DANCE_OF_VAMPIRE;DANCE_OF_WARRIOR;SONG_OF_PURIFICATION;WISPERING_OF_BATTLE;SONG_OF_WINDSTORM;MOTION_OF_DEFENCE;BUFF_UNICORN_SERAPHIM;BUFF_QUEEN_OF_CAT;KNIGHT_AURA;DMG_SHIELD;AVOID_UP
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MpRegen
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': ReduceCancel
+      amount:
+        $text: '-53'
+      mode:
+        $text: DIFF
+    - '@name': MagicMpCost
+      amount:
+        $text: '-10'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '18052'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TalismanSlot
-      slots:
-        $value: null
-        value: []
-        $text: '1'
   icon:
-    $value: null
-    value: []
     $text: icon.dimension_bracelet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TalismanSlot
+      slots:
+        $text: '1'
 - '@id': '18053'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TalismanSlot
-      slots:
-        $value: null
-        value: []
-        $text: '2'
   icon:
-    $value: null
-    value: []
     $text: icon.dimension_bracelet_i01
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TalismanSlot
+      slots:
+        $text: '2'
 - '@id': '18054'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TalismanSlot
-      slots:
-        $value: null
-        value: []
-        $text: '3'
   icon:
-    $value: null
-    value: []
     $text: icon.dimension_bracelet_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TalismanSlot
+      slots:
+        $text: '3'
 - '@id': '18055'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TalismanSlot
-      slots:
-        $value: null
-        value: []
-        $text: '4'
   icon:
-    $value: null
-    value: []
     $text: icon.dimension_bracelet_i03
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TalismanSlot
+      slots:
+        $text: '4'
 - '@id': '18056'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TalismanSlot
-      slots:
-        $value: null
-        value: []
-        $text: '5'
   icon:
-    $value: null
-    value: []
     $text: icon.dimension_bracelet_i04
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TalismanSlot
+      slots:
+        $text: '5'
 - '@id': '18057'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TalismanSlot
-      slots:
-        $value: null
-        value: []
-        $text: '6'
   icon:
-    $value: null
-    value: []
     $text: icon.dimension_bracelet_i05
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TalismanSlot
+      slots:
+        $text: '6'
 - '@id': '18058'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i00
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '1'
       stat:
-        $value: null
-        value: []
         $text: STR
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18059'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i01
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '2'
       stat:
-        $value: null
-        value: []
         $text: STR
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i01
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18060'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i02
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '3'
       stat:
-        $value: null
-        value: []
         $text: STR
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18061'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i03
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '4'
       stat:
-        $value: null
-        value: []
         $text: STR
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i03
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18062'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i04
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '5'
       stat:
-        $value: null
-        value: []
         $text: STR
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i04
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18063'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i00
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '1'
       stat:
-        $value: null
-        value: []
         $text: DEX
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18064'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i01
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '2'
       stat:
-        $value: null
-        value: []
         $text: DEX
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i01
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18065'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i02
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '3'
       stat:
-        $value: null
-        value: []
         $text: DEX
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18066'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i03
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '4'
       stat:
-        $value: null
-        value: []
         $text: DEX
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i03
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18067'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i04
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '5'
       stat:
-        $value: null
-        value: []
         $text: DEX
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i04
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18068'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i00
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '1'
       stat:
-        $value: null
-        value: []
         $text: CON
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18069'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i01
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '2'
       stat:
-        $value: null
-        value: []
         $text: CON
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i01
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18070'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i02
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '3'
       stat:
-        $value: null
-        value: []
         $text: CON
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18071'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i03
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '4'
       stat:
-        $value: null
-        value: []
         $text: CON
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i03
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18072'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i04
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '5'
       stat:
-        $value: null
-        value: []
         $text: CON
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i04
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18073'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i00
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '1'
       stat:
-        $value: null
-        value: []
         $text: INT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18074'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i01
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '2'
       stat:
-        $value: null
-        value: []
         $text: INT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i01
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18075'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i02
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '3'
       stat:
-        $value: null
-        value: []
         $text: INT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18076'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i03
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '4'
       stat:
-        $value: null
-        value: []
         $text: INT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i03
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18077'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i04
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '5'
       stat:
-        $value: null
-        value: []
         $text: INT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i04
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18078'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i00
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '1'
       stat:
-        $value: null
-        value: []
         $text: MEN
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18079'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i01
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '2'
       stat:
-        $value: null
-        value: []
         $text: MEN
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i01
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18080'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i02
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '3'
       stat:
-        $value: null
-        value: []
         $text: MEN
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18081'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i03
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '4'
       stat:
-        $value: null
-        value: []
         $text: MEN
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i03
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18082'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i04
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '5'
       stat:
-        $value: null
-        value: []
         $text: MEN
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i04
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18083'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i00
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '1'
       stat:
-        $value: null
-        value: []
         $text: WIT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18084'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i01
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '2'
       stat:
-        $value: null
-        value: []
         $text: WIT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i01
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18085'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i02
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '3'
       stat:
-        $value: null
-        value: []
         $text: WIT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18086'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i03
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '4'
       stat:
-        $value: null
-        value: []
         $text: WIT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i03
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18087'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i04
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '5'
       stat:
-        $value: null
-        value: []
         $text: WIT
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i04
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18088'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i00
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '1'
       stat:
-        $value: null
-        value: []
         $text: LUC
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18089'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i01
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '2'
       stat:
-        $value: null
-        value: []
         $text: LUC
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i01
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18090'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i02
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '3'
       stat:
-        $value: null
-        value: []
         $text: LUC
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18091'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i03
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '4'
       stat:
-        $value: null
-        value: []
         $text: LUC
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i03
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18092'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i04
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '5'
       stat:
-        $value: null
-        value: []
         $text: LUC
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i04
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18093'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i00
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '1'
       stat:
-        $value: null
-        value: []
         $text: CHA
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18094'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i01
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '2'
       stat:
-        $value: null
-        value: []
         $text: CHA
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i01
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18095'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i02
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '3'
       stat:
-        $value: null
-        value: []
         $text: CHA
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18096'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i03
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '4'
       stat:
-        $value: null
-        value: []
         $text: CHA
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i03
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18097'
   '@toLevel': '1'
   '@name': Dimensional Bracelet
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.dimension_bracelet_i04
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '85'
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': StatUp
+    - '@name': TalismanSlot
+      slots:
+        $text: '6'
+    - '@name': StatUp
       amount:
-        $value: null
-        value: []
         $text: '5'
       stat:
-        $value: null
-        value: []
         $text: CHA
-  icon:
-    $value: null
-    value: []
-    $text: icon.dimension_bracelet_i04
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '18098'
   '@toLevel': '1'
   '@name': 'Scroll: 1,000 SP'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': GiveSp
-      sp:
-        $value: null
-        value: []
-        $text: '1000'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '200'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
+  operateType:
+    $text: A1
+  hitTime:
+    $text: '200'
+  reuseDelay:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '40049'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': GiveSp
+      sp:
+        $text: '1000'
 - '@id': '18099'
   '@toLevel': '1'
   '@name': 'Scroll: 10,000 SP'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': GiveSp
-      sp:
-        $value: null
-        value: []
-        $text: '10000'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '200'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
+  operateType:
+    $text: A1
+  hitTime:
+    $text: '200'
+  reuseDelay:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '40050'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': GiveSp
+      sp:
+        $text: '10000'

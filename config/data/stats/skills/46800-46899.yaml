@@ -1,219 +1,322 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '46800'
   '@toLevel': '6'
   '@name': Sayha's Ring
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel: {}
+  icon:
+    $text: BranchIcon.Icon.ring_of_sayhas_i00
+  abnormalLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '2'
+    - '@level': '3'
+      $text: '3'
+    - '@level': '4'
+      $text: '4'
+    - '@level': '5'
+      $text: '5'
+    - '@level': '6'
+      $text: '6'
   abnormalTime:
-    $value: null
-    value: []
     $text: '15'
   abnormalType:
-    $value: null
-    value: []
     $text: SAYHA_AURA
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: AURA_DEBUFF
-  activateRate:
-    $value: null
-    value: []
-    $text: '100'
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: RANGE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-2'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
+  activateRate:
+    $text: '100'
+  operateType:
+    $text: A5
+  targetType:
+    $text: ENEMY
   hitTime:
-    $value: null
-    value: []
     $text: '500'
-  icon:
-    $value: null
-    value: []
-    $text: BranchIcon.Icon.ring_of_sayhas_i00
+  reuseDelay:
+    $text: '1000'
   isDebuff:
-    $value: null
-    value: []
     $text: 'true'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '120'
-  operateType:
-    $value: null
-    value: []
-    $text: A5
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '1000'
+  effectPoint:
+    $text: '-2'
+  basicProperty:
+    $text: NONE
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: ENEMY
+  affectScope:
+    $text: RANGE
+  affectObject:
+    $text: NOT_FRIEND
+  effects:
+    effect:
+    - '@name': Speed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-10'
+        - '@level': '2'
+          $text: '-10'
+        - '@level': '3'
+          $text: '-15'
+        - '@level': '4'
+          $text: '-20'
+        - '@level': '5'
+          $text: '-25'
+        - '@level': '6'
+          $text: '-35'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-10'
+        - '@level': '2'
+          $text: '-10'
+        - '@level': '3'
+          $text: '-15'
+        - '@level': '4'
+          $text: '-20'
+        - '@level': '5'
+          $text: '-25'
+        - '@level': '6'
+          $text: '-35'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-10'
+        - '@level': '2'
+          $text: '-10'
+        - '@level': '3'
+          $text: '-15'
+        - '@level': '4'
+          $text: '-20'
+        - '@level': '5'
+          $text: '-25'
+        - '@level': '6'
+          $text: '-35'
+      mode:
+        $text: PER
 - '@id': '46801'
   '@toLevel': '6'
   '@name': Maphr's Ring
-  '@fromLevel': null
-  '@displayId': null
-  abnormalVisualEffect:
-    $value: null
-    value: []
-    $text: AURA_BUFF_SELF
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': CallSkillOnActionTime
-      skillId:
-        $value: null
-        value: []
-        $text: '46802'
-      skillLevel: {}
-      ticks:
-        $value: null
-        value: []
-        $text: '7'
   icon:
-    $value: null
-    value: []
     $text: BranchIcon.Icon.ring_of_maphr_i00
+  abnormalVisualEffect:
+    $text: AURA_BUFF_SELF
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: AU
   reuseDelay:
-    $value: null
-    value: []
     $text: '1000'
   toggleGroupId:
-    $value: null
-    value: []
     $text: '6'
+  effects:
+    effect:
+    - '@name': DamageByAttack
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-3'
+        - '@level': '2'
+          $text: '-4'
+        - '@level': '3'
+          $text: '-5'
+        - '@level': '4'
+          $text: '-9'
+        - '@level': '5'
+          $text: '-12'
+        - '@level': '6'
+          $text: '-15'
+      type:
+        $text: PK
+    - '@name': DefenceCriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-4'
+        - '@level': '2'
+          $text: '-6'
+        - '@level': '3'
+          $text: '-12'
+        - '@level': '4'
+          $text: '-14'
+        - '@level': '5'
+          $text: '-18'
+        - '@level': '6'
+          $text: '-25'
+      mode:
+        $text: PER
+    - '@name': DefenceMagicCriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-4'
+        - '@level': '2'
+          $text: '-6'
+        - '@level': '3'
+          $text: '-12'
+        - '@level': '4'
+          $text: '-14'
+        - '@level': '5'
+          $text: '-18'
+        - '@level': '6'
+          $text: '-25'
+      mode:
+        $text: PER
+    - '@name': ShieldDefenceRate
+      amount:
+        value:
+        - '@level': '1'
+          $text: '20'
+        - '@level': '2'
+          $text: '22'
+        - '@level': '3'
+          $text: '24'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '36'
+        - '@level': '6'
+          $text: '45'
+      mode:
+        $text: PER
+    - '@name': ShieldDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '900'
+        - '@level': '2'
+          $text: '930'
+        - '@level': '3'
+          $text: '1000'
+        - '@level': '4'
+          $text: '1300'
+        - '@level': '5'
+          $text: '1800'
+        - '@level': '6'
+          $text: '2500'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-30'
+        - '@level': '2'
+          $text: '-28'
+        - '@level': '3'
+          $text: '-26'
+        - '@level': '4'
+          $text: '-23'
+        - '@level': '5'
+          $text: '-17'
+        - '@level': '6'
+          $text: '-10'
+      mode:
+        $text: PER
+    - '@name': CallSkillOnActionTime
+      skillId:
+        $text: '46802'
+      skillLevel:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '4'
+        - '@level': '5'
+          $text: '5'
+        - '@level': '6'
+          $text: '6'
+      ticks:
+        $text: '7'
 - '@id': '46802'
   '@toLevel': '6'
   '@name': Maphr's Ring
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchIcon.Icon.ring_of_maphr_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '15'
   abnormalType:
-    $value: null
-    value: []
     $text: MAPHR_AURA
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: AURA_BUFF
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
   canBeDispelled:
-    $value: null
-    value: []
     $text: 'false'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '2'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': HealEffect
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
-  icon:
-    $value: null
-    value: []
-    $text: BranchIcon.Icon.ring_of_maphr_i00
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A5
+  hitTime:
+    $text: '500'
+  effectPoint:
+    $text: '2'
+  basicProperty:
+    $text: NONE
   reuseDelay:
-    $value: null
-    value: []
     $text: '1000'
-  targetType: MY_PARTY
+  targetType:
+    $text: MY_PARTY
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
+  effects:
+    effect:
+    - '@name': DamageByAttack
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-2'
+        - '@level': '2'
+          $text: '-3'
+        - '@level': '3'
+          $text: '-4'
+        - '@level': '4'
+          $text: '-6'
+        - '@level': '5'
+          $text: '-8'
+        - '@level': '6'
+          $text: '-10'
+      type:
+        $text: PK
+    - '@name': HealEffect
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '12'
+        - '@level': '3'
+          $text: '14'
+        - '@level': '4'
+          $text: '16'
+        - '@level': '5'
+          $text: '18'
+        - '@level': '6'
+          $text: '20'
+      mode:
+        $text: PER

@@ -5,16 +5,26 @@ use std::fmt::Debug;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SystemMessageType {
     WelcomeToTheWorldOfLineage2 = 34, //Welcome to the World of Lineage II.
-    YouHitForS1Damage = 35,          // You hit for $s1 damage.
-    C1HitYouForS2Damage = 36,        // $c1 hit you for $s2 damage.
-    C1SAttackWentAstray = 2265,      // $c1's attack went astray.
+    YouHitForS1Damage = 35,           // You hit for $s1 damage.
+    C1HitYouForS2Damage = 36,         // $c1 hit you for $s2 damage.
+    C1SAttackWentAstray = 2265,       // $c1's attack went astray.
     C1HasInflictedS3DamageOnC2 = 2261, // $c1 has inflicted $s3 damage on $c2.
     C1HasReceivedS3DamageFromC2 = 2262, // $c1 has received $s3 damage from $c2.
     C1HasReceivedS3DamageThroughC2 = 2263, // $c1 has received $s3 damage through $c2.
-    S1_2 = 1983,                     // $s1
+    S1_2 = 1983,                      // $s1
     S1IsNotAvailableAtThisTimeBeingPreparedForReuse = 48, // $s1 is not available at this time: being prepared for reuse.
-    TargetIsTooFar = 22,             // Your target is too far away.
-    CannotSeeTarget = 181,           // Cannot see target.
+    TargetIsTooFar = 22,                                  // Your target is too far away.
+    CannotSeeTarget = 181,                                // Cannot see target.
+    NotEnoughMp = 24,                                     // Not enough MP.
+    YouUseS1 = 46,                                        // You use $s1.
+    S1HasWornOff = 92,                                    // $s1 has worn off.
+    InvalidTarget = 109,                                  // Invalid target.
+    C1HasResistedYourS2 = 139,                            // $c1 has resisted your $s2.
+    TheDistanceIsTooFarAndSoTheCastingHasBeenCancelled = 748, // The distance is too far and so the casting has been cancelled.
+    S1HpHasBeenRestored = 1066,                               // $s1 HP has been restored.
+    S2HpHasBeenRestoredByC1 = 1067,                           // $s2 HP has been restored by $c1.
+    S1MpHasBeenRestored = 1068,                               // $s1 MP has been restored.
+    S2MpHasBeenRestoredByC1 = 1069,                           // $s2 MP has been restored by $c1.
 }
 
 impl From<SystemMessageType> for u16 {
@@ -30,9 +40,21 @@ pub enum SystemMessageParam {
     ItemName(i32),
     NpcName(i32),
     PcName(String),
-    SkillName { id: i32, level: i16, sub_level: i16 },
-    Popup { target: i32, attacker: i32, damage: i32 },
-    ZoneName { x: i32, y: i32, z: i32 },
+    SkillName {
+        id: i32,
+        level: i16,
+        sub_level: i16,
+    },
+    Popup {
+        target: i32,
+        attacker: i32,
+        damage: i32,
+    },
+    ZoneName {
+        x: i32,
+        y: i32,
+        z: i32,
+    },
     CastleId(i32),
     ElementId(i32),
     InstanceName(i32),
@@ -97,9 +119,10 @@ impl SystemMessageParam {
                 buffer.write_i32(*attacker)?;
                 buffer.write_i32(*damage)?;
             }
-            Self::CastleId(i) | Self::SystemString(i) | Self::InstanceName(i) | Self::ClassId(i) => {
-                buffer.write_i16(*i as i16)?
-            }
+            Self::CastleId(i)
+            | Self::SystemString(i)
+            | Self::InstanceName(i)
+            | Self::ClassId(i) => buffer.write_i16(*i as i16)?,
             Self::Byte(i) | Self::ElementId(i) | Self::FactionId(i) => buffer.write_u8(*i as u8)?,
         }
         Ok(())
@@ -145,13 +168,12 @@ impl l2_core::shared_packets::common::SendablePacket for SystemMessage {
 
 #[cfg(test)]
 mod test {
-    use l2_core::shared_packets::common::SendablePacket;
     use crate::packets::to_client::system_message::{SystemMessage, SystemMessageType};
+    use l2_core::shared_packets::common::SendablePacket;
 
     #[tokio::test]
     async fn test_system_message() {
-        let packet =
-            SystemMessage::new(SystemMessageType::WelcomeToTheWorldOfLineage2).unwrap();
+        let packet = SystemMessage::new(SystemMessageType::WelcomeToTheWorldOfLineage2).unwrap();
         let mut buffer = packet.get_buffer();
         // [Size(2), ID(1), MsgID(2), Count(1)]
         assert_eq!([6, 0, 98, 34, 0, 0], buffer.get_data_mut(false));
@@ -160,14 +182,16 @@ mod test {
     #[tokio::test]
     async fn test_system_message_with_params() {
         let mut packet = SystemMessage::new(SystemMessageType::YouHitForS1Damage).unwrap();
-        packet.add_param(super::SystemMessageParam::Int(100)).unwrap();
-        
+        packet
+            .add_param(super::SystemMessageParam::Int(100))
+            .unwrap();
+
         let mut buffer = packet.get_buffer();
         let data = buffer.get_data_mut(false);
         // Size(2), ID(1), MsgID(2), Count(1), ParamType(1), ParamValue(4)
         assert_eq!(data[2], 0x62); // ID
-        assert_eq!(data[5], 1);    // Count
-        assert_eq!(data[6], 1);    // ParamType (Int)
-        assert_eq!(data[7], 100);  // ParamValue
+        assert_eq!(data[5], 1); // Count
+        assert_eq!(data[6], 1); // ParamType (Int)
+        assert_eq!(data[7], 100); // ParamValue
     }
 }

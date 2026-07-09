@@ -1,8 +1,8 @@
 use crate::ls_client::LoginServerClient;
 use kameo::message::{Context, Message};
-use tracing::instrument;
 use l2_core::shared_packets::gs_2_ls::PlayerTracert;
 use l2_core::traits::ServerToServer;
+use tracing::instrument;
 
 impl Message<PlayerTracert> for LoginServerClient {
     type Reply = anyhow::Result<()>;

@@ -1,131 +1,71 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '55701'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Sin Eater
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_summon_aga_agit_i00
+  operateType:
+    $text: A1
+  isMagic:
+    $text: '2'
+  hitTime:
+    $text: '3000'
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  reuseDelay:
+    $text: '5000'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': OpMainjob
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
+    - '@name': SummonAgathion
       npcId:
-        $value: null
-        value: []
         $text: '9021'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_summon_aga_agit_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '5000'
-  targetType: SELF
 - '@id': '55702'
   '@toLevel': '1'
   '@name': Hour of Penitence
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_leash_i00
+  operateType:
+    $text: A2
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  reuseDelay:
+    $text: '43200000'
+  abnormalType:
+    $text: EXP_BOTTLE
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '-5'
+  specialLevel:
+    $text: '-1'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
-  abnormalType:
-    $value: null
-    value: []
-    $text: EXP_BOTTLE
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_leash_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '43200000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE

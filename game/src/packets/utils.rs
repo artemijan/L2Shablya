@@ -1,6 +1,6 @@
 use crate::packets::enums::CharNameResponseVariant;
-use entities::entities::character;
 use entities::DBPool;
+use entities::entities::character;
 
 pub async fn validate_can_create_char(
     db_pool: &DBPool,

@@ -54,7 +54,7 @@ mod test {
         ];
         let mut actions = Vec::new();
         for id in action_ids {
-            actions.push(Action{
+            actions.push(Action {
                 id,
                 handler: "dummy".to_string(),
                 option: None,

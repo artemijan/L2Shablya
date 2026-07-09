@@ -1,159 +1,87 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '55584'
   '@toLevel': '2'
   '@name': Party Buff Scroll - Lv. 1
-  '@fromLevel': null
-  '@displayId': null
-  hitTime:
-    $value: null
-    value: []
-    $text: '700'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_trans_4f_s_b_01
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  isMagic:
+    $text: '4'
+  hitTime:
+    $text: '700'
   reuseDelay:
-    $value: null
-    value: []
     $text: '10000'
 - '@id': '55585'
   '@toLevel': '1'
   '@name': Special Warrior's Fruit
-  '@fromLevel': null
-  '@displayId': null
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_cobol_i01
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  isMagic:
+    $text: '4'
   reuseDelay:
-    $value: null
-    value: []
     $text: '20000'
+  effectPoint:
+    $text: '1'
 - '@id': '55586'
   '@toLevel': '1'
   '@name': Warrior's XP/SP Scroll
-  '@fromLevel': null
-  '@displayId': null
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
   icon:
-    $value: null
-    value: []
     $text: icon.exp_bottle_scroll
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  isMagic:
+    $text: '4'
   reuseDelay:
-    $value: null
-    value: []
     $text: '20000'
+  effectPoint:
+    $text: '1'
 - '@id': '55587'
   '@toLevel': '1'
   '@name': Warrior's Recovery Potion
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.etc_potion_scarlet_i00
   operateType:
-    $value: null
-    value: []
     $text: A1
 - '@id': '55588'
   '@toLevel': '1'
   '@name': Warrior's Major Recovery Potion
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.etc_potion_red_i00
   operateType:
-    $value: null
-    value: []
     $text: A1
 - '@id': '55589'
   '@toLevel': '1'
   '@name': Warrior's MP Recovery Potion
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.etc_potion_blue_i00
+  operateType:
+  - $text: A1
+  - $text: A1
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
+  isMagic:
+    $text: '2'
+  magicLevel:
+    $text: '1'
+  reuseDelay:
+    $text: '500'
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': Mp
+    - '@name': Mp
       amount:
-        $value: null
-        value: []
         $text: '60'
       mode:
-        $value: null
-        value: []
         $text: DIFF
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_potion_blue_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '500'
-  targetType: SELF

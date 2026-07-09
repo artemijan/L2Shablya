@@ -25,6 +25,7 @@ impl UISettings {
 #[cfg(test)]
 mod test {
     use crate::controller::GameController;
+    use crate::packets::to_client::extended::ui_settings::UISettings;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
@@ -33,7 +34,6 @@ mod test {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use crate::packets::to_client::extended::ui_settings::UISettings;
 
     #[tokio::test]
     #[allow(clippy::too_many_lines)]
@@ -45,7 +45,7 @@ mod test {
             m.user_id = user.id;
             m
         })
-            .await;
+        .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../../config/game.yaml"
         )));

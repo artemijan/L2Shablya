@@ -24,24 +24,29 @@ impl SkillCoolTime {
     pub fn for_skill(player: &Player, skill_id: i32) -> anyhow::Result<Self> {
         let mut active_reuses = Vec::new();
         let mut reuse_group = -1;
-        
+
         for reuse in &player.skill_reused {
             if reuse.skill_id == skill_id && reuse.has_not_passed() {
                 reuse_group = reuse.shared_reuse_group;
                 break;
             }
         }
-        
+
         for reuse in &player.skill_reused {
-            if reuse.has_not_passed() && (reuse.skill_id == skill_id || (reuse_group > 0 && reuse.shared_reuse_group == reuse_group)) {
+            if reuse.has_not_passed()
+                && (reuse.skill_id == skill_id
+                    || (reuse_group > 0 && reuse.shared_reuse_group == reuse_group))
+            {
                 active_reuses.push(reuse);
             }
         }
-        
+
         Self::create_packet(&active_reuses)
     }
 
-    fn create_packet(active_reuses: &[&l2_core::game_objects::creature::skill::SkillReuse]) -> anyhow::Result<Self> {
+    fn create_packet(
+        active_reuses: &[&l2_core::game_objects::creature::skill::SkillReuse],
+    ) -> anyhow::Result<Self> {
         let mut inst = Self {
             buffer: SendablePacketBuffer::new(),
         };
@@ -57,11 +62,8 @@ impl SkillCoolTime {
                 reuse.skill_id
             })?;
             inst.buffer.write_i32(reuse.skill_level)?;
-            inst.buffer.write_i32((if reuse_ms > 0 {
-                reuse_ms
-            } else {
-                remaining_ms
-            } / 1000) as i32)?;
+            inst.buffer
+                .write_i32((if reuse_ms > 0 { reuse_ms } else { remaining_ms } / 1000) as i32)?;
             inst.buffer.write_i32((remaining_ms / 1000) as i32)?;
         }
 

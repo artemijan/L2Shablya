@@ -2,8 +2,8 @@ use crate::packets::to_client::NewCharacterResponse;
 use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
-use tracing::instrument;
 use l2_core::shared_packets::common::ReadablePacket;
+use tracing::instrument;
 
 #[derive(Debug, Clone)]
 pub struct NewCharacterRequest;
@@ -25,10 +25,8 @@ impl Message<NewCharacterRequest> for PlayerClient {
         _: NewCharacterRequest,
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
-        self.send_packet(
-            NewCharacterResponse::new(&self.controller)?,
-        )
-        .await?;
+        self.send_packet(NewCharacterResponse::new(&self.controller)?)
+            .await?;
         Ok(())
     }
 }

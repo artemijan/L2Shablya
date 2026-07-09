@@ -3,8 +3,8 @@ use kameo::message::Context;
 use kameo::prelude::Message;
 use l2_core::shared_packets::gs_2_ls::{GSStatusUpdate, PlayerInGame};
 use l2_core::shared_packets::ls_2_gs;
-use tracing::{error, info, instrument};
 use l2_core::traits::ServerToServer;
+use tracing::{error, info, instrument};
 
 impl Message<ls_2_gs::AuthGS> for LoginServerClient {
     type Reply = anyhow::Result<()>;
@@ -21,7 +21,7 @@ impl Message<ls_2_gs::AuthGS> for LoginServerClient {
                 "Can not accept alternative id from login server. Id is {}",
                 msg.server_id
             );
-            return Ok(())
+            return Ok(());
         }
         let gsu = GSStatusUpdate::new(&cfg)?;
         self.send_packet(gsu).await?;
@@ -31,8 +31,7 @@ impl Message<ls_2_gs::AuthGS> for LoginServerClient {
         );
         let accounts = self.controller.get_online_accounts();
         if !accounts.is_empty() {
-            self.send_packet(PlayerInGame::new(&accounts)?)
-                .await?;
+            self.send_packet(PlayerInGame::new(&accounts)?).await?;
         }
         Ok(())
     }
@@ -47,7 +46,7 @@ mod tests {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use tokio::io::{split, AsyncReadExt};
+    use tokio::io::{AsyncReadExt, split};
 
     #[tokio::test]
     async fn test_handle() {

@@ -1,4302 +1,4150 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '3600'
   '@toLevel': '10'
   '@name': 'Special Ability: Anger'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1062
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '46'
+    - '@level': '2'
+      $text: '49'
+    - '@level': '3'
+      $text: '52'
+    - '@level': '4'
+      $text: '55'
+    - '@level': '5'
+      $text: '58'
+    - '@level': '6'
+      $text: '61'
+    - '@level': '7'
+      $text: '64'
+    - '@level': '8'
+      $text: '67'
+    - '@level': '9'
+      $text: '75'
+    - '@level': '10'
+      $text: '80'
+  operateType:
+    $text: P
+  magicCriticalRate:
+    $text: '5'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': MaxHp
+    - '@name': PAtk
       amount:
-        $value: null
-        value: []
+        value:
+        - '@level': '1'
+          $text: '20.44'
+        - '@level': '2'
+          $text: '22.64'
+        - '@level': '3'
+          $text: '24.77'
+        - '@level': '4'
+          $text: '26.78'
+        - '@level': '5'
+          $text: '28.59'
+        - '@level': '6'
+          $text: '30.12'
+        - '@level': '7'
+          $text: '31.30'
+        - '@level': '8'
+          $text: '39'
+        - '@level': '9'
+          $text: '45'
+        - '@level': '10'
+          $text: '78.33'
+      mode:
+        $text: DIFF
+    - '@name': HitNumber
+      amount:
+        $text: '8'
+      mode:
+        $text: DIFF
+      weaponType:
+        item:
+          $text: POLE
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '5'
+        - '@level': '8'
+          $text: '5'
+        - '@level': '9'
+          $text: '5'
+        - '@level': '10'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '5'
+        - '@level': '8'
+          $text: '5'
+        - '@level': '9'
+          $text: '5'
+        - '@level': '10'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '5'
+        - '@level': '8'
+          $text: '5'
+        - '@level': '9'
+          $text: '5'
+        - '@level': '10'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
         $text: '-15'
       mode:
-        $value: null
-        value: []
         $text: PER
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1062
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel: {}
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3601'
   '@toLevel': '10'
   '@name': 'Special Ability: Haste'
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PvpMagicalSkillDamageBonus
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill1086
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '46'
+    - '@level': '2'
+      $text: '49'
+    - '@level': '3'
+      $text: '52'
+    - '@level': '4'
+      $text: '55'
+    - '@level': '5'
+      $text: '58'
+    - '@level': '6'
+      $text: '61'
+    - '@level': '7'
+      $text: '64'
+    - '@level': '8'
+      $text: '67'
+    - '@level': '9'
+      $text: '75'
+    - '@level': '10'
+      $text: '84'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalAttackSpeed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '8'
+        - '@level': '2'
+          $text: '7'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '7'
+        - '@level': '5'
+          $text: '6'
+        - '@level': '6'
+          $text: '6'
+        - '@level': '7'
+          $text: '6'
+        - '@level': '8'
+          $text: '6'
+        - '@level': '9'
+          $text: '7'
+        - '@level': '10'
+          $text: '11'
+      mode:
+        $text: PER
+    - '@name': HitNumber
+      amount:
+        $text: '8'
+      mode:
+        $text: DIFF
+      weaponType:
+        item:
+          $text: POLE
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '5'
+        - '@level': '8'
+          $text: '5'
+        - '@level': '9'
+          $text: '5'
+        - '@level': '10'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '5'
+        - '@level': '8'
+          $text: '5'
+        - '@level': '9'
+          $text: '5'
+        - '@level': '10'
+          $text: '5'
+      mode:
+        $text: PER
 - '@id': '3602'
   '@toLevel': '10'
   '@name': 'Special Ability: Guidance'
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PvpPhysicalSkillDamageBonus
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill1240
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '46'
+    - '@level': '2'
+      $text: '49'
+    - '@level': '3'
+      $text: '52'
+    - '@level': '4'
+      $text: '55'
+    - '@level': '5'
+      $text: '58'
+    - '@level': '6'
+      $text: '61'
+    - '@level': '7'
+      $text: '64'
+    - '@level': '8'
+      $text: '67'
+    - '@level': '9'
+      $text: '75'
+    - '@level': '10'
+      $text: '84'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': Accuracy
+      amount:
+        value:
+        - '@level': '1'
+          $text: '6.88'
+        - '@level': '2'
+          $text: '6.07'
+        - '@level': '3'
+          $text: '5.72'
+        - '@level': '4'
+          $text: '5.37'
+        - '@level': '5'
+          $text: '5.02'
+        - '@level': '6'
+          $text: '4.68'
+        - '@level': '7'
+          $text: '4.34'
+        - '@level': '8'
+          $text: '3.95'
+        - '@level': '9'
+          $text: '5.27'
+        - '@level': '10'
+          $text: '7.5'
+      mode:
+        $text: DIFF
+    - '@name': HitNumber
+      amount:
+        $text: '8'
+      mode:
+        $text: DIFF
+      weaponType:
+        item:
+          $text: POLE
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '5'
+        - '@level': '8'
+          $text: '5'
+        - '@level': '9'
+          $text: '5'
+        - '@level': '10'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '5'
+        - '@level': '8'
+          $text: '5'
+        - '@level': '9'
+          $text: '5'
+        - '@level': '10'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '5'
+        - '@level': '8'
+          $text: '5'
+        - '@level': '9'
+          $text: '5'
+        - '@level': '10'
+          $text: '5'
+      mode:
+        $text: PER
 - '@id': '3603'
   '@toLevel': '10'
   '@name': Demonic Sword Zariche
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ResistAbnormalByCategory
-      amount: {}
-      slot:
-        $value: null
-        value: []
-        $text: DEBUFF
   icon:
-    $value: null
-    value: []
     $text: icon.weapon_unique_zariche_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '78'
   minPledgeClass:
-    $value: null
-    value: []
     $text: '2'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': VampiricAttack
+      amount:
+        value:
+        - '@level': '1'
+          $text: '22'
+        - '@level': '2'
+          $text: '24'
+        - '@level': '3'
+          $text: '26'
+        - '@level': '4'
+          $text: '29'
+        - '@level': '5'
+          $text: '32'
+        - '@level': '6'
+          $text: '35'
+        - '@level': '7'
+          $text: '38'
+        - '@level': '8'
+          $text: '42'
+        - '@level': '9'
+          $text: '47'
+        - '@level': '10'
+          $text: '50'
+      chance:
+        $text: '30'
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '220'
+        - '@level': '2'
+          $text: '242'
+        - '@level': '3'
+          $text: '266'
+        - '@level': '4'
+          $text: '292'
+        - '@level': '5'
+          $text: '322'
+        - '@level': '6'
+          $text: '354'
+        - '@level': '7'
+          $text: '389'
+        - '@level': '8'
+          $text: '428'
+        - '@level': '9'
+          $text: '471'
+        - '@level': '10'
+          $text: '518'
+      mode:
+        $text: PER
+    - '@name': MAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '210'
+        - '@level': '2'
+          $text: '220'
+        - '@level': '3'
+          $text: '231'
+        - '@level': '4'
+          $text: '243'
+        - '@level': '5'
+          $text: '255'
+        - '@level': '6'
+          $text: '268'
+        - '@level': '7'
+          $text: '281'
+        - '@level': '8'
+          $text: '295'
+        - '@level': '9'
+          $text: '310'
+        - '@level': '10'
+          $text: '325'
+      mode:
+        $text: PER
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '600'
+        - '@level': '2'
+          $text: '720'
+        - '@level': '3'
+          $text: '864'
+        - '@level': '4'
+          $text: '1036'
+        - '@level': '5'
+          $text: '1244'
+        - '@level': '6'
+          $text: '1492'
+        - '@level': '7'
+          $text: '1791'
+        - '@level': '8'
+          $text: '2149'
+        - '@level': '9'
+          $text: '2579'
+        - '@level': '10'
+          $text: '3095'
+      mode:
+        $text: DIFF
+    - '@name': MAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '600'
+        - '@level': '2'
+          $text: '720'
+        - '@level': '3'
+          $text: '864'
+        - '@level': '4'
+          $text: '1036'
+        - '@level': '5'
+          $text: '1244'
+        - '@level': '6'
+          $text: '1492'
+        - '@level': '7'
+          $text: '1791'
+        - '@level': '8'
+          $text: '2149'
+        - '@level': '9'
+          $text: '2579'
+        - '@level': '10'
+          $text: '3095'
+      mode:
+        $text: DIFF
+    - '@name': Speed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '4'
+        - '@level': '3'
+          $text: '6'
+        - '@level': '4'
+          $text: '8'
+        - '@level': '5'
+          $text: '10'
+        - '@level': '6'
+          $text: '12'
+        - '@level': '7'
+          $text: '14'
+        - '@level': '8'
+          $text: '16'
+        - '@level': '9'
+          $text: '18'
+        - '@level': '10'
+          $text: '20'
+      mode:
+        $text: DIFF
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '206'
+        - '@level': '2'
+          $text: '212'
+        - '@level': '3'
+          $text: '218'
+        - '@level': '4'
+          $text: '225'
+        - '@level': '5'
+          $text: '231'
+        - '@level': '6'
+          $text: '238'
+        - '@level': '7'
+          $text: '245'
+        - '@level': '8'
+          $text: '253'
+        - '@level': '9'
+          $text: '260'
+        - '@level': '10'
+          $text: '268'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '515'
+        - '@level': '2'
+          $text: '530'
+        - '@level': '3'
+          $text: '546'
+        - '@level': '4'
+          $text: '562'
+        - '@level': '5'
+          $text: '579'
+        - '@level': '6'
+          $text: '597'
+        - '@level': '7'
+          $text: '614'
+        - '@level': '8'
+          $text: '633'
+        - '@level': '9'
+          $text: '652'
+        - '@level': '10'
+          $text: '671'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '204'
+        - '@level': '2'
+          $text: '208'
+        - '@level': '3'
+          $text: '212'
+        - '@level': '4'
+          $text: '216'
+        - '@level': '5'
+          $text: '220'
+        - '@level': '6'
+          $text: '225'
+        - '@level': '7'
+          $text: '229'
+        - '@level': '8'
+          $text: '234'
+        - '@level': '9'
+          $text: '239'
+        - '@level': '10'
+          $text: '243'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '510'
+        - '@level': '2'
+          $text: '520'
+        - '@level': '3'
+          $text: '530'
+        - '@level': '4'
+          $text: '541'
+        - '@level': '5'
+          $text: '552'
+        - '@level': '6'
+          $text: '563'
+        - '@level': '7'
+          $text: '574'
+        - '@level': '8'
+          $text: '585'
+        - '@level': '9'
+          $text: '597'
+        - '@level': '10'
+          $text: '609'
+      mode:
+        $text: DIFF
+    - '@name': Accuracy
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '4'
+        - '@level': '3'
+          $text: '9'
+        - '@level': '4'
+          $text: '16'
+        - '@level': '5'
+          $text: '25'
+        - '@level': '6'
+          $text: '36'
+        - '@level': '7'
+          $text: '49'
+        - '@level': '8'
+          $text: '64'
+        - '@level': '9'
+          $text: '81'
+        - '@level': '10'
+          $text: '100'
+      mode:
+        $text: DIFF
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1050'
+        - '@level': '2'
+          $text: '1102'
+        - '@level': '3'
+          $text: '1157'
+        - '@level': '4'
+          $text: '1215'
+        - '@level': '5'
+          $text: '1276'
+        - '@level': '6'
+          $text: '1340'
+        - '@level': '7'
+          $text: '1407'
+        - '@level': '8'
+          $text: '1477'
+        - '@level': '9'
+          $text: '1551'
+        - '@level': '10'
+          $text: '1628'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1300'
+        - '@level': '2'
+          $text: '1690'
+        - '@level': '3'
+          $text: '2197'
+        - '@level': '4'
+          $text: '2856'
+        - '@level': '5'
+          $text: '3712'
+        - '@level': '6'
+          $text: '4826'
+        - '@level': '7'
+          $text: '6274'
+        - '@level': '8'
+          $text: '8157'
+        - '@level': '9'
+          $text: '10604'
+        - '@level': '10'
+          $text: '13785'
+      mode:
+        $text: DIFF
+    - '@name': CpRegen
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1100'
+        - '@level': '2'
+          $text: '1210'
+        - '@level': '3'
+          $text: '1331'
+        - '@level': '4'
+          $text: '1464'
+        - '@level': '5'
+          $text: '1610'
+        - '@level': '6'
+          $text: '1771'
+        - '@level': '7'
+          $text: '1948'
+        - '@level': '8'
+          $text: '2143'
+        - '@level': '9'
+          $text: '2357'
+        - '@level': '10'
+          $text: '2593'
+      mode:
+        $text: PER
+    - '@name': ResistAbnormalByCategory
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-85'
+        - '@level': '2'
+          $text: '-86'
+        - '@level': '3'
+          $text: '-87'
+        - '@level': '4'
+          $text: '-88'
+        - '@level': '5'
+          $text: '-89'
+        - '@level': '6'
+          $text: '-90'
+        - '@level': '7'
+          $text: '-91'
+        - '@level': '8'
+          $text: '-92'
+        - '@level': '9'
+          $text: '-93'
+        - '@level': '10'
+          $text: '-94'
+      slot:
+        $text: DEBUFF
 - '@id': '3604'
   '@toLevel': '1'
   '@name': Frintezza's Necklace
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Reuse
-      amount:
-        $value: null
-        value: []
-        $text: '-5'
-      magicType:
-        $value: null
-        value: []
-        $text: '22'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.accessory_necklace_of_frintessa_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '75'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': AttackTrait
+      POISON:
+        $text: '25'
+      PARALYZE:
+        $text: '15'
+      SLEEP:
+        $text: '15'
+      BLEED:
+        $text: '25'
+      SHOCK:
+        $text: '15'
+    - '@name': DefenceTrait
+      BLEED:
+        $text: '25'
+      SHOCK:
+        $text: '15'
+      POISON:
+        $text: '25'
+      SLEEP:
+        $text: '15'
+      PARALYZE:
+        $text: '15'
+    - '@name': DamageShield
+      amount:
+        $text: '4'
+    - '@name': DefenceAttribute
+      amount:
+        $text: '15'
+      attribute:
+        $text: DARK
+    - '@name': Reuse
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': Reuse
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': Reuse
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '22'
 - '@id': '3605'
   '@toLevel': '1'
   '@name': Clan Oath Heavy Armor Set
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '5'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t1001_ul_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
 - '@id': '3606'
   '@toLevel': '1'
   '@name': Clan Oath Light Armor Set
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': CriticalDamage
-      amount:
-        $value: null
-        value: []
-        $text: '5'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t1002_ul_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
 - '@id': '3607'
   '@toLevel': '1'
   '@name': Clan Oath Robe Set
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MpRegen
-      amount:
-        $value: null
-        value: []
-        $text: '5'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t1003_ul_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MpRegen
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
 - '@id': '3608'
   '@toLevel': '3'
   '@name': Apella Heavy Armor Set
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ReduceDropPenalty
-      exp: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-      type:
-        $value: null
-        value: []
-        $text: PK
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t1004_ul_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TriggerSkillByDamage
+      attackerType:
+        $text: Playable
+      chance:
+        $text: '10'
+      targetType:
+        $text: SELF
+      minDamage:
+        $text: '50'
+      skillId:
+        $text: '5605'
+      skillLevel:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '2'
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1035'
+        - '@level': '2'
+          $text: '1116'
+        - '@level': '3'
+          $text: '1116'
+      mode:
+        $text: DIFF
+    - '@name': CpRegen
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '3'
+    - '@name': ReduceDropPenalty
+      exp:
+        value:
+        - '@level': '1'
+          $text: '-70'
+        - '@level': '2'
+          $text: '-70'
+        - '@level': '3'
+          $text: '-40'
+      mode:
+        $text: PER
+      type:
+        $text: PK
 - '@id': '3609'
   '@toLevel': '3'
   '@name': Apella Light Armor Set
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ReduceDropPenalty
-      exp: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-      type:
-        $value: null
-        value: []
-        $text: PK
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t1005_ul_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TriggerSkillByDamage
+      attackerType:
+        $text: Playable
+      chance:
+        $text: '10'
+      targetType:
+        $text: SELF
+      minDamage:
+        $text: '50'
+      skillId:
+        $text: '5607'
+      skillLevel:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '2'
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1035'
+        - '@level': '2'
+          $text: '1116'
+        - '@level': '3'
+          $text: '1116'
+      mode:
+        $text: DIFF
+    - '@name': CpRegen
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '3'
+    - '@name': ReduceDropPenalty
+      exp:
+        value:
+        - '@level': '1'
+          $text: '-70'
+        - '@level': '2'
+          $text: '-70'
+        - '@level': '3'
+          $text: '-40'
+      mode:
+        $text: PER
+      type:
+        $text: PK
 - '@id': '3610'
   '@toLevel': '3'
   '@name': Apella Robe Set
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ReduceDropPenalty
-      exp: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-      type:
-        $value: null
-        value: []
-        $text: PK
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t1006_ul_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TriggerSkillByDamage
+      attackerType:
+        $text: Playable
+      chance:
+        $text: '10'
+      targetType:
+        $text: SELF
+      minDamage:
+        $text: '50'
+      skillId:
+        $text: '5608'
+      skillLevel:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '2'
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1035'
+        - '@level': '2'
+          $text: '1116'
+        - '@level': '3'
+          $text: '1116'
+      mode:
+        $text: DIFF
+    - '@name': CpRegen
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '3'
+    - '@name': ReduceDropPenalty
+      exp:
+        value:
+        - '@level': '1'
+          $text: '-70'
+        - '@level': '2'
+          $text: '-70'
+        - '@level': '3'
+          $text: '-40'
+      mode:
+        $text: PER
+      type:
+        $text: PK
 - '@id': '3611'
   '@toLevel': '1'
   '@name': Enchant Heavy Armor (D-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '25'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: HEAVY
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0231
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: STANDING
+      value:
+      - $text: '1.518'
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: SITTING
+      value:
+      - $text: '1.518'
+    - '@name': PhysicalDefence
+      amount:
+        $text: '25'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: HEAVY
 - '@id': '3612'
   '@toLevel': '1'
   '@name': Enchant Light Armor (D-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: LIGHT
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0233
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '14'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '2'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
 - '@id': '3613'
   '@toLevel': '1'
   '@name': Enchant Robe (D-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': WeightLimit
-      amount:
-        $value: null
-        value: []
-        $text: '30'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill0234
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '16'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: MAGIC
+    - '@name': WeightLimit
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
 - '@id': '3614'
   '@toLevel': '1'
   '@name': Enchant Heavy Armor (C-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '38'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: HEAVY
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0231
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: SITTING
+      value:
+      - $text: '2.019'
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: STANDING
+      value:
+      - $text: '2.019'
+    - '@name': PhysicalDefence
+      amount:
+        $text: '38'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: HEAVY
 - '@id': '3615'
   '@toLevel': '1'
   '@name': Enchant Light Armor (C-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: LIGHT
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0233
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '2'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
 - '@id': '3616'
   '@toLevel': '1'
   '@name': Enchant Robe (C-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': WeightLimit
-      amount:
-        $value: null
-        value: []
-        $text: '30'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill0234
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '24'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: MAGIC
+    - '@name': WeightLimit
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
 - '@id': '3617'
   '@toLevel': '1'
   '@name': Enchant Heavy Armor (B-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '44'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: HEAVY
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0231
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: SITTING
+      value:
+      - $text: '2.25'
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: STANDING
+      value:
+      - $text: '2.25'
+    - '@name': PhysicalDefence
+      amount:
+        $text: '44'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: HEAVY
 - '@id': '3618'
   '@toLevel': '1'
   '@name': Enchant Light Armor (B-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: LIGHT
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0233
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '24'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '2'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
 - '@id': '3619'
   '@toLevel': '1'
   '@name': Enchant Robe (B-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': WeightLimit
-      amount:
-        $value: null
-        value: []
-        $text: '30'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill0234
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '28'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: MAGIC
+    - '@name': WeightLimit
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
 - '@id': '3620'
   '@toLevel': '1'
   '@name': Enchant Heavy Armor (A-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '50'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: HEAVY
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0231
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: SITTING
+      value:
+      - $text: '2.43'
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: STANDING
+      value:
+      - $text: '2.43'
+    - '@name': PhysicalDefence
+      amount:
+        $text: '50'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: HEAVY
 - '@id': '3621'
   '@toLevel': '1'
   '@name': Enchant Light Armor (A-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: LIGHT
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0233
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '27'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '2'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
 - '@id': '3622'
   '@toLevel': '1'
   '@name': Enchant Robe (A-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': WeightLimit
-      amount:
-        $value: null
-        value: []
-        $text: '30'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill0234
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '32'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: MAGIC
+    - '@name': WeightLimit
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
 - '@id': '3623'
   '@toLevel': '5'
   '@name': Enchant Heavy Armor (S-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '59'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: HEAVY
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0231
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: SITTING
+      value:
+      - $text: '2.823'
+    - '@name': StatByMoveType
+      stat:
+        $text: REGENERATE_MP_RATE
+      type:
+        $text: STANDING
+      value:
+      - $text: '2.823'
+    - '@name': PhysicalDefence
+      amount:
+        $text: '59'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: HEAVY
 - '@id': '3624'
   '@toLevel': '5'
   '@name': Enchant Light Armor (S-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: LIGHT
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill0233
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '33'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '2'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
 - '@id': '3625'
   '@toLevel': '5'
   '@name': Enchant Robe (S-grade)
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': WeightLimit
-      amount:
-        $value: null
-        value: []
-        $text: '30'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill0234
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '38'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: MAGIC
+    - '@name': WeightLimit
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
 - '@id': '3626'
   '@toLevel': '1'
   '@name': Kabokula
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
+  icon:
+    $text: icon.weapon_seize_mace_i00
   castRange:
-    $value: null
-    value: []
     $text: '300'
   channelingSkillId:
-    $value: null
-    value: []
     $text: '5106'
-  channelingStart:
-    $value: null
-    value: []
-    $text: '1'
   channelingTickInterval:
-    $value: null
-    value: []
     $text: '2'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpTargetNpc
-      npcIds:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: '22217'
   effectPoint:
-    $value: null
-    value: []
     $text: '-100'
   effectRange:
-    $value: null
-    value: []
     $text: '500'
   hitTime:
-    $value: null
-    value: []
     $text: '25000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.weapon_seize_mace_i00
   isDebuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '8764'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  mpPerChanneling:
-    $value: null
-    value: []
-    $text: '15'
   operateType:
-    $value: null
-    value: []
     $text: CA5
   reuseDelay:
-    $value: null
-    value: []
     $text: '1000'
-  targetType: ENEMY_ONLY
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  channelingStart:
+    $text: '1'
+  mpPerChanneling:
+    $text: '15'
+  targetType:
+    $text: ENEMY_ONLY
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpTargetNpc
+      npcIds:
+        item:
+        - $text: '22215'
+        - $text: '22216'
+        - $text: '22217'
 - '@id': '3627'
   '@toLevel': '1'
   '@name': Tapirawa
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
+  icon:
+    $text: icon.weapon_seize_mace_i00
   castRange:
-    $value: null
-    value: []
     $text: '300'
   channelingSkillId:
-    $value: null
-    value: []
     $text: '5107'
-  channelingStart:
-    $value: null
-    value: []
-    $text: '1'
   channelingTickInterval:
-    $value: null
-    value: []
     $text: '2'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpTargetNpc
-      npcIds:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: '22217'
   effectPoint:
-    $value: null
-    value: []
     $text: '-100'
   effectRange:
-    $value: null
-    value: []
     $text: '500'
   hitTime:
-    $value: null
-    value: []
     $text: '25000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.weapon_seize_mace_i00
   isDebuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '8764'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  mpPerChanneling:
-    $value: null
-    value: []
-    $text: '15'
   operateType:
-    $value: null
-    value: []
     $text: CA5
   reuseDelay:
-    $value: null
-    value: []
     $text: '1000'
-  targetType: ENEMY_ONLY
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  channelingStart:
+    $text: '1'
+  mpPerChanneling:
+    $text: '15'
+  targetType:
+    $text: ENEMY_ONLY
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpTargetNpc
+      npcIds:
+        item:
+        - $text: '22215'
+        - $text: '22216'
+        - $text: '22217'
 - '@id': '3628'
   '@toLevel': '1'
   '@name': Shabonoba
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
+  icon:
+    $text: icon.weapon_seize_mace_i00
   castRange:
-    $value: null
-    value: []
     $text: '300'
   channelingSkillId:
-    $value: null
-    value: []
     $text: '5108'
-  channelingStart:
-    $value: null
-    value: []
-    $text: '1'
   channelingTickInterval:
-    $value: null
-    value: []
     $text: '2'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpTargetNpc
-      npcIds:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: '22217'
   effectPoint:
-    $value: null
-    value: []
     $text: '-100'
   effectRange:
-    $value: null
-    value: []
     $text: '500'
   hitTime:
-    $value: null
-    value: []
     $text: '25000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.weapon_seize_mace_i00
   isDebuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '8764'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  mpPerChanneling:
-    $value: null
-    value: []
-    $text: '15'
   operateType:
-    $value: null
-    value: []
     $text: CA5
   reuseDelay:
-    $value: null
-    value: []
     $text: '1000'
-  targetType: ENEMY_ONLY
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  channelingStart:
+    $text: '1'
+  mpPerChanneling:
+    $text: '15'
+  targetType:
+    $text: ENEMY_ONLY
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpTargetNpc
+      npcIds:
+        item:
+        - $text: '22215'
+        - $text: '22216'
+        - $text: '22217'
 - '@id': '3629'
   '@toLevel': '10'
   '@name': Blood Sword Akamanah
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ResistAbnormalByCategory
-      amount: {}
-      slot:
-        $value: null
-        value: []
-        $text: DEBUFF
   icon:
-    $value: null
-    value: []
     $text: icon.weapon_dual_sword_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '78'
   minPledgeClass:
-    $value: null
-    value: []
     $text: '2'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': VampiricAttack
+      amount:
+        value:
+        - '@level': '1'
+          $text: '22'
+        - '@level': '2'
+          $text: '24'
+        - '@level': '3'
+          $text: '26'
+        - '@level': '4'
+          $text: '29'
+        - '@level': '5'
+          $text: '32'
+        - '@level': '6'
+          $text: '35'
+        - '@level': '7'
+          $text: '38'
+        - '@level': '8'
+          $text: '42'
+        - '@level': '9'
+          $text: '47'
+        - '@level': '10'
+          $text: '50'
+      chance:
+        $text: '30'
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '220'
+        - '@level': '2'
+          $text: '242'
+        - '@level': '3'
+          $text: '266'
+        - '@level': '4'
+          $text: '292'
+        - '@level': '5'
+          $text: '322'
+        - '@level': '6'
+          $text: '354'
+        - '@level': '7'
+          $text: '389'
+        - '@level': '8'
+          $text: '428'
+        - '@level': '9'
+          $text: '471'
+        - '@level': '10'
+          $text: '518'
+      mode:
+        $text: PER
+    - '@name': MAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '210'
+        - '@level': '2'
+          $text: '220'
+        - '@level': '3'
+          $text: '231'
+        - '@level': '4'
+          $text: '243'
+        - '@level': '5'
+          $text: '255'
+        - '@level': '6'
+          $text: '268'
+        - '@level': '7'
+          $text: '281'
+        - '@level': '8'
+          $text: '295'
+        - '@level': '9'
+          $text: '310'
+        - '@level': '10'
+          $text: '325'
+      mode:
+        $text: PER
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '600'
+        - '@level': '2'
+          $text: '720'
+        - '@level': '3'
+          $text: '864'
+        - '@level': '4'
+          $text: '1036'
+        - '@level': '5'
+          $text: '1244'
+        - '@level': '6'
+          $text: '1492'
+        - '@level': '7'
+          $text: '1791'
+        - '@level': '8'
+          $text: '2149'
+        - '@level': '9'
+          $text: '2579'
+        - '@level': '10'
+          $text: '3095'
+      mode:
+        $text: DIFF
+    - '@name': MAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '600'
+        - '@level': '2'
+          $text: '720'
+        - '@level': '3'
+          $text: '864'
+        - '@level': '4'
+          $text: '1036'
+        - '@level': '5'
+          $text: '1244'
+        - '@level': '6'
+          $text: '1492'
+        - '@level': '7'
+          $text: '1791'
+        - '@level': '8'
+          $text: '2149'
+        - '@level': '9'
+          $text: '2579'
+        - '@level': '10'
+          $text: '3095'
+      mode:
+        $text: DIFF
+    - '@name': Speed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '4'
+        - '@level': '3'
+          $text: '6'
+        - '@level': '4'
+          $text: '8'
+        - '@level': '5'
+          $text: '10'
+        - '@level': '6'
+          $text: '12'
+        - '@level': '7'
+          $text: '14'
+        - '@level': '8'
+          $text: '16'
+        - '@level': '9'
+          $text: '18'
+        - '@level': '10'
+          $text: '20'
+      mode:
+        $text: DIFF
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '206'
+        - '@level': '2'
+          $text: '212'
+        - '@level': '3'
+          $text: '218'
+        - '@level': '4'
+          $text: '225'
+        - '@level': '5'
+          $text: '231'
+        - '@level': '6'
+          $text: '238'
+        - '@level': '7'
+          $text: '245'
+        - '@level': '8'
+          $text: '253'
+        - '@level': '9'
+          $text: '260'
+        - '@level': '10'
+          $text: '268'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '515'
+        - '@level': '2'
+          $text: '530'
+        - '@level': '3'
+          $text: '546'
+        - '@level': '4'
+          $text: '562'
+        - '@level': '5'
+          $text: '579'
+        - '@level': '6'
+          $text: '597'
+        - '@level': '7'
+          $text: '614'
+        - '@level': '8'
+          $text: '633'
+        - '@level': '9'
+          $text: '652'
+        - '@level': '10'
+          $text: '671'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '204'
+        - '@level': '2'
+          $text: '208'
+        - '@level': '3'
+          $text: '212'
+        - '@level': '4'
+          $text: '216'
+        - '@level': '5'
+          $text: '220'
+        - '@level': '6'
+          $text: '225'
+        - '@level': '7'
+          $text: '229'
+        - '@level': '8'
+          $text: '234'
+        - '@level': '9'
+          $text: '239'
+        - '@level': '10'
+          $text: '243'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '510'
+        - '@level': '2'
+          $text: '520'
+        - '@level': '3'
+          $text: '530'
+        - '@level': '4'
+          $text: '541'
+        - '@level': '5'
+          $text: '552'
+        - '@level': '6'
+          $text: '563'
+        - '@level': '7'
+          $text: '574'
+        - '@level': '8'
+          $text: '585'
+        - '@level': '9'
+          $text: '597'
+        - '@level': '10'
+          $text: '609'
+      mode:
+        $text: DIFF
+    - '@name': Accuracy
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '4'
+        - '@level': '3'
+          $text: '9'
+        - '@level': '4'
+          $text: '16'
+        - '@level': '5'
+          $text: '25'
+        - '@level': '6'
+          $text: '36'
+        - '@level': '7'
+          $text: '49'
+        - '@level': '8'
+          $text: '64'
+        - '@level': '9'
+          $text: '81'
+        - '@level': '10'
+          $text: '100'
+      mode:
+        $text: DIFF
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1050'
+        - '@level': '2'
+          $text: '1102'
+        - '@level': '3'
+          $text: '1157'
+        - '@level': '4'
+          $text: '1215'
+        - '@level': '5'
+          $text: '1276'
+        - '@level': '6'
+          $text: '1340'
+        - '@level': '7'
+          $text: '1407'
+        - '@level': '8'
+          $text: '1477'
+        - '@level': '9'
+          $text: '1551'
+        - '@level': '10'
+          $text: '1628'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1300'
+        - '@level': '2'
+          $text: '1690'
+        - '@level': '3'
+          $text: '2197'
+        - '@level': '4'
+          $text: '2856'
+        - '@level': '5'
+          $text: '3712'
+        - '@level': '6'
+          $text: '4826'
+        - '@level': '7'
+          $text: '6274'
+        - '@level': '8'
+          $text: '8157'
+        - '@level': '9'
+          $text: '10604'
+        - '@level': '10'
+          $text: '13785'
+      mode:
+        $text: DIFF
+    - '@name': CpRegen
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1100'
+        - '@level': '2'
+          $text: '1210'
+        - '@level': '3'
+          $text: '1331'
+        - '@level': '4'
+          $text: '1464'
+        - '@level': '5'
+          $text: '1610'
+        - '@level': '6'
+          $text: '1771'
+        - '@level': '7'
+          $text: '1948'
+        - '@level': '8'
+          $text: '2143'
+        - '@level': '9'
+          $text: '2357'
+        - '@level': '10'
+          $text: '2593'
+      mode:
+        $text: PER
+    - '@name': ResistAbnormalByCategory
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-85'
+        - '@level': '2'
+          $text: '-86'
+        - '@level': '3'
+          $text: '-87'
+        - '@level': '4'
+          $text: '-88'
+        - '@level': '5'
+          $text: '-89'
+        - '@level': '6'
+          $text: '-90'
+        - '@level': '7'
+          $text: '-91'
+        - '@level': '8'
+          $text: '-92'
+        - '@level': '9'
+          $text: '-93'
+        - '@level': '10'
+          $text: '-94'
+      slot:
+        $text: DEBUFF
 - '@id': '3630'
   '@toLevel': '1'
   '@name': Void Burst
-  '@fromLevel': null
-  '@displayId': null
-  affectLimit:
-    $value: null
-    value: []
-    $text: 6-12
-  affectObject:
-    $value: null
-    value: []
-    $text: ALL
-  affectRange:
-    $value: null
-    value: []
-    $text: '150'
-  affectScope:
-    $value: null
-    value: []
-    $text: POINT_BLANK
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      power:
-        $value: null
-        value: []
-        $text: '11500'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill3630
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
+  affectLimit:
+    $text: 6-12
+  affectRange:
+    $text: '150'
+  effectPoint:
+    $text: '-1'
+  hitTime:
+    $text: '2000'
   magicLevel:
-    $value: null
-    value: []
     $text: '78'
   mpConsume:
-    $value: null
-    value: []
     $text: '140'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: POINT_BLANK
+  affectObject:
+    $text: ALL
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        $text: '11500'
 - '@id': '3631'
   '@toLevel': '1'
   '@name': Void Flow
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill3631
   affectLimit:
-    $value: null
-    value: []
     $text: 6-12
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
   castRange:
-    $value: null
-    value: []
     $text: '600'
   effectPoint:
-    $value: null
-    value: []
     $text: '-1'
   effectRange:
-    $value: null
-    value: []
     $text: '1100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      power:
-        $value: null
-        value: []
-        $text: '15000'
   hitTime:
-    $value: null
-    value: []
     $text: '1900'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill3631
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '78'
   mpConsume:
-    $value: null
-    value: []
     $text: '140'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: ENEMY
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        $text: '15000'
 - '@id': '3632'
   '@toLevel': '1'
   '@name': Clan Gate
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.accessory_crown_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
   abnormalType:
-    $value: null
-    value: []
     $text: ABNORMAL_ITEM
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: MAGIC_SQUARE
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCallPc
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': BlockActions
   hitTime:
-    $value: null
-    value: []
     $text: '10000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.accessory_crown_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '60'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpCallPc
+  effects:
+    effect:
+    - '@name': SendSystemMessageToClan
+      id:
+        $text: '1923'
+    - '@name': BlockActions
 - '@id': '3633'
   '@toLevel': '2'
   '@name': Residential Stun Immunity
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.accessory_pledge_cap1_i05
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '7'
   abnormalType:
-    $value: null
-    value: []
     $text: ABNORMAL_ITEM
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      SHOCK: {}
-  icon:
-    $value: null
-    value: []
-    $text: icon.accessory_pledge_cap1_i05
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '60'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      SHOCK:
+        value:
+        - '@level': '1'
+          $text: '80'
+        - '@level': '2'
+          $text: '100'
 - '@id': '3634'
   '@toLevel': '1'
   '@name': 'Special Ability: Infinity Sword'
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ReflectSkill
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
-      type:
-        $value: null
-        value: []
-        $text: MAGIC
   icon:
-    $value: null
-    value: []
     $text: icon.weapon_infinity_sword_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '80'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MaxCp
+      amount:
+        $text: '50'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        $text: '504'
+      mode:
+        $text: DIFF
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': CriticalRate
+      amount:
+        $text: '7.87'
+      mode:
+        $text: DIFF
+    - '@name': MaxHp
+      amount:
+        $text: '25'
+      mode:
+        $text: PER
+    - '@name': ReflectSkill
+      amount:
+        $text: '10'
+      mode:
+        $text: DIFF
+    - '@name': ReflectSkill
+      amount:
+        $text: '10'
+      mode:
+        $text: DIFF
+      type:
+        $text: MAGIC
 - '@id': '3635'
   '@toLevel': '1'
   '@name': 'Special Ability: Infinity Shooter'
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PvpPhysicalSkillDamageBonus
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.weapon_infinity_shooter_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '80'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MaxCp
+      amount:
+        $text: '50'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
 - '@id': '3636'
   '@toLevel': '1'
   '@name': Dynasty Platinum Plate
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '492'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t91_uk_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      SHOCK:
+        $text: '15'
+    - '@name': EnableCloak
+    - '@name': PhysicalDefence
+      amount:
+        $text: '6.6'
+      mode:
+        $text: PER
+    - '@name': HealEffect
+      amount:
+        $text: '4'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': MaxHp
+      amount:
+        $text: '492'
+      mode:
+        $text: DIFF
 - '@id': '3637'
   '@toLevel': '1'
   '@name': Dynasty Platinum Plate
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '492'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t91_uw_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': PAtk
+      amount:
+        $text: '6.6'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        $text: '282'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '29.5'
+      mode:
+        $text: DIFF
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': MaxHp
+      amount:
+        $text: '492'
+      mode:
+        $text: DIFF
 - '@id': '3638'
   '@toLevel': '1'
   '@name': Dynasty Platinum Plate
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-6'
-      magicType:
-        $value: null
-        value: []
-        $text: '3'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t91_uke_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': PhysicalDefence
+      amount:
+        $text: '6.6'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': MaxHp
+      amount:
+        $text: '492'
+      mode:
+        $text: DIFF
+    - '@name': MagicMpCost
+      amount:
+        $text: '-6'
+      mode:
+        $text: PER
+      magicType:
+        $text: '3'
 - '@id': '3639'
   '@toLevel': '1'
   '@name': Dynasty Platinum Plate
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-6'
-      magicType:
-        $value: null
-        value: []
-        $text: '0'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t91_uf_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': PAtk
+      amount:
+        $text: '6.6'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': MaxHp
+      amount:
+        $text: '492'
+      mode:
+        $text: DIFF
+    - '@name': MagicMpCost
+      amount:
+        $text: '-6'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
 - '@id': '3640'
   '@toLevel': '1'
   '@name': Dynasty Jewel Leather Armor
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '492'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t92_ud_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      HOLD:
+        $text: '15'
+    - '@name': EnableCloak
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '5.3'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '3.24'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': MaxHp
+      amount:
+        $text: '492'
+      mode:
+        $text: DIFF
 - '@id': '3641'
   '@toLevel': '1'
   '@name': Dynasty Jewel Leather Armor
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '8'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t92_ub_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': Accuracy
+      amount:
+        $text: '5.3'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '3.24'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '321'
+      mode:
+        $text: DIFF
+    - '@name': MpRegen
+      amount:
+        $text: '1.066'
+      mode:
+        $text: DIFF
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
 - '@id': '3642'
   '@toLevel': '1'
   '@name': Dynasty Jewel Leather Armor
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-6'
-      magicType:
-        $value: null
-        value: []
-        $text: '0'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t92_ud_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': PAtk
+      amount:
+        $text: '6.6'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': MaxHp
+      amount:
+        $text: '492'
+      mode:
+        $text: DIFF
+    - '@name': MagicMpCost
+      amount:
+        $text: '-6'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
 - '@id': '3643'
   '@toLevel': '1'
   '@name': Dynasty Jewel Leather Armor
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '492'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t92_ub_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': PAtk
+      amount:
+        $text: '6.6'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        $text: '282'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '29.5'
+      mode:
+        $text: DIFF
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': MaxHp
+      amount:
+        $text: '492'
+      mode:
+        $text: DIFF
 - '@id': '3644'
   '@toLevel': '1'
   '@name': Dynasty Jewel Leather Armor
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '492'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t92_ub_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': PAtk
+      amount:
+        $text: '2.66'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '2.66'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '6.6'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': MaxHp
+      amount:
+        $text: '492'
+      mode:
+        $text: DIFF
 - '@id': '3645'
   '@toLevel': '1'
   '@name': Dynasty Silver Satin Tunic
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': HealEffect
-      amount:
-        $value: null
-        value: []
-        $text: '22'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t93_uh_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '321'
+      mode:
+        $text: DIFF
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': ReduceCancel
+      amount:
+        $text: '-15'
+      mode:
+        $text: DIFF
+    - '@name': HealEffect
+      amount:
+        $text: '22'
+      mode:
+        $text: DIFF
 - '@id': '3646'
   '@toLevel': '1'
   '@name': Dynasty Silver Satin Tunic
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-6'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t93_ue_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '321'
+      mode:
+        $text: DIFF
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
+    - '@name': ReduceCancel
+      amount:
+        $text: '-15'
+      mode:
+        $text: DIFF
+    - '@name': MagicMpCost
+      amount:
+        $text: '-6'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '3647'
   '@toLevel': '1'
   '@name': Dynasty Silver Satin Tunic
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '8'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t93_us_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': PAtk
+      amount:
+        $text: '3.3'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '3.3'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '321'
+      mode:
+        $text: DIFF
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
 - '@id': '3648'
   '@toLevel': '1'
   '@name': Dynasty Silver Satin Tunic
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '8'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t93_uw_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': EnableCloak
+    - '@name': MAtk
+      amount:
+        $text: '6.6'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '321'
+      mode:
+        $text: DIFF
+    - '@name': DefenceAttribute
+      amount:
+        $text: '8'
+      attribute:
+        $text: DARK
 - '@id': '3649'
   '@toLevel': '1'
   '@name': Beleth' Ring
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '105'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.accessary_dynasty_ring_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '75'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': AttackTrait
+      DERANGEMENT:
+        $text: '10'
+    - '@name': DefenceTrait
+      DERANGEMENT:
+        $text: '10'
+    - '@name': MagicalDefence
+      amount:
+        $text: '12'
+      mode:
+        $text: PER
+    - '@name': MpRegen
+      amount:
+        $text: '0.23'
+      mode:
+        $text: DIFF
+    - '@name': DefenceAttribute
+      amount:
+        $text: '30'
+      attribute:
+        $text: DARK
+    - '@name': MaxHp
+      amount:
+        $text: '105'
+      mode:
+        $text: DIFF
 - '@id': '3650'
   '@toLevel': '1'
   '@name': PvP Weapon - CP Drain
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1306
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByAttack
-      allowWeapons:
-        $value: null
-        value: []
-        $text: ALL
+    - '@name': TriggerSkillByAttack
       attackerType:
-        $value: null
-        value: []
         $text: Playable
-      chance:
-        $value: null
-        value: []
-        $text: '20'
-      isCritical:
-        $value: null
-        value: []
-        $text: 'false'
       minDamage:
-        $value: null
-        value: []
         $text: '50'
+      chance:
+        $text: '20'
+      targetType:
+        $text: SELF
+      isCritical:
+        $text: 'false'
+      allowWeapons:
+        $text: ALL
       skillId:
-        $value: null
-        value: []
         $text: '5681'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: SELF
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1306
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3651'
   '@toLevel': '1'
   '@name': PvP Weapon - Cancel
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1056
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByAttack
-      allowWeapons:
-        $value: null
-        value: []
-        $text: ALL
+    - '@name': TriggerSkillByAttack
       attackerType:
-        $value: null
-        value: []
         $text: Playable
-      chance:
-        $value: null
-        value: []
-        $text: '10'
-      isCritical:
-        $value: null
-        value: []
-        $text: 'false'
       minDamage:
-        $value: null
-        value: []
         $text: '50'
+      chance:
+        $text: '10'
+      targetType:
+        $text: TARGET
+      isCritical:
+        $text: 'false'
+      allowWeapons:
+        $text: ALL
       skillId:
-        $value: null
-        value: []
         $text: '5682'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: TARGET
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1056
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3652'
   '@toLevel': '1'
   '@name': PvP Weapon - Ignore Shield Defense
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1304
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByAttack
-      allowWeapons:
-        $value: null
-        value: []
-        $text: ALL
+    - '@name': TriggerSkillByAttack
       attackerType:
-        $value: null
-        value: []
         $text: Playable
-      chance:
-        $value: null
-        value: []
-        $text: '20'
-      isCritical:
-        $value: null
-        value: []
-        $text: 'false'
       minDamage:
-        $value: null
-        value: []
         $text: '50'
+      chance:
+        $text: '20'
+      targetType:
+        $text: TARGET
+      isCritical:
+        $text: 'false'
+      allowWeapons:
+        $text: ALL
       skillId:
-        $value: null
-        value: []
         $text: '5683'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: TARGET
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1304
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3653'
   '@toLevel': '1'
   '@name': PvP Weapon - Attack Rate
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0005
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByAttack
-      allowWeapons:
-        $value: null
-        value: []
-        $text: ALL
+    - '@name': TriggerSkillByAttack
       attackerType:
-        $value: null
-        value: []
         $text: Playable
-      chance:
-        $value: null
-        value: []
-        $text: '10'
-      isCritical:
-        $value: null
-        value: []
-        $text: 'false'
       minDamage:
-        $value: null
-        value: []
         $text: '50'
+      chance:
+        $text: '10'
+      targetType:
+        $text: TARGET
+      isCritical:
+        $text: 'false'
+      allowWeapons:
+        $text: ALL
       skillId:
-        $value: null
-        value: []
         $text: '5684'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: TARGET
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0005
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3654'
   '@toLevel': '1'
   '@name': PvP Weapon - Casting
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0228
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByDamage
+    - '@name': TriggerSkillByDamage
       attackerType:
-        $value: null
-        value: []
         $text: Playable
       chance:
-        $value: null
-        value: []
         $text: '5'
+      targetType:
+        $text: SELF
       minDamage:
-        $value: null
-        value: []
         $text: '50'
       skillId:
-        $value: null
-        value: []
         $text: '5685'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: SELF
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0228
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3655'
   '@toLevel': '1'
   '@name': PvP Weapon - Rapid Fire
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0413
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByAttack
-      allowWeapons:
-        $value: null
-        value: []
-        $text: ALL
+    - '@name': TriggerSkillByAttack
       attackerType:
-        $value: null
-        value: []
         $text: Playable
-      chance:
-        $value: null
-        value: []
-        $text: '10'
-      isCritical:
-        $value: null
-        value: []
-        $text: 'false'
       minDamage:
-        $value: null
-        value: []
         $text: '50'
+      chance:
+        $text: '10'
+      targetType:
+        $text: SELF
+      isCritical:
+        $text: 'false'
+      allowWeapons:
+        $text: ALL
       skillId:
-        $value: null
-        value: []
         $text: '5686'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: SELF
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0413
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3656'
   '@toLevel': '1'
   '@name': PvP Weapon - Decrease Range
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0486
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByAttack
-      allowWeapons:
-        $value: null
-        value: []
-        $text: ALL
+    - '@name': TriggerSkillByAttack
       attackerType:
-        $value: null
-        value: []
         $text: Playable
-      chance:
-        $value: null
-        value: []
-        $text: '10'
-      isCritical:
-        $value: null
-        value: []
-        $text: 'false'
       minDamage:
-        $value: null
-        value: []
         $text: '50'
+      chance:
+        $text: '10'
+      targetType:
+        $text: TARGET
+      isCritical:
+        $text: 'false'
+      allowWeapons:
+        $text: ALL
       skillId:
-        $value: null
-        value: []
         $text: '5687'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: TARGET
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0486
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3657'
   '@toLevel': '1'
   '@name': PvP Weapon - Decrease Resist
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0756
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByAttack
-      allowWeapons:
-        $value: null
-        value: []
-        $text: ALL
+    - '@name': TriggerSkillByAttack
       attackerType:
-        $value: null
-        value: []
         $text: Playable
-      chance:
-        $value: null
-        value: []
-        $text: '10'
-      isCritical:
-        $value: null
-        value: []
-        $text: 'false'
       minDamage:
-        $value: null
-        value: []
         $text: '50'
+      chance:
+        $text: '10'
+      targetType:
+        $text: TARGET
+      isCritical:
+        $text: 'false'
+      allowWeapons:
+        $text: ALL
       skillId:
-        $value: null
-        value: []
         $text: '5688'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: TARGET
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0756
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3658'
   '@toLevel': '1'
   '@name': PvP Shield - Reflect Damage
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0086
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByDamage
+    - '@name': TriggerSkillByDamage
       attackerType:
-        $value: null
-        value: []
         $text: Playable
       chance:
-        $value: null
-        value: []
         $text: '10'
+      targetType:
+        $text: SELF
       minDamage:
-        $value: null
-        value: []
         $text: '40'
       skillId:
-        $value: null
-        value: []
         $text: '5689'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: SELF
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0086
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3659'
   '@toLevel': '1'
   '@name': PvP Armor - Damage Down
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1040
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByDamage
+    - '@name': TriggerSkillByDamage
       attackerType:
-        $value: null
-        value: []
         $text: Playable
       chance:
-        $value: null
-        value: []
         $text: '20'
+      targetType:
+        $text: SELF
       minDamage:
-        $value: null
-        value: []
         $text: '50'
       skillId:
-        $value: null
-        value: []
         $text: '5690'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: SELF
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1040
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3660'
   '@toLevel': '1'
   '@name': PvP Armor - Critical Down
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1242
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByDamage
+    - '@name': TriggerSkillByDamage
       attackerType:
-        $value: null
-        value: []
         $text: Playable
       chance:
-        $value: null
-        value: []
         $text: '20'
+      targetType:
+        $text: SELF
       minDamage:
-        $value: null
-        value: []
         $text: '50'
       skillId:
-        $value: null
-        value: []
         $text: '5691'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: SELF
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1242
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3661'
   '@toLevel': '1'
   '@name': PvP Armor - Heal
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1011
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillBySkill
+    - '@name': TriggerSkillBySkill
       castSkillId:
-        $value: null
-        value: []
         $text: '1401'
-      chance:
-        $value: null
-        value: []
-        $text: '5'
       skillId:
-        $value: null
-        value: []
         $text: '5692'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: TARGET
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1011
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
+      chance:
+        $text: '5'
+      targetType:
+        $text: TARGET
 - '@id': '3662'
   '@toLevel': '1'
   '@name': PvP Armor - Speed Down
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1160
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByDamage
+    - '@name': TriggerSkillByDamage
       attackerType:
-        $value: null
-        value: []
         $text: Playable
       chance:
-        $value: null
-        value: []
         $text: '10'
+      targetType:
+        $text: TARGET
       minDamage:
-        $value: null
-        value: []
         $text: '50'
       skillId:
-        $value: null
-        value: []
         $text: '5693'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: TARGET
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1160
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3663'
   '@toLevel': '1'
   '@name': PvP Armor - Mirage
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0445
+  magicLevel:
+    $text: '80'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByDamage
+    - '@name': TriggerSkillByDamage
       attackerType:
-        $value: null
-        value: []
         $text: Playable
       chance:
-        $value: null
-        value: []
         $text: '25'
+      targetType:
+        $text: TARGET
       minDamage:
-        $value: null
-        value: []
         $text: '50'
       skillId:
-        $value: null
-        value: []
         $text: '5694'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: TARGET
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0445
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '80'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3664'
   '@toLevel': '1'
   '@name': Red Talisman - Max CP
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_talisman_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
   abnormalType:
-    $value: null
-    value: []
     $text: TALISMAN
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
   effectPoint:
-    $value: null
-    value: []
     $text: '532'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxCp
-      amount:
-        $value: null
-        value: []
-        $text: '30'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_talisman_i00
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   mpConsume:
-    $value: null
-    value: []
     $text: '40'
   mpInitialConsume:
-    $value: null
-    value: []
     $text: '10'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '360000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxCp
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
 - '@id': '3665'
   '@toLevel': '2'
   '@name': Red Talisman - CP Regeneration
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_talisman_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
   abnormalType:
-    $value: null
-    value: []
     $text: TALISMAN
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
   effectPoint:
-    $value: null
-    value: []
     $text: '532'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': CpRegen
-      amount:
-        $value: null
-        value: []
-        $text: '30'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_talisman_i00
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   mpConsume:
-    $value: null
-    value: []
     $text: '40'
   mpInitialConsume:
-    $value: null
-    value: []
     $text: '10'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '360000'
+  magicCriticalRate:
+    $text: '5'
+  basicProperty:
+    $text: NONE
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': CpRegen
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
 - '@id': '3666'
   '@toLevel': '1'
   '@name': Yellow Talisman - Increase Momentum
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_talisman_i02
+  magicLevel:
+    $text: '1'
+  magicCriticalRate:
+    $text: '5'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByDamage
+    - '@name': TriggerSkillByDamage
       attackerType:
-        $value: null
-        value: []
         $text: Creature
       chance:
-        $value: null
-        value: []
         $text: '2'
+      targetType:
+        $text: SELF
       minDamage:
-        $value: null
-        value: []
         $text: '20'
       skillId:
-        $value: null
-        value: []
         $text: '5695'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-      targetType: SELF
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_talisman_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '3667'
   '@toLevel': '1'
   '@name': Yellow Talisman - Damage Transition
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TransferDamageToSummon
-      amount:
-        $value: null
-        value: []
-        $text: '10'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_talisman_i02
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '40'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': TransferDamageToSummon
+      amount:
+        $text: '10'
 - '@id': '3668'
   '@toLevel': '1'
   '@name': Zubei's Leather Gaiters
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '1.47'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t65_l_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '1.47'
+      mode:
+        $text: DIFF
 - '@id': '3669'
   '@toLevel': '1'
   '@name': Zubei's Leather Shirt
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '9.55'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t65_u_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '9.55'
+      mode:
+        $text: DIFF
 - '@id': '3670'
   '@toLevel': '1'
   '@name': Zubei's Gauntlets
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '0.59'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t65_g_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '0.59'
+      mode:
+        $text: DIFF
 - '@id': '3671'
   '@toLevel': '1'
   '@name': Zubei's Boots
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '0.59'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t65_b_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '0.59'
+      mode:
+        $text: DIFF
 - '@id': '3672'
   '@toLevel': '1'
   '@name': Zubei's Gaiters
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '123'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t64_l_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '2.08'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '123'
+      mode:
+        $text: DIFF
 - '@id': '3673'
   '@toLevel': '1'
   '@name': Zubei's Gauntlets
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '49'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t64_g_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '0.83'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '49'
+      mode:
+        $text: DIFF
 - '@id': '3674'
   '@toLevel': '1'
   '@name': Zubei's Boots
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '49'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t64_b_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '0.83'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '49'
+      mode:
+        $text: DIFF
 - '@id': '3675'
   '@toLevel': '1'
   '@name': Zubei's Helmet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '74'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_helmet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '1.25'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '74'
+      mode:
+        $text: DIFF
 - '@id': '3676'
   '@toLevel': '1'
   '@name': Zubei's Breastplate
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '294'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t64_u_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '7.24'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '294'
+      mode:
+        $text: DIFF
 - '@id': '3677'
   '@toLevel': '1'
   '@name': Tunic of Zubei
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MAtk
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t56_u_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '3678'
   '@toLevel': '1'
   '@name': Stockings of Zubei
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MAtk
-      amount:
-        $value: null
-        value: []
-        $text: '2.08'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t56_l_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '2.08'
+      mode:
+        $text: PER
 - '@id': '3679'
   '@toLevel': '1'
   '@name': Zubei's Gauntlets
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MAtk
-      amount:
-        $value: null
-        value: []
-        $text: '0.83'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t56_g_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '0.83'
+      mode:
+        $text: PER
 - '@id': '3680'
   '@toLevel': '1'
   '@name': Zubei's Boots
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MAtk
-      amount:
-        $value: null
-        value: []
-        $text: '0.83'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t56_b_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '0.83'
+      mode:
+        $text: PER
 - '@id': '3681'
   '@toLevel': '1'
   '@name': Zubei's Shield
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ResistDDMagic
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.shield_shrnoens_shield_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': ResistDDMagic
+      amount:
+        $text: '2'
+      mode:
+        $text: PER
 - '@id': '3682'
   '@toLevel': '1'
   '@name': Avadon Gloves
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '49'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t66_g_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '49'
+      mode:
+        $text: DIFF
 - '@id': '3683'
   '@toLevel': '1'
   '@name': Avadon Boots
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '49'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t66_b_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '49'
+      mode:
+        $text: DIFF
 - '@id': '3684'
   '@toLevel': '1'
   '@name': Avadon Circlet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '73'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_leather_helmet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '73'
+      mode:
+        $text: DIFF
 - '@id': '3685'
   '@toLevel': '1'
   '@name': Avadon Gaiters
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '122'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t66_l_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '122'
+      mode:
+        $text: DIFF
 - '@id': '3686'
   '@toLevel': '1'
   '@name': Avadon Breastplate
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '833'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t66_u_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '833'
+      mode:
+        $text: DIFF
 - '@id': '3687'
   '@toLevel': '1'
   '@name': Avadon Shield
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ResistDDMagic
-      amount:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.shield_avadon_shield_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': ResistDDMagic
+      amount:
+        $text: '1'
+      mode:
+        $text: PER
 - '@id': '3688'
   '@toLevel': '1'
   '@name': Avadon Circlet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': WeightPenalty
-      amount:
-        $value: null
-        value: []
-        $text: '1440'
   icon:
-    $value: null
-    value: []
     $text: icon.armor_leather_helmet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '1.25'
+      mode:
+        $text: PER
+    - '@name': WeightPenalty
+      amount:
+        $text: '1440'
 - '@id': '3689'
   '@toLevel': '1'
   '@name': Avadon Gloves
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': WeightPenalty
-      amount:
-        $value: null
-        value: []
-        $text: '960'
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t67_g_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '0.83'
+      mode:
+        $text: PER
+    - '@name': WeightPenalty
+      amount:
+        $text: '960'
 - '@id': '3690'
   '@toLevel': '1'
   '@name': Avadon Leather Armor
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': WeightPenalty
-      amount:
-        $value: null
-        value: []
-        $text: '11038'
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t67_ul_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '17.08'
+      mode:
+        $text: PER
+    - '@name': WeightPenalty
+      amount:
+        $text: '11038'
 - '@id': '3691'
   '@toLevel': '1'
   '@name': Avadon Boots
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': WeightPenalty
-      amount:
-        $value: null
-        value: []
-        $text: '960'
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t67_b_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '0.83'
+      mode:
+        $text: PER
+    - '@name': WeightPenalty
+      amount:
+        $text: '960'
 - '@id': '3692'
   '@toLevel': '1'
   '@name': Avadon Circlet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '1.25'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_leather_helmet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '1.25'
+      mode:
+        $text: PER
 - '@id': '3693'
   '@toLevel': '1'
   '@name': Avadon Gloves
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '0.83'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t59_g_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '0.83'
+      mode:
+        $text: PER
 - '@id': '3694'
   '@toLevel': '1'
   '@name': Avadon Robe
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t59_ul_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '17.08'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '3695'
   '@toLevel': '1'
   '@name': Avadon Boots
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '0.83'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t59_b_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '58'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '0.83'
+      mode:
+        $text: PER
 - '@id': '3696'
   '@toLevel': '1'
   '@name': Doom Gloves
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '53'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t71_g_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '61'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': Breath
+      amount:
+        $text: '33'
+      mode:
+        $text: DIFF
+    - '@name': MaxHp
+      amount:
+        $text: '53'
+      mode:
+        $text: DIFF
 - '@id': '3697'
   '@toLevel': '1'
   '@name': Doom Boots
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '53'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t71_b_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '61'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': Breath
+      amount:
+        $text: '33'
+      mode:
+        $text: DIFF
+    - '@name': MaxHp
+      amount:
+        $text: '53'
+      mode:
+        $text: DIFF
 - '@id': '3698'
   '@toLevel': '1'
   '@name': Doom Plate Armor
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '1093'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_t71_ul_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '61'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': Breath
+      amount:
+        $text: '383'
+      mode:
+        $text: DIFF
+    - '@name': MaxHp
+      amount:
+        $text: '1093'
+      mode:
+        $text: DIFF
 - '@id': '3699'
   '@toLevel': '1'
   '@name': Doom Helmet
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '80'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.armor_leather_helmet_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '61'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicCriticalRate:
+    $text: '5'
+  effects:
+    effect:
+    - '@name': Breath
+      amount:
+        $text: '50'
+      mode:
+        $text: DIFF
+    - '@name': MaxHp
+      amount:
+        $text: '80'
+      mode:
+        $text: DIFF

@@ -1,8 +1,8 @@
 use l2_core::data::skill_tree_data::SkillTreesData;
 use l2_core::game_objects::player::Player;
 use l2_core::shared_packets::write::SendablePacketBuffer;
-use std::fmt::Debug;
 use macro_common::SendablePacket;
+use std::fmt::Debug;
 
 /// This packet is needed for letting the client know which skill he can learn
 #[derive(Debug, Clone, SendablePacket)]
@@ -58,12 +58,12 @@ impl AcquireSkillList {
 }
 #[cfg(test)]
 mod test {
+    use crate::packets::to_client::AcquireSkillList;
     use entities::entities::character;
     use l2_core::config::traits::ConfigDirLoader;
     use l2_core::data::char_template::ClassTemplates;
     use l2_core::data::skill_tree_data::SkillTreesData;
     use l2_core::game_objects::player::Player;
-    use crate::packets::to_client::AcquireSkillList;
 
     #[tokio::test]
     async fn test_skill_list() {

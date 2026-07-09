@@ -1,7 +1,7 @@
 use l2_core::bitmask::BitMask;
 use l2_core::game_objects::item::ItemObject;
-use l2_core::game_objects::player::inventory::InventorySlot;
 use l2_core::game_objects::player::Player;
+use l2_core::game_objects::player::inventory::InventorySlot;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacket;
 use sea_orm::Iterable;
@@ -59,10 +59,10 @@ mod tests {
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
+    use l2_core::id_factory::ObjectId;
     use l2_core::shared_packets::common::SendablePacket;
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
-    use l2_core::id_factory::ObjectId;
     use test_utils::utils::get_test_db;
     #[tokio::test]
     async fn test_equipped_items() {

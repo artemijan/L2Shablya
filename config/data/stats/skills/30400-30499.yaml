@@ -1,82 +1,111 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '30400'
   '@toLevel': '2'
   '@name': Divine Wind
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount: {}
-      attribute:
-        $value: null
-        value: []
-        $text: HOLY
   icon:
-    $value: null
-    value: []
     $text: icon.skill30400
-  magicLevel: {}
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '85'
+  effects:
+    effect:
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+      attribute:
+        $text: WIND
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+      attribute:
+        $text: HOLY
 - '@id': '30401'
   '@toLevel': '2'
   '@name': Tenacity
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Speed
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill30401
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '4'
+        - '@level': '2'
+          $text: '7'
+      mode:
+        $text: DIFF
 - '@id': '30402'
   '@toLevel': '2'
   '@name': Efficacy
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount: {}
-      magicType:
-        $value: null
-        value: []
-        $text: '3'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill30402
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-1'
+        - '@level': '2'
+          $text: '-2'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-1'
+        - '@level': '2'
+          $text: '-2'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': MagicMpCost
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-1'
+        - '@level': '2'
+          $text: '-2'
+      mode:
+        $text: PER
+      magicType:
+        $text: '3'

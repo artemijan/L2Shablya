@@ -1,6 +1,6 @@
 use crate::controller::GameController;
-use l2_core::game_objects::player::paper_doll::PaperDoll;
 use l2_core::game_objects::player::Player;
+use l2_core::game_objects::player::paper_doll::PaperDoll;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use macro_common::SendablePacket;
 use std::sync::Arc;

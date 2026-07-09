@@ -23,6 +23,7 @@ impl ShortcutsInit {
 #[cfg(test)]
 mod test {
     use crate::controller::GameController;
+    use crate::packets::to_client::ShortcutsInit;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
@@ -31,7 +32,6 @@ mod test {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use crate::packets::to_client::ShortcutsInit;
 
     #[tokio::test]
     async fn test_write_macro_list() {
@@ -42,7 +42,7 @@ mod test {
             m.user_id = user.id;
             m
         })
-            .await;
+        .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../config/game.yaml"
         )));
@@ -53,9 +53,6 @@ mod test {
             .unwrap();
         let player = Player::new(char, vec![], template.clone(), None);
         let p = ShortcutsInit::new(&player).unwrap();
-        assert_eq!(
-            [69, 0, 0, 0, 0],
-            p.get_buffer().get_data_mut(false)[2..]
-        );
+        assert_eq!([69, 0, 0, 0, 0], p.get_buffer().get_data_mut(false)[2..]);
     }
 }

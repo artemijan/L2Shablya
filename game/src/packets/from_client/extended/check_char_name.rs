@@ -3,9 +3,9 @@ use crate::packets::utils::validate_can_create_char;
 use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
-use tracing::instrument;
 use l2_core::shared_packets::common::ReadablePacket;
 use l2_core::shared_packets::read::ReadablePacketBuffer;
+use tracing::instrument;
 
 #[derive(Debug, Clone)]
 pub struct CheckCharName {
@@ -32,10 +32,8 @@ impl Message<CheckCharName> for PlayerClient {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> anyhow::Result<()> {
         let reason = validate_can_create_char(&self.db_pool, &msg.name).await?;
-        self.send_packet(
-            CharExistsResponse::new(reason as i32)?,
-        )
-        .await?;
+        self.send_packet(CharExistsResponse::new(reason as i32)?)
+            .await?;
         Ok(())
     }
 }
@@ -49,7 +47,7 @@ mod tests {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use tokio::io::{split, AsyncReadExt};
+    use tokio::io::{AsyncReadExt, split};
 
     #[tokio::test]
     pub async fn test_handle() {

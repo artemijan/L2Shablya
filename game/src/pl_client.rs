@@ -5,6 +5,7 @@ use crate::packets::to_client;
 use crate::packets::to_client::CharMoveToLocation;
 use anyhow::{anyhow, bail};
 use bytes::BytesMut;
+use chrono::Utc;
 use entities::DBPool;
 use entities::entities::{character, user};
 use kameo::Actor;
@@ -14,7 +15,9 @@ use kameo::message::{Context, Message};
 use l2_core::crypt::game::GameClientEncryption;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
+use l2_core::game_objects::creature::buff::AppliedBuff;
 use l2_core::game_objects::player::Player;
+use l2_core::game_objects::stats::calculator::Modifier;
 use l2_core::game_objects::stats::stat_enum::Stat;
 use l2_core::network::connection::{
     ConnectionActor, HandleIncomingPacket, HandleOutboundPacket, send_delayed_packet, send_packet,
@@ -693,6 +696,7 @@ impl Message<ApplyDamage> for PlayerClient {
             if character.stats.current_hp < 0.0 {
                 character.stats.current_hp = 0.0;
             }
+            character.sync_vitals_to_model();
             (
                 character.get_object_id(),
                 character.get_visible_name().to_string(),
@@ -762,6 +766,174 @@ impl Message<ApplyDamage> for PlayerClient {
                     })
                     .await;
             });
+        }
+        Ok(())
+    }
+}
+
+/// Heals the player's HP or MP (flat amount or percent of max), sent by a caster actor.
+#[derive(Debug, Clone)]
+pub struct ApplyHeal {
+    pub amount: f64,
+    /// When set, `amount` is a percent of the max HP/MP instead of a flat value.
+    pub is_percent: bool,
+    pub is_mp: bool,
+    pub healer_id: i32,
+    pub healer_name: String,
+}
+
+impl Message<ApplyHeal> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+    async fn handle(
+        &mut self,
+        msg: ApplyHeal,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        let (object_id, healed, current_hp, current_mp, max_hp, max_mp) = {
+            let player = self.try_get_selected_char_mut()?;
+            let (current, max) = if msg.is_mp {
+                (player.stats.current_mp, player.get_max_mp())
+            } else {
+                (player.stats.current_hp, player.get_max_hp())
+            };
+            let amount = if msg.is_percent {
+                max * msg.amount / 100.0
+            } else {
+                msg.amount
+            };
+            // No overheal.
+            let healed = amount.clamp(0.0, (max - current).max(0.0));
+            if msg.is_mp {
+                player.stats.current_mp = current + healed;
+            } else {
+                player.stats.current_hp = current + healed;
+            }
+            player.sync_vitals_to_model();
+            (
+                player.get_object_id(),
+                healed,
+                player.stats.current_hp,
+                player.stats.current_mp,
+                player.get_max_hp(),
+                player.get_max_mp(),
+            )
+        };
+
+        let healed_int = healed as i32;
+        let self_heal = msg.healer_id == object_id;
+        let msg_type = match (msg.is_mp, self_heal) {
+            (false, true) => to_client::SystemMessageType::S1HpHasBeenRestored,
+            (false, false) => to_client::SystemMessageType::S2HpHasBeenRestoredByC1,
+            (true, true) => to_client::SystemMessageType::S1MpHasBeenRestored,
+            (true, false) => to_client::SystemMessageType::S2MpHasBeenRestoredByC1,
+        };
+        let mut sm = to_client::SystemMessage::new(msg_type)?;
+        if !self_heal {
+            sm.add_param(to_client::SystemMessageParam::PcName(msg.healer_name))?;
+        }
+        sm.add_param(to_client::SystemMessageParam::Int(healed_int))?;
+        self.send_packet(sm).await?;
+
+        let mut status_update = to_client::StatusUpdate::new(object_id)?;
+        status_update.add_update(to_client::StatusUpdateType::CurHp, current_hp as i32)?;
+        status_update.add_update(to_client::StatusUpdateType::MaxHp, max_hp as i32)?;
+        status_update.add_update(to_client::StatusUpdateType::CurMp, current_mp as i32)?;
+        status_update.add_update(to_client::StatusUpdateType::MaxMp, max_mp as i32)?;
+        self.controller.broadcast_packet(status_update);
+        Ok(())
+    }
+}
+
+/// Applies a continuous effect (buff/debuff) to the player and schedules its expiry.
+#[derive(Debug, Clone)]
+pub struct ApplyBuff {
+    pub skill_id: i32,
+    pub skill_level: i32,
+    pub caster_id: i32,
+    pub abnormal_type: Option<String>,
+    pub abnormal_level: i32,
+    pub abnormal_time_secs: i32,
+    pub mods: Vec<(Stat, Modifier)>,
+}
+
+impl Message<ApplyBuff> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+    async fn handle(
+        &mut self,
+        msg: ApplyBuff,
+        ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        let duration_secs = msg.abnormal_time_secs.max(1);
+        let (added, buffs) = {
+            let player = self.try_get_selected_char_mut()?;
+            let buff = AppliedBuff {
+                skill_id: msg.skill_id,
+                skill_level: msg.skill_level,
+                caster_id: msg.caster_id,
+                abnormal_type: msg.abnormal_type.clone(),
+                abnormal_level: msg.abnormal_level,
+                end_time: Utc::now() + chrono::Duration::seconds(i64::from(duration_secs)),
+                mods: msg.mods.clone(),
+            };
+            let added = player.stats.add_buff(buff);
+            (added, player.stats.active_buffs.clone())
+        };
+        if added {
+            self.send_packet(to_client::AbnormalStatusUpdate::new(&buffs)?)
+                .await?;
+            // Schedule buff expiry.
+            let actor = ctx.actor_ref().clone();
+            let remove = RemoveBuff {
+                skill_id: msg.skill_id,
+                skill_level: msg.skill_level,
+            };
+            tokio::spawn(async move {
+                sleep(Duration::from_secs(
+                    u64::try_from(duration_secs).unwrap_or(0),
+                ))
+                .await;
+                let _ = actor.tell(remove).await;
+            });
+        }
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct RemoveBuff {
+    pub skill_id: i32,
+    pub skill_level: i32,
+}
+
+impl Message<RemoveBuff> for PlayerClient {
+    type Reply = anyhow::Result<()>;
+    async fn handle(
+        &mut self,
+        msg: RemoveBuff,
+        _ctx: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        let (removed, buffs) = {
+            let player = self.try_get_selected_char_mut()?;
+            // Only remove when this instance is really over: a re-applied buff has a
+            // fresh end time and must survive the expiry timer of the old instance.
+            let expired = player
+                .stats
+                .active_buffs
+                .iter()
+                .any(|b| b.skill_id == msg.skill_id && b.remaining_secs() <= 1);
+            let removed = expired && player.stats.remove_buff(msg.skill_id);
+            (removed, player.stats.active_buffs.clone())
+        };
+        if removed {
+            let mut sm = to_client::SystemMessage::new(to_client::SystemMessageType::S1HasWornOff)?;
+            sm.add_param(to_client::SystemMessageParam::SkillName {
+                id: msg.skill_id,
+                level: msg.skill_level as i16,
+                sub_level: 0,
+            })?;
+            self.send_packet(sm).await?;
+            self.send_packet(to_client::AbnormalStatusUpdate::new(&buffs)?)
+                .await?;
         }
         Ok(())
     }

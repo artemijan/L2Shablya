@@ -1,7 +1,7 @@
 use l2_core::config::gs::GSServerConfig;
+use l2_core::game_objects::player::Player;
 use l2_core::game_objects::player::effect::abnormal_effect::AbnormalVisualEffect;
 use l2_core::game_objects::player::paper_doll::PaperDoll;
-use l2_core::game_objects::player::Player;
 use l2_core::game_objects::zone::ZoneId;
 use l2_core::shared_packets::write::SendablePacketBuffer;
 use l2_core::traits::conversion::ToU32Rounded;

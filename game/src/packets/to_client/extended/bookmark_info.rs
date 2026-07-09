@@ -5,7 +5,7 @@ use macro_common::SendablePacket;
 #[allow(unused)]
 #[derive(Debug, Clone, SendablePacket)]
 pub struct BookmarkInfo {
-    pub(crate) buffer: SendablePacketBuffer
+    pub(crate) buffer: SendablePacketBuffer,
 }
 
 impl BookmarkInfo {
@@ -27,9 +27,11 @@ impl BookmarkInfo {
             inst.buffer.write_i32(bookmark.x)?;
             inst.buffer.write_i32(bookmark.y)?;
             inst.buffer.write_i32(bookmark.z)?;
-            inst.buffer.write_sized_c_utf16le_string(Some(&bookmark.name))?;
+            inst.buffer
+                .write_sized_c_utf16le_string(Some(&bookmark.name))?;
             inst.buffer.write_i32(bookmark.icon)?;
-            inst.buffer.write_sized_c_utf16le_string(Some(&bookmark.tag))?;
+            inst.buffer
+                .write_sized_c_utf16le_string(Some(&bookmark.tag))?;
         }
         Ok(inst)
     }
@@ -37,6 +39,7 @@ impl BookmarkInfo {
 #[cfg(test)]
 mod test {
     use crate::controller::GameController;
+    use crate::packets::to_client::extended::BookmarkInfo;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
@@ -45,7 +48,6 @@ mod test {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use crate::packets::to_client::extended::BookmarkInfo;
 
     #[tokio::test]
     #[allow(clippy::too_many_lines)]
@@ -57,7 +59,7 @@ mod test {
             m.user_id = user.id;
             m
         })
-            .await;
+        .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../../config/game.yaml"
         )));

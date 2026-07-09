@@ -141,7 +141,19 @@ impl Player {
             .insert(Stat::MCriticalDamage, 2.0);
 
         stats.update_cache();
-        stats.current_hp = stats.get_stat(Stat::MaxHp);
+        // Seed runtime HP/MP/CP from the persisted character; fall back to the
+        // maximums for models that don't carry current values (e.g. test fixtures).
+        stats.current_hp = if char_model.cur_hp > 0.0 {
+            char_model.cur_hp
+        } else {
+            stats.get_stat(Stat::MaxHp)
+        };
+        stats.current_mp = if char_model.cur_mp > 0.0 {
+            char_model.cur_mp
+        } else {
+            char_model.max_mp
+        };
+        stats.current_cp = char_model.cur_cp;
 
         Self {
             object_id,
@@ -910,6 +922,14 @@ impl Player {
     #[must_use]
     pub fn get_max_cp(&self) -> f64 {
         self.char_model.max_cp
+    }
+
+    /// Copies the runtime HP/MP/CP into the persisted character model so packets
+    /// built from the model and the logout save see the current values.
+    pub fn sync_vitals_to_model(&mut self) {
+        self.char_model.cur_hp = self.stats.current_hp;
+        self.char_model.cur_mp = self.stats.current_mp;
+        self.char_model.cur_cp = self.stats.current_cp;
     }
 
     #[must_use]

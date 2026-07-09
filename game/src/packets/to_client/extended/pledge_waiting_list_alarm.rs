@@ -29,11 +29,6 @@ mod test {
     #[tokio::test]
     async fn test_henna_ok() {
         let p = PledgeWaitingListAlarm::new().unwrap();
-        assert_eq!(
-            [
-                254, 71, 1
-            ],
-            p.get_buffer().get_data_mut(false)[2..]
-        );
+        assert_eq!([254, 71, 1], p.get_buffer().get_data_mut(false)[2..]);
     }
 }

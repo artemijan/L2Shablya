@@ -1,8 +1,8 @@
 use crate::ls_client::LoginServerClient;
 use kameo::message::Context;
 use kameo::prelude::Message;
-use tracing::instrument;
 use l2_core::shared_packets::gs_2_ls::ChangePassword;
+use tracing::instrument;
 
 impl Message<ChangePassword> for LoginServerClient {
     type Reply = anyhow::Result<()>;

@@ -16,7 +16,7 @@ impl FriendList {
             buffer: SendablePacketBuffer::new(),
         };
         inst.buffer.write(Self::PACKET_ID)?;
-        let friends:Vec<u8> = vec![];
+        let friends: Vec<u8> = vec![];
         inst.buffer.write_u32(u32::try_from(friends.len())?)?;
         //todo: implement me
         Ok(inst)
@@ -24,16 +24,16 @@ impl FriendList {
 }
 #[cfg(test)]
 mod tests {
-    use std::sync::Arc;
+    use super::*;
+    use crate::controller::GameController;
     use entities::test_factories::factories::{char_factory, user_factory};
     use l2_core::config::gs::GSServerConfig;
     use l2_core::data::classes::mapping::Class;
     use l2_core::shared_packets::common::SendablePacket;
     use l2_core::traits::ServerConfig;
+    use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use crate::controller::GameController;
-    use super::*;
-    
+
     #[tokio::test]
     async fn test_friend_list() {
         let db_pool = get_test_db().await;

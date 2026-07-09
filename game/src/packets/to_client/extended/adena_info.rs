@@ -43,7 +43,7 @@ mod tests {
             m.user_id = user.id;
             m
         })
-            .await;
+        .await;
         let cfg = Arc::new(GSServerConfig::from_string(include_str!(
             "../../../../../config/game.yaml"
         )));

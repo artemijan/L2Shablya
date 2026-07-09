@@ -1,99 +1,55 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '39257'
   '@toLevel': '1'
   '@name': Newbie MP Recovery Potion
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Mp
-      amount:
-        $value: null
-        value: []
-        $text: '40'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.etc_reagent_white_i00
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '500'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': Mp
+      amount:
+        $text: '40'
+      mode:
+        $text: DIFF
 - '@id': '39258'
   '@toLevel': '1'
   '@name': Warrior MP Recovery Potion
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  blockedInOlympiad:
-    $value: null
-    value: []
-    $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Mp
-      amount:
-        $value: null
-        value: []
-        $text: '40'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_reagent_white_i00
+  blockedInOlympiad:
+    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': Mp
+      amount:
+        $text: '40'
+      mode:
+        $text: DIFF

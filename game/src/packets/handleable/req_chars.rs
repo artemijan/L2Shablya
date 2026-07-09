@@ -3,8 +3,8 @@ use entities::entities::character;
 use kameo::message::Context;
 use kameo::prelude::Message;
 use l2_core::shared_packets::{gs_2_ls::ReplyChars, ls_2_gs::RequestChars};
-use tracing::instrument;
 use l2_core::traits::ServerToServer;
+use tracing::instrument;
 
 impl Message<RequestChars> for LoginServerClient {
     type Reply = anyhow::Result<()>;

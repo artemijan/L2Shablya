@@ -1,2433 +1,4149 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '30500'
   '@toLevel': '28'
   '@name': Lateral Hit
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30500
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '20'
   abnormalType:
-    $value: null
-    value: []
     $text: PD_DOWN
-  activateRate: {}
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  activateRate:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '28'
+      $text: '80'
+    - '@fromLevel': '24'
+      '@toLevel': '28'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      $text: '{base + base / 100 * subIndex}'
   castRange:
-    $value: null
-    value: []
     $text: '40'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '-687'
   effectRange:
-    $value: null
-    value: []
     $text: '400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30500
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  magicLevel: {}
-  mpConsume: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '20'
+    - '@level': '3'
+      $text: '28'
+    - '@level': '4'
+      $text: '36'
+    - '@level': '5'
+      $text: '42'
+    - '@level': '6'
+      $text: '46'
+    - '@level': '7'
+      $text: '50'
+    - '@level': '8'
+      $text: '54'
+    - '@level': '9'
+      $text: '60'
+    - '@level': '10'
+      $text: '62'
+    - '@level': '11'
+      $text: '66'
+    - '@level': '12'
+      $text: '70'
+    - '@level': '13'
+      $text: '74'
+    - '@level': '14'
+      $text: '77'
+    - '@level': '15'
+      $text: '79'
+    - '@level': '16'
+      $text: '81'
+    - '@level': '17'
+      $text: '83'
+    - '@level': '18'
+      $text: '85'
+    - '@level': '19'
+      $text: '87'
+    - '@level': '20'
+      $text: '89'
+    - '@level': '21'
+      $text: '91'
+    - '@level': '22'
+      $text: '93'
+    - '@level': '23'
+      $text: '95'
+    - '@level': '24'
+      $text: '97'
+    - '@level': '25'
+      $text: '99'
+    - '@level': '26'
+      $text: '101'
+    - '@level': '27'
+      $text: '103'
+    - '@level': '28'
+      $text: '105'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '8'
+    - '@level': '2'
+      $text: '17'
+    - '@level': '3'
+      $text: '23'
+    - '@level': '4'
+      $text: '29'
+    - '@level': '5'
+      $text: '35'
+    - '@level': '6'
+      $text: '39'
+    - '@level': '7'
+      $text: '44'
+    - '@level': '8'
+      $text: '47'
+    - '@level': '9'
+      $text: '52'
+    - '@level': '10'
+      $text: '55'
+    - '@level': '11'
+      $text: '59'
+    - '@level': '12'
+      $text: '63'
+    - '@level': '13'
+      $text: '67'
+    - '@level': '14'
+      $text: '69'
+    - '@level': '15'
+      $text: '70'
+    - '@level': '16'
+      $text: '71'
+    - '@level': '17'
+      $text: '73'
+    - '@level': '18'
+      $text: '73'
+    - '@level': '19'
+      $text: '74'
+    - '@level': '20'
+      $text: '75'
+    - '@level': '21'
+      $text: '75'
+    - '@level': '22'
+      $text: '75'
+    - '@level': '23'
+      $text: '76'
+    - '@level': '24'
+      $text: '76'
+    - '@level': '25'
+      $text: '77'
+    - '@level': '26'
+      $text: '78'
+    - '@level': '27'
+      $text: '79'
+    - '@level': '28'
+      $text: '80'
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  isDebuff:
+    $text: 'true'
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '22'
+        - '@level': '2'
+          $text: '77'
+        - '@level': '3'
+          $text: '141'
+        - '@level': '4'
+          $text: '221'
+        - '@level': '5'
+          $text: '669'
+        - '@level': '6'
+          $text: '856'
+        - '@level': '7'
+          $text: '1073'
+        - '@level': '8'
+          $text: '1323'
+        - '@level': '9'
+          $text: '1602'
+        - '@level': '10'
+          $text: '1913'
+        - '@level': '11'
+          $text: '2256'
+        - '@level': '12'
+          $text: '2629'
+        - '@level': '13'
+          $text: '3034'
+        - '@level': '14'
+          $text: '3879'
+        - '@level': '15'
+          $text: '4149'
+        - '@level': '16'
+          $text: '4434'
+        - '@level': '17'
+          $text: '4733'
+        - '@level': '18'
+          $text: '18990'
+        - '@level': '19'
+          $text: '20811'
+        - '@level': '20'
+          $text: '23098'
+        - '@level': '21'
+          $text: '25950'
+        - '@level': '22'
+          $text: '29500'
+        - '@level': '23'
+          $text: '33928'
+        - '@level': '24'
+          $text: '39478'
+        - '@level': '25'
+          $text: '46478'
+        - '@level': '26'
+          $text: '47996'
+        - '@level': '27'
+          $text: '49514'
+        - '@level': '28'
+          $text: '51032'
+        - '@fromLevel': '24'
+          '@toLevel': '28'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{base + base / 100 * subIndex}'
+      criticalChance:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '28'
+          $text: '10'
+        - '@fromLevel': '24'
+          '@toLevel': '28'
+          '@fromSubLevel': '3001'
+          '@toSubLevel': '3020'
+          $text: '{base + base / 100 * subIndex}'
+      abnormalType:
+        $text: STUN
+      damageModifier:
+        $text: '1.2'
+      overHit:
+        $text: 'true'
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '17'
+          $text: '-10'
+        - '@fromLevel': '18'
+          '@toLevel': '28'
+          $text: '-30'
+      mode:
+        $text: PER
 - '@id': '30501'
   '@toLevel': '27'
   '@name': Backspin Blow
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30501
   abnormalTime:
-    $value: null
-    value: []
     $text: '3'
   abnormalType:
-    $value: null
-    value: []
     $text: STUN
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: STUN
   activateRate:
-    $value: null
-    value: []
     $text: '60'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  trait:
+    $text: SHOCK
   castRange:
-    $value: null
-    value: []
     $text: '600'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '-687'
   effectRange:
-    $value: null
-    value: []
     $text: '600'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': BlockActions
-      allowedSkills:
-        $value: null
-        value: []
-        $text: 10279;10517;10025;10776;11770;1904;11264;11093;13314;1912
   hitTime:
-    $value: null
-    value: []
     $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30501
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  magicLevel: {}
-  mpConsume: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '20'
+    - '@level': '2'
+      $text: '28'
+    - '@level': '3'
+      $text: '36'
+    - '@level': '4'
+      $text: '42'
+    - '@level': '5'
+      $text: '46'
+    - '@level': '6'
+      $text: '50'
+    - '@level': '7'
+      $text: '54'
+    - '@level': '8'
+      $text: '58'
+    - '@level': '9'
+      $text: '62'
+    - '@level': '10'
+      $text: '66'
+    - '@level': '11'
+      $text: '70'
+    - '@level': '12'
+      $text: '74'
+    - '@level': '13'
+      $text: '77'
+    - '@level': '14'
+      $text: '79'
+    - '@level': '15'
+      $text: '81'
+    - '@level': '16'
+      $text: '83'
+    - '@level': '17'
+      $text: '85'
+    - '@level': '18'
+      $text: '87'
+    - '@level': '19'
+      $text: '89'
+    - '@level': '20'
+      $text: '91'
+    - '@level': '21'
+      $text: '93'
+    - '@level': '22'
+      $text: '95'
+    - '@level': '23'
+      $text: '97'
+    - '@level': '24'
+      $text: '99'
+    - '@level': '25'
+      $text: '101'
+    - '@level': '26'
+      $text: '103'
+    - '@level': '27'
+      $text: '105'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '17'
+    - '@level': '2'
+      $text: '23'
+    - '@level': '3'
+      $text: '29'
+    - '@level': '4'
+      $text: '35'
+    - '@level': '5'
+      $text: '39'
+    - '@level': '6'
+      $text: '44'
+    - '@level': '7'
+      $text: '47'
+    - '@level': '8'
+      $text: '52'
+    - '@level': '9'
+      $text: '55'
+    - '@level': '10'
+      $text: '59'
+    - '@level': '11'
+      $text: '63'
+    - '@level': '12'
+      $text: '67'
+    - '@level': '13'
+      $text: '69'
+    - '@level': '14'
+      $text: '70'
+    - '@level': '15'
+      $text: '71'
+    - '@level': '16'
+      $text: '73'
+    - '@level': '17'
+      $text: '73'
+    - '@level': '18'
+      $text: '74'
+    - '@level': '19'
+      $text: '75'
+    - '@level': '20'
+      $text: '75'
+    - '@level': '21'
+      $text: '75'
+    - '@level': '22'
+      $text: '76'
+    - '@level': '23'
+      $text: '76'
+    - '@level': '24'
+      $text: '77'
+    - '@level': '25'
+      $text: '78'
+    - '@level': '26'
+      $text: '79'
+    - '@level': '27'
+      $text: '80'
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: A1
+  isDebuff:
+    $text: 'true'
   reuseDelay:
-    $value: null
-    value: []
     $text: '5000'
-  targetType: ENEMY
-  trait:
-    $value: null
-    value: []
-    $text: SHOCK
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '129'
+        - '@level': '2'
+          $text: '235'
+        - '@level': '3'
+          $text: '369'
+        - '@level': '4'
+          $text: '1116'
+        - '@level': '5'
+          $text: '1428'
+        - '@level': '6'
+          $text: '1789'
+        - '@level': '7'
+          $text: '2205'
+        - '@level': '8'
+          $text: '2671'
+        - '@level': '9'
+          $text: '3189'
+        - '@level': '10'
+          $text: '3760'
+        - '@level': '11'
+          $text: '4383'
+        - '@level': '12'
+          $text: '5058'
+        - '@level': '13'
+          $text: '6466'
+        - '@level': '14'
+          $text: '6916'
+        - '@level': '15'
+          $text: '7390'
+        - '@level': '16'
+          $text: '7888'
+        - '@level': '17'
+          $text: '28134'
+        - '@level': '18'
+          $text: '30832'
+        - '@level': '19'
+          $text: '34221'
+        - '@level': '20'
+          $text: '38446'
+        - '@level': '21'
+          $text: '43706'
+        - '@level': '22'
+          $text: '50268'
+        - '@level': '23'
+          $text: '58492'
+        - '@level': '24'
+          $text: '68865'
+        - '@level': '25'
+          $text: '71115'
+        - '@level': '26'
+          $text: '73365'
+        - '@level': '27'
+          $text: '75615'
+        - '@fromLevel': '23'
+          '@toLevel': '27'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{base + base / 100 * subIndex}'
+      pDefMod:
+        $text: '0.7'
+      overHit:
+        $text: 'true'
+      criticalChance:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '27'
+          $text: '10'
+        - '@fromLevel': '23'
+          '@toLevel': '27'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{base + base / 100 * subIndex}'
+    - '@name': BlockActions
+      allowedSkills:
+        $text: 10279;10517;10025;10776;11770;1904;11264;11093;13314;1912
 - '@id': '30502'
   '@toLevel': '24'
   '@name': Chin Strike
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30502
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3'
   abnormalType:
-    $value: null
-    value: []
     $text: KNOCKDOWN
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: KNOCKDOWN
-  activateRate: {}
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  activateRate:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '24'
+      $text: '100'
+    - '@fromLevel': '20'
+      '@toLevel': '24'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      $text: '{base + base / 100 * subIndex}'
+  lvlBonusRate:
+    $text: '20'
   castRange:
-    $value: null
-    value: []
     $text: '40'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '-709'
   effectRange:
-    $value: null
-    value: []
     $text: '400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '20'
-      '@fromSubLevel': '2001'
-      '@name': PhysicalDefence
-      '@toLevel': '24'
-      '@toSubLevel': '2020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30502
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  lvlBonusRate:
-    $value: null
-    value: []
-    $text: '20'
-  magicLevel: {}
-  mpConsume: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '40'
+    - '@level': '2'
+      $text: '44'
+    - '@level': '3'
+      $text: '48'
+    - '@level': '4'
+      $text: '52'
+    - '@level': '5'
+      $text: '56'
+    - '@level': '6'
+      $text: '60'
+    - '@level': '7'
+      $text: '64'
+    - '@level': '8'
+      $text: '68'
+    - '@level': '9'
+      $text: '72'
+    - '@level': '10'
+      $text: '76'
+    - '@level': '11'
+      $text: '78'
+    - '@level': '12'
+      $text: '80'
+    - '@level': '13'
+      $text: '82'
+    - '@level': '14'
+      $text: '84'
+    - '@level': '15'
+      $text: '86'
+    - '@level': '16'
+      $text: '88'
+    - '@level': '17'
+      $text: '90'
+    - '@level': '18'
+      $text: '92'
+    - '@level': '19'
+      $text: '94'
+    - '@level': '20'
+      $text: '96'
+    - '@level': '21'
+      $text: '98'
+    - '@level': '22'
+      $text: '101'
+    - '@level': '23'
+      $text: '103'
+    - '@level': '24'
+      $text: '105'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '34'
+    - '@level': '2'
+      $text: '37'
+    - '@level': '3'
+      $text: '41'
+    - '@level': '4'
+      $text: '45'
+    - '@level': '5'
+      $text: '49'
+    - '@level': '6'
+      $text: '54'
+    - '@level': '7'
+      $text: '57'
+    - '@level': '8'
+      $text: '61'
+    - '@level': '9'
+      $text: '65'
+    - '@level': '10'
+      $text: '68'
+    - '@level': '11'
+      $text: '70'
+    - '@level': '12'
+      $text: '71'
+    - '@level': '13'
+      $text: '72'
+    - '@level': '14'
+      $text: '73'
+    - '@level': '15'
+      $text: '74'
+    - '@level': '16'
+      $text: '75'
+    - '@level': '17'
+      $text: '75'
+    - '@level': '18'
+      $text: '75'
+    - '@level': '19'
+      $text: '76'
+    - '@level': '20'
+      $text: '76'
+    - '@level': '21'
+      $text: '77'
+    - '@level': '22'
+      $text: '78'
+    - '@level': '23'
+      $text: '79'
+    - '@level': '24'
+      $text: '80'
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  isDebuff:
+    $text: 'true'
   trait:
-    $value: null
-    value: []
     $text: KNOCKDOWN
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': KnockBack
+      speed:
+        $text: '300'
+      distance:
+        $text: '50'
+      knockDown:
+        $text: 'true'
+    - '@name': PhysicalDefence
+      '@fromLevel': '20'
+      '@toLevel': '24'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '20'
+          '@toLevel': '24'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{-0.6 - 0.4 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '30503'
   '@toLevel': '11'
   '@name': Spinning Kick
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.skill30503
   castRange:
-    $value: null
-    value: []
     $text: '60'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '-687'
   effectRange:
-    $value: null
-    value: []
     $text: '400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      criticalChance: {}
-      ignoreShieldDefence:
-        $value: null
-        value: []
-        $text: 'true'
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
   hitTime:
-    $value: null
-    value: []
     $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30503
-  magicLevel: {}
-  mpConsume: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '86'
+    - '@level': '3'
+      $text: '88'
+    - '@level': '4'
+      $text: '90'
+    - '@level': '5'
+      $text: '92'
+    - '@level': '6'
+      $text: '94'
+    - '@level': '7'
+      $text: '96'
+    - '@level': '8'
+      $text: '98'
+    - '@level': '9'
+      $text: '101'
+    - '@level': '10'
+      $text: '103'
+    - '@level': '11'
+      $text: '105'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '81'
+    - '@level': '2'
+      $text: '81'
+    - '@level': '3'
+      $text: '82'
+    - '@level': '4'
+      $text: '83'
+    - '@level': '5'
+      $text: '83'
+    - '@level': '6'
+      $text: '83'
+    - '@level': '7'
+      $text: '84'
+    - '@level': '8'
+      $text: '84'
+    - '@level': '9'
+      $text: '84'
+    - '@level': '10'
+      $text: '84'
+    - '@level': '11'
+      $text: '84'
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '5000'
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '35167'
+        - '@level': '2'
+          $text: '36755'
+        - '@level': '3'
+          $text: '40540'
+        - '@level': '4'
+          $text: '45273'
+        - '@level': '5'
+          $text: '51165'
+        - '@level': '6'
+          $text: '58506'
+        - '@level': '7'
+          $text: '67683'
+        - '@level': '8'
+          $text: '79217'
+        - '@level': '9'
+          $text: '88893'
+        - '@level': '10'
+          $text: '91705'
+        - '@level': '11'
+          $text: '94517'
+        - '@fromLevel': '7'
+          '@toLevel': '11'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{base + base / 100 * subIndex}'
+      ignoreShieldDefence:
+        $text: 'true'
+      criticalChance:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '11'
+          $text: '10'
+        - '@fromLevel': '7'
+          '@toLevel': '11'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{base + base / 100 * subIndex}'
+      overHit:
+        $text: 'true'
 - '@id': '30504'
   '@toLevel': '16'
   '@name': Gravity Hit
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.skill30504
   castRange:
-    $value: null
-    value: []
     $text: '40'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '-700'
   effectRange:
-    $value: null
-    value: []
     $text: '400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      criticalChance: {}
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      pDefMod:
-        $value: null
-        value: []
-        $text: '0.5'
-      power: {}
   hitTime:
-    $value: null
-    value: []
     $text: '2500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30504
-  magicLevel: {}
-  mpConsume: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '76'
+    - '@level': '2'
+      $text: '78'
+    - '@level': '3'
+      $text: '80'
+    - '@level': '4'
+      $text: '82'
+    - '@level': '5'
+      $text: '84'
+    - '@level': '6'
+      $text: '85'
+    - '@level': '7'
+      $text: '87'
+    - '@level': '8'
+      $text: '89'
+    - '@level': '9'
+      $text: '91'
+    - '@level': '10'
+      $text: '93'
+    - '@level': '11'
+      $text: '95'
+    - '@level': '12'
+      $text: '97'
+    - '@level': '13'
+      $text: '99'
+    - '@level': '14'
+      $text: '101'
+    - '@level': '15'
+      $text: '103'
+    - '@level': '16'
+      $text: '105'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '75'
+    - '@level': '2'
+      $text: '77'
+    - '@level': '3'
+      $text: '78'
+    - '@level': '4'
+      $text: '79'
+    - '@level': '5'
+      $text: '80'
+    - '@level': '6'
+      $text: '81'
+    - '@level': '7'
+      $text: '82'
+    - '@level': '8'
+      $text: '82'
+    - '@level': '9'
+      $text: '83'
+    - '@level': '10'
+      $text: '83'
+    - '@level': '11'
+      $text: '84'
+    - '@level': '12'
+      $text: '84'
+    - '@level': '13'
+      $text: '85'
+    - '@level': '14'
+      $text: '86'
+    - '@level': '15'
+      $text: '87'
+    - '@level': '16'
+      $text: '88'
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '9000'
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '10417'
+        - '@level': '2'
+          $text: '11147'
+        - '@level': '3'
+          $text: '11917'
+        - '@level': '4'
+          $text: '12727'
+        - '@level': '5'
+          $text: '13577'
+        - '@level': '6'
+          $text: '35167'
+        - '@level': '7'
+          $text: '38540'
+        - '@level': '8'
+          $text: '42776'
+        - '@level': '9'
+          $text: '48058'
+        - '@level': '10'
+          $text: '54633'
+        - '@level': '11'
+          $text: '62836'
+        - '@level': '12'
+          $text: '73116'
+        - '@level': '13'
+          $text: '86081'
+        - '@level': '14'
+          $text: '88893'
+        - '@level': '15'
+          $text: '91705'
+        - '@level': '16'
+          $text: '94517'
+        - '@fromLevel': '12'
+          '@toLevel': '16'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{base + base / 100 * subIndex}'
+      pDefMod:
+        $text: '0.5'
+      criticalChance:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '16'
+          $text: '10'
+        - '@fromLevel': '12'
+          '@toLevel': '11'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{base + base / 100 * subIndex}'
+      overHit:
+        $text: 'true'
 - '@id': '30505'
   '@toLevel': '10'
   '@name': Pressure Punch
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30505
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1'
-  activateRate: {}
-  affectLimit:
-    $value: null
-    value: []
-    $text: 10-10
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
+  activateRate:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '10'
+      $text: '80'
+    - '@fromLevel': '6'
+      '@toLevel': '10'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      $text: '{base + base / 100 * subIndex}'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: POINT_BLANK
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
+  affectLimit:
+    $text: 10-10
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '-687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '6'
-      '@fromSubLevel': '3001'
-      '@name': PhysicalDefence
-      '@toLevel': '10'
-      '@toSubLevel': '3020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30505
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  magicLevel: {}
-  mpConsume: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '87'
+    - '@level': '2'
+      $text: '89'
+    - '@level': '3'
+      $text: '91'
+    - '@level': '4'
+      $text: '93'
+    - '@level': '5'
+      $text: '95'
+    - '@level': '6'
+      $text: '97'
+    - '@level': '7'
+      $text: '99'
+    - '@level': '8'
+      $text: '101'
+    - '@level': '9'
+      $text: '103'
+    - '@level': '10'
+      $text: '105'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '149'
+    - '@level': '2'
+      $text: '150'
+    - '@level': '3'
+      $text: '151'
+    - '@level': '4'
+      $text: '151'
+    - '@level': '5'
+      $text: '152'
+    - '@level': '6'
+      $text: '153'
+    - '@level': '7'
+      $text: '155'
+    - '@level': '8'
+      $text: '157'
+    - '@level': '9'
+      $text: '159'
+    - '@level': '10'
+      $text: '161'
   operateType:
-    $value: null
-    value: []
     $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '30000'
-  targetType: SELF
   trait:
-    $value: null
-    value: []
     $text: PULL
+  reuseDelay:
+    $text: '30000'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: POINT_BLANK
+  affectObject:
+    $text: NOT_FRIEND
+  isDebuff:
+    $text: 'true'
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '17266'
+        - '@level': '2'
+          $text: '19164'
+        - '@level': '3'
+          $text: '21530'
+        - '@level': '4'
+          $text: '24475'
+        - '@level': '5'
+          $text: '28150'
+        - '@level': '6'
+          $text: '32755'
+        - '@level': '7'
+          $text: '38563'
+        - '@level': '8'
+          $text: '39823'
+        - '@level': '9'
+          $text: '41083'
+        - '@level': '10'
+          $text: '42343'
+        - '@fromLevel': '6'
+          '@toLevel': '10'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{base + base / 100 * subIndex}'
+    - '@name': PullBack
+      type:
+        $text: THROW_UP
+      speed:
+        $text: '333'
+      animationSpeed:
+        $text: '333'
+    - '@name': PhysicalDefence
+      '@fromLevel': '6'
+      '@toLevel': '10'
+      '@fromSubLevel': '3001'
+      '@toSubLevel': '3020'
+      amount:
+        value:
+        - '@fromLevel': '6'
+          '@toLevel': '10'
+          '@fromSubLevel': '3001'
+          '@toSubLevel': '3020'
+          $text: '{-0.6 - 0.4 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '30506'
   '@toLevel': '14'
   '@name': Distant Kick
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30506
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '2'
   abnormalType:
-    $value: null
-    value: []
     $text: KNOCKDOWN
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: KNOCKDOWN
-  activateRate: {}
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
+  activateRate:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '14'
+      $text: '80'
+    - '@fromLevel': '10'
+      '@toLevel': '14'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      $text: '{base + base / 100 * subIndex}'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: FAN
   castRange:
-    $value: null
-    value: []
     $text: '80'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
   coolTime:
-    $value: null
-    value: []
     $text: '1000'
   effectPoint:
-    $value: null
-    value: []
     $text: '-687'
   effectRange:
-    $value: null
-    value: []
     $text: '400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '10'
-      '@fromSubLevel': '3001'
-      '@name': PhysicalDefence
-      '@toLevel': '14'
-      '@toSubLevel': '3020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   fanRange:
-    $value: null
-    value: []
     $text: 0;0;200;90
   hitTime:
-    $value: null
-    value: []
     $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30506
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  magicLevel: {}
-  mpConsume: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '79'
+    - '@level': '2'
+      $text: '81'
+    - '@level': '3'
+      $text: '83'
+    - '@level': '4'
+      $text: '85'
+    - '@level': '5'
+      $text: '87'
+    - '@level': '6'
+      $text: '89'
+    - '@level': '7'
+      $text: '91'
+    - '@level': '8'
+      $text: '93'
+    - '@level': '9'
+      $text: '95'
+    - '@level': '10'
+      $text: '97'
+    - '@level': '11'
+      $text: '99'
+    - '@level': '12'
+      $text: '101'
+    - '@level': '13'
+      $text: '103'
+    - '@level': '14'
+      $text: '105'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '141'
+    - '@level': '2'
+      $text: '143'
+    - '@level': '3'
+      $text: '146'
+    - '@level': '4'
+      $text: '147'
+    - '@level': '5'
+      $text: '149'
+    - '@level': '6'
+      $text: '150'
+    - '@level': '7'
+      $text: '151'
+    - '@level': '8'
+      $text: '151'
+    - '@level': '9'
+      $text: '152'
+    - '@level': '10'
+      $text: '153'
+    - '@level': '11'
+      $text: '155'
+    - '@level': '12'
+      $text: '157'
+    - '@level': '13'
+      $text: '159'
+    - '@level': '14'
+      $text: '161'
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: FAN
+  affectObject:
+    $text: NOT_FRIEND
+  isDebuff:
+    $text: 'true'
   trait:
-    $value: null
-    value: []
     $text: KNOCKDOWN
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '5164'
+        - '@level': '2'
+          $text: '5518'
+        - '@level': '3'
+          $text: '5890'
+        - '@level': '4'
+          $text: '19693'
+        - '@level': '5'
+          $text: '21581'
+        - '@level': '6'
+          $text: '23953'
+        - '@level': '7'
+          $text: '26909'
+        - '@level': '8'
+          $text: '30589'
+        - '@level': '9'
+          $text: '35181'
+        - '@level': '10'
+          $text: '40936'
+        - '@level': '11'
+          $text: '48195'
+        - '@level': '12'
+          $text: '49769'
+        - '@level': '13'
+          $text: '51343'
+        - '@level': '14'
+          $text: '52917'
+        - '@fromLevel': '10'
+          '@toLevel': '14'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{base + base / 100 * subIndex}'
+    - '@name': KnockBack
+      speed:
+        $text: '400'
+      distance:
+        $text: '100'
+      knockDown:
+        $text: 'true'
+    - '@name': PhysicalDefence
+      '@fromLevel': '10'
+      '@toLevel': '14'
+      '@fromSubLevel': '3001'
+      '@toSubLevel': '3020'
+      amount:
+        value:
+        - '@fromLevel': '10'
+          '@toLevel': '14'
+          '@fromSubLevel': '3001'
+          '@toSubLevel': '3020'
+          $text: '{-0.6 - 0.4 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '30507'
   '@toLevel': '24'
   '@name': Left Sidestep
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30507
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '5'
   abnormalType:
-    $value: null
-    value: []
     $text: STUN
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: STUN
-  activateRate: {}
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  castRange: {}
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
+  activateRate:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '24'
+      $text: '80'
+    - '@fromLevel': '20'
+      '@toLevel': '24'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      $text: '{base + base / 100 * subIndex}'
   effectPoint:
-    $value: null
-    value: []
     $text: '-687'
   effectRange:
-    $value: null
-    value: []
     $text: '900'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TargetCancel
-      chance:
-        $value: null
-        value: []
-        $text: '90'
-  hitTime:
-    $value: null
-    value: []
-    $text: '100'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30507
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  mpConsume: {}
-  nextAction:
-    $value: null
-    value: []
-    $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: DA4
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '13'
+    - '@level': '2'
+      $text: '14'
+    - '@level': '3'
+      $text: '16'
+    - '@level': '4'
+      $text: '18'
+    - '@level': '5'
+      $text: '19'
+    - '@level': '6'
+      $text: '21'
+    - '@level': '7'
+      $text: '23'
+    - '@level': '8'
+      $text: '24'
+    - '@level': '9'
+      $text: '26'
+    - '@level': '10'
+      $text: '27'
+    - '@level': '11'
+      $text: '28'
+    - '@level': '12'
+      $text: '28'
+    - '@level': '13'
+      $text: '29'
+    - '@level': '14'
+      $text: '29'
+    - '@level': '15'
+      $text: '29'
+    - '@level': '16'
+      $text: '30'
+    - '@level': '17'
+      $text: '30'
+    - '@level': '18'
+      $text: '30'
+    - '@level': '19'
+      $text: '30'
+    - '@level': '20'
+      $text: '30'
+    - '@level': '21'
+      $text: '30'
+    - '@level': '22'
+      $text: '30'
+    - '@level': '23'
+      $text: '30'
+    - '@level': '24'
+      $text: '30'
+  nextAction:
+    $text: ATTACK
+  castRange:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '24'
+      $text: '300'
+    - '@fromLevel': '20'
+      '@toLevel': '24'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 * subIndex}'
+  hitTime:
+    $text: '100'
+  coolTime:
+    $text: '300'
   reuseDelay:
-    $value: null
-    value: []
     $text: '7000'
-  targetType: ENEMY
+  isDebuff:
+    $text: 'true'
   trait:
-    $value: null
-    value: []
     $text: SHOCK
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': BlockActions
+      allowedSkills:
+        $text: 10279;10517;10025;10776;11770;1904;11264;11093;13314;1912
+    - '@name': TargetCancel
+      chance:
+        $text: '90'
 - '@id': '30508'
   '@toLevel': '27'
   '@name': Right Sidestep
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30508
   abnormalTime:
-    $value: null
-    value: []
     $text: '5'
   abnormalType:
-    $value: null
-    value: []
     $text: REAL_TARGET
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  castRange: {}
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
   effectPoint:
-    $value: null
-    value: []
     $text: '-687'
   effectRange:
-    $value: null
-    value: []
     $text: '900'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '23'
-      '@fromSubLevel': '2001'
-      '@name': PhysicalDefence
-      '@toLevel': '27'
-      '@toSubLevel': '2020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '100'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30508
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  mpConsume: {}
-  nextAction:
-    $value: null
-    value: []
-    $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: DA5
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '7'
+    - '@level': '2'
+      $text: '9'
+    - '@level': '3'
+      $text: '11'
+    - '@level': '4'
+      $text: '14'
+    - '@level': '5'
+      $text: '15'
+    - '@level': '6'
+      $text: '17'
+    - '@level': '7'
+      $text: '19'
+    - '@level': '8'
+      $text: '20'
+    - '@level': '9'
+      $text: '22'
+    - '@level': '10'
+      $text: '23'
+    - '@level': '11'
+      $text: '25'
+    - '@level': '12'
+      $text: '26'
+    - '@level': '13'
+      $text: '27'
+    - '@level': '14'
+      $text: '28'
+    - '@level': '15'
+      $text: '28'
+    - '@level': '16'
+      $text: '29'
+    - '@level': '17'
+      $text: '29'
+    - '@level': '18'
+      $text: '29'
+    - '@level': '19'
+      $text: '30'
+    - '@level': '20'
+      $text: '30'
+    - '@level': '21'
+      $text: '30'
+    - '@level': '22'
+      $text: '30'
+    - '@level': '23'
+      $text: '30'
+    - '@level': '24'
+      $text: '31'
+    - '@level': '25'
+      $text: '32'
+    - '@level': '26'
+      $text: '33'
+    - '@level': '27'
+      $text: '34'
+  nextAction:
+    $text: ATTACK
+  castRange:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '27'
+      $text: '300'
+    - '@fromLevel': '23'
+      '@toLevel': '27'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 * subIndex}'
+  hitTime:
+    $text: '100'
+  coolTime:
+    $text: '300'
   reuseDelay:
-    $value: null
-    value: []
     $text: '7000'
-  targetType: ENEMY
+  isDebuff:
+    $text: 'true'
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      FIST:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '16'
+          $text: '-10'
+        - '@fromLevel': '17'
+          '@toLevel': '27'
+          $text: '-30'
+    - '@name': TargetCancel
+      chance:
+        $text: '90'
+    - '@name': PhysicalDefence
+      '@fromLevel': '23'
+      '@toLevel': '27'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '23'
+          '@toLevel': '27'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{-0.6 - 0.4 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '30509'
   '@toLevel': '5'
   '@name': Back Step
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30509
+  operateType:
+    $text: DA3
+  targetType:
+    $text: ENEMY
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '27'
+    - '@level': '2'
+      $text: '30'
+    - '@level': '3'
+      $text: '35'
+    - '@level': '4'
+      $text: '44'
+    - '@level': '5'
+      $text: '48'
   castRange:
-    $value: null
-    value: []
     $text: '150'
+  hitTime:
+    $text: '100'
+  effectPoint:
+    $text: '-100'
+  reuseDelay:
+    $text: '7000'
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': EquipWeapon
       weaponType:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
           $text: DUALFIST
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-100'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TargetCancel
+    - '@name': TargetCancel
       chance:
-        $value: null
-        value: []
         $text: '100'
-  hitTime:
-    $value: null
-    value: []
-    $text: '100'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30509
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: DA3
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '7000'
   selfEffects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': CallSkill
+    - '@name': CallSkill
       skillId:
-        $value: null
-        value: []
+        $text: '30608'
+      skillLevel:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '4'
+        - '@level': '5'
+          $text: '5'
+    - '@name': CallSkill
+      skillId:
         $text: '30533'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
-  targetType: ENEMY
 - '@id': '30510'
   '@toLevel': '1'
   '@name': Infighter
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30510
+  operateType:
+    $text: P
+  magicLevel:
+    $text: '97'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillBySkill
-      castSkillId:
-        $value: null
-        value: []
-        $text: '30508'
+    - '@name': TriggerSkillBySkill
       skillId:
-        $value: null
-        value: []
         $text: '30532'
       skillLevel:
-        $value: null
-        value: []
         $text: '1'
       skillLevelScaleTo:
-        $value: null
-        value: []
         $text: '3'
-      targetType: SELF
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30510
-  magicLevel:
-    $value: null
-    value: []
-    $text: '97'
-  operateType:
-    $value: null
-    value: []
-    $text: P
+      castSkillId:
+        $text: '30507'
+      targetType:
+        $text: SELF
+    - '@name': TriggerSkillBySkill
+      skillId:
+        $text: '30532'
+      skillLevel:
+        $text: '1'
+      skillLevelScaleTo:
+        $text: '3'
+      castSkillId:
+        $text: '30508'
+      targetType:
+        $text: SELF
 - '@id': '30511'
   '@toLevel': '7'
   '@name': Air Light
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel: {}
+  icon:
+    $text: icon.skill30511
+  abnormalLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '2'
+    - '@level': '3'
+      $text: '3'
+    - '@level': '4'
+      $text: '4'
+    - '@level': '5'
+      $text: '5'
+    - '@level': '6'
+      $text: '6'
+    - '@level': '7'
+      $text: '7'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1800'
   abnormalType:
-    $value: null
-    value: []
     $text: NONE
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '20'
+    - '@level': '2'
+      $text: '44'
+    - '@level': '3'
+      $text: '45'
+    - '@level': '4'
+      $text: '45'
+    - '@level': '5'
+      $text: '45'
+    - '@level': '6'
+      $text: '45'
+    - '@level': '7'
+      $text: '45'
+  hitTime:
+    $text: '1500'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '3'
-      '@fromSubLevel': '3001'
-      '@name': MagicalDefence
-      '@toLevel': '7'
-      '@toSubLevel': '3020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30511
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
-  targetType: SELF
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      KNOCKDOWN:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '15'
+        - '@level': '3'
+          $text: '20'
+        - '@level': '4'
+          $text: '25'
+        - '@level': '5'
+          $text: '30'
+        - '@level': '6'
+          $text: '35'
+        - '@level': '7'
+          $text: '40'
+      KNOCKBACK:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '15'
+        - '@level': '3'
+          $text: '20'
+        - '@level': '4'
+          $text: '25'
+        - '@level': '5'
+          $text: '30'
+        - '@level': '6'
+          $text: '35'
+        - '@level': '7'
+          $text: '40'
+      PULL:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '15'
+        - '@level': '3'
+          $text: '20'
+        - '@level': '4'
+          $text: '25'
+        - '@level': '5'
+          $text: '30'
+        - '@level': '6'
+          $text: '35'
+        - '@level': '7'
+          $text: '40'
+      ZONE:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '15'
+        - '@level': '3'
+          $text: '20'
+        - '@level': '4'
+          $text: '25'
+        - '@level': '5'
+          $text: '30'
+        - '@level': '6'
+          $text: '35'
+        - '@level': '7'
+          $text: '40'
+      AIRBIND:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '15'
+        - '@level': '3'
+          $text: '20'
+        - '@level': '4'
+          $text: '25'
+        - '@level': '5'
+          $text: '30'
+        - '@level': '6'
+          $text: '35'
+        - '@level': '7'
+          $text: '40'
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '15'
+        - '@level': '3'
+          $text: '20'
+        - '@level': '4'
+          $text: '25'
+        - '@level': '5'
+          $text: '30'
+        - '@level': '6'
+          $text: '35'
+        - '@level': '7'
+          $text: '40'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      '@fromLevel': '3'
+      '@toLevel': '7'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      amount:
+        value:
+        - '@fromLevel': '3'
+          '@toLevel': '7'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{0.6 + 0.4 * subIndex}'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      '@fromLevel': '3'
+      '@toLevel': '7'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '3'
+          '@toLevel': '7'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{0.6 + 0.4 * subIndex}'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      '@fromLevel': '3'
+      '@toLevel': '7'
+      '@fromSubLevel': '3001'
+      '@toSubLevel': '3020'
+      amount:
+        value:
+        - '@fromLevel': '3'
+          '@toLevel': '7'
+          '@fromSubLevel': '3001'
+          '@toSubLevel': '3020'
+          $text: '{0.6 + 0.4 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '30512'
   '@toLevel': '3'
   '@name': Distortion
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel: {}
-  abnormalTime: {}
+  icon:
+    $text: icon.skill30512
+  abnormalLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '2'
+    - '@level': '3'
+      $text: '3'
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '3'
+      $text: '60'
+    - '@fromLevel': '2'
+      '@toLevel': '3'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1010'
+      $text: '{base + subIndex}'
+    - '@fromLevel': '2'
+      '@toLevel': '3'
+      '@fromSubLevel': '1011'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 + 0.5 * subIndex}'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
+  mpConsume:
+    $text: '41'
+  hitTime:
+    $text: '1500'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '2'
-      '@fromSubLevel': '2001'
-      '@name': DefenceCriticalDamage
-      '@toLevel': '3'
-      '@toSubLevel': '2020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30512
-  mpConsume:
-    $value: null
-    value: []
-    $text: '41'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '180000'
-  targetType: SELF
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': AttackBehind
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '10'
+        - '@level': '3'
+          $text: '15'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '10'
+        - '@level': '3'
+          $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillPower
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '10'
+        - '@level': '3'
+          $text: '15'
+      mode:
+        $text: PER
+    - '@name': DefenceCriticalDamage
+      '@fromLevel': '2'
+      '@toLevel': '3'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '2'
+          '@toLevel': '3'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{-1 - ((subIndex - 1} * 0.5)}'
+      mode:
+        $text: PER
 - '@id': '30514'
   '@toLevel': '3'
   '@name': Fluid Weave
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel: {}
+  icon:
+    $text: icon.skill30514
+  abnormalLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '2'
+    - '@level': '3'
+      $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '13'
+    - '@level': '2'
+      $text: '29'
+    - '@level': '3'
+      $text: '45'
+  hitTime:
+    $text: '200'
+  effectPoint:
+    $text: '379'
+  reuseDelay:
+    $text: '5000'
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': EquipWeapon
       weaponType:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
           $text: DUALFIST
-  effectPoint:
-    $value: null
-    value: []
-    $text: '379'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': AbnormalShield
+    - '@name': AbnormalShield
       times:
-        $value: null
-        value: []
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '1'
+        - '@level': '3'
+          $text: '3'
+    - '@name': SkillEvasion
+      magicType:
+        $text: '0'
+      amount:
+        value:
+        - '@level': '1'
+          $text: '50'
+        - '@level': '2'
+          $text: '70'
+        - '@level': '3'
+          $text: '70'
+    - '@name': PhysicalEvasion
+      amount:
+        value:
+        - '@level': '1'
+          $text: '50'
+        - '@level': '2'
+          $text: '70'
+        - '@level': '3'
+          $text: '70'
+      mode:
+        $text: DIFF
+    - '@name': MagicalEvasion
+      amount:
+        value:
+        - '@level': '1'
+          $text: '50'
+        - '@level': '2'
+          $text: '70'
+        - '@level': '3'
+          $text: '70'
+      mode:
+        $text: DIFF
+    - '@name': AbnormalShield
+      times:
         $text: '1'
-  hitTime:
-    $value: null
-    value: []
-    $text: '200'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30514
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '5000'
-  targetType: SELF
 - '@id': '30515'
   '@toLevel': '1'
   '@name': Spallation
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30515
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
-  abnormalTime: {}
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '30'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1010'
+      $text: '{base + subIndex}'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1011'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 + 0.5 * subIndex}'
   abnormalType:
-    $value: null
-    value: []
     $text: NONE
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: SPACEREF
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
+  mpConsume:
+    $text: '31'
+  hitTime:
+    $text: '1500'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '379'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '1'
-      '@fromSubLevel': '2001'
-      '@name': Speed
-      '@toLevel': '1'
-      '@toSubLevel': '2020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30515
-  mpConsume:
-    $value: null
-    value: []
-    $text: '31'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '300000'
-  targetType: SELF
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': SphericBarrier
+      amount:
+        $text: '150'
+    - '@name': PhysicalDefence
+      amount:
+        $text: '50'
+      mode:
+        $text: PER
+    - '@name': Speed
+      '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '1'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{2 * subIndex}'
+      mode:
+        $text: DIFF
 - '@id': '30516'
   '@toLevel': '1'
   '@name': Gravity Barrier
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30516
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
-  abnormalTime: {}
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '10'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + 0.5 * subIndex}'
   abnormalType:
-    $value: null
-    value: []
     $text: INVINCIBILITY
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: INVINCIBILITY
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  mpConsume:
+    $text: '30'
+  hitTime:
+    $text: '200'
   effectPoint:
-    $value: null
-    value: []
     $text: '379'
+  reuseDelay:
+    $text: '300000'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': ResistAbnormalByCategory
+    - '@name': DamageBlock
+      type:
+        $text: BLOCK_HP
+    - '@name': DamageBlock
+      type:
+        $text: BLOCK_MP
+    - '@name': DebuffBlock
+    - '@name': DispelByCategory
+      slot:
+        $text: DEBUFF
+      rate:
+        $text: '100'
+      max:
+        $text: '10'
+    - '@name': ResistDispelByCategory
       amount:
-        $value: null
-        value: []
         $text: '-100'
       slot:
-        $value: null
-        value: []
+        $text: ALL
+    - '@name': ResistAbnormalByCategory
+      amount:
+        $text: '-100'
+      slot:
         $text: DEBUFF
-  hitTime:
-    $value: null
-    value: []
-    $text: '200'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30516
-  mpConsume:
-    $value: null
-    value: []
-    $text: '30'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '300000'
-  targetType: SELF
 - '@id': '30517'
   '@toLevel': '11'
   '@name': Heavy Hand
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30517
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: BLOCK_ESCAPE
-  activateRate: {}
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '300'
-  affectScope:
-    $value: null
-    value: []
-    $text: POINT_BLANK
+  activateRate:
+    value:
+    - '@fromLevel': '7'
+      '@toLevel': '11'
+      $text: '80'
+    - '@fromLevel': '7'
+      '@toLevel': '11'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      $text: '{base + base / 100 * subIndex}'
   basicProperty:
-    $value: null
-    value: []
     $text: MAGIC
+  affectRange:
+    $text: '300'
+  effectPoint:
+    $text: '-379'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: POINT_BLANK
+  affectObject:
+    $text: NOT_FRIEND
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '73'
+    - '@level': '2'
+      $text: '74'
+    - '@level': '3'
+      $text: '75'
+    - '@level': '4'
+      $text: '75'
+    - '@level': '5'
+      $text: '75'
+    - '@level': '6'
+      $text: '76'
+    - '@level': '7'
+      $text: '76'
+    - '@level': '8'
+      $text: '77'
+    - '@level': '9'
+      $text: '78'
+    - '@level': '10'
+      $text: '79'
+    - '@level': '11'
+      $text: '80'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '500'
+  reuseDelay:
+    $text: '60000'
+  isDebuff:
+    $text: 'true'
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': EquipWeapon
       weaponType:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
           $text: DUALFIST
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-379'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@fromLevel': '7'
-      '@fromSubLevel': '2001'
-      '@name': PhysicalDefence
-      '@toLevel': '11'
-      '@toSubLevel': '2020'
-      amount: {}
+    - '@name': BlockEscape
+    - '@name': Speed
+      amount:
+        $text: '-100'
       mode:
-        $value: null
-        value: []
+        $text: DIFF
+    - '@name': PhysicalDefence
+      '@fromLevel': '7'
+      '@toLevel': '11'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '7'
+          '@toLevel': '11'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{-0.6 - 0.4 * subIndex}'
+      mode:
         $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30517
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '60000'
-  targetType: SELF
 - '@id': '30518'
   '@toLevel': '11'
   '@name': Reverse Weight
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30518
   abnormalTime:
-    $value: null
-    value: []
     $text: '1'
   abnormalType:
-    $value: null
-    value: []
     $text: KNOCKDOWN
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: KNOCKDOWN
-  activateRate: {}
+  activateRate:
+    value:
+    - '@fromLevel': '7'
+      '@toLevel': '11'
+      $text: '80'
+    - '@fromLevel': '7'
+      '@toLevel': '11'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      $text: '{base + base / 100 * subIndex}'
   affectLimit:
-    $value: null
-    value: []
     $text: 2-6
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '300'
-  affectScope:
-    $value: null
-    value: []
-    $text: POINT_BLANK
   basicProperty:
-    $value: null
-    value: []
     $text: PHYSICAL
+  affectRange:
+    $text: '300'
+  effectPoint:
+    $text: '-687'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: POINT_BLANK
+  affectObject:
+    $text: NOT_FRIEND
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '1479'
+    - '@level': '2'
+      $text: '1487'
+    - '@level': '3'
+      $text: '1500'
+    - '@level': '4'
+      $text: '1510'
+    - '@level': '5'
+      $text: '1516'
+    - '@level': '6'
+      $text: '1523'
+    - '@level': '7'
+      $text: '1532'
+    - '@level': '8'
+      $text: '1544'
+    - '@level': '9'
+      $text: '1556'
+    - '@level': '10'
+      $text: '1568'
+    - '@level': '11'
+      $text: '1580'
+  hitTime:
+    $text: '3000'
+  coolTime:
+    $text: '500'
+  reuseDelay:
+    $text: '30000'
+  isMagic:
+    $text: '6'
+  isDebuff:
+    $text: 'true'
+  trait:
+    $text: KNOCKDOWN
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': EquipWeapon
       weaponType:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
           $text: DUALFIST
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-687'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '19693'
+        - '@level': '2'
+          $text: '20582'
+        - '@level': '3'
+          $text: '22701'
+        - '@level': '4'
+          $text: '25350'
+        - '@level': '5'
+          $text: '28648'
+        - '@level': '6'
+          $text: '32757'
+        - '@level': '7'
+          $text: '37894'
+        - '@level': '8'
+          $text: '44352'
+        - '@level': '9'
+          $text: '49769'
+        - '@level': '10'
+          $text: '51343'
+        - '@level': '11'
+          $text: '52917'
+        - '@fromLevel': '7'
+          '@toLevel': '11'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{base + base / 100 * subIndex}'
+      overHit:
+        $text: 'true'
+    - '@name': KnockBack
+      speed:
+        $text: '400'
+      distance:
+        $text: '50'
+      knockDown:
+        $text: 'true'
+    - '@name': PhysicalDefence
       '@fromLevel': '7'
-      '@fromSubLevel': '3001'
-      '@name': PhysicalDefence
       '@toLevel': '11'
+      '@fromSubLevel': '3001'
       '@toSubLevel': '3020'
-      amount: {}
+      amount:
+        value:
+        - '@fromLevel': '7'
+          '@toLevel': '11'
+          '@fromSubLevel': '3001'
+          '@toSubLevel': '3020'
+          $text: '{-0.6 - 0.4 * subIndex}'
       mode:
-        $value: null
-        value: []
         $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30518
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '6'
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '30000'
-  targetType: SELF
-  trait:
-    $value: null
-    value: []
-    $text: KNOCKDOWN
 - '@id': '30519'
   '@toLevel': '1'
   '@name': Warped Space
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30519
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: ROOT_PHYSICALLY
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: ROOT
   activateRate:
-    $value: null
-    value: []
     $text: '80'
-  affectLimit:
-    $value: null
-    value: []
-    $text: 10-10
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '150'
-  affectScope:
-    $value: null
-    value: []
-    $text: POINT_BLANK
   basicProperty:
-    $value: null
-    value: []
     $text: MAGIC
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-707'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      HOLD:
-        $value: null
-        value: []
-        $text: '100'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30519
+  affectLimit:
+    $text: 10-10
+  affectRange:
+    $text: '150'
   isDebuff:
-    $value: null
-    value: []
     $text: 'true'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
+  operateType:
+    $text: A2
   magicLevel:
-    $value: null
-    value: []
     $text: '98'
   mpConsume:
-    $value: null
-    value: []
     $text: '772'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  hitTime:
+    $text: '2500'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '-707'
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
   trait:
-    $value: null
-    value: []
     $text: HOLD
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: POINT_BLANK
+  affectObject:
+    $text: NOT_FRIEND
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': Root
+    - '@name': DefenceTrait
+      HOLD:
+        $text: '100'
 - '@id': '30520'
   '@toLevel': '3'
   '@name': Steel Mind
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel: {}
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: STEEL_MIND
+  icon:
+    $text: icon.skill30520
+  abnormalLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '2'
+    - '@level': '3'
+      $text: '3'
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '3'
+      $text: '30'
+    - '@fromLevel': '1'
+      '@toLevel': '3'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1010'
+      $text: '{base + subIndex}'
+    - '@fromLevel': '1'
+      '@toLevel': '3'
+      '@fromSubLevel': '1011'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 + 0.5 * subIndex}'
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: PMENTAL_TRAIL
+  abnormalType:
+    $text: STEEL_MIND
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '221'
+    - '@level': '2'
+      $text: '232'
+    - '@level': '3'
+      $text: '243'
+  hitTime:
+    $text: '1500'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '100'
+  reuseDelay:
+    $text: '300000'
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': CriticalDamage
-      amount: {}
+    - '@name': PhysicalSkillCriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '10'
+        - '@level': '3'
+          $text: '15'
       mode:
-        $value: null
-        value: []
+        $text: PER
+    - '@name': DefenceTrait
+      KNOCKDOWN:
+        $text: '90'
+      KNOCKBACK:
+        $text: '90'
+      PULL:
+        $text: '90'
+      ZONE:
+        $text: '90'
+      AIRBIND:
+        $text: '90'
+      AGGRESSION:
+        $text: '90'
+    - '@name': AutoAttackDamageBonus
+      amount:
+        $text: '400'
+      mode:
+        $text: PER
+    - '@name': IgnoreDeath
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '15'
+        - '@level': '2'
+          $text: '30'
+        - '@level': '3'
+          $text: '30'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '50'
+        - '@level': '2'
+          $text: '70'
+        - '@level': '3'
+          $text: '70'
+      mode:
+        $text: DIFF
+    - '@name': CriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '15'
+        - '@level': '3'
+          $text: '15'
+      mode:
         $text: PER
   endEffects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': HealPercent
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30520
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '300000'
-  targetType: SELF
+    - '@name': HealPercent
+      power:
+        value:
+        - '@level': '1'
+          $text: '30'
+        - '@level': '2'
+          $text: '30'
+        - '@level': '3'
+          $text: '40'
 - '@id': '30521'
   '@toLevel': '1'
   '@name': Damage Up
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': EquipWeapon
-      weaponType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: DUALFIST
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      criticalChance:
-        $value: null
-        value: []
-        $text: '5'
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      pAtkMod:
-        $value: null
-        value: []
-        $text: '5'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '1000'
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '-100'
+  conditions:
+    condition:
+      '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      pAtkMod:
+        $text: '5'
+      criticalChance:
+        $text: '5'
+      overHit:
+        $text: 'true'
 - '@id': '30522'
   '@toLevel': '1'
   '@name': Eminent Attack Movement
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByDamage
-      chance:
-        $value: null
-        value: []
-        $text: '20'
-      minDamage:
-        $value: null
-        value: []
-        $text: '1'
-      skillId:
-        $value: null
-        value: []
-        $text: '30523'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-      targetType: SELF
   icon:
-    $value: null
-    value: []
     $text: icon.skill30522
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': TriggerSkillByDamage
+      minDamage:
+        $text: '1'
+      skillId:
+        $text: '30523'
+      skillLevel:
+        $text: '1'
+      chance:
+        $text: '20'
+      targetType:
+        $text: SELF
 - '@id': '30523'
   '@toLevel': '3'
   '@name': Battle Dash
-  '@fromLevel': null
-  '@displayId': null
-  abnormalTime:
-    $value: null
-    value: []
-    $text: '10'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '2'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill30523
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  isTriggeredSkill:
-    $value: null
-    value: []
-    $text: 'true'
+  abnormalTime:
+    $text: '10'
   operateType:
-    $value: null
-    value: []
     $text: A2
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  isTriggeredSkill:
+    $text: 'true'
+  effectPoint:
+    $text: '2'
+  isMagic:
+    $text: '4'
+  effects:
+    effect:
+    - '@name': TriggerSkillByDamage
+      minDamage:
+        $text: '1'
+      skillId:
+        $text: '30523'
+      skillLevel:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '0'
+      chance:
+        $text: '20'
+      targetType:
+        $text: SELF
+    - '@name': Speed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '40'
+      mode:
+        $text: DIFF
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '15'
+        - '@level': '3'
+          $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '15'
+        - '@level': '3'
+          $text: '20'
+      mode:
+        $text: PER
 - '@id': '30524'
   '@toLevel': '1'
   '@name': Reliable Hit
-  '@fromLevel': null
-  '@displayId': null
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-100'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  effectPoint:
+    $text: '-100'
+  mpConsume:
+    $text: '1'
 - '@id': '30526'
   '@toLevel': '1'
   '@name': Heavy Punch
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': TriggerSkillByAttack
-      affectScope:
-        $value: null
-        value: []
-        $text: SINGLE
-      chance:
-        $value: null
-        value: []
-        $text: '13'
-      minDamage:
-        $value: null
-        value: []
-        $text: '100'
-      skillId:
-        $value: null
-        value: []
-        $text: '30521'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-      targetType: TARGET
   icon:
-    $value: null
-    value: []
     $text: icon.skill30526
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': TriggerSkillByAttack
+      minDamage:
+        $text: '100'
+      skillId:
+        $text: '30521'
+      skillLevel:
+        $text: '1'
+      chance:
+        $text: '13'
+      targetType:
+        $text: TARGET
+      affectScope:
+        $text: SINGLE
 - '@id': '30527'
   '@toLevel': '1'
   '@name': Twisted Space - NPC
-  '@fromLevel': null
-  '@displayId': null
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-707'
   icon:
-    $value: null
-    value: []
     $text: icon.skill1042
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  effectPoint:
+    $text: '-707'
+  isDebuff:
+    $text: 'true'
 - '@id': '30528'
   '@toLevel': '1'
   '@name': Spatial Trap
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-707'
   icon:
-    $value: null
-    value: []
     $text: icon.skill30525
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
   operateType:
-    $value: null
-    value: []
     $text: A2
-  targetType: SELF
+  effectPoint:
+    $text: '-707'
+  isDebuff:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '30530'
   '@toLevel': '15'
   '@name': Crushing Air
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30530
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: GRAVITY_SPACE_3
-  activateRate: {}
+  activateRate:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '15'
+      $text: '80'
+    - '@fromLevel': '11'
+      '@toLevel': '15'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + base / 100 * subIndex}'
+  operateType:
+    $text: A2
+  targetType:
+    $text: ENEMY
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  castRange: {}
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '34'
+    - '@level': '2'
+      $text: '35'
+    - '@level': '3'
+      $text: '35'
+    - '@level': '4'
+      $text: '36'
+    - '@level': '5'
+      $text: '36'
+    - '@level': '6'
+      $text: '37'
+    - '@level': '7'
+      $text: '37'
+    - '@level': '8'
+      $text: '37'
+    - '@level': '9'
+      $text: '37'
+    - '@level': '10'
+      $text: '38'
+    - '@level': '11'
+      $text: '38'
+    - '@level': '12'
+      $text: '38'
+    - '@level': '13'
+      $text: '38'
+    - '@level': '14'
+      $text: '38'
+    - '@level': '15'
+      $text: '38'
+  castRange:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '15'
+      $text: '600'
+    - '@fromLevel': '11'
+      '@toLevel': '15'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      $text: '{base + 10 * subIndex}'
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  reuseDelay:
+    $text: '30000'
+  effectPoint:
+    $text: '-379'
+  isDebuff:
+    $text: 'true'
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': EquipWeapon
       weaponType:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
           $text: DUALFIST
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-379'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@fromLevel': '11'
-      '@fromSubLevel': '3001'
-      '@name': PhysicalDefence
-      '@toLevel': '15'
-      '@toSubLevel': '3020'
-      amount: {}
+    - '@name': Speed
+      amount:
+        $text: '-100'
       mode:
-        $value: null
-        value: []
         $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30530
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '30000'
-  targetType: ENEMY
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '-30'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '-30'
+      mode:
+        $text: PER
+    - '@name': BlockEscape
+    - '@name': PhysicalDefence
+      '@fromLevel': '11'
+      '@toLevel': '15'
+      '@fromSubLevel': '3001'
+      '@toSubLevel': '3020'
+      amount:
+        value:
+        - '@fromLevel': '11'
+          '@toLevel': '15'
+          '@fromSubLevel': '3001'
+          '@toSubLevel': '3020'
+          $text: '{-0.6 - 0.4 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '30532'
   '@toLevel': '3'
   '@name': Inside Position
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel: {}
-  abnormalTime:
-    $value: null
-    value: []
-    $text: '15'
+  icon:
+    $text: icon.skill30510
+  abnormalLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '2'
+    - '@level': '3'
+      $text: '3'
   abnormalType:
-    $value: null
-    value: []
     $text: INSIDE_POSITION
+  abnormalTime:
+    $text: '15'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  isTriggeredSkill:
+    $text: 'true'
   effectPoint:
-    $value: null
-    value: []
     $text: '2'
+  isMagic:
+    $text: '4'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
+    - '@name': TriggerSkillBySkill
+      skillId:
+        $text: '30532'
+      skillLevel:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '3'
+      castSkillId:
+        $text: '30507'
+      targetType:
+        $text: SELF
+    - '@name': TriggerSkillBySkill
+      skillId:
+        $text: '30532'
+      skillLevel:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '3'
+      castSkillId:
+        $text: '30508'
+      targetType:
+        $text: SELF
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '10'
+        - '@level': '3'
+          $text: '15'
+      mode:
+        $text: PER
+    - '@name': CriticalRate
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '40'
+      mode:
+        $text: DIFF
+    - '@name': PhysicalSkillCriticalRate
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '40'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
       '@fromLevel': '3'
-      '@name': PhysicalSkillCriticalDamage
       '@toLevel': '3'
       amount:
-        $value: null
-        value: []
         $text: '20'
       mode:
-        $value: null
-        value: []
         $text: PER
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30510
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  isTriggeredSkill:
-    $value: null
-    value: []
-    $text: 'true'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  targetType: SELF
+    - '@name': PhysicalSkillCriticalDamage
+      '@fromLevel': '3'
+      '@toLevel': '3'
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
 - '@id': '30540'
   '@toLevel': '17'
   '@name': Eminent Fist Weapon Mastery
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30524
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '5'
+    - '@level': '2'
+      $text: '20'
+    - '@level': '3'
+      $text: '40'
+    - '@level': '4'
+      $text: '52'
+    - '@level': '5'
+      $text: '64'
+    - '@level': '6'
+      $text: '76'
+    - '@level': '7'
+      $text: '80'
+    - '@level': '8'
+      $text: '85'
+    - '@level': '9'
+      $text: '90'
+    - '@level': '10'
+      $text: '95'
+    - '@level': '11'
+      $text: '99'
+    - '@level': '12'
+      $text: '100'
+    - '@level': '13'
+      $text: '102'
+    - '@level': '14'
+      $text: '104'
+    - '@level': '15'
+      $text: '106'
+    - '@level': '16'
+      $text: '108'
+    - '@level': '17'
+      $text: '110'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@fromLevel': '3'
-      '@name': CriticalRate
-      '@toLevel': '17'
-      amount: {}
+    - '@name': PAtk
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '7'
+          $text: '10'
+        - '@fromLevel': '8'
+          '@toLevel': '17'
+          $text: '45'
       mode:
-        $value: null
-        value: []
+        $text: PER
+      weaponType:
+        item:
+        - $text: FIST
+        - $text: DUALFIST
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '4'
+        - '@level': '2'
+          $text: '13'
+        - '@level': '3'
+          $text: '63'
+        - '@level': '4'
+          $text: '124'
+        - '@level': '5'
+          $text: '208'
+        - '@level': '6'
+          $text: '306'
+        - '@level': '7'
+          $text: '471'
+        - '@level': '8'
+          $text: '3378'
+        - '@level': '9'
+          $text: '3916'
+        - '@level': '10'
+          $text: '4540'
+        - '@level': '11'
+          $text: '5110'
+        - '@level': '12'
+          $text: '5790'
+        - '@level': '13'
+          $text: '6143'
+        - '@level': '14'
+          $text: '6517'
+        - '@level': '15'
+          $text: '6914'
+        - '@level': '16'
+          $text: '7335'
+        - '@level': '17'
+          $text: '7781'
+      mode:
         $text: DIFF
       weaponType:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
-          $text: DUALFIST
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30524
-  magicLevel: {}
-  operateType:
-    $value: null
-    value: []
-    $text: P
+        - $text: FIST
+        - $text: DUALFIST
+    - '@name': Accuracy
+      '@fromLevel': '2'
+      '@toLevel': '17'
+      amount:
+        value:
+        - '@level': '2'
+          $text: '2'
+        - '@fromLevel': '3'
+          '@toLevel': '5'
+          $text: '3'
+        - '@fromLevel': '6'
+          '@toLevel': '7'
+          $text: '4'
+        - '@fromLevel': '8'
+          '@toLevel': '17'
+          $text: '8'
+      mode:
+        $text: DIFF
+      weaponType:
+        item:
+        - $text: FIST
+        - $text: DUALFIST
+    - '@name': PhysicalAttackSpeed
+      '@fromLevel': '8'
+      '@toLevel': '17'
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: FIST
+        - $text: DUALFIST
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: FIST
+        - $text: DUALFIST
+    - '@name': CriticalDamage
+      '@fromLevel': '6'
+      '@toLevel': '17'
+      amount:
+        value:
+        - '@fromLevel': '6'
+          '@toLevel': '7'
+          $text: '10'
+        - '@fromLevel': '8'
+          '@toLevel': '17'
+          $text: '45'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: FIST
+        - $text: DUALFIST
+    - '@name': CriticalRate
+      '@fromLevel': '3'
+      '@toLevel': '17'
+      amount:
+        value:
+        - '@fromLevel': '3'
+          '@toLevel': '5'
+          $text: '10'
+        - '@fromLevel': '6'
+          '@toLevel': '7'
+          $text: '20'
+        - '@fromLevel': '8'
+          '@toLevel': '17'
+          $text: '60'
+      mode:
+        $text: DIFF
+      weaponType:
+        item:
+        - $text: FIST
+        - $text: DUALFIST
 - '@id': '30541'
   '@toLevel': '17'
   '@name': Eminent Light Armor Mastery
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '2'
-      '@name': DefenceMagicCriticalRate
-      '@toLevel': '17'
-      amount: {}
-      armorType:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: LIGHT
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill10254
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '5'
+    - '@level': '2'
+      $text: '20'
+    - '@level': '3'
+      $text: '40'
+    - '@level': '4'
+      $text: '52'
+    - '@level': '5'
+      $text: '64'
+    - '@level': '6'
+      $text: '76'
+    - '@level': '7'
+      $text: '80'
+    - '@level': '8'
+      $text: '85'
+    - '@level': '9'
+      $text: '90'
+    - '@level': '10'
+      $text: '95'
+    - '@level': '11'
+      $text: '99'
+    - '@level': '12'
+      $text: '100'
+    - '@level': '13'
+      $text: '102'
+    - '@level': '14'
+      $text: '104'
+    - '@level': '15'
+      $text: '106'
+    - '@level': '16'
+      $text: '108'
+    - '@level': '17'
+      $text: '110'
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      '@fromLevel': '7'
+      '@toLevel': '17'
+      amount:
+        value:
+        - '@level': '7'
+          $text: '3'
+        - '@fromLevel': '8'
+          '@toLevel': '17'
+          $text: '10'
+      mode:
+        $text: PER
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': MagicalDefence
+      '@fromLevel': '7'
+      '@toLevel': '17'
+      amount:
+        value:
+        - '@level': '7'
+          $text: '276'
+        - '@level': '8'
+          $text: '949'
+        - '@level': '9'
+          $text: '1073'
+        - '@level': '10'
+          $text: '1214'
+        - '@level': '11'
+          $text: '1340'
+        - '@level': '12'
+          $text: '1511'
+        - '@level': '13'
+          $text: '1588'
+        - '@level': '14'
+          $text: '1668'
+        - '@level': '15'
+          $text: '1753'
+        - '@level': '16'
+          $text: '1842'
+        - '@level': '17'
+          $text: '1935'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': PhysicalDefence
+      '@fromLevel': '8'
+      '@toLevel': '17'
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '14'
+        - '@level': '2'
+          $text: '17'
+        - '@level': '3'
+          $text: '34'
+        - '@level': '4'
+          $text: '51'
+        - '@level': '5'
+          $text: '69'
+        - '@level': '6'
+          $text: '91'
+        - '@level': '7'
+          $text: '99'
+        - '@level': '8'
+          $text: '1657'
+        - '@level': '9'
+          $text: '1819'
+        - '@level': '10'
+          $text: '1999'
+        - '@level': '11'
+          $text: '2155'
+        - '@level': '12'
+          $text: '2415'
+        - '@level': '13'
+          $text: '2506'
+        - '@level': '14'
+          $text: '2601'
+        - '@level': '15'
+          $text: '2700'
+        - '@level': '16'
+          $text: '2813'
+        - '@level': '17'
+          $text: '2920'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': PhysicalEvasion
+      '@fromLevel': '2'
+      '@toLevel': '17'
+      amount:
+        value:
+        - '@level': '2'
+          $text: '2'
+        - '@fromLevel': '3'
+          '@toLevel': '5'
+          $text: '3'
+        - '@fromLevel': '6'
+          '@toLevel': '7'
+          $text: '4'
+        - '@fromLevel': '8'
+          '@toLevel': '17'
+          $text: '12'
+      mode:
+        $text: DIFF
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': DefenceCriticalRate
+      '@fromLevel': '2'
+      '@toLevel': '17'
+      amount:
+        value:
+        - '@level': '2'
+          $text: '-15'
+        - '@fromLevel': '3'
+          '@toLevel': '5'
+          $text: '-20'
+        - '@fromLevel': '6'
+          '@toLevel': '7'
+          $text: '-25'
+        - '@fromLevel': '8'
+          '@toLevel': '17'
+          $text: '-35'
+      mode:
+        $text: PER
+      armorType:
+        item:
+          $text: LIGHT
+    - '@name': DefenceMagicCriticalRate
+      '@fromLevel': '2'
+      '@toLevel': '17'
+      amount:
+        value:
+        - '@level': '2'
+          $text: '-15'
+        - '@fromLevel': '3'
+          '@toLevel': '5'
+          $text: '-20'
+        - '@fromLevel': '6'
+          '@toLevel': '7'
+          $text: '-25'
+        - '@fromLevel': '8'
+          '@toLevel': '17'
+          $text: '-35'
+      mode:
+        $text: PER
+      armorType:
+        item:
+          $text: LIGHT
 - '@id': '30542'
   '@toLevel': '13'
   '@name': Eminent Stability
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '3'
-      '@name': CpRegen
-      '@toLevel': '13'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill11506
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '20'
+    - '@level': '2'
+      $text: '40'
+    - '@level': '3'
+      $text: '76'
+    - '@level': '4'
+      $text: '85'
+    - '@level': '5'
+      $text: '90'
+    - '@level': '6'
+      $text: '95'
+    - '@level': '7'
+      $text: '99'
+    - '@level': '8'
+      $text: '100'
+    - '@level': '9'
+      $text: '102'
+    - '@level': '10'
+      $text: '104'
+    - '@level': '11'
+      $text: '106'
+    - '@level': '12'
+      $text: '108'
+    - '@level': '13'
+      $text: '110'
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '58'
+        - '@level': '2'
+          $text: '196'
+        - '@level': '3'
+          $text: '473'
+        - '@level': '4'
+          $text: '6004'
+        - '@level': '5'
+          $text: '6305'
+        - '@level': '6'
+          $text: '6620'
+        - '@level': '7'
+          $text: '6883'
+        - '@level': '8'
+          $text: '6951'
+        - '@level': '9'
+          $text: '7088'
+        - '@level': '10'
+          $text: '7227'
+        - '@level': '11'
+          $text: '7370'
+        - '@level': '12'
+          $text: '7515'
+        - '@level': '13'
+          $text: '7663'
+      mode:
+        $text: DIFF
+    - '@name': Speed
+      '@fromLevel': '3'
+      '@toLevel': '13'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@fromLevel': '4'
+          '@toLevel': '13'
+          $text: '14'
+      mode:
+        $text: DIFF
+    - '@name': MaxCp
+      '@fromLevel': '3'
+      '@toLevel': '13'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '231'
+        - '@level': '4'
+          $text: '545'
+        - '@level': '5'
+          $text: '573'
+        - '@level': '6'
+          $text: '601'
+        - '@level': '7'
+          $text: '625'
+        - '@level': '8'
+          $text: '631'
+        - '@level': '9'
+          $text: '644'
+        - '@level': '10'
+          $text: '657'
+        - '@level': '11'
+          $text: '670'
+        - '@level': '12'
+          $text: '683'
+        - '@level': '13'
+          $text: '696'
+      mode:
+        $text: DIFF
+    - '@name': HpRegen
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2.5'
+        - '@level': '2'
+          $text: '4.5'
+        - '@level': '3'
+          $text: '6.5'
+        - '@fromLevel': '4'
+          '@toLevel': '13'
+          $text: '12'
+      mode:
+        $text: DIFF
+    - '@name': MpRegen
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1.2'
+        - '@level': '2'
+          $text: '1.8'
+        - '@level': '3'
+          $text: '2.4'
+        - '@fromLevel': '4'
+          '@toLevel': '13'
+          $text: '6'
+      mode:
+        $text: DIFF
+    - '@name': CpRegen
+      '@fromLevel': '3'
+      '@toLevel': '13'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '2.4'
+        - '@fromLevel': '4'
+          '@toLevel': '13'
+          $text: '12'
+      mode:
+        $text: DIFF
 - '@id': '30543'
   '@toLevel': '11'
   '@name': Eminent Attribute Resistance
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackAttribute
-      amount: {}
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   icon:
-    $value: null
-    value: []
     $text: icon.skill11006
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '76'
+    - '@level': '2'
+      $text: '85'
+    - '@level': '3'
+      $text: '85'
+    - '@level': '4'
+      $text: '85'
+    - '@level': '5'
+      $text: '85'
+    - '@level': '6'
+      $text: '85'
+    - '@level': '7'
+      $text: '85'
+    - '@level': '8'
+      $text: '85'
+    - '@level': '9'
+      $text: '85'
+    - '@level': '10'
+      $text: '85'
+    - '@level': '11'
+      $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: FIRE
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: WATER
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: WIND
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: EARTH
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: HOLY
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: DARK
+    - '@name': AttackAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: FIRE
+    - '@name': AttackAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: WATER
+    - '@name': AttackAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: WIND
+    - '@name': AttackAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: EARTH
+    - '@name': AttackAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: HOLY
+    - '@name': AttackAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '22'
+        - '@level': '4'
+          $text: '24'
+        - '@level': '5'
+          $text: '26'
+        - '@level': '6'
+          $text: '30'
+        - '@level': '7'
+          $text: '32'
+        - '@level': '8'
+          $text: '34'
+        - '@level': '9'
+          $text: '36'
+        - '@level': '10'
+          $text: '38'
+        - '@level': '11'
+          $text: '40'
+      attribute:
+        $text: DARK
 - '@id': '30544'
   '@toLevel': '2'
   '@name': Eminent Trait Resistance
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      DERANGEMENT:
-        $value: null
-        value: []
-        $text: '30'
-      HOLD:
-        $value: null
-        value: []
-        $text: '30'
-      KNOCKBACK: {}
-      KNOCKDOWN: {}
-      PULL: {}
-      ZONE: {}
   icon:
-    $value: null
-    value: []
     $text: icon.skill10005
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '76'
+    - '@level': '2'
+      $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      HOLD:
+        $text: '30'
+      DERANGEMENT:
+        $text: '30'
+      PULL:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '30'
+      ZONE:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '30'
+      KNOCKBACK:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '30'
+      KNOCKDOWN:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '30'
 - '@id': '30545'
   '@toLevel': '3'
   '@name': Eminent Ability
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': StatUp
-      amount: {}
-      stat:
-        $value: null
-        value: []
-        $text: STR
   icon:
-    $value: null
-    value: []
     $text: icon.skill0430
-  magicLevel: {}
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '40'
+    - '@level': '2'
+      $text: '76'
+    - '@level': '3'
+      $text: '85'
+  effects:
+    effect:
+    - '@name': SkillMastery
+      '@fromLevel': '2'
+      '@toLevel': '3'
+      stat:
+        $text: STR
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '4'
+        - '@level': '3'
+          $text: '14'
+      stat:
+        $text: STR
 - '@id': '30546'
   '@toLevel': '11'
   '@name': Flying Knee Kick
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30546
   abnormalTime:
-    $value: null
-    value: []
     $text: '3'
   abnormalType:
-    $value: null
-    value: []
     $text: KNOCKDOWN
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: KNOCKDOWN
-  activateRate: {}
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: PHYSICAL
-  castRange: {}
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCheckCastRange
-      distance:
-        $value: null
-        value: []
-        $text: '200'
-  coolTime:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '7'
-      '@fromSubLevel': '3001'
-      '@name': PhysicalDefence
+  activateRate:
+    value:
+    - '@fromLevel': '1'
       '@toLevel': '11'
-      '@toSubLevel': '3020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '100'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30546
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  magicLevel: {}
-  mpConsume: {}
+      $text: '80'
+    - '@fromLevel': '7'
+      '@toLevel': '11'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{base + base / 100 * subIndex}'
+  basicProperty:
+    $text: PHYSICAL
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: DA2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '7000'
-  targetType: ENEMY
   trait:
-    $value: null
-    value: []
     $text: KNOCKDOWN
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '87'
+    - '@level': '3'
+      $text: '89'
+    - '@level': '4'
+      $text: '91'
+    - '@level': '5'
+      $text: '93'
+    - '@level': '6'
+      $text: '95'
+    - '@level': '7'
+      $text: '97'
+    - '@level': '8'
+      $text: '99'
+    - '@level': '9'
+      $text: '101'
+    - '@level': '10'
+      $text: '103'
+    - '@level': '11'
+      $text: '105'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '29'
+    - '@level': '2'
+      $text: '29'
+    - '@level': '3'
+      $text: '30'
+    - '@level': '4'
+      $text: '30'
+    - '@level': '5'
+      $text: '30'
+    - '@level': '6'
+      $text: '30'
+    - '@level': '7'
+      $text: '30'
+    - '@level': '8'
+      $text: '31'
+    - '@level': '9'
+      $text: '32'
+    - '@level': '10'
+      $text: '33'
+    - '@level': '11'
+      $text: '34'
+  castRange:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '11'
+      $text: '300'
+    - '@fromLevel': '7'
+      '@toLevel': '11'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      $text: '{base + 10 * subIndex}'
+  hitTime:
+    $text: '100'
+  coolTime:
+    $text: '300'
+  reuseDelay:
+    $text: '7000'
+  effectPoint:
+    $text: '-700'
+  isDebuff:
+    $text: 'true'
+  conditions:
+    condition:
+    - '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+    - '@name': OpCheckCastRange
+      distance:
+        $text: '200'
+  effects:
+    effect:
+    - '@name': KnockBack
+      speed:
+        $text: '600'
+      distance:
+        $text: '50'
+      knockDown:
+        $text: 'true'
+    - '@name': PhysicalDefence
+      '@fromLevel': '7'
+      '@toLevel': '11'
+      '@fromSubLevel': '3001'
+      '@toSubLevel': '3020'
+      amount:
+        value:
+        - '@fromLevel': '7'
+          '@toLevel': '11'
+          '@fromSubLevel': '3001'
+          '@toSubLevel': '3020'
+          $text: '{-0.6 - 0.4 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '30547'
   '@toLevel': '4'
   '@name': Stamp Punch
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill30547
+  operateType:
+    $text: A1
+  targetType:
+    $text: ENEMY
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '99'
+    - '@level': '2'
+      $text: '101'
+    - '@level': '3'
+      $text: '103'
+    - '@level': '4'
+      $text: '105'
+  mpConsume:
+    $text: '85'
   castRange:
-    $value: null
-    value: []
     $text: '80'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'true'
-      level:
-        $value: null
-        value: []
-        $text: '1'
-      type:
-        $value: null
-        value: []
-        $text: KNOCKDOWN
+  hitTime:
+    $text: '500'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '-700'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      criticalChance: {}
-      pDefMod:
-        $value: null
-        value: []
-        $text: '0.5'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill30547
-  magicLevel: {}
-  mpConsume:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '5000'
-  targetType: ENEMY
+  conditions:
+    condition:
+    - '@name': EquipWeapon
+      weaponType:
+        item:
+          $text: DUALFIST
+    - '@name': OpCheckAbnormal
+      type:
+        $text: KNOCKDOWN
+      level:
+        $text: '1'
+      hasAbnormal:
+        $text: 'true'
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '91570'
+        - '@level': '2'
+          $text: '95080'
+        - '@level': '3'
+          $text: '98736'
+        - '@level': '4'
+          $text: '102392'
+      pDefMod:
+        $text: '0.5'
+      criticalChance:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '4'
+          $text: '10'
+        - '@fromLevel': '1'
+          '@toLevel': '4'
+          '@fromSubLevel': '1001'
+          '@toSubLevel': '1020'
+          $text: '{base + base / 100 * subIndex}'

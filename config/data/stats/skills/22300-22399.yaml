@@ -1,5696 +1,4386 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '22300'
   '@toLevel': '1'
   '@name': Fantasy Isle Magic
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
+  icon:
+    $text: BranchSys2.icon.s_g_fantastic_magic
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
+  operateType:
+    $text: A2
   abnormalType:
-    $value: null
-    value: []
     $text: PUBLIC_SLOT
-  activateRate:
-    $value: null
-    value: []
-    $text: '0'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
   basicProperty:
-    $value: null
-    value: []
     $text: NONE
-  castRange:
-    $value: null
-    value: []
-    $text: '600'
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-2'
+  hitCancelTime:
+    $text: '0'
   effectRange:
-    $value: null
-    value: []
     $text: '1100'
+  activateRate:
+    $text: '0'
+  magicLevel:
+    $text: '-2'
+  abnormalLevel:
+    $text: '1'
+  castRange:
+    $text: '600'
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': SafeFallHeight
+    - '@name': Speed
       amount:
-        $value: null
-        value: []
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': SafeFallHeight
+      amount:
         $text: '-30'
       mode:
-        $value: null
-        value: []
         $text: PER
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.s_g_fantastic_magic
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-2'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-2'
-  targetType: TARGET
 - '@id': '22301'
   '@toLevel': '1'
   '@name': Party Cake
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_birthday_cake_i00
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'false'
-      level:
-        $value: null
-        value: []
-        $text: '0'
+    - '@name': OpCanNotUseAirship
+    - '@name': OpCheckAbnormal
       type:
-        $value: null
-        value: []
         $text: TRANSFORM
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_birthday_cake_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+      level:
+        $text: '0'
+      hasAbnormal:
+        $text: 'false'
 - '@id': '22302'
   '@toLevel': '1'
   '@name': Sweet Chocolate (4-hour)
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_valentine_darkchoco_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '100'
+  abnormalType:
+    $text: VP_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  hitCancelTime:
+    $text: '0'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '8'
   abnormalTime:
-    $value: null
-    value: []
     $text: '14400'
-  abnormalType:
-    $value: null
-    value: []
-    $text: VP_UP
-  abnormalVisualEffect:
-    $value: null
-    value: []
-    $text: VP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'false'
-      level:
-        $value: null
-        value: []
-        $text: '8'
-      type:
-        $value: null
-        value: []
-        $text: VP_UP
-  effectPoint:
-    $value: null
-    value: []
-    $text: '100'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_valentine_darkchoco_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
+  isMagic:
+    $text: '4'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  abnormalVisualEffect:
+    $text: VP_UP
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': CanUseVitalityIncreaseItem
+    - '@name': OpCheckAbnormal
+      type:
+        $text: VP_UP
+      level:
+        $text: '8'
+      hasAbnormal:
+        $text: 'false'
 - '@id': '22303'
   '@toLevel': '1'
   '@name': Party Cake
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_birthday_cake_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: VP_KEEP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  hitCancelTime:
+    $text: '0'
+  effectRange:
+    $text: '500'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1200'
-  abnormalType:
-    $value: null
-    value: []
-    $text: VP_KEEP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  castRange:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  effectRange:
-    $value: null
-    value: []
-    $text: '500'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_birthday_cake_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: TARGET
+  castRange:
+    $text: '500'
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
 - '@id': '22304'
   '@toLevel': '1'
   '@name': Campfire's Warmth
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_torch_on_i00
+  operateType:
+    $text: A2
+  abnormalType:
+    $text: HP_REGEN_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  hitCancelTime:
+    $text: '0'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '99'
   abnormalTime:
-    $value: null
-    value: []
     $text: '25'
-  abnormalType:
-    $value: null
-    value: []
-    $text: HP_REGEN_UP
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: RANGE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCanNotUseAirship
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_torch_on_i00
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: RANGE
+  affectObject:
+    $text: NOT_FRIEND
+  conditions:
+    condition:
+      '@name': OpCanNotUseAirship
 - '@id': '22305'
   '@toLevel': '1'
   '@name': Summon Campfire
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  reuseDelay:
+    $text: '3600000'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': OpCanNotUseAirship
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3600000'
-  targetType: SELF
 - '@id': '22306'
   '@toLevel': '1'
   '@name': 'Event - Summon Scroll: Bad Bunny'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_scroll_of_return_i00
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '1.5'
+  magicLevel:
+    $text: '1'
+  hitTime:
+    $text: '1500'
+  reuseDelay:
+    $text: '10000'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': OpCanNotUseAirship
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '1.5'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_scroll_of_return_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '10000'
-  targetType: SELF
 - '@id': '22307'
   '@toLevel': '1'
   '@name': 'Event - Summon Scroll: Bad Bunny Captain'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_scroll_of_return_i00
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '1.5'
+  magicLevel:
+    $text: '1'
+  hitTime:
+    $text: '1500'
+  reuseDelay:
+    $text: '10000'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': OpCanNotUseAirship
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '1.5'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_scroll_of_return_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '10000'
-  targetType: SELF
 - '@id': '22308'
   '@toLevel': '1'
   '@name': 'Event - Summon Scroll: Liverless Bunny'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_scroll_of_return_i00
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '1.5'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': OpCanNotUseAirship
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '1.5'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_scroll_of_return_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
 - '@id': '22309'
   '@toLevel': '1'
   '@name': 'Event - Summon Scroll: Liverless Bunny Captain'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_scroll_of_return_i00
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '1.5'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': OpCanNotUseAirship
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '1.5'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_scroll_of_return_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
 - '@id': '22310'
   '@toLevel': '1'
   '@name': Cupid's Cure
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.skill3260
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  effectPoint:
+    $text: '-1000'
+  magicCriticalRate:
+    $text: '5'
+  effectRange:
+    $text: '700'
+  magicLevel:
+    $text: '1'
+  hitTime:
+    $text: '1000'
+  reuseDelay:
+    $text: '1000'
   castRange:
-    $value: null
-    value: []
     $text: '500'
+  staticReuse:
+    $text: 'true'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': OpTargetNpc
       npcIds:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
-          $text: '13196'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-1000'
-  effectRange:
-    $value: null
-    value: []
-    $text: '700'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill3260
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '1000'
-  staticReuse:
-    $value: null
-    value: []
-    $text: 'true'
-  targetType: ENEMY
+        - $text: '149'
+        - $text: '150'
+        - $text: '151'
+        - $text: '152'
+        - $text: '156'
+        - $text: '157'
+        - $text: '13196'
 - '@id': '22311'
   '@toLevel': '1'
   '@name': Cupid's Enhanced Cure
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.skill3260
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  effectPoint:
+    $text: '-1000'
+  magicCriticalRate:
+    $text: '5'
+  effectRange:
+    $text: '700'
+  magicLevel:
+    $text: '1'
+  hitTime:
+    $text: '1000'
+  reuseDelay:
+    $text: '4000'
   castRange:
-    $value: null
-    value: []
     $text: '500'
+  staticReuse:
+    $text: 'true'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': OpTargetNpc
       npcIds:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
-          $text: '13196'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-1000'
-  effectRange:
-    $value: null
-    value: []
-    $text: '700'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill3260
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '4000'
-  staticReuse:
-    $value: null
-    value: []
-    $text: 'true'
-  targetType: ENEMY
+        - $text: '149'
+        - $text: '150'
+        - $text: '151'
+        - $text: '152'
+        - $text: '156'
+        - $text: '157'
+        - $text: '13196'
 - '@id': '22312'
   '@toLevel': '1'
   '@name': Birthday Vitality Buff
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '8'
-  abnormalTime:
-    $value: null
-    value: []
-    $text: '14400'
-  abnormalType:
-    $value: null
-    value: []
-    $text: VP_UP
-  abnormalVisualEffect:
-    $value: null
-    value: []
-    $text: VP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  canBeDispelled:
-    $value: null
-    value: []
-    $text: 'false'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'false'
-      level:
-        $value: null
-        value: []
-        $text: '8'
-      type:
-        $value: null
-        value: []
-        $text: VP_UP
-  effectPoint:
-    $value: null
-    value: []
-    $text: '100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': VitalityPointsRate
-      amount:
-        $value: null
-        value: []
-        $text: '-10'
-  hitTime:
-    $value: null
-    value: []
-    $text: '100'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_potion_blue_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-2'
+  abnormalTime:
+    $text: '14400'
+  canBeDispelled:
+    $text: 'false'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '14400000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-2'
-  staticReuse:
-    $value: null
-    value: []
+  irreplacableBuff:
     $text: 'true'
-  targetType: SELF
+  effectPoint:
+    $text: '100'
+  abnormalType:
+    $text: VP_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-2'
+  magicLevel:
+    $text: '-2'
+  abnormalLevel:
+    $text: '8'
+  hitTime:
+    $text: '100'
+  isMagic:
+    $text: '4'
+  staticReuse:
+    $text: 'true'
+  abnormalVisualEffect:
+    $text: VP_UP
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpCheckAbnormal
+      type:
+        $text: VP_UP
+      level:
+        $text: '8'
+      hasAbnormal:
+        $text: 'false'
+  effects:
+    effect:
+    - '@name': VitalityPointsRate
+      amount:
+        $text: '-10'
 - '@id': '22313'
   '@toLevel': '1'
   '@name': Pa'agrio's Warm Breeze (4-hour)
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.Icon.pi_wind_of_paagrio
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '100'
+  abnormalType:
+    $text: VP_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-2'
+  hitCancelTime:
+    $text: '0'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '8'
   abnormalTime:
-    $value: null
-    value: []
     $text: '14400'
-  abnormalType:
-    $value: null
-    value: []
-    $text: VP_UP
-  abnormalVisualEffect:
-    $value: null
-    value: []
-    $text: VP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'false'
-      level:
-        $value: null
-        value: []
-        $text: '8'
-      type:
-        $value: null
-        value: []
-        $text: VP_UP
-  effectPoint:
-    $value: null
-    value: []
-    $text: '100'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.Icon.pi_wind_of_paagrio
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-2'
+  isMagic:
+    $text: '4'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  abnormalVisualEffect:
+    $text: VP_UP
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': CanUseVitalityIncreaseItem
+    - '@name': OpCheckAbnormal
+      type:
+        $text: VP_UP
+      level:
+        $text: '8'
+      hasAbnormal:
+        $text: 'false'
 - '@id': '22314'
   '@toLevel': '1'
   '@name': 1st Place Treasure Sack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '15.67'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '5914'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22194'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '1.19'
+          item:
+            '@id': '6373'
+            '@count': '1'
+        - '@chance': '1.84'
+          item:
+            '@id': '6374'
+            '@count': '1'
+        - '@chance': '4.47'
+          item:
+            '@id': '6375'
+            '@count': '1'
+        - '@chance': '4.47'
+          item:
+            '@id': '6376'
+            '@count': '1'
+        - '@chance': '4.25'
+          item:
+            '@id': '6377'
+            '@count': '1'
+        - '@chance': '3.01'
+          item:
+            '@id': '6378'
+            '@count': '1'
+        - '@chance': '0.19'
+          item:
+            '@id': '6379'
+            '@count': '1'
+        - '@chance': '4.47'
+          item:
+            '@id': '6380'
+            '@count': '1'
+        - '@chance': '4.47'
+          item:
+            '@id': '6381'
+            '@count': '1'
+        - '@chance': '3.01'
+          item:
+            '@id': '6382'
+            '@count': '1'
+        - '@chance': '0.19'
+          item:
+            '@id': '6383'
+            '@count': '1'
+        - '@chance': '4.47'
+          item:
+            '@id': '6384'
+            '@count': '1'
+        - '@chance': '4.47'
+          item:
+            '@id': '6385'
+            '@count': '1'
+        - '@chance': '3.01'
+          item:
+            '@id': '6386'
+            '@count': '1'
+        - '@chance': '3.16'
+          item:
+            '@id': '9570'
+            '@count': '1'
+        - '@chance': '3.16'
+          item:
+            '@id': '9571'
+            '@count': '1'
+        - '@chance': '3.16'
+          item:
+            '@id': '9572'
+            '@count': '1'
+        - '@chance': '15.67'
+          item:
+            '@id': '5908'
+            '@count': '1'
+        - '@chance': '15.67'
+          item:
+            '@id': '5911'
+            '@count': '1'
+        - '@chance': '15.67'
+          item:
+            '@id': '5914'
+            '@count': '1'
 - '@id': '22315'
   '@toLevel': '2'
   '@name': 2nd Place Treasure Sack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '3.73'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '960'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22195'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '2.20'
+          item:
+            '@id': '9625'
+            '@count': '1'
+        - '@chance': '1.42'
+          item:
+            '@id': '9626'
+            '@count': '1'
+        - '@chance': '0.67'
+          item:
+            '@id': '9627'
+            '@count': '1'
+        - '@chance': '15.30'
+          item:
+            '@id': '9546'
+            '@count': '1'
+        - '@chance': '15.30'
+          item:
+            '@id': '9547'
+            '@count': '1'
+        - '@chance': '15.30'
+          item:
+            '@id': '9548'
+            '@count': '1'
+        - '@chance': '15.30'
+          item:
+            '@id': '9549'
+            '@count': '1'
+        - '@chance': '15.30'
+          item:
+            '@id': '9550'
+            '@count': '1'
+        - '@chance': '15.30'
+          item:
+            '@id': '9551'
+            '@count': '1'
+        - '@chance': '0.28'
+          item:
+            '@id': '959'
+            '@count': '1'
+        - '@chance': '3.73'
+          item:
+            '@id': '960'
+            '@count': '1'
 - '@id': '22316'
   '@toLevel': '3'
   '@name': 3rd Place Treasure Sack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '2.48'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '3936'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22196'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '0.51'
+          item:
+            '@id': '729'
+            '@count': '1'
+        - '@chance': '3.86'
+          item:
+            '@id': '730'
+            '@count': '1'
+        - '@chance': '1.85'
+          item:
+            '@id': '947'
+            '@count': '1'
+        - '@chance': '11.57'
+          item:
+            '@id': '948'
+            '@count': '1'
+        - '@chance': '32.15'
+          item:
+            '@id': '8736'
+            '@count': '1'
+        - '@chance': '23.15'
+          item:
+            '@id': '8738'
+            '@count': '1'
+        - '@chance': '12.86'
+          item:
+            '@id': '8741'
+            '@count': '1'
+        - '@chance': '11.57'
+          item:
+            '@id': '8742'
+            '@count': '1'
+        - '@chance': '2.48'
+          item:
+            '@id': '3936'
+            '@count': '1'
 - '@id': '22317'
   '@toLevel': '4'
   '@name': 4th Place Treasure Sack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '7.00'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '10139'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22197'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '3.01'
+          item:
+            '@id': '951'
+            '@count': '1'
+        - '@chance': '21.30'
+          item:
+            '@id': '952'
+            '@count': '1'
+        - '@chance': '6.41'
+          item:
+            '@id': '955'
+            '@count': '1'
+        - '@chance': '52.72'
+          item:
+            '@id': '956'
+            '@count': '1'
+        - '@chance': '2.56'
+          item:
+            '@id': '1538'
+            '@count': '1'
+        - '@chance': '7.00'
+          item:
+            '@id': '9909'
+            '@count': '1'
+        - '@chance': '7.00'
+          item:
+            '@id': '10139'
+            '@count': '1'
 - '@id': '22318'
   '@toLevel': '5'
   '@name': 5th Place Treasure sack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '100'
-          item:
-            $value: null
-            value: []
-            '@count': '5'
-            '@id': '10179'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22198'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+          '@chance': '100'
+          item:
+          - '@id': '10178'
+            '@count': '5'
+          - '@id': '10179'
+            '@count': '5'
 - '@id': '22319'
   '@toLevel': '6'
   '@name': 6th Place Treasure Sack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '10.00'
-          item:
-            $value: null
-            value: []
-            '@count': '3'
-            '@id': '10270'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22199'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '9.00'
+          item:
+            '@id': '10260'
+            '@count': '3'
+        - '@chance': '9.00'
+          item:
+            '@id': '10261'
+            '@count': '3'
+        - '@chance': '9.00'
+          item:
+            '@id': '10262'
+            '@count': '3'
+        - '@chance': '9.00'
+          item:
+            '@id': '10263'
+            '@count': '3'
+        - '@chance': '9.00'
+          item:
+            '@id': '10264'
+            '@count': '3'
+        - '@chance': '9.00'
+          item:
+            '@id': '10265'
+            '@count': '3'
+        - '@chance': '9.00'
+          item:
+            '@id': '10266'
+            '@count': '3'
+        - '@chance': '9.00'
+          item:
+            '@id': '10267'
+            '@count': '3'
+        - '@chance': '9.00'
+          item:
+            '@id': '10268'
+            '@count': '3'
+        - '@chance': '9.00'
+          item:
+            '@id': '10269'
+            '@count': '3'
+        - '@chance': '10.00'
+          item:
+            '@id': '10270'
+            '@count': '3'
 - '@id': '22320'
   '@toLevel': '1'
   '@name': Berserker Spirit
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i01
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: BERSERKER
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: BERSERKER
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i01
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22321'
   '@toLevel': '1'
   '@name': Acumen
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i01
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CASTING_TIME_DOWN
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CASTING_TIME_DOWN
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i01
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22322'
   '@toLevel': '1'
   '@name': Magic Barrier
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i01
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: MD_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: MD_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i01
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22323'
   '@toLevel': '1'
   '@name': Clarity
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i01
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CHEAP_MAGIC
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CHEAP_MAGIC
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i01
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22324'
   '@toLevel': '1'
   '@name': Blessed Soul
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i01
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: MAX_MP_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '7'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: MAX_MP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i01
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22325'
   '@toLevel': '1'
   '@name': Blessed Body
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i01
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: MAX_HP_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '7'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: MAX_HP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i01
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22326'
   '@toLevel': '1'
   '@name': Empower
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i01
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: MA_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: MA_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i01
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22327'
   '@toLevel': '1'
   '@name': Wind Walk
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i01
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: SPEED_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: SPEED_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i01
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22328'
   '@toLevel': '1'
   '@name': Shield
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i01
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: PD_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: PD_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i01
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22329'
   '@toLevel': '1'
   '@name': Wind Walk
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: SPEED_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: SPEED_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22330'
   '@toLevel': '1'
   '@name': Shield
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: PD_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: PD_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22331'
   '@toLevel': '1'
   '@name': Haste
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: ATTACK_TIME_DOWN
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: ATTACK_TIME_DOWN
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22332'
   '@toLevel': '1'
   '@name': Death Whisper
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CRITICAL_DMG_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CRITICAL_DMG_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22333'
   '@toLevel': '1'
   '@name': Vampiric Rage
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: VAMPIRIC_ATTACK
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '5'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: VAMPIRIC_ATTACK
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22334'
   '@toLevel': '1'
   '@name': Guidance
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: HIT_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: HIT_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22335'
   '@toLevel': '1'
   '@name': Might
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: PA_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: PA_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22336'
   '@toLevel': '1'
   '@name': Blessed Body
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: MAX_HP_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '7'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: MAX_HP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22337'
   '@toLevel': '1'
   '@name': Focus
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CRITICAL_PROB_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CRITICAL_PROB_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22338'
   '@toLevel': '1'
   '@name': Blessed Shield
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: SHIELD_PROB_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: SHIELD_PROB_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22339'
   '@toLevel': '1'
   '@name': Berserker Spirit
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fruit_cocktail_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: BERSERKER
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: BERSERKER
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fruit_cocktail_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22340'
   '@toLevel': '1'
   '@name': Might
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: PA_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: PA_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22341'
   '@toLevel': '1'
   '@name': Wind Walk
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: SPEED_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: SPEED_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22342'
   '@toLevel': '1'
   '@name': Haste
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: ATTACK_TIME_DOWN
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: ATTACK_TIME_DOWN
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22343'
   '@toLevel': '1'
   '@name': Vampiric Rage
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: VAMPIRIC_ATTACK
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '5'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: VAMPIRIC_ATTACK
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22344'
   '@toLevel': '1'
   '@name': Berserker Spirit
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: BERSERKER
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: BERSERKER
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22345'
   '@toLevel': '1'
   '@name': Empower
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: MA_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: MA_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22346'
   '@toLevel': '1'
   '@name': Acumen
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CASTING_TIME_DOWN
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CASTING_TIME_DOWN
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22347'
   '@toLevel': '1'
   '@name': Shield
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: PD_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: PD_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22348'
   '@toLevel': '1'
   '@name': Focus
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CRITICAL_PROB_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CRITICAL_PROB_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22349'
   '@toLevel': '1'
   '@name': Death Whisper
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CRITICAL_DMG_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CRITICAL_DMG_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22350'
   '@toLevel': '1'
   '@name': Guidance
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: HIT_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: HIT_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22351'
   '@toLevel': '1'
   '@name': Clarity
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CHEAP_MAGIC
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '4'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CHEAP_MAGIC
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22352'
   '@toLevel': '1'
   '@name': Wild Magic
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: MAGIC_CRITICAL_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-3'
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '3'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: MAGIC_CRITICAL_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: TARGET
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
 - '@id': '22353'
   '@toLevel': '6'
   '@name': Concentration
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_fresh_milk_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CANCEL_PROB_DOWN
+  specialLevel:
+    $text: '-3'
+  magicCriticalRate:
+    $text: '5'
+  basicProperty:
+    $text: NONE
+  magicLevel:
+    $text: '-3'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '7'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CANCEL_PROB_DOWN
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_fresh_milk_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-3'
-  targetType: TARGET
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
 - '@id': '22354'
   '@toLevel': '1'
   '@name': Lantern Agathion's Gift
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '7.389159'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '14698'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22220'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '0.002525'
+          item:
+            '@id': '22202'
+            '@count': '1'
+        - '@chance': '0.04161'
+          item:
+            '@id': '22221'
+            '@count': '1'
+        - '@chance': '0.08322'
+          item:
+            '@id': '22223'
+            '@count': '1'
+        - '@chance': '0.178329'
+          item:
+            '@id': '22225'
+            '@count': '1'
+        - '@chance': '0.416101'
+          item:
+            '@id': '22227'
+            '@count': '1'
+        - '@chance': '0.693502'
+          item:
+            '@id': '22229'
+            '@count': '1'
+        - '@chance': '0.082913'
+          item:
+            '@id': '22222'
+            '@count': '1'
+        - '@chance': '0.207282'
+          item:
+            '@id': '22224'
+            '@count': '1'
+        - '@chance': '0.497478'
+          item:
+            '@id': '22226'
+            '@count': '1'
+        - '@chance': '1.066023'
+          item:
+            '@id': '22228'
+            '@count': '1'
+        - '@chance': '1.865541'
+          item:
+            '@id': '22230'
+            '@count': '1'
+        - '@chance': '0.002525'
+          item:
+            '@id': '22206'
+            '@count': '1'
+        - '@chance': '0.005051'
+          item:
+            '@id': '17077'
+            '@count': '1'
+        - '@chance': '0.007576'
+          item:
+            '@id': '17076'
+            '@count': '1'
+        - '@chance': '0.005051'
+          item:
+            '@id': '17069'
+            '@count': '1'
+        - '@chance': '0.010101'
+          item:
+            '@id': '17070'
+            '@count': '1'
+        - '@chance': '0.015152'
+          item:
+            '@id': '17071'
+            '@count': '1'
+        - '@chance': '0.003788'
+          item:
+            '@id': '22203'
+            '@count': '1'
+        - '@chance': '0.007576'
+          item:
+            '@id': '17072'
+            '@count': '1'
+        - '@chance': '0.015152'
+          item:
+            '@id': '17073'
+            '@count': '1'
+        - '@chance': '0.018939'
+          item:
+            '@id': '17074'
+            '@count': '1'
+        - '@chance': '0.025253'
+          item:
+            '@id': '13421'
+            '@count': '1'
+        - '@chance': '0.25'
+          item:
+            '@id': '14169'
+            '@count': '1'
+        - '@chance': '0.299913'
+          item:
+            '@id': '10486'
+            '@count': '1'
+        - '@chance': '0.359896'
+          item:
+            '@id': '9576'
+            '@count': '1'
+        - '@chance': '0.431875'
+          item:
+            '@id': '8762'
+            '@count': '1'
+        - '@chance': '1'
+          item:
+            '@id': '14168'
+            '@count': '1'
+        - '@chance': '1.199363'
+          item:
+            '@id': '10485'
+            '@count': '1'
+        - '@chance': '1.439236'
+          item:
+            '@id': '9575'
+            '@count': '1'
+        - '@chance': '1.727083'
+          item:
+            '@id': '8752'
+            '@count': '1'
+        - '@chance': '0.833333'
+          item:
+            '@id': '22233'
+            '@count': '1'
+        - '@chance': '2.916667'
+          item:
+            '@id': '22232'
+            '@count': '1'
+        - '@chance': '1.666667'
+          item:
+            '@id': '9627'
+            '@count': '1'
+        - '@chance': '0.833333'
+          item:
+            '@id': '17276'
+            '@count': '1'
+        - '@chance': '4.182543'
+          item:
+            '@id': '17185'
+            '@count': '1'
+        - '@chance': '6.506178'
+          item:
+            '@id': '14052'
+            '@count': '5'
+        - '@chance': '5.809087'
+          item:
+            '@id': '17184'
+            '@count': '1'
+        - '@chance': '6.738541'
+          item:
+            '@id': '6622'
+            '@count': '1'
+        - '@chance': '7.156795'
+          item:
+            '@id': '2134'
+            '@count': '1'
+        - '@chance': '7.296213'
+          item:
+            '@id': '14687'
+            '@count': '1'
+        - '@chance': '7.296213'
+          item:
+            '@id': '14693'
+            '@count': '1'
+        - '@chance': '7.296213'
+          item:
+            '@id': '14699'
+            '@count': '1'
+        - '@chance': '7.342686'
+          item:
+            '@id': '14701'
+            '@count': '2'
+        - '@chance': '7.389159'
+          item:
+            '@id': '14686'
+            '@count': '1'
+        - '@chance': '7.389159'
+          item:
+            '@id': '14692'
+            '@count': '1'
+        - '@chance': '7.389159'
+          item:
+            '@id': '14698'
+            '@count': '1'
 - '@id': '22355'
   '@toLevel': '1'
   '@name': Soul Crystal - Step 17 Box
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  blockedInOlympiad:
-    $value: null
-    value: []
-    $text: 'false'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '34'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '15543'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22206'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
+  blockedInOlympiad:
+    $text: 'false'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '33'
+          item:
+            '@id': '15541'
+            '@count': '1'
+        - '@chance': '33'
+          item:
+            '@id': '15542'
+            '@count': '1'
+        - '@chance': '34'
+          item:
+            '@id': '15543'
+            '@count': '1'
 - '@id': '22356'
   '@toLevel': '1'
   '@name': Soul Crystal - Step 18 Box
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  blockedInOlympiad:
-    $value: null
-    value: []
-    $text: 'false'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '34'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '15828'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22207'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
+  blockedInOlympiad:
+    $text: 'false'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '33'
+          item:
+            '@id': '15826'
+            '@count': '1'
+        - '@chance': '33'
+          item:
+            '@id': '15827'
+            '@count': '1'
+        - '@chance': '34'
+          item:
+            '@id': '15828'
+            '@count': '1'
 - '@id': '22357'
   '@toLevel': '1'
   '@name': High-grade Weapon Pack (S84-grade)
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '7.1429'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '15571'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22202'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '7.1429'
+          item:
+            '@id': '15558'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15559'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15560'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15561'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15562'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15563'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15564'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15565'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15566'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15567'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15568'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15569'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15570'
+            '@count': '1'
+        - '@chance': '7.1429'
+          item:
+            '@id': '15571'
+            '@count': '1'
 - '@id': '22358'
   '@toLevel': '1'
   '@name': Vorpal Armor Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '5.8824'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '15759'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22203'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '5.8824'
+          item:
+            '@id': '15743'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15744'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15745'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15746'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15747'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15748'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15749'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15750'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15751'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15752'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15753'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15754'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15755'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15756'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15757'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15758'
+            '@count': '1'
+        - '@chance': '5.8824'
+          item:
+            '@id': '15759'
+            '@count': '1'
 - '@id': '22359'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Weapon (S-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22360'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Armor (S-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22361'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Weapon (A-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22362'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Armor (A-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22363'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Weapon (B-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22364'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Armor (B-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22365'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Weapon (C-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22366'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Armor (C-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22367'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Weapon (D-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22368'
   '@toLevel': '1'
   '@name': 'Destruction Scroll: Enchant Armor (D-grade)'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '22369'
   '@toLevel': '1'
   '@name': Blessed Spiritshot (S-grade)
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '22370'
   '@toLevel': '1'
   '@name': Mysterious Soulshot Pack (S-grade)
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Restoration
-      itemCount:
-        $value: null
-        value: []
-        $text: '1000'
-      itemId:
-        $value: null
-        value: []
-        $text: '21850'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22232'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': Restoration
+      itemId:
+        $text: '21850'
+      itemCount:
+        $text: '1000'
 - '@id': '22371'
   '@toLevel': '1'
   '@name': Mysterious Blessed Spiritshot Pack (S-grade)
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Restoration
-      itemCount:
-        $value: null
-        value: []
-        $text: '1000'
-      itemId:
-        $value: null
-        value: []
-        $text: '22231'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22231'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': Restoration
+      itemId:
+        $text: '22231'
+      itemCount:
+        $text: '1000'
 - '@id': '22372'
   '@toLevel': '1'
   '@name': Meteor
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpSkill
-      hasLearned:
-        $value: null
-        value: []
-        $text: 'false'
-      skillId:
-        $value: null
-        value: []
-        $text: '1467'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  hitTime:
+    $text: '1500'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '81'
+      maxLevel:
+        $text: '84'
+      affectType:
+        $text: CASTER
+    - '@name': OpCheckClassList
+      classIds:
+        item:
+        - $text: ARCHMAGE
+        - $text: SOULTAKER
+      affectType:
+        $text: CASTER
+      isWithin:
+        $text: 'true'
+    - '@name': OpSkill
+      skillId:
+        $text: '1467'
+      skillLevel:
+        $text: '1'
+      hasLearned:
+        $text: 'false'
 - '@id': '22373'
   '@toLevel': '1'
   '@name': Starfall
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpSkill
-      hasLearned:
-        $value: null
-        value: []
-        $text: 'false'
-      skillId:
-        $value: null
-        value: []
-        $text: '1468'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  hitTime:
+    $text: '1500'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '81'
+      maxLevel:
+        $text: '84'
+      affectType:
+        $text: CASTER
+    - '@name': OpCheckClassList
+      classIds:
+        item:
+        - $text: MYSTIC_MUSE
+        - $text: STORM_SCREAMER
+      affectType:
+        $text: CASTER
+      isWithin:
+        $text: 'true'
+    - '@name': OpSkill
+      skillId:
+        $text: '1468'
+      skillLevel:
+        $text: '1'
+      hasLearned:
+        $text: 'false'
 - '@id': '22374'
   '@toLevel': '1'
   '@name': Sweet Chocolate
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_valentine_darkchoco_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '100'
+  abnormalType:
+    $text: VP_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  hitCancelTime:
+    $text: '0'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '8'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1800'
-  abnormalType:
-    $value: null
-    value: []
-    $text: VP_UP
-  abnormalVisualEffect:
-    $value: null
-    value: []
-    $text: VP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'false'
-      level:
-        $value: null
-        value: []
-        $text: '8'
-      type:
-        $value: null
-        value: []
-        $text: VP_UP
-  effectPoint:
-    $value: null
-    value: []
-    $text: '100'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_valentine_darkchoco_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
+  isMagic:
+    $text: '4'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  abnormalVisualEffect:
+    $text: VP_UP
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': CanUseVitalityIncreaseItem
+    - '@name': OpCheckAbnormal
+      type:
+        $text: VP_UP
+      level:
+        $text: '8'
+      hasAbnormal:
+        $text: 'false'
 - '@id': '22375'
   '@toLevel': '1'
   '@name': Valentine's Day Love Pouch
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '20'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22239'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22236'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '20'
+          item:
+            '@id': '14773'
+            '@count': '1'
+        - '@chance': '20'
+          item:
+            '@id': '14776'
+            '@count': '1'
+        - '@chance': '20'
+          item:
+            '@id': '14774'
+            '@count': '1'
+        - '@chance': '20'
+          item:
+            '@id': '22238'
+            '@count': '1'
+        - '@chance': '20'
+          item:
+            '@id': '22239'
+            '@count': '1'
 - '@id': '22376'
   '@toLevel': '1'
   '@name': Sweet Chocolate
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_valentine_darkchoco_i00
+  operateType:
+    $text: A2
+  effectPoint:
+    $text: '100'
+  abnormalType:
+    $text: VP_UP
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  hitCancelTime:
+    $text: '0'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '8'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1800'
-  abnormalType:
-    $value: null
-    value: []
-    $text: VP_UP
-  abnormalVisualEffect:
-    $value: null
-    value: []
-    $text: VP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'false'
-      level:
-        $value: null
-        value: []
-        $text: '8'
-      type:
-        $value: null
-        value: []
-        $text: VP_UP
-  effectPoint:
-    $value: null
-    value: []
-    $text: '100'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_valentine_darkchoco_i00
   irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
+  isMagic:
+    $text: '4'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  abnormalVisualEffect:
+    $text: VP_UP
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': CanUseVitalityIncreaseItem
+    - '@name': OpCheckAbnormal
+      type:
+        $text: VP_UP
+      level:
+        $text: '8'
+      hasAbnormal:
+        $text: 'false'
 - '@id': '22377'
   '@toLevel': '1'
   '@name': Bad Bunny's Necklace Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '30'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22214'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22208'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '70'
+          item:
+            '@id': '22211'
+            '@count': '1'
+        - '@chance': '30'
+          item:
+            '@id': '22214'
+            '@count': '1'
 - '@id': '22378'
   '@toLevel': '1'
   '@name': Bad Bunny's Earring Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '30'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22215'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22209'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '70'
+          item:
+            '@id': '22212'
+            '@count': '1'
+        - '@chance': '30'
+          item:
+            '@id': '22215'
+            '@count': '1'
 - '@id': '22379'
   '@toLevel': '1'
   '@name': Bad Bunny's Ring Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '30'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22216'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22210'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '70'
+          item:
+            '@id': '22213'
+            '@count': '1'
+        - '@chance': '30'
+          item:
+            '@id': '22216'
+            '@count': '1'
 - '@id': '22380'
   '@toLevel': '1'
   '@name': Lantern Agathion's Gift Set
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '5'
-          item:
-            $value: null
-            value: []
-            '@count': '5'
-            '@id': '22220'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22217'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '70'
+          item:
+            '@id': '22220'
+            '@count': '2'
+        - '@chance': '15'
+          item:
+            '@id': '22220'
+            '@count': '3'
+        - '@chance': '10'
+          item:
+            '@id': '22220'
+            '@count': '4'
+        - '@chance': '5'
+          item:
+            '@id': '22220'
+            '@count': '5'
 - '@id': '22381'
   '@toLevel': '1'
   '@name': Attribute Stone Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '16'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '9551'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22204'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '17'
+          item:
+            '@id': '9546'
+            '@count': '1'
+        - '@chance': '17'
+          item:
+            '@id': '9547'
+            '@count': '1'
+        - '@chance': '17'
+          item:
+            '@id': '9548'
+            '@count': '1'
+        - '@chance': '17'
+          item:
+            '@id': '9549'
+            '@count': '1'
+        - '@chance': '16'
+          item:
+            '@id': '9550'
+            '@count': '1'
+        - '@chance': '16'
+          item:
+            '@id': '9551'
+            '@count': '1'
 - '@id': '22382'
   '@toLevel': '1'
   '@name': Attribute Crystal Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '16'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '9557'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22205'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '17'
+          item:
+            '@id': '9552'
+            '@count': '1'
+        - '@chance': '17'
+          item:
+            '@id': '9553'
+            '@count': '1'
+        - '@chance': '17'
+          item:
+            '@id': '9554'
+            '@count': '1'
+        - '@chance': '17'
+          item:
+            '@id': '9555'
+            '@count': '1'
+        - '@chance': '16'
+          item:
+            '@id': '9556'
+            '@count': '1'
+        - '@chance': '16'
+          item:
+            '@id': '9557'
+            '@count': '1'
 - '@id': '22383'
   '@toLevel': '1'
   '@name': Pathfinder Supplies
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '100'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '14693'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22270'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+          '@chance': '100'
+          item:
+          - '@id': '1540'
+            '@count': '3'
+          - '@id': '21850'
+            '@count': '360'
+          - '@id': '21856'
+            '@count': '360'
+          - '@id': '960'
+            '@count': '1'
+          - '@id': '14687'
+            '@count': '1'
+          - '@id': '14693'
+            '@count': '1'
 - '@id': '22384'
   '@toLevel': '1'
   '@name': Pathfinder Supplies
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '100'
-          item:
-            $value: null
-            value: []
-            '@count': '3'
-            '@id': '14693'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22271'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+          '@chance': '100'
+          item:
+          - '@id': '1540'
+            '@count': '5'
+          - '@id': '21850'
+            '@count': '360'
+          - '@id': '21856'
+            '@count': '360'
+          - '@id': '22346'
+            '@count': '1'
+          - '@id': '14687'
+            '@count': '3'
+          - '@id': '14693'
+            '@count': '3'
 - '@id': '22385'
   '@toLevel': '1'
   '@name': Pathfinder Supplies
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '100'
-          item:
-            $value: null
-            value: []
-            '@count': '5'
-            '@id': '14693'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22272'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+          '@chance': '100'
+          item:
+          - '@id': '1540'
+            '@count': '8'
+          - '@id': '21850'
+            '@count': '360'
+          - '@id': '21856'
+            '@count': '360'
+          - '@id': '22346'
+            '@count': '1'
+          - '@id': '960'
+            '@count': '1'
+          - '@id': '14687'
+            '@count': '5'
+          - '@id': '14693'
+            '@count': '5'
 - '@id': '22386'
   '@toLevel': '1'
   '@name': Player Commendation - Transformation Scroll Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '11'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '21191'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22274'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '11'
+          item:
+            '@id': '21182'
+            '@count': '1'
+        - '@chance': '11'
+          item:
+            '@id': '21183'
+            '@count': '1'
+        - '@chance': '11'
+          item:
+            '@id': '21184'
+            '@count': '1'
+        - '@chance': '11'
+          item:
+            '@id': '21185'
+            '@count': '1'
+        - '@chance': '1'
+          item:
+            '@id': '21186'
+            '@count': '1'
+        - '@chance': '11'
+          item:
+            '@id': '21187'
+            '@count': '1'
+        - '@chance': '11'
+          item:
+            '@id': '21188'
+            '@count': '1'
+        - '@chance': '11'
+          item:
+            '@id': '21189'
+            '@count': '1'
+        - '@chance': '11'
+          item:
+            '@id': '21190'
+            '@count': '1'
+        - '@chance': '11'
+          item:
+            '@id': '21191'
+            '@count': '1'
 - '@id': '22387'
   '@toLevel': '1'
   '@name': Player Commendation - Gift Box
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '50'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22279'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22275'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '50'
+          item:
+            '@id': '22280'
+            '@count': '1'
+        - '@chance': '50'
+          item:
+            '@id': '22279'
+            '@count': '1'
 - '@id': '22388'
   '@toLevel': '1'
   '@name': Player Commendation - Transformation Stick Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '50'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22284'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22276'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '50'
+          item:
+            '@id': '22282'
+            '@count': '1'
+        - '@chance': '50'
+          item:
+            '@id': '22284'
+            '@count': '1'
 - '@id': '22389'
   '@toLevel': '1'
   '@name': Player Commendation - Hair Accessory Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '100'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22285'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22277'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+          '@chance': '100'
+          item:
+            '@id': '22285'
+            '@count': '1'
 - '@id': '22390'
   '@toLevel': '1'
   '@name': Player Commendation - Luxury Gift Box
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '100'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '21165'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22278'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+          '@chance': '100'
+          item:
+            '@id': '21165'
+            '@count': '1'
 - '@id': '22391'
   '@toLevel': '1'
   '@name': Jewelry Box - Talisman
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '1.1236'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '14814'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22286'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '1.1236'
+          item:
+            '@id': '9914'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9915'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9916'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9917'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9918'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9919'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9920'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9921'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9922'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9923'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9924'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9925'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9926'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9927'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9928'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9929'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9930'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9931'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9932'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9933'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9934'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9935'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9936'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9937'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9938'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9939'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9940'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9941'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9942'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9943'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9944'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9945'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9946'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9947'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9948'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9949'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9950'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9951'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9952'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9953'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9954'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9955'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9956'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9957'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9958'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9959'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9960'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9961'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9962'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9963'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9964'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9965'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '9966'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10141'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10142'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10158'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10416'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10417'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10418'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10419'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10420'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10421'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10422'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10423'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10424'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10518'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10519'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10533'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10534'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10535'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10536'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10537'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10538'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10539'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10540'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10541'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10542'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '10543'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '12815'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '12816'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '12817'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '12818'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '14604'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '14605'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '14810'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '14811'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '14812'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '14813'
+            '@count': '1'
+        - '@chance': '1.1236'
+          item:
+            '@id': '14814'
+            '@count': '1'
 - '@id': '22392'
   '@toLevel': '1'
   '@name': Cake of Happiness (Low-grade)
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '25'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22292'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22291'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '10'
+          item:
+            '@id': '10134'
+            '@count': '1'
+        - '@chance': '10'
+          item:
+            '@id': '10138'
+            '@count': '1'
+        - '@chance': '10'
+          item:
+            '@id': '9157'
+            '@count': '1'
+        - '@chance': '4'
+          item:
+            '@id': '22564'
+            '@count': '1'
+        - '@chance': '7'
+          item:
+            '@id': '22563'
+            '@count': '1'
+        - '@chance': '14'
+          item:
+            '@id': '22562'
+            '@count': '4'
+        - '@chance': '20'
+          item:
+            '@id': '21040'
+            '@count': '3'
+        - '@chance': '25'
+          item:
+            '@id': '22292'
+            '@count': '1'
 - '@id': '22393'
   '@toLevel': '1'
   '@name': Cake of Happiness (Mid-grade)
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '30'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22293'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22292'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '10'
+          item:
+            '@id': '22550'
+            '@count': '1'
+        - '@chance': '23'
+          item:
+            '@id': '34001'
+            '@count': '1'
+        - '@chance': '37'
+          item:
+            '@id': '22551'
+            '@count': '1'
+        - '@chance': '30'
+          item:
+            '@id': '22293'
+            '@count': '1'
 - '@id': '22394'
   '@toLevel': '1'
   '@name': Cake of Happiness (High-grade)
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '30'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22294'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22293'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '10'
+          item:
+            '@id': '17264'
+            '@count': '1'
+        - '@chance': '23'
+          item:
+            '@id': '34002'
+            '@count': '1'
+        - '@chance': '37'
+          item:
+            '@id': '22559'
+            '@count': '1'
+        - '@chance': '30'
+          item:
+            '@id': '22294'
+            '@count': '1'
 - '@id': '22395'
   '@toLevel': '1'
   '@name': Cake of Happiness (Top-grade)
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '63'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22558'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22294'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '5'
+          item:
+            '@id': '22560'
+            '@count': '1'
+        - '@chance': '12'
+          item:
+            '@id': '22561'
+            '@count': '1'
+        - '@chance': '20'
+          item:
+            '@id': '17263'
+            '@count': '1'
+        - '@chance': '63'
+          item:
+            '@id': '22558'
+            '@count': '1'
 - '@id': '22396'
   '@toLevel': '1'
   '@name': Divine Cake of Happiness
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '17.4'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22305'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22295'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '0.03333'
+          item:
+            '@id': '6656'
+            '@count': '1'
+        - '@chance': '0.1'
+          item:
+            '@id': '6658'
+            '@count': '1'
+        - '@chance': '31'
+          item:
+            '@id': '22302'
+            '@count': '1'
+        - '@chance': '8.6'
+          item:
+            '@id': '22303'
+            '@count': '1'
+        - '@chance': '42.893'
+          item:
+            '@id': '22304'
+            '@count': '1'
+        - '@chance': '17.4'
+          item:
+            '@id': '22305'
+            '@count': '1'
 - '@id': '22397'
   '@toLevel': '1'
   '@name': Sweet Chocolate Cookie
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  reuseDelay:
+    $text: '3600000'
+  staticReuse:
+    $text: 'true'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': CanUseVitalityIncreaseItem
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3600000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
-  staticReuse:
-    $value: null
-    value: []
-    $text: 'true'
-  targetType: SELF
 - '@id': '22398'
   '@toLevel': '1'
   '@name': Allegra Box
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '2'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '22313'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22310'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '1.1'
+          item:
+            '@id': '22325'
+            '@count': '1'
+        - '@chance': '0.3'
+          item:
+            '@id': '21224'
+            '@count': '1'
+        - '@chance': '0.05'
+          item:
+            '@id': '10649'
+            '@count': '1'
+        - '@chance': '10'
+          item:
+            '@id': '21235'
+            '@count': '3'
+        - '@chance': '0.45'
+          item:
+            '@id': '13276'
+            '@count': '1'
+        - '@chance': '0.5'
+          item:
+            '@id': '14248'
+            '@count': '1'
+        - '@chance': '3'
+          item:
+            '@id': '22341'
+            '@count': '1'
+        - '@chance': '8'
+          item:
+            '@id': '22342'
+            '@count': '3'
+        - '@chance': '10'
+          item:
+            '@id': '22343'
+            '@count': '3'
+        - '@chance': '10'
+          item:
+            '@id': '22344'
+            '@count': '3'
+        - '@chance': '10'
+          item:
+            '@id': '22345'
+            '@count': '3'
+        - '@chance': '6'
+          item:
+            '@id': '8753'
+            '@count': '1'
+        - '@chance': '4'
+          item:
+            '@id': '20392'
+            '@count': '1'
+        - '@chance': '3'
+          item:
+            '@id': '15440'
+            '@count': '1'
+        - '@chance': '4.5'
+          item:
+            '@id': '21085'
+            '@count': '1'
+        - '@chance': '4.1'
+          item:
+            '@id': '20336'
+            '@count': '1'
+        - '@chance': '7'
+          item:
+            '@id': '20220'
+            '@count': '1'
+        - '@chance': '7'
+          item:
+            '@id': '21166'
+            '@count': '1'
+        - '@chance': '7'
+          item:
+            '@id': '20798'
+            '@count': '1'
+        - '@chance': '2'
+          item:
+            '@id': '22312'
+            '@count': '1'
+        - '@chance': '2'
+          item:
+            '@id': '22313'
+            '@count': '1'
 - '@id': '22399'
   '@toLevel': '1'
   '@name': Latus Box
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '2.017'
-          item:
-            $value: null
-            value: []
-            '@count': '10'
-            '@id': '13765'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '22311'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '0.0015'
+          item:
+            '@id': '20521'
+            '@count': '1'
+        - '@chance': '0.0015'
+          item:
+            '@id': '20522'
+            '@count': '1'
+        - '@chance': '0.1'
+          item:
+            '@id': '20519'
+            '@count': '1'
+        - '@chance': '0.25'
+          item:
+            '@id': '20520'
+            '@count': '1'
+        - '@chance': '0.5'
+          item:
+            '@id': '22314'
+            '@count': '1'
+        - '@chance': '1'
+          item:
+            '@id': '22315'
+            '@count': '1'
+        - '@chance': '3'
+          item:
+            '@id': '9552'
+            '@count': '1'
+        - '@chance': '3'
+          item:
+            '@id': '9553'
+            '@count': '1'
+        - '@chance': '3'
+          item:
+            '@id': '9554'
+            '@count': '1'
+        - '@chance': '3'
+          item:
+            '@id': '9555'
+            '@count': '1'
+        - '@chance': '3'
+          item:
+            '@id': '9556'
+            '@count': '1'
+        - '@chance': '3'
+          item:
+            '@id': '9557'
+            '@count': '1'
+        - '@chance': '2'
+          item:
+            '@id': '9576'
+            '@count': '1'
+        - '@chance': '5'
+          item:
+            '@id': '8762'
+            '@count': '1'
+        - '@chance': '10'
+          item:
+            '@id': '9575'
+            '@count': '3'
+        - '@chance': '13'
+          item:
+            '@id': '8752'
+            '@count': '3'
+        - '@chance': '10'
+          item:
+            '@id': '9551'
+            '@count': '3'
+        - '@chance': '13'
+          item:
+            '@id': '9547'
+            '@count': '3'
+        - '@chance': '6'
+          item:
+            '@id': '9549'
+            '@count': '3'
+        - '@chance': '3'
+          item:
+            '@id': '9627'
+            '@count': '1'
+        - '@chance': '2.017'
+          item:
+            '@id': '13757'
+            '@count': '10'
+        - '@chance': '2.017'
+          item:
+            '@id': '13758'
+            '@count': '10'
+        - '@chance': '2.017'
+          item:
+            '@id': '13759'
+            '@count': '10'
+        - '@chance': '2.017'
+          item:
+            '@id': '13760'
+            '@count': '10'
+        - '@chance': '2.017'
+          item:
+            '@id': '13761'
+            '@count': '10'
+        - '@chance': '2.017'
+          item:
+            '@id': '13762'
+            '@count': '10'
+        - '@chance': '2.017'
+          item:
+            '@id': '13763'
+            '@count': '10'
+        - '@chance': '2.017'
+          item:
+            '@id': '13764'
+            '@count': '10'
+        - '@chance': '2.017'
+          item:
+            '@id': '13765'
+            '@count': '10'

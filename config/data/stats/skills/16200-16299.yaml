@@ -1,3513 +1,2219 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '16200'
   '@toLevel': '1'
   '@name': Empty Cry
-  '@fromLevel': null
-  '@displayId': null
-  castRange:
-    $value: null
-    value: []
-    $text: '300'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-1500'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '300'
+  hitTime:
+    $text: '1500'
+  effectPoint:
+    $text: '-1500'
+  isMagic:
+    $text: '1'
 - '@id': '16201'
   '@toLevel': '6'
   '@name': Ekimus' Vitality
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1296
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1200'
   abnormalType:
-    $value: null
-    value: []
     $text: MA_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  operateType:
+    $text: A2
+  mpConsume:
+    $text: '1'
   castRange:
-    $value: null
-    value: []
     $text: '300'
+  hitTime:
+    $text: '1500'
   effectPoint:
-    $value: null
-    value: []
     $text: '100'
+  isMagic:
+    $text: '1'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': MAtk
+    - '@name': MAtk
       amount:
-        $value: null
-        value: []
         $text: '10'
       mode:
-        $value: null
-        value: []
         $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1296
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  targetType: SELF
 - '@id': '16202'
   '@toLevel': '5'
   '@name': Fatal Strike
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: PHYSICAL
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
   castRange:
-    $value: null
-    value: []
     $text: '40'
+  hitTime:
+    $text: '1500'
   coolTime:
-    $value: null
-    value: []
     $text: '1000'
   effectPoint:
-    $value: null
-    value: []
     $text: '-100'
-  effectRange:
-    $value: null
-    value: []
-    $text: '400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  nextAction:
-    $value: null
-    value: []
-    $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '5000'
-  targetType: ENEMY
+  basicProperty:
+    $text: PHYSICAL
+  effectRange:
+    $text: '400'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  nextAction:
+    $text: ATTACK
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '50000'
+        - '@level': '2'
+          $text: '60000'
+        - '@level': '3'
+          $text: '70000'
+        - '@level': '4'
+          $text: '80000'
+        - '@level': '5'
+          $text: '80000'
+      overHit:
+        $text: 'true'
 - '@id': '16203'
   '@toLevel': '4'
   '@name': Fatal Shot
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: PHYSICAL
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
   castRange:
-    $value: null
-    value: []
     $text: '900'
+  hitTime:
+    $text: '1500'
   coolTime:
-    $value: null
-    value: []
     $text: '1000'
   effectPoint:
-    $value: null
-    value: []
     $text: '-100'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  nextAction:
-    $value: null
-    value: []
-    $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '5000'
-  targetType: ENEMY
+  basicProperty:
+    $text: PHYSICAL
+  effectRange:
+    $text: '1400'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  nextAction:
+    $text: ATTACK
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '50000'
+        - '@level': '2'
+          $text: '60000'
+        - '@level': '3'
+          $text: '70000'
+        - '@level': '4'
+          $text: '80000'
+      overHit:
+        $text: 'true'
 - '@id': '16204'
   '@toLevel': '4'
   '@name': Fatal Slasher
-  '@fromLevel': null
-  '@displayId': null
-  affectLimit:
-    $value: null
-    value: []
-    $text: 6-12
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '150'
-  affectScope:
-    $value: null
-    value: []
-    $text: POINT_BLANK
+  icon:
+    $text: icon.skill0000
   castRange:
-    $value: null
-    value: []
     $text: '40'
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  hitTime:
+    $text: '2000'
   coolTime:
-    $value: null
-    value: []
     $text: '1000'
   effectPoint:
-    $value: null
-    value: []
     $text: '-100'
   effectRange:
-    $value: null
-    value: []
     $text: '400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '5000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: POINT_BLANK
+  affectObject:
+    $text: NOT_FRIEND
+  affectLimit:
+    $text: 6-12
+  affectRange:
+    $text: '150'
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '50000'
+        - '@level': '2'
+          $text: '60000'
+        - '@level': '3'
+          $text: '70000'
+        - '@level': '4'
+          $text: '80000'
+      overHit:
+        $text: 'true'
 - '@id': '16205'
   '@toLevel': '5'
   '@name': Burst Shot
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
   affectLimit:
-    $value: null
-    value: []
     $text: 5-12
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '150'
-  affectScope:
-    $value: null
-    value: []
-    $text: RANGE
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
   castRange:
-    $value: null
-    value: []
     $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '1000'
+  hitTime:
+    $text: '2000'
   effectPoint:
-    $value: null
-    value: []
     $text: '-100'
   effectRange:
-    $value: null
-    value: []
     $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
+  coolTime:
+    $text: '1000'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: RANGE
+  affectObject:
+    $text: NOT_FRIEND
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '50000'
+        - '@level': '2'
+          $text: '60000'
+        - '@level': '3'
+          $text: '70000'
+        - '@level': '4'
+          $text: '80000'
+        - '@level': '5'
+          $text: '80000'
+      overHit:
+        $text: 'true'
 - '@id': '16206'
   '@toLevel': '4'
   '@name': Holy Spike
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  effectRange:
+    $text: '1400'
   attributeType:
-    $value: null
-    value: []
     $text: HOLY
   attributeValue:
-    $value: null
-    value: []
     $text: '100'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint: {}
-  effectRange:
-    $value: null
-    value: []
-    $text: '1400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackRange
-      power: {}
-      shieldDefPercent:
-        $value: null
-        value: []
-        $text: '40'
   hitTime:
-    $value: null
-    value: []
     $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
+  coolTime:
+    $text: '500'
+  effectPoint:
+    value:
+    - '@level': '1'
+      $text: '-100'
+    - '@level': '2'
+      $text: '-105'
+    - '@level': '3'
+      $text: '-110'
+    - '@level': '4'
+      $text: '-115'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
   lvlBonusRate:
-    $value: null
-    value: []
     $text: '1'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MagicalAttackRange
+      power:
+        value:
+        - '@level': '1'
+          $text: '550'
+        - '@level': '2'
+          $text: '650'
+        - '@level': '3'
+          $text: '750'
+        - '@level': '4'
+          $text: '850'
+      shieldDefPercent:
+        $text: '40'
 - '@id': '16207'
   '@toLevel': '4'
   '@name': Dark Spike
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  effectRange:
+    $text: '1400'
   attributeType:
-    $value: null
-    value: []
     $text: DARK
   attributeValue:
-    $value: null
-    value: []
     $text: '100'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint: {}
-  effectRange:
-    $value: null
-    value: []
-    $text: '1400'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackRange
-      power: {}
-      shieldDefPercent:
-        $value: null
-        value: []
-        $text: '40'
   hitTime:
-    $value: null
-    value: []
     $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
+  coolTime:
+    $text: '500'
+  effectPoint:
+    value:
+    - '@level': '1'
+      $text: '-100'
+    - '@level': '2'
+      $text: '-105'
+    - '@level': '3'
+      $text: '-110'
+    - '@level': '4'
+      $text: '-115'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
   lvlBonusRate:
-    $value: null
-    value: []
     $text: '1'
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '88'
+    - '@level': '2'
+      $text: '92'
+    - '@level': '3'
+      $text: '97'
+    - '@level': '4'
+      $text: '101'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
-  magicLevel: {}
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MagicalAttackRange
+      power:
+        value:
+        - '@level': '1'
+          $text: '550'
+        - '@level': '2'
+          $text: '650'
+        - '@level': '3'
+          $text: '750'
+        - '@level': '4'
+          $text: '850'
+      shieldDefPercent:
+        $text: '40'
 - '@id': '16208'
   '@toLevel': '4'
   '@name': Fire Spike
-  '@fromLevel': null
-  '@displayId': null
-  affectRange:
-    $value: null
-    value: []
-    $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: FIRE
-  attributeValue:
-    $value: null
-    value: []
-    $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint: {}
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  nextAction:
-    $value: null
-    value: []
-    $text: ATTACK
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ENEMY
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  effectRange:
+  - $text: '1400'
+  - $text: '1000'
+  attributeType:
+  - $text: FIRE
+  - $text: FIRE
+  attributeValue:
+  - $text: '100'
+  - $text: '300'
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    value:
+    - '@level': '1'
+      $text: '-100'
+    - '@level': '2'
+      $text: '-105'
+    - '@level': '3'
+      $text: '-110'
+    - '@level': '4'
+      $text: '-115'
+  isMagic:
+    $text: '1'
+  affectRange:
+    $text: '200'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  nextAction:
+    $text: ATTACK
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16209'
   '@toLevel': '4'
   '@name': Water Spike
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    value:
+    - '@level': '1'
+      $text: '-100'
+    - '@level': '2'
+      $text: '-105'
+    - '@level': '3'
+      $text: '-110'
+    - '@level': '4'
+      $text: '-115'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: WATER
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint: {}
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16210'
   '@toLevel': '5'
   '@name': Wind Spike
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    value:
+    - '@level': '1'
+      $text: '-100'
+    - '@level': '2'
+      $text: '-105'
+    - '@level': '3'
+      $text: '-110'
+    - '@level': '4'
+      $text: '-115'
+    - '@level': '5'
+      $text: '-115'
+    - '@level': '6'
+      $text: '-115'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: WIND
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint: {}
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16211'
   '@toLevel': '4'
   '@name': Earth Spike
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '1000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    value:
+    - '@level': '1'
+      $text: '-100'
+    - '@level': '2'
+      $text: '-105'
+    - '@level': '3'
+      $text: '-110'
+    - '@level': '4'
+      $text: '-115'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: EARTH
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint: {}
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16212'
   '@toLevel': '4'
   '@name': Holy Buster
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: HOLY
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16213'
   '@toLevel': '4'
   '@name': Dark Buster
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: DARK
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16214'
   '@toLevel': '4'
   '@name': Fire Buster
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: FIRE
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16215'
   '@toLevel': '4'
   '@name': Water Buster
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: WATER
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16216'
   '@toLevel': '5'
   '@name': Wind Buster
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: WIND
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16217'
   '@toLevel': '4'
   '@name': Earth Buster
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: EARTH
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16218'
   '@toLevel': '4'
   '@name': Holy Blast
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: WIND
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '493'
+        - '@level': '2'
+          $text: '506'
+        - '@level': '3'
+          $text: '518'
+        - '@level': '4'
+          $text: '529'
+        - '@level': '5'
+          $text: '541'
+        - '@level': '6'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16219'
   '@toLevel': '4'
   '@name': Unholy Blast
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: DARK
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16220'
   '@toLevel': '4'
   '@name': Fire Blast
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: FIRE
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16221'
   '@toLevel': '4'
   '@name': Water Blast
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: WATER
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '518'
+        - '@level': '2'
+          $text: '529'
+        - '@level': '3'
+          $text: '541'
+        - '@level': '4'
+          $text: '553'
+      overHit:
+        $text: 'true'
 - '@id': '16222'
   '@toLevel': '5'
   '@name': Wind Blast
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: WIND
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '493'
+        - '@level': '2'
+          $text: '506'
+        - '@level': '3'
+          $text: '518'
+        - '@level': '4'
+          $text: '529'
+        - '@level': '5'
+          $text: '541'
+      overHit:
+        $text: 'true'
 - '@id': '16223'
   '@toLevel': '5'
   '@name': Earth Blast
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '-700'
+  isMagic:
+    $text: '1'
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  effectRange:
+    $text: '1000'
   attributeType:
-    $value: null
-    value: []
     $text: EARTH
   attributeValue:
-    $value: null
-    value: []
     $text: '300'
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttack
-      overHit:
-        $value: null
-        value: []
-        $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   nextAction:
-    $value: null
-    value: []
     $text: ATTACK
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '3000'
-  targetType: ENEMY
+  effects:
+    effect:
+    - '@name': MagicalAttack
+      power:
+        value:
+        - '@level': '1'
+          $text: '493'
+        - '@level': '2'
+          $text: '506'
+        - '@level': '3'
+          $text: '518'
+        - '@level': '4'
+          $text: '529'
+        - '@level': '5'
+          $text: '541'
+      overHit:
+        $text: 'true'
 - '@id': '16224'
   '@toLevel': '4'
   '@name': Mass Poison
-  '@fromLevel': null
-  '@displayId': null
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill4035
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
   reuseDelay:
-    $value: null
-    value: []
     $text: '10000'
+  isMagic:
+    $text: '1'
+  effectPoint:
+    $text: '-700'
+  isDebuff:
+    $text: 'true'
 - '@id': '16225'
   '@toLevel': '4'
   '@name': Mass Bleed
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0096
   abnormalLevel:
-    $value: null
-    value: []
     $text: '9'
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
+  subordinationAbnormalType:
+    $text: BLEEDING
   abnormalType:
-    $value: null
-    value: []
     $text: BLEEDING
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: DOT_BLEEDING
   activateRate:
-    $value: null
-    value: []
     $text: '80'
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '150'
-  affectScope:
-    $value: null
-    value: []
-    $text: POINT_BLANK
   basicProperty:
-    $value: null
-    value: []
     $text: PHYSICAL
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DamOverTime
-      power: {}
-      ticks:
-        $value: null
-        value: []
-        $text: '2'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0096
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  lvlBonusRate:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel: {}
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  mpConsume:
+    $text: '1'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
-  subordinationAbnormalType:
-    $value: null
-    value: []
-    $text: BLEEDING
-  targetType: SELF
+  isMagic:
+    $text: '1'
+  effectPoint:
+    $text: '-700'
+  isDebuff:
+    $text: 'true'
+  lvlBonusRate:
+    $text: '2'
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '88'
+    - '@level': '2'
+      $text: '92'
+    - '@level': '3'
+      $text: '97'
+    - '@level': '4'
+      $text: '101'
+  magicCriticalRate:
+    $text: '-5'
   trait:
-    $value: null
-    value: []
     $text: BLEED
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: POINT_BLANK
+  affectObject:
+    $text: NOT_FRIEND
+  effects:
+    effect:
+    - '@name': DamOverTime
+      power:
+        value:
+        - '@level': '1'
+          $text: '5000'
+        - '@level': '2'
+          $text: '6000'
+        - '@level': '3'
+          $text: '7000'
+        - '@level': '4'
+          $text: '8000'
+      ticks:
+        $text: '2'
 - '@id': '16226'
   '@toLevel': '1'
   '@name': Battle Recovery
-  '@fromLevel': null
-  '@displayId': null
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '66'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  reuseDelay:
-    $value: null
-    value: []
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
     $text: '3000'
+  reuseDelay:
+    $text: '3000'
+  effectPoint:
+    $text: '66'
+  isMagic:
+    $text: '1'
 - '@id': '16227'
   '@toLevel': '1'
   '@name': Greater Recovery
-  '@fromLevel': null
-  '@displayId': null
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '83'
-  hitTime:
-    $value: null
-    value: []
-    $text: '5000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '5000'
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
+  effectPoint:
+    $text: '83'
+  isMagic:
+    $text: '1'
 - '@id': '16228'
   '@toLevel': '5'
   '@name': Wide Stun
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill10265
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: STUN
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: STUN
   activateRate:
-    $value: null
-    value: []
     $text: '50'
   affectLimit:
-    $value: null
-    value: []
     $text: 6-12
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '150'
-  affectScope:
-    $value: null
-    value: []
-    $text: POINT_BLANK
   basicProperty:
-    $value: null
-    value: []
     $text: PHYSICAL
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': BlockActions
-      allowedSkills:
-        $value: null
-        value: []
-        $text: 10279;10517;10025;10776;11770;1904;11264;11093;13314;1912
+  operateType:
+    $text: A2
+  mpConsume:
+    $text: '1'
   hitTime:
-    $value: null
-    value: []
     $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill10265
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '30000'
+  effectPoint:
+    $text: '-700'
   isDebuff:
-    $value: null
-    value: []
     $text: 'true'
   lvlBonusRate:
-    $value: null
-    value: []
     $text: '30'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '30000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
   trait:
-    $value: null
-    value: []
     $text: SHOCK
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: POINT_BLANK
+  affectObject:
+    $text: NOT_FRIEND
+  effects:
+    effect:
+    - '@name': BlockActions
+      allowedSkills:
+        $text: 10279;10517;10025;10776;11770;1904;11264;11093;13314;1912
 - '@id': '16229'
   '@toLevel': '4'
   '@name': Mass Hold
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill10090new
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
-  abnormalTime:
-    $value: null
-    value: []
-    $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: ROOT_MAGICALLY
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: ROOT
   activateRate:
-    $value: null
-    value: []
     $text: '80'
   affectLimit:
-    $value: null
-    value: []
     $text: 10-10
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '500'
-  affectScope:
-    $value: null
-    value: []
-    $text: RANGE
   basicProperty:
-    $value: null
-    value: []
     $text: MAGIC
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      HOLD:
-        $value: null
-        value: []
-        $text: '100'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill10090new
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  lvlBonusRate:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel: {}
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
   reuseDelay:
-    $value: null
-    value: []
     $text: '10000'
-  targetType: ENEMY_ONLY
+  isMagic:
+    $text: '1'
+  effectPoint:
+    $text: '-700'
+  abnormalTime:
+    $text: '10'
+  isDebuff:
+    $text: 'true'
+  lvlBonusRate:
+    $text: '2'
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '88'
+    - '@level': '2'
+      $text: '92'
+    - '@level': '3'
+      $text: '97'
+    - '@level': '4'
+      $text: '101'
+  magicCriticalRate:
+    $text: '-5'
+  effectRange:
+    $text: '1100'
+  affectRange:
+    $text: '500'
   trait:
-    $value: null
-    value: []
     $text: HOLD
+  targetType:
+    $text: ENEMY_ONLY
+  affectScope:
+    $text: RANGE
+  affectObject:
+    $text: NOT_FRIEND
+  effects:
+    effect:
+    - '@name': Root
+    - '@name': DefenceTrait
+      HOLD:
+        $text: '100'
 - '@id': '16230'
   '@toLevel': '4'
   '@name': Sleeping Cloud
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1072
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
-  abnormalTime:
-    $value: null
-    value: []
-    $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: SLEEP
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: SLEEP
   activateRate:
-    $value: null
-    value: []
     $text: '40'
   affectLimit:
-    $value: null
-    value: []
     $text: 9-10
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '200'
-  affectScope:
-    $value: null
-    value: []
-    $text: RANGE
   basicProperty:
-    $value: null
-    value: []
     $text: MAGIC
+  operateType:
+    $text: A2
+  mpConsume:
+    $text: '1'
   castRange:
-    $value: null
-    value: []
     $text: '900'
+  hitTime:
+    $text: '2000'
   coolTime:
-    $value: null
-    value: []
     $text: '800'
+  reuseDelay:
+    $text: '10000'
+  isMagic:
+    $text: '1'
   effectPoint:
-    $value: null
-    value: []
     $text: '-700'
   effectRange:
-    $value: null
-    value: []
     $text: '1000'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      SLEEP:
-        $value: null
-        value: []
-        $text: '100'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1072
+  abnormalTime:
+    $text: '10'
   isDebuff:
-    $value: null
-    value: []
     $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
   lvlBonusRate:
-    $value: null
-    value: []
     $text: '30'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel: {}
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '88'
+    - '@level': '2'
+      $text: '92'
+    - '@level': '3'
+      $text: '97'
+    - '@level': '4'
+      $text: '101'
   removedOnDamage:
-    $value: null
-    value: []
     $text: 'true'
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '10000'
-  targetType: ENEMY_ONLY
+  magicCriticalRate:
+    $text: '5'
   trait:
-    $value: null
-    value: []
     $text: SLEEP
+  targetType:
+    $text: ENEMY_ONLY
+  affectScope:
+    $text: RANGE
+  affectObject:
+    $text: NOT_FRIEND
+  effects:
+    effect:
+    - '@name': BlockActions
+    - '@name': DefenceTrait
+      SLEEP:
+        $text: '100'
 - '@id': '16231'
   '@toLevel': '5'
   '@name': Mass Airbind
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill11052
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
-  abnormalResists:
-    $value: null
-    value: []
-    $text: STUN;TURN_FLEE
   abnormalTime:
-    $value: null
-    value: []
-    $text: '10'
+  - $text: '10'
+  - $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: AIRBIND
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: AIRBIND
   activateRate:
-    $value: null
-    value: []
     $text: '90'
-  affectLimit:
-    $value: null
-    value: []
-    $text: 5-12
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '150'
-  affectScope:
-    $value: null
-    value: []
-    $text: RANGE
   basicProperty:
-    $value: null
-    value: []
     $text: NONE
+  trait:
+    $text: AIRBIND
+  abnormalResists:
+    $text: STUN;TURN_FLEE
+  magicCriticalRate:
+    $text: '5'
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '94'
+    - '@level': '2'
+      $text: '97'
+    - '@level': '3'
+      $text: '98'
+    - '@level': '4'
+      $text: '101'
+    - '@level': '5'
+      $text: '103'
+  affectRange:
+    $text: '150'
+  affectLimit:
+    $text: 5-12
+  operateType:
+    $text: A2
+  mpConsume:
+    $text: '1'
   castRange:
-    $value: null
-    value: []
     $text: '900'
+  hitTime:
+    $text: '2000'
   coolTime:
-    $value: null
-    value: []
     $text: '800'
+  reuseDelay:
+    $text: '10000'
+  isMagic:
+    $text: '1'
   effectPoint:
-    $value: null
-    value: []
     $text: '-700'
+  isDebuff:
+    $text: 'true'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: RANGE
+  affectObject:
+    $text: NOT_FRIEND
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      AIRBIND:
-        $value: null
-        value: []
-        $text: '100'
-      CHANGEBODY:
-        $value: null
-        value: []
+    - '@name': BlockActions
+      allowedSkills:
+        $text: 10279;10517;10025;10776;11770;1904;11264;11093;13314;1912
+    - '@name': DefenceTrait
+      HOLD:
         $text: '100'
       DERANGEMENT:
-        $value: null
-        value: []
-        $text: '100'
-      HOLD:
-        $value: null
-        value: []
-        $text: '100'
-      KNOCKBACK:
-        $value: null
-        value: []
-        $text: '100'
-      KNOCKDOWN:
-        $value: null
-        value: []
         $text: '100'
       SHOCK:
-        $value: null
-        value: []
+        $text: '100'
+      KNOCKBACK:
+        $text: '100'
+      CHANGEBODY:
+        $text: '100'
+      KNOCKDOWN:
         $text: '100'
       SLEEP:
-        $value: null
-        value: []
         $text: '100'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11052
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel: {}
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '10000'
-  targetType: ENEMY
-  trait:
-    $value: null
-    value: []
-    $text: AIRBIND
+      AIRBIND:
+        $text: '100'
 - '@id': '16232'
   '@toLevel': '4'
   '@name': Mass Chain Smash
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill10015
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1'
   abnormalType:
-    $value: null
-    value: []
     $text: STUN
-  activateRate:
-    $value: null
-    value: []
-    $text: '90'
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '900'
-  affectScope:
-    $value: null
-    value: []
-    $text: POINT_BLANK
-  basicProperty:
-    $value: null
-    value: []
-    $text: PHYSICAL
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': GetAgro
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill10015
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
+  activateRate:
+    $text: '90'
   lvlBonusRate:
-    $value: null
-    value: []
     $text: '30'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
-  magicLevel: {}
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '93'
+    - '@level': '2'
+      $text: '96'
+    - '@level': '3'
+      $text: '99'
+    - '@level': '4'
+      $text: '103'
+  castRange:
+    $text: '900'
+  effectRange:
+    $text: '1100'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  mpConsume:
+    $text: '1'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
-  targetType: SELF
+  effectPoint:
+    $text: '-700'
+  isDebuff:
+    $text: 'true'
+  basicProperty:
+    $text: PHYSICAL
+  hitCancelTime:
+    $text: '0'
   trait:
-    $value: null
-    value: []
     $text: PULL
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: POINT_BLANK
+  affectObject:
+    $text: NOT_FRIEND
+  effects:
+    effect:
+    - '@name': PullBack
+      speed:
+        $text: '600'
+      delay:
+        $text: '650'
+    - '@name': BlockActions
+      allowedSkills:
+        $text: 10279;10517;10025;10776;11770;1904;11264;11093;13314;1912
+    - '@name': GetAgro
 - '@id': '16233'
   '@toLevel': '5'
   '@name': Mass Fear
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1092
   abnormalLevel:
-    $value: null
-    value: []
     $text: '5'
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: TURN_FLEE
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: TURN_FLEE
-  activateRate:
-    $value: null
-    value: []
-    $text: '90'
   affectLimit:
-    $value: null
-    value: []
     $text: 10-10
-  affectObject:
-    $value: null
-    value: []
-    $text: NOT_FRIEND
   affectRange:
-    $value: null
-    value: []
     $text: '150'
-  affectScope:
-    $value: null
-    value: []
-    $text: RANGE
+  activateRate:
+    $text: '90'
   basicProperty:
-    $value: null
-    value: []
     $text: NONE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
-    $text: '800'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Fear
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1092
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel: {}
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '10000'
-  targetType: ENEMY_ONLY
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '94'
+    - '@level': '2'
+      $text: '96'
+    - '@level': '3'
+      $text: '98'
+    - '@level': '4'
+      $text: '101'
+    - '@level': '5'
+      $text: '103'
   trait:
-    $value: null
-    value: []
     $text: DERANGEMENT
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: ENEMY_ONLY
+  affectScope:
+    $text: RANGE
+  affectObject:
+    $text: NOT_FRIEND
+  operateType:
+    $text: A2
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '2000'
+  coolTime:
+    $text: '800'
+  reuseDelay:
+    $text: '10000'
+  isMagic:
+    $text: '1'
+  effectPoint:
+    $text: '-700'
+  isDebuff:
+    $text: 'true'
+  effects:
+    effect:
+    - '@name': BlockControl
+    - '@name': Fear
 - '@id': '16234'
   '@toLevel': '3'
   '@name': Raid Blessing
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.etc_i.etc_rp_point_i00
+  operateType:
+    $text: A2
+  mpConsume:
+    $text: '1'
   castRange:
-    $value: null
-    value: []
     $text: '40'
   effectPoint:
-    $value: null
-    value: []
     $text: '100'
-  icon:
-    $value: null
-    value: []
-    $text: icon.etc_i.etc_rp_point_i00
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
 - '@id': '16235'
   '@toLevel': '1'
   '@name': Raid Blessing
-  '@fromLevel': null
-  '@displayId': null
-  castRange:
-    $value: null
-    value: []
-    $text: '40'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-100'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_i.etc_rp_point_i00
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  mpConsume:
+    $text: '1'
+  castRange:
+    $text: '40'
+  isMagic:
+    $text: '1'
+  effectPoint:
+    $text: '-100'
+  isDebuff:
+    $text: 'true'
 - '@id': '16236'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16237'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16238'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16239'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16240'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16241'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16242'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16243'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16244'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16245'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16246'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16247'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16248'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 88)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16249'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 92)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16250'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 92)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16251'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 92)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16252'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 92)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16253'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 92)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16254'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 92)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16255'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16256'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16257'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16258'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16259'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16260'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16261'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16262'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16263'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16264'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16265'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16266'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16267'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 93)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16268'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 94)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16269'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 94)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16270'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 94)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16271'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 94)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16272'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 94)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16273'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 94)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16274'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16275'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16276'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16277'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16278'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16279'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16280'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16281'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16282'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16283'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16284'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16285'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16286'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16287'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16288'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16289'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16290'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16291'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 97)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16292'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 98)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16293'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 98)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16294'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 98)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16295'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 98)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16296'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 98)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16297'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 98)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16298'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 98)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P
 - '@id': '16299'
   '@toLevel': '1'
   '@name': Raid Boss (Lv. 98)
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skillraid
   operateType:
-    $value: null
-    value: []
     $text: P

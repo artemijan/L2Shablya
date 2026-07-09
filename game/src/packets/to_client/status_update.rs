@@ -56,11 +56,11 @@ impl StatusUpdate {
     pub fn add_update(&mut self, update_type: StatusUpdateType, value: i32) -> anyhow::Result<()> {
         self.buffer.write_u8(update_type as u8)?;
         self.buffer.write_i32(value)?;
-        
+
         // Update attributes count byte
         let data = self.buffer.get_data_mut(false);
         data[11] += 1;
-        
+
         Ok(())
     }
 }

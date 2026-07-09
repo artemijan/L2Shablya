@@ -1,732 +1,940 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '10903'
   '@toLevel': '4'
   '@name': Hawk Eye
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel: {}
-  abnormalTime: {}
+  icon:
+    $text: icon.skill11872
+  abnormalLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '2'
+    - '@level': '3'
+      $text: '3'
+    - '@level': '4'
+      $text: '4'
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '4'
+      $text: '1800'
+    - '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{1800 + subIndex * 90}'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '90'
+    - '@level': '3'
+      $text: '95'
+    - '@level': '4'
+      $text: '99'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '62'
+    - '@level': '2'
+      $text: '69'
+    - '@level': '3'
+      $text: '76'
+    - '@level': '4'
+      $text: '83'
+  hitTime:
+    $text: '1000'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '3'
-      '@fromSubLevel': '3001'
-      '@name': Speed
-      '@toLevel': '4'
-      '@toSubLevel': '3020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11872
-  magicLevel: {}
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: BOW
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': PhysicalSkillPower
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: BOW
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': DefenceCriticalRate
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-5'
+        - '@level': '2'
+          $text: '-7'
+        - '@level': '3'
+          $text: '-10'
+        - '@level': '4'
+          $text: '-15'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: BOW
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': DefenceCriticalDamage
+      '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '3'
+          '@toLevel': '4'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{-1 - ((subIndex - 1} * 0.5)}'
+      mode:
+        $text: PER
+    - '@name': Speed
+      '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '3001'
+      '@toSubLevel': '3020'
+      amount:
+        value:
+        - '@fromLevel': '3'
+          '@toLevel': '4'
+          '@fromSubLevel': '3001'
+          '@toSubLevel': '3020'
+          $text: '{2 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '10904'
   '@toLevel': '4'
   '@name': Superior Skill Mastery
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalSkillPower
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill11874
-  magicLevel: {}
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '90'
+    - '@level': '3'
+      $text: '95'
+    - '@level': '4'
+      $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PhysicalSkillPower
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
 - '@id': '10905'
   '@toLevel': '3'
   '@name': Fatal Arrow
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
+  targetType:
+    $text: ENEMY
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '93'
+    - '@level': '2'
+      $text: '96'
+    - '@level': '3'
+      $text: '99'
   castRange:
-    $value: null
-    value: []
     $text: '1100'
+  hitTime:
+    $text: '1800'
+  coolTime:
+    $text: '250'
+  effectPoint:
+    value:
+    - '@level': '1'
+      $text: '-709'
+    - '@level': '2'
+      $text: '-711'
+    - '@level': '3'
+      $text: '-714'
+  reuseDelay:
+    $text: '30000'
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': EquipWeapon
       weaponType:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
           $text: BOW
-  coolTime:
-    $value: null
-    value: []
-    $text: '250'
-  effectPoint: {}
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackHpLink
+    - '@name': PhysicalAttackHpLink
+      power:
+        value:
+        - '@level': '1'
+          $text: '29176'
+        - '@level': '2'
+          $text: '30726'
+        - '@level': '3'
+          $text: '32277'
       overHit:
-        $value: null
-        value: []
         $text: 'true'
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '1800'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '30000'
-  targetType: ENEMY
 - '@id': '10950'
   '@toLevel': '4'
   '@name': Vengeful Sniper
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel: {}
-  abnormalTime: {}
+  icon:
+    $text: icon.skill11873
+  abnormalLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '2'
+    - '@level': '3'
+      $text: '3'
+    - '@level': '4'
+      $text: '4'
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '4'
+      $text: '1800'
+    - '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1020'
+      $text: '{1800 + subIndex * 90}'
+  operateType:
+    $text: A2
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '90'
+    - '@level': '3'
+      $text: '95'
+    - '@level': '4'
+      $text: '99'
+  mpConsume:
+    value:
+    - '@level': '1'
+      $text: '62'
+    - '@level': '2'
+      $text: '69'
+    - '@level': '3'
+      $text: '76'
+    - '@level': '4'
+      $text: '83'
+  hitTime:
+    $text: '1000'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '687'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '3'
-      '@fromSubLevel': '3001'
-      '@name': Speed
-      '@toLevel': '4'
-      '@toSubLevel': '3020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11873
-  magicLevel: {}
-  mpConsume: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
-  targetType: SELF
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: BOW
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: BOW
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: BOW
+        - $text: CROSSBOW
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: BOW
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': PvpMagicalSkillDefenceBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '7'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: BOW
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': DefenceCriticalDamage
+      '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '3'
+          '@toLevel': '4'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{-1 - ((subIndex - 1} * 0.5)}'
+      mode:
+        $text: PER
+    - '@name': Speed
+      '@fromLevel': '3'
+      '@toLevel': '4'
+      '@fromSubLevel': '3001'
+      '@toSubLevel': '3020'
+      amount:
+        value:
+        - '@fromLevel': '3'
+          '@toLevel': '4'
+          '@fromSubLevel': '3001'
+          '@toSubLevel': '3020'
+          $text: '{2 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '10951'
   '@toLevel': '4'
   '@name': Superior Instinct Mastery
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill10951
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '85'
+    - '@level': '2'
+      $text: '90'
+    - '@level': '3'
+      $text: '95'
+    - '@level': '4'
+      $text: '99'
+  operateType:
+    $text: P
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': PvpPhysicalSkillDamageBonus
-      amount: {}
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '7'
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '15'
       mode:
-        $value: null
-        value: []
         $text: PER
       weaponType:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
-          $text: TWOHANDCROSSBOW
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill10951
-  magicLevel: {}
-  operateType:
-    $value: null
-    value: []
-    $text: P
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '7'
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '15'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '7'
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '15'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '7'
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '15'
+      mode:
+        $text: PER
+      weaponType:
+        item:
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
 - '@id': '10952'
   '@toLevel': '1'
   '@name': Survival Instinct
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: POSSESSION
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '2'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '1'
-      '@fromSubLevel': '2001'
-      '@name': Speed
-      '@toLevel': '1'
-      '@toSubLevel': '2020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill10952
+  abnormalLevel:
+    $text: '1'
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '60'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1010'
+      $text: '{base + subIndex}'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1011'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 + 0.5 * subIndex}'
+  abnormalType:
+    $text: POSSESSION
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '5'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '1785'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '64'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    $text: '64'
+  hitTime:
+    $text: '3000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '2'
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
-  targetType: SELF
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillPower
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': Speed
+      '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '1'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{2 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '10953'
   '@toLevel': '1'
   '@name': Hunting Instinct
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: POSSESSION
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '2'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '1'
-      '@fromSubLevel': '2001'
-      '@name': Speed
-      '@toLevel': '1'
-      '@toSubLevel': '2020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill10953
+  abnormalLevel:
+    $text: '1'
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '60'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1010'
+      $text: '{base + subIndex}'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1011'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 + 0.5 * subIndex}'
+  abnormalType:
+    $text: POSSESSION
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '5'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '1785'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '64'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    $text: '64'
+  hitTime:
+    $text: '3000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '2'
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
-  targetType: SELF
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillPower
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillCriticalRate
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillCriticalDamage
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': Speed
+      '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '1'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{2 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '10954'
   '@toLevel': '1'
   '@name': Counter Instinct
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: POSSESSION
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '2'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '1'
-      '@fromSubLevel': '2001'
-      '@name': Speed
-      '@toLevel': '1'
-      '@toSubLevel': '2020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill10954
+  abnormalLevel:
+    $text: '1'
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '60'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1010'
+      $text: '{base + subIndex}'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1011'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 + 0.5 * subIndex}'
+  abnormalType:
+    $text: POSSESSION
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '5'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '1785'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '64'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    $text: '64'
+  hitTime:
+    $text: '3000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '2'
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
-  targetType: SELF
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillPower
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillCriticalDamage
+      amount:
+        $text: '25'
+      mode:
+        $text: PER
+    - '@name': Speed
+      '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '1'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{2 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '10955'
   '@toLevel': '1'
   '@name': Bloody Instinct
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime: {}
-  abnormalType:
-    $value: null
-    value: []
-    $text: POSSESSION
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '2'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@fromLevel': '1'
-      '@fromSubLevel': '2001'
-      '@name': Speed
-      '@toLevel': '1'
-      '@toSubLevel': '2020'
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill10955
+  abnormalLevel:
+    $text: '1'
+  abnormalTime:
+    value:
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      $text: '60'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1001'
+      '@toSubLevel': '1010'
+      $text: '{base + subIndex}'
+    - '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '1011'
+      '@toSubLevel': '1020'
+      $text: '{base + 10 + 0.5 * subIndex}'
+  abnormalType:
+    $text: POSSESSION
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '5'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '1785'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '64'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  mpConsume:
+    $text: '64'
+  hitTime:
+    $text: '3000'
+  coolTime:
+    $text: '500'
+  effectPoint:
+    $text: '2'
   reuseDelay:
-    $value: null
-    value: []
     $text: '600000'
-  targetType: SELF
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillPower
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': Speed
+      '@fromLevel': '1'
+      '@toLevel': '1'
+      '@fromSubLevel': '2001'
+      '@toSubLevel': '2020'
+      amount:
+        value:
+        - '@fromLevel': '1'
+          '@toLevel': '1'
+          '@fromSubLevel': '2001'
+          '@toSubLevel': '2020'
+          $text: '{2 * subIndex}'
+      mode:
+        $text: PER
 - '@id': '10956'
   '@toLevel': '1'
   '@name': Divine Expansion
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': EnlargeAbnormalSlot
-      slots:
-        $value: null
-        value: []
-        $text: '1'
   icon:
-    $value: null
-    value: []
     $text: icon.skillexofdiv
-  magicLevel:
-    $value: null
-    value: []
-    $text: '100'
   operateType:
-    $value: null
-    value: []
     $text: P
+  magicLevel:
+    $text: '100'
+  effects:
+    effect:
+    - '@name': EnlargeAbnormalSlot
+      slots:
+        $text: '1'
 - '@id': '10997'
   '@toLevel': '1'
   '@name': Archer - Individual Passive
-  '@fromLevel': null
-  '@displayId': null
   icon:
-    $value: null
-    value: []
     $text: icon.skill0217
+  operateType:
+    $text: P
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: P
 - '@id': '10998'
   '@toLevel': '1'
   '@name': Archer - Individual
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1543
+  operateType:
+    $text: A2
+  hitTime:
+    $text: '500'
+  reuseDelay:
+    $text: '5000'
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: ATTACK_TIME_DOWN_SPECIAL
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '85'
+  reuseDelayGroup:
+    $text: '10760'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '5'
-  abnormalType:
-    $value: null
-    value: []
-    $text: ATTACK_TIME_DOWN_SPECIAL
+  isMagic:
+    $text: '4'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
+    - '@name': PhysicalAttackSpeed
       amount:
-        $value: null
-        value: []
         $text: '30'
       mode:
-        $value: null
-        value: []
         $text: PER
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1543
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '5000'
-  reuseDelayGroup:
-    $value: null
-    value: []
-    $text: '10760'
-  targetType: SELF
 - '@id': '10999'
   '@toLevel': '1'
   '@name': Heavy Hit
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.skill10317
+  operateType:
+    $text: A1
+  mpConsume:
+    $text: '1'
   castRange:
-    $value: null
-    value: []
     $text: '700'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'true'
-      level:
-        $value: null
-        value: []
-        $text: '1'
-      type:
-        $value: null
-        value: []
-        $text: AIRBIND
+  hitTime:
+    $text: '2000'
   coolTime:
-    $value: null
-    value: []
     $text: '1800'
   effectPoint:
-    $value: null
-    value: []
     $text: '-687'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1200'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttack
-      power:
-        $value: null
-        value: []
-        $text: '21365.2'
-  hitTime:
-    $value: null
-    value: []
-    $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill10317
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
+  effectRange:
+    $text: '1200'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '10000'
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': EquipWeapon
+      weaponType:
+        item:
+        - $text: BOW
+        - $text: CROSSBOW
+        - $text: TWOHANDCROSSBOW
+    - '@name': OpCheckAbnormal
+      type:
+        $text: AIRBIND
+      level:
+        $text: '1'
+      hasAbnormal:
+        $text: 'true'
+  effects:
+    effect:
+    - '@name': PhysicalAttack
+      power:
+        $text: '21365.2'

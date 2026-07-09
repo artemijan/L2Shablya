@@ -2,8 +2,8 @@ use crate::packets::to_client::CharSelectionInfo;
 use crate::pl_client::PlayerClient;
 use bytes::BytesMut;
 use kameo::message::{Context, Message};
-use tracing::instrument;
 use l2_core::shared_packets::common::ReadablePacket;
+use tracing::instrument;
 
 #[derive(Debug, Clone)]
 pub struct GoLobby;
@@ -50,7 +50,7 @@ mod tests {
     use std::net::Ipv4Addr;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use tokio::io::{split, AsyncReadExt};
+    use tokio::io::{AsyncReadExt, split};
 
     #[tokio::test]
     pub async fn test_handle_no_user() {

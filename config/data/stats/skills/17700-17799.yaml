@@ -1,3142 +1,3928 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '17701'
   '@toLevel': '6'
   '@name': 'Topaz: Spiritshot'
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel: {}
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.etc_bm_jewel_topaz_i00
+    - '@level': '2'
+      $text: icon.etc_bm_jewel_topaz_i00
+    - '@level': '3'
+      $text: icon.etc_bm_jewel_topaz_i00
+    - '@level': '4'
+      $text: icon.etc_bm_jewel_topaz_i00
+    - '@level': '5'
+      $text: icon.etc_bm_jewel_topaz_i00
+    - '@level': '6'
+      $text: icon.bm_jewel_absdmg_high_lv1_lavianrose
+  operateType:
+    $text: A1
+  abnormalLevel:
+    value:
+    - '@level': '1'
+      $text: '2'
+    - '@level': '2'
+      $text: '3'
+    - '@level': '3'
+      $text: '4'
+    - '@level': '4'
+      $text: '5'
+    - '@level': '5'
+      $text: '6'
+    - '@level': '6'
+      $text: '7'
+  magicLevel:
+    value:
+    - '@level': '1'
+      $text: '1'
+    - '@level': '2'
+      $text: '2'
+    - '@level': '3'
+      $text: '3'
+    - '@level': '4'
+      $text: '4'
+    - '@level': '5'
+      $text: '5'
+    - '@level': '6'
+      $text: '6'
   castRange:
-    $value: null
-    value: []
     $text: '600'
+  hitTime:
+    $text: '1000'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '-1000'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon: {}
-  magicLevel: {}
-  operateType:
-    $value: null
-    value: []
-    $text: A1
+  reuseDelay:
+    $text: '30000'
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
   pvpEffects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
+    - '@name': BlockSkill
+      magicTypes:
+        $text: 1;3
+    - '@name': SkillTurning
+      chance:
+        $text: '100'
+      staticChance:
+        $text: 'true'
+    - '@name': RealDamage
+      power:
+        value:
+        - '@level': '1'
+          $text: '1062'
+        - '@level': '2'
+          $text: '3717'
+        - '@level': '3'
+          $text: '6903'
+        - '@level': '4'
+          $text: '10089'
+        - '@level': '5'
+          $text: '13275'
+        - '@level': '6'
+          $text: '13275'
+    - '@name': Lethal
       '@fromLevel': '6'
-      '@name': Lethal
       '@toLevel': '6'
       fullLethal:
-        $value: null
-        value: []
         $text: '30'
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '30000'
-  targetType: ENEMY
 - '@id': '17702'
   '@toLevel': '5'
   '@name': 'Jewel: Quick Recovery'
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Hp
-      amount: {}
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': Hp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1500'
+        - '@level': '2'
+          $text: '3000'
+        - '@level': '3'
+          $text: '6000'
+        - '@level': '4'
+          $text: '8000'
+        - '@level': '5'
+          $text: '13000'
 - '@id': '17703'
   '@toLevel': '5'
   '@name': 'Jewel: Heal Boost'
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': HealEffect
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.skill4416_dwarf
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': HealEffect
+      amount:
+        value:
+        - '@level': '1'
+          $text: '3'
+        - '@level': '2'
+          $text: '6'
+        - '@level': '3'
+          $text: '9'
+        - '@level': '4'
+          $text: '13'
+        - '@level': '5'
+          $text: '21'
+      mode:
+        $text: PER
 - '@id': '17704'
   '@toLevel': '6'
   '@name': Obsidian
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DamageByAttack
-      amount: {}
-      type:
-        $value: null
-        value: []
-        $text: PK
-  icon: {}
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.etc_bm_jewel_obsidian_i00
+    - '@level': '2'
+      $text: icon.etc_bm_jewel_obsidian_i00
+    - '@level': '3'
+      $text: icon.etc_bm_jewel_obsidian_i00
+    - '@level': '4'
+      $text: icon.etc_bm_jewel_obsidian_i00
+    - '@level': '5'
+      $text: icon.etc_bm_jewel_obsidian_i00
+    - '@level': '6'
+      $text: icon.bm_jewel_pvpdef_high_lv1_lavianrose
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': TriggerSkillByDamage
+      '@fromLevel': '6'
+      '@toLevel': '6'
+      attackerType:
+        $text: Creature
+      minDamage:
+        $text: '100'
+      chance:
+        $text: '100'
+      targetType:
+        $text: SELF
+      allowSkillAttack:
+        $text: 'true'
+      allowNormalAttack:
+        $text: 'true'
+      allowWeapons:
+        $text: ALL
+      skillId:
+        $text: '18720'
+      skillLevel:
+        $text: '1'
+    - '@name': DamageByAttack
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-1'
+        - '@level': '2'
+          $text: '-3'
+        - '@level': '3'
+          $text: '-7'
+        - '@level': '4'
+          $text: '-11'
+        - '@level': '5'
+          $text: '-15'
+        - '@level': '6'
+          $text: '-15'
+      type:
+        $text: PK
 - '@id': '17705'
   '@toLevel': '6'
   '@name': Opal
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount: {}
-      attribute:
-        $value: null
-        value: []
-        $text: HOLY
-  icon: {}
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.etc_bm_jewel_opal_i00
+    - '@level': '2'
+      $text: icon.etc_bm_jewel_opal_i00
+    - '@level': '3'
+      $text: icon.etc_bm_jewel_opal_i00
+    - '@level': '4'
+      $text: icon.etc_bm_jewel_opal_i00
+    - '@level': '5'
+      $text: icon.etc_bm_jewel_opal_i00
+    - '@level': '6'
+      $text: icon.bm_jewel_atkeleup_high_lv1_lavianrose
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': AttackAttributeAdd
+      amount:
+        value:
+        - '@level': '1'
+          $text: '10'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '40'
+        - '@level': '4'
+          $text: '70'
+        - '@level': '5'
+          $text: '120'
+        - '@level': '6'
+          $text: '120'
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '70'
+      attribute:
+        $text: FIRE
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '70'
+      attribute:
+        $text: WATER
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '70'
+      attribute:
+        $text: EARTH
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '70'
+      attribute:
+        $text: WIND
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '70'
+      attribute:
+        $text: DARK
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '70'
+      attribute:
+        $text: HOLY
 - '@id': '17706'
   '@toLevel': '5'
   '@name': 'Jewel: Atk. Spd. Increase'
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.etc_talisman_i02
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PhysicalAttackSpeed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '33'
+        - '@level': '2'
+          $text: '48'
+        - '@level': '3'
+          $text: '78'
+        - '@level': '4'
+          $text: '138'
+        - '@level': '5'
+          $text: '258'
+      mode:
+        $text: DIFF
 - '@id': '17707'
   '@toLevel': '5'
   '@name': 'Jewel: Casting Spd. Increase'
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.skill17085
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': MagicalAttackSpeed
+      amount:
+        value:
+        - '@level': '1'
+          $text: '33'
+        - '@level': '2'
+          $text: '55'
+        - '@level': '3'
+          $text: '90'
+        - '@level': '4'
+          $text: '166'
+        - '@level': '5'
+          $text: '318'
+      mode:
+        $text: DIFF
 - '@id': '17708'
   '@toLevel': '6'
   '@name': Diamond
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  icon: {}
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.etc_bm_jewel_diamond_i00
+    - '@level': '2'
+      $text: icon.etc_bm_jewel_diamond_i00
+    - '@level': '3'
+      $text: icon.etc_bm_jewel_diamond_i00
+    - '@level': '4'
+      $text: icon.etc_bm_jewel_diamond_i00
+    - '@level': '5'
+      $text: icon.etc_bm_jewel_diamond_i00
+    - '@level': '6'
+      $text: icon.bm_jewel_phydef_high_lv1_lavianrose
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '283'
+        - '@level': '2'
+          $text: '567'
+        - '@level': '3'
+          $text: '945'
+        - '@level': '4'
+          $text: '1418'
+        - '@level': '5'
+          $text: '1986'
+        - '@level': '6'
+          $text: '1986'
+      mode:
+        $text: DIFF
+    - '@name': DefenceCriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-1'
+        - '@level': '2'
+          $text: '-2'
+        - '@level': '3'
+          $text: '-3'
+        - '@level': '4'
+          $text: '-4'
+        - '@level': '5'
+          $text: '-5'
+        - '@level': '6'
+          $text: '-5'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '10'
+      mode:
+        $text: PER
 - '@id': '17709'
   '@toLevel': '6'
   '@name': Pearl
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalDefence
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  icon: {}
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.etc_bm_jewel_pearl_i00
+    - '@level': '2'
+      $text: icon.etc_bm_jewel_pearl_i00
+    - '@level': '3'
+      $text: icon.etc_bm_jewel_pearl_i00
+    - '@level': '4'
+      $text: icon.etc_bm_jewel_pearl_i00
+    - '@level': '5'
+      $text: icon.etc_bm_jewel_pearl_i00
+    - '@level': '6'
+      $text: icon.bm_jewel_magdef_high_lv1_lavianrose
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '163'
+        - '@level': '2'
+          $text: '328'
+        - '@level': '3'
+          $text: '548'
+        - '@level': '4'
+          $text: '821'
+        - '@level': '5'
+          $text: '1150'
+        - '@level': '6'
+          $text: '1150'
+      mode:
+        $text: DIFF
+    - '@name': DefenceCriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-1'
+        - '@level': '2'
+          $text: '-2'
+        - '@level': '3'
+          $text: '-3'
+        - '@level': '4'
+          $text: '-4'
+        - '@level': '5'
+          $text: '-5'
+        - '@level': '6'
+          $text: '-5'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '10'
+      mode:
+        $text: PER
 - '@id': '17710'
   '@toLevel': '1'
   '@name': 10th Anniversary Blessing Effect (Free)
-  '@fromLevel': null
-  '@displayId': null
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  effectPoint:
+    $text: '1'
+  isMagic:
+    $text: '4'
 - '@id': '17711'
   '@toLevel': '24'
   '@name': 10th Anniversary Blessing - Stage 1
-  '@fromLevel': null
-  '@displayId': null
-  castRange: {}
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  castRange:
+    value:
+    - '@level': '1'
+      $text: '900'
+    - '@level': '2'
+      $text: '-1'
+    - '@level': '3'
+      $text: '-1'
+    - '@level': '4'
+      $text: '-1'
+    - '@level': '5'
+      $text: '-1'
+    - '@level': '6'
+      $text: '-1'
+    - '@level': '7'
+      $text: '-1'
+    - '@level': '8'
+      $text: '-1'
+    - '@level': '9'
+      $text: '-1'
+    - '@level': '10'
+      $text: '-1'
+    - '@level': '11'
+      $text: '-1'
+    - '@level': '12'
+      $text: '-1'
+    - '@level': '13'
+      $text: '-1'
+    - '@level': '14'
+      $text: '-1'
+    - '@level': '15'
+      $text: '-1'
+    - '@level': '16'
+      $text: '-1'
+    - '@level': '17'
+      $text: '-1'
+    - '@level': '18'
+      $text: '-1'
+    - '@level': '19'
+      $text: '-1'
+    - '@level': '20'
+      $text: '-1'
+    - '@level': '21'
+      $text: '-1'
+    - '@level': '22'
+      $text: '-1'
+    - '@level': '23'
+      $text: '-1'
+    - '@level': '24'
+      $text: '-1'
+  effectPoint:
+    $text: '1'
+  isMagic:
+    $text: '4'
 - '@id': '17712'
   '@toLevel': '1'
   '@name': 10th Anniversary Blessing Effect (Paid)
-  '@fromLevel': null
-  '@displayId': null
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  effectPoint:
+    $text: '1'
+  isMagic:
+    $text: '4'
 - '@id': '17713'
   '@toLevel': '24'
   '@name': 10th Anniversary Special Blessing - Stage 1
-  '@fromLevel': null
-  '@displayId': null
-  castRange: {}
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  castRange:
+    value:
+    - '@level': '1'
+      $text: '900'
+    - '@level': '2'
+      $text: '-1'
+    - '@level': '3'
+      $text: '-1'
+    - '@level': '4'
+      $text: '-1'
+    - '@level': '5'
+      $text: '-1'
+    - '@level': '6'
+      $text: '-1'
+    - '@level': '7'
+      $text: '-1'
+    - '@level': '8'
+      $text: '-1'
+    - '@level': '9'
+      $text: '-1'
+    - '@level': '10'
+      $text: '-1'
+    - '@level': '11'
+      $text: '-1'
+    - '@level': '12'
+      $text: '-1'
+    - '@level': '13'
+      $text: '-1'
+    - '@level': '14'
+      $text: '-1'
+    - '@level': '15'
+      $text: '-1'
+    - '@level': '16'
+      $text: '-1'
+    - '@level': '17'
+      $text: '-1'
+    - '@level': '18'
+      $text: '-1'
+    - '@level': '19'
+      $text: '-1'
+    - '@level': '20'
+      $text: '-1'
+    - '@level': '21'
+      $text: '-1'
+    - '@level': '22'
+      $text: '-1'
+    - '@level': '23'
+      $text: '-1'
+    - '@level': '24'
+      $text: '-1'
+  effectPoint:
+    $text: '1'
+  isMagic:
+    $text: '4'
 - '@id': '17714'
   '@toLevel': '1'
   '@name': Dancing Cat's Steps
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill_sing
+  operateType:
+    $text: A1
+  isMagic:
+    $text: '4'
   castRange:
-    $value: null
-    value: []
     $text: '900'
   effectPoint:
-    $value: null
-    value: []
     $text: '100'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill_sing
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
 - '@id': '17715'
   '@toLevel': '1'
   '@name': Spirit Hit Lv. 1
-  '@fromLevel': null
-  '@displayId': null
-  castRange:
-    $value: null
-    value: []
-    $text: '600'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-1000'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill3260
   operateType:
-    $value: null
-    value: []
     $text: A1
+  castRange:
+    $text: '600'
+  hitTime:
+    $text: '1000'
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
+  effectPoint:
+    $text: '-1000'
 - '@id': '17716'
   '@toLevel': '1'
   '@name': Spirit Hit Lv. 2
-  '@fromLevel': null
-  '@displayId': null
-  castRange:
-    $value: null
-    value: []
-    $text: '600'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-1000'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill3260
   operateType:
-    $value: null
-    value: []
     $text: A1
+  castRange:
+    $text: '600'
+  hitTime:
+    $text: '1000'
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
+  effectPoint:
+    $text: '-1000'
 - '@id': '17717'
   '@toLevel': '1'
   '@name': Spirit Hit Lv. 3
-  '@fromLevel': null
-  '@displayId': null
-  castRange:
-    $value: null
-    value: []
-    $text: '600'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-1000'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill3260
   operateType:
-    $value: null
-    value: []
     $text: A1
+  castRange:
+    $text: '600'
+  hitTime:
+    $text: '1000'
   reuseDelay:
-    $value: null
-    value: []
     $text: '30000'
+  effectPoint:
+    $text: '-1000'
 - '@id': '17718'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17719'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17720'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17721'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
-    $text: '60000'
-  targetType: SELF
+  - $text: '60000'
+  - $text: '60000'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17722'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17723'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17724'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17725'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17726'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17727'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17728'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17729'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17730'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17731'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17732'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17733'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17734'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17735'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17736'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17737'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17738'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17739'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17740'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17741'
   '@toLevel': '1'
   '@name': Dandy's Breath
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpChangeWeapon
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ConvertItem
   icon:
-    $value: null
-    value: []
     $text: icon.ev_10th_dandi1
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '38847'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
   reuseDelay:
-    $value: null
-    value: []
     $text: '60000'
-  targetType: SELF
+  conditions:
+    condition:
+    - '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+    - '@name': OpChangeWeapon
+  effects:
+    effect:
+    - '@name': ConvertItem
 - '@id': '17742'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17743'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17744'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17745'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17746'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17747'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17748'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17749'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17750'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17751'
   '@toLevel': '1'
   '@name': Toy Knight's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17752'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17753'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17754'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17755'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17756'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17757'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17758'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17759'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17760'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17761'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17762'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17763'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17764'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17765'
   '@toLevel': '1'
   '@name': Dandy's Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17766'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17767'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17768'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17769'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17770'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17771'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17772'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17773'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17774'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17775'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17776'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17777'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17778'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17779'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17780'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17781'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17782'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17783'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17784'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17785'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17786'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17787'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17788'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17789'
   '@toLevel': '1'
   '@name': Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '15'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '15'
+      mode:
+        $text: PER
 - '@id': '17790'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '1500'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'
 - '@id': '17791'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '1500'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'
 - '@id': '17792'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '1500'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'
 - '@id': '17793'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '1999'
+      mode:
+        $text: DIFF
+    - '@name': MagicCriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'
 - '@id': '17794'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '1500'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'
 - '@id': '17795'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '1500'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'
 - '@id': '17796'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '1500'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'
 - '@id': '17797'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '1500'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'
 - '@id': '17798'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '1500'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'
 - '@id': '17799'
   '@toLevel': '1'
   '@name': Great Assisting Strength
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AttackTrait
-      DRAGON_WEAKNESS:
-        $value: null
-        value: []
-        $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.karma
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '200'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '100'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '1500'
+      mode:
+        $text: DIFF
+    - '@name': CriticalRate
+      amount:
+        $text: '500'
+      mode:
+        $text: DIFF
+    - '@name': AttackTrait
+      DRAGON_WEAKNESS:
+        $text: '300'

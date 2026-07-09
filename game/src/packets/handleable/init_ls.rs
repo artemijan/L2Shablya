@@ -1,13 +1,13 @@
 use crate::ls_client::LoginServerClient;
 use bytes::{Bytes, BytesMut};
 use kameo::message::{Context, Message};
-use tracing::instrument;
 use l2_core::crypt::generate_blowfish_key;
 use l2_core::crypt::login::Encryption;
 use l2_core::crypt::rsa::RSAPublicKey;
 use l2_core::shared_packets::gs_2_ls::BlowFish;
 use l2_core::shared_packets::{gs_2_ls::RequestAuthGS, ls_2_gs::InitLS};
 use l2_core::traits::ServerToServer;
+use tracing::instrument;
 
 impl Message<InitLS> for LoginServerClient {
     type Reply = anyhow::Result<()>;
@@ -40,7 +40,7 @@ mod tests {
     use l2_core::traits::ServerConfig;
     use std::sync::Arc;
     use test_utils::utils::get_test_db;
-    use tokio::io::{split, AsyncReadExt};
+    use tokio::io::{AsyncReadExt, split};
 
     #[tokio::test]
     async fn test_handle() {

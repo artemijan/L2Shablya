@@ -1,1260 +1,1603 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '35103'
   '@toLevel': '1'
   '@name': Blessed Circlet Enchant Scroll
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: ITEM
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: ITEM
+  affectScope:
+    $text: SINGLE
 - '@id': '35104'
   '@toLevel': '3'
   '@name': Circlet of Authority
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SpModify
-      amount: {}
-  icon: {}
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.bm_pattack_circlet_01
+    - '@level': '2'
+      $text: icon.bm_pattack_circlet_02
+    - '@level': '3'
+      $text: icon.bm_pattack_circlet_03
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '1'
+        - '@level': '3'
+          $text: '1'
+      stat:
+        $text: LUC
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '1'
+        - '@level': '3'
+          $text: '1'
+      stat:
+        $text: CHA
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '5'
+        - '@level': '3'
+          $text: '5'
+      stat:
+        $text: STR
+    - '@name': AttackAttributeAdd
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '50'
+        - '@level': '3'
+          $text: '50'
+    - '@name': VitalityExpRate
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '10'
+        - '@level': '3'
+          $text: '10'
+      mode:
+        $text: PER
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '7'
+      mode:
+        $text: PER
+    - '@name': CriticalRate
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '50'
+      mode:
+        $text: DIFF
+    - '@name': ExpModify
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '10'
+    - '@name': SpModify
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '10'
 - '@id': '35105'
   '@toLevel': '5'
   '@name': Circlet of Authority Enchant Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@level': '5'
-      '@name': VitalityExpRate
-      amount:
-        $value: null
-        value: []
-        $text: '10'
   icon:
-    $value: null
-    value: []
     $text: icon.bm_pattack_circlet_01
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '4'
+        - '@level': '5'
+          $text: '5'
+      stat:
+        $text: STR
+    - '@name': AttackAttributeAdd
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+    - '@name': VitalityExpRate
+      '@level': '5'
+      amount:
+        $text: '10'
 - '@id': '35106'
   '@toLevel': '5'
   '@name': Noble Circlet of Authority Enchant Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@level': '5'
-      '@name': SpModify
-      amount:
-        $value: null
-        value: []
-        $text: '10'
   icon:
-    $value: null
-    value: []
     $text: icon.bm_pattack_circlet_02
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '5'
+        - '@level': '5'
+          $text: '7'
+      mode:
+        $text: PER
+    - '@name': CriticalRate
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+      mode:
+        $text: DIFF
+    - '@name': ExpModify
+      '@level': '5'
+      amount:
+        $text: '10'
+    - '@name': SpModify
+      '@level': '5'
+      amount:
+        $text: '10'
 - '@id': '35107'
   '@toLevel': '5'
   '@name': Radiant Circlet of Authority Enchant Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxCp
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.bm_pattack_circlet_03
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PhysicalSkillCriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+        - '@level': '4'
+          $text: '7'
+        - '@level': '5'
+          $text: '10'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+        - '@level': '4'
+          $text: '7'
+        - '@level': '5'
+          $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalSkillPower
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '1'
+        - '@level': '4'
+          $text: '3'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
 - '@id': '35108'
   '@toLevel': '3'
   '@name': Circlet of Foresight
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': VitalityExpRate
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  icon: {}
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.bm_mattack_circlet_01
+    - '@level': '2'
+      $text: icon.bm_mattack_circlet_02
+    - '@level': '3'
+      $text: icon.bm_mattack_circlet_03
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '1'
+        - '@level': '3'
+          $text: '1'
+      stat:
+        $text: LUC
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '1'
+        - '@level': '3'
+          $text: '1'
+      stat:
+        $text: CHA
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '5'
+        - '@level': '3'
+          $text: '5'
+      stat:
+        $text: INT
+    - '@name': AttackAttributeAdd
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '50'
+        - '@level': '3'
+          $text: '50'
+    - '@name': VitalityExpRate
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '10'
+        - '@level': '3'
+          $text: '10'
+      mode:
+        $text: PER
 - '@id': '35109'
   '@toLevel': '5'
   '@name': Circlet of Foresight Enchant Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@level': '5'
-      '@name': VitalityExpRate
-      amount:
-        $value: null
-        value: []
-        $text: '10'
   icon:
-    $value: null
-    value: []
     $text: icon.bm_mattack_circlet_01
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '4'
+        - '@level': '5'
+          $text: '5'
+      stat:
+        $text: INT
+    - '@name': AttackAttributeAdd
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+    - '@name': VitalityExpRate
+      '@level': '5'
+      amount:
+        $text: '10'
 - '@id': '35110'
   '@toLevel': '5'
   '@name': Noble Circlet of Foresight Enchant Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@level': '5'
-      '@name': SpModify
-      amount:
-        $value: null
-        value: []
-        $text: '10'
   icon:
-    $value: null
-    value: []
     $text: icon.bm_mattack_circlet_02
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '4'
+        - '@level': '3'
+          $text: '6'
+        - '@level': '4'
+          $text: '10'
+        - '@level': '5'
+          $text: '14'
+      mode:
+        $text: PER
+    - '@name': MagicCriticalRate
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+      mode:
+        $text: DIFF
+    - '@name': ExpModify
+      '@level': '5'
+      amount:
+        $text: '10'
+    - '@name': SpModify
+      '@level': '5'
+      amount:
+        $text: '10'
 - '@id': '35111'
   '@toLevel': '5'
   '@name': Radiant Circlet of Foresight Enchant Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxCp
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.bm_mattack_circlet_03
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '14'
+      mode:
+        $text: PER
+    - '@name': MagicCriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+        - '@level': '4'
+          $text: '7'
+        - '@level': '5'
+          $text: '10'
+      mode:
+        $text: PER
+    - '@name': MagicalSkillPower
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '1'
+        - '@level': '4'
+          $text: '3'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxHp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
 - '@id': '35112'
   '@toLevel': '3'
   '@name': Circlet of Grace
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SpModify
-      amount: {}
-  icon: {}
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.bm_defense_circlet_01
+    - '@level': '2'
+      $text: icon.bm_defense_circlet_02
+    - '@level': '3'
+      $text: icon.bm_defense_circlet_03
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '1'
+        - '@level': '3'
+          $text: '1'
+      stat:
+        $text: LUC
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '1'
+        - '@level': '3'
+          $text: '1'
+      stat:
+        $text: CHA
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '5'
+        - '@level': '3'
+          $text: '5'
+      stat:
+        $text: CON
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '5'
+        - '@level': '3'
+          $text: '5'
+      stat:
+        $text: MEN
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '50'
+        - '@level': '3'
+          $text: '50'
+      attribute:
+        $text: FIRE
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '50'
+        - '@level': '3'
+          $text: '50'
+      attribute:
+        $text: WATER
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '50'
+        - '@level': '3'
+          $text: '50'
+      attribute:
+        $text: WIND
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '50'
+        - '@level': '3'
+          $text: '50'
+      attribute:
+        $text: EARTH
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '50'
+        - '@level': '3'
+          $text: '50'
+      attribute:
+        $text: HOLY
+    - '@name': DefenceAttribute
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '50'
+        - '@level': '3'
+          $text: '50'
+      attribute:
+        $text: DARK
+    - '@name': VitalityExpRate
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '10'
+        - '@level': '3'
+          $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '7'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '7'
+      mode:
+        $text: PER
+    - '@name': ResistAbnormalByCategory
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '5'
+      slot:
+        $text: DEBUFF
+    - '@name': ExpModify
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '10'
+    - '@name': SpModify
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '10'
 - '@id': '35113'
   '@toLevel': '5'
   '@name': Circlet of Grace Enchant Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@level': '5'
-      '@name': VitalityExpRate
-      amount:
-        $value: null
-        value: []
-        $text: '10'
   icon:
-    $value: null
-    value: []
     $text: icon.bm_defense_circlet_01
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '4'
+        - '@level': '5'
+          $text: '5'
+      stat:
+        $text: CON
+    - '@name': StatUp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '4'
+        - '@level': '5'
+          $text: '5'
+      stat:
+        $text: MEN
+    - '@name': DefenceAttribute
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+      attribute:
+        $text: FIRE
+    - '@name': DefenceAttribute
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+      attribute:
+        $text: WATER
+    - '@name': DefenceAttribute
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+      attribute:
+        $text: WIND
+    - '@name': DefenceAttribute
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+      attribute:
+        $text: EARTH
+    - '@name': DefenceAttribute
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+      attribute:
+        $text: HOLY
+    - '@name': DefenceAttribute
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '10'
+        - '@level': '4'
+          $text: '30'
+        - '@level': '5'
+          $text: '50'
+      attribute:
+        $text: DARK
+    - '@name': VitalityExpRate
+      '@level': '5'
+      amount:
+        $text: '10'
 - '@id': '35114'
   '@toLevel': '5'
   '@name': Noble Circlet of Grace Enchant Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@level': '5'
-      '@name': SpModify
-      amount:
-        $value: null
-        value: []
-        $text: '10'
   icon:
-    $value: null
-    value: []
     $text: icon.bm_defense_circlet_02
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '5'
+        - '@level': '5'
+          $text: '7'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '4'
+        - '@level': '4'
+          $text: '5'
+        - '@level': '5'
+          $text: '7'
+      mode:
+        $text: PER
+    - '@name': ResistAbnormalByCategory
+      '@fromLevel': '3'
+      '@toLevel': '5'
+      amount:
+        value:
+        - '@level': '3'
+          $text: '1'
+        - '@level': '4'
+          $text: '3'
+        - '@level': '5'
+          $text: '5'
+      slot:
+        $text: DEBUFF
+    - '@name': ExpModify
+      '@level': '5'
+      amount:
+        $text: '10'
+    - '@name': SpModify
+      '@level': '5'
+      amount:
+        $text: '10'
 - '@id': '35115'
   '@toLevel': '5'
   '@name': Radiant Circlet of Grace Enchant Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxCp
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.bm_defense_circlet_03
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': DefenceCriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-3'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-7'
+        - '@level': '4'
+          $text: '-10'
+        - '@level': '5'
+          $text: '-15'
+      mode:
+        $text: PER
+    - '@name': DefenceMagicCriticalDamage
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-3'
+        - '@level': '2'
+          $text: '-5'
+        - '@level': '3'
+          $text: '-7'
+        - '@level': '4'
+          $text: '-10'
+        - '@level': '5'
+          $text: '-15'
+      mode:
+        $text: PER
+    - '@name': DamageByAttack
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '-3'
+        - '@level': '4'
+          $text: '-7'
+        - '@level': '5'
+          $text: '-10'
+      type:
+        $text: PK
+    - '@name': DamageByAttack
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '-3'
+        - '@level': '4'
+          $text: '-7'
+        - '@level': '5'
+          $text: '-10'
+      type:
+        $text: ENEMY_ALL
+    - '@name': MaxHp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '5'
+        - '@level': '4'
+          $text: '5'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '5'
+        - '@level': '4'
+          $text: '5'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '5'
+        - '@level': '4'
+          $text: '5'
+        - '@level': '5'
+          $text: '5'
+      mode:
+        $text: PER
 - '@id': '35116'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PvpMagicalSkillDamageBonus
-      amount:
-        $value: null
-        value: []
-        $text: '5'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
 - '@id': '35117'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PvpPhysicalSkillDefenceBonus
-      amount:
-        $value: null
-        value: []
-        $text: '5'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PvpMagicalSkillDefenceBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalAttackDefenceBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDefenceBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
 - '@id': '35118'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PveMagicalSkillDamageBonus
-      amount:
-        $value: null
-        value: []
-        $text: '5'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-      type:
-        $value: null
-        value: []
-        $text: ENEMY_ALL
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        $text: '5'
+      type:
+        $text: ENEMY_ALL
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        $text: '5'
+      type:
+        $text: ENEMY_ALL
+      mode:
+        $text: PER
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        $text: '5'
+      type:
+        $text: ENEMY_ALL
+      mode:
+        $text: PER
 - '@id': '35119'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PvePhysicalSkillDefenceBonus
-      amount:
-        $value: null
-        value: []
-        $text: '5'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PveMagicalSkillDefenceBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalAttackDefenceBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDefenceBonus
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
 - '@id': '35120'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AdditionalPotionMp
-      amount:
-        $value: null
-        value: []
-        $text: '500'
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': AdditionalPotionCp
+      amount:
+        $text: '500'
+    - '@name': AdditionalPotionHp
+      amount:
+        $text: '500'
+    - '@name': AdditionalPotionMp
+      amount:
+        $text: '500'
 - '@id': '35121'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PAtk
-      amount:
-        $value: null
-        value: []
-        $text: '5'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
   passiveConditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      affectType:
-        $value: null
-        value: []
-        $text: TARGET
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'true'
-      level:
-        $value: null
-        value: []
-        $text: '1'
+    - '@name': OpCheckAbnormal
       type:
-        $value: null
-        value: []
+        $text: STUN
+      level:
+        $text: '1'
+      hasAbnormal:
+        $text: 'true'
+      affectType:
+        $text: TARGET
+    - '@name': OpCheckAbnormal
+      type:
         $text: AIRBIND
+      level:
+        $text: '1'
+      hasAbnormal:
+        $text: 'true'
+      affectType:
+        $text: TARGET
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
+    - '@name': PAtk
+      amount:
+        $text: '5'
+      mode:
+        $text: PER
 - '@id': '35122'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DamageByAttack
-      amount:
-        $value: null
-        value: []
-        $text: '-5'
-      type:
-        $value: null
-        value: []
-        $text: ENEMY_ALL
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
   passiveConditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
-      '@name': OpCheckAbnormal
-      affectType:
-        $value: null
-        value: []
-        $text: CASTER
-      hasAbnormal:
-        $value: null
-        value: []
-        $text: 'true'
-      level:
-        $value: null
-        value: []
-        $text: '1'
+    - '@name': OpCheckAbnormal
       type:
-        $value: null
-        value: []
+        $text: STUN
+      level:
+        $text: '1'
+      hasAbnormal:
+        $text: 'true'
+      affectType:
+        $text: CASTER
+    - '@name': OpCheckAbnormal
+      type:
         $text: AIRBIND
+      level:
+        $text: '1'
+      hasAbnormal:
+        $text: 'true'
+      affectType:
+        $text: CASTER
+  effects:
+    effect:
+    - '@name': DamageByAttack
+      amount:
+        $text: '-5'
+      type:
+        $text: PK
+    - '@name': DamageByAttack
+      amount:
+        $text: '-5'
+      type:
+        $text: ENEMY_ALL
 - '@id': '35123'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PAtk
-      amount:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        $text: '1'
+      mode:
+        $text: PER
 - '@id': '35124'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MAtk
-      amount:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '1'
+      mode:
+        $text: PER
 - '@id': '35125'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        $text: '2'
+      mode:
+        $text: PER
 - '@id': '35126'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalDefence
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MagicalDefence
+      amount:
+        $text: '2'
+      mode:
+        $text: PER
 - '@id': '35127'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '2'
+      mode:
+        $text: PER
 - '@id': '35128'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '2'
+      mode:
+        $text: PER
 - '@id': '35129'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '2'
+      mode:
+        $text: PER
 - '@id': '35130'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxMp
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MaxMp
+      amount:
+        $text: '2'
+      mode:
+        $text: PER
 - '@id': '35131'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxCp
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MaxCp
+      amount:
+        $text: '2'
+      mode:
+        $text: PER
 - '@id': '35132'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Accuracy
-      amount:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': Accuracy
+      amount:
+        $text: '1'
+      mode:
+        $text: DIFF
 - '@id': '35133'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': PhysicalEvasion
+      amount:
+        $text: '1'
+      mode:
+        $text: DIFF
 - '@id': '35134'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicAccuracy
-      amount:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MagicAccuracy
+      amount:
+        $text: '1'
+      mode:
+        $text: DIFF
 - '@id': '35135'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicalEvasion
-      amount:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': MagicalEvasion
+      amount:
+        $text: '1'
+      mode:
+        $text: DIFF
 - '@id': '35136'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      attribute:
-        $value: null
-        value: []
-        $text: FIRE
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': DefenceAttribute
+      amount:
+        $text: '10'
+      attribute:
+        $text: FIRE
 - '@id': '35137'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      attribute:
-        $value: null
-        value: []
-        $text: WATER
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': DefenceAttribute
+      amount:
+        $text: '10'
+      attribute:
+        $text: WATER
 - '@id': '35138'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      attribute:
-        $value: null
-        value: []
-        $text: WIND
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': DefenceAttribute
+      amount:
+        $text: '10'
+      attribute:
+        $text: WIND
 - '@id': '35139'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      attribute:
-        $value: null
-        value: []
-        $text: EARTH
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': DefenceAttribute
+      amount:
+        $text: '10'
+      attribute:
+        $text: EARTH
 - '@id': '35140'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      attribute:
-        $value: null
-        value: []
-        $text: HOLY
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': DefenceAttribute
+      amount:
+        $text: '10'
+      attribute:
+        $text: HOLY
 - '@id': '35141'
   '@toLevel': '1'
   '@name': Circlet Spirit Stone Augmentation Effect
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '10'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   icon:
-    $value: null
-    value: []
     $text: Icon.bm_mineral_circlet_hair_acc
   operateType:
-    $value: null
-    value: []
     $text: P
+  effects:
+    effect:
+    - '@name': DefenceAttribute
+      amount:
+        $text: '10'
+      attribute:
+        $text: DARK
 - '@id': '35142'
   '@toLevel': '1'
   '@name': Reconstruction Society's Enchantment Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpEncumbered
-      slotsPercent:
-        $value: null
-        value: []
-        $text: '10'
-      weightPercent:
-        $value: null
-        value: []
-        $text: '10'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '33.33'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '48215'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
+  operateType:
+    $text: A1
+  hitTime:
+    $text: '500'
+  coolTime:
+    $text: '500'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
+  magicLevel:
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '48214'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+  effects:
+    effect:
+    - '@name': Restoration
+      itemId:
+        $text: '48211'
+      itemCount:
+        $text: '1'
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '33.33'
+          item:
+            '@id': '48212'
+            '@count': '1'
+        - '@chance': '33.33'
+          item:
+            '@id': '48212'
+            '@count': '1'
+        - '@chance': '33.33'
+          item:
+            '@id': '48215'
+            '@count': '1'
 - '@id': '35143'
   '@toLevel': '1'
   '@name': Circlet Upgrade Stone Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpEncumbered
-      slotsPercent:
-        $value: null
-        value: []
-        $text: '10'
-      weightPercent:
-        $value: null
-        value: []
-        $text: '10'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '50'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '48212'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
+  operateType:
+    $text: A1
+  hitTime:
+    $text: '500'
+  coolTime:
+    $text: '500'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
+  magicLevel:
+    $text: '1'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '48216'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpEncumbered
+      weightPercent:
+        $text: '10'
+      slotsPercent:
+        $text: '10'
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '50'
+          item:
+            '@id': '48212'
+            '@count': '1'
+        - '@chance': '50'
+          item:
+            '@id': '48212'
+            '@count': '1'

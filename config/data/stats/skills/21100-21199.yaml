@@ -1,6772 +1,4177 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '21100'
   '@toLevel': '1'
   '@name': Great Wizard's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_maid_hairband_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-5'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_maid_hairband_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicMpCost
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '21101'
   '@toLevel': '1'
   '@name': Blessed Escape
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  blockedInOlympiad:
-    $value: null
-    value: []
-    $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpCanEscape
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Escape
-      escapeType:
-        $value: null
-        value: []
-        $text: TOWN
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '200'
   icon:
-    $value: null
-    value: []
     $text: BranchSys.icon.br_babypanda_cap_i00
+  blockedInOlympiad:
+    $text: 'true'
+  hitTime:
+    $text: '200'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '43200000'
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpCanEscape
+  effects:
+    effect:
+    - '@name': Escape
+      escapeType:
+        $text: TOWN
 - '@id': '21102'
   '@toLevel': '1'
   '@name': Blessed Resurrection
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: BranchSys.icon.br_sexypanda_cap_i00
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
   castRange:
-    $value: null
-    value: []
     $text: '400'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpResurrection
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
   effectRange:
-    $value: null
-    value: []
     $text: '600'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Resurrection
-      power:
-        $value: null
-        value: []
-        $text: '100'
   hitTime:
-    $value: null
-    value: []
     $text: '3000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_sexypanda_cap_i00
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '43200000'
-  targetType: PC_BODY
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: PC_BODY
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpResurrection
+  effects:
+    effect:
+    - '@name': Resurrection
+      power:
+        $text: '100'
 - '@id': '21103'
   '@toLevel': '1'
   '@name': Great Adventurer's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_kungfupanda_cap_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ResistAbnormalByCategory
-      amount:
-        $value: null
-        value: []
-        $text: '-10'
-      slot:
-        $value: null
-        value: []
-        $text: DEBUFF
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_kungfupanda_cap_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': ResistAbnormalByCategory
+      amount:
+        $text: '-10'
+      slot:
+        $text: DEBUFF
 - '@id': '21104'
   '@toLevel': '1'
   '@name': Appetite for Destruction
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_gatekeeper_of_hat_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '30'
   abnormalType:
-    $value: null
-    value: []
     $text: INSTINCT
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
   hitTime:
-    $value: null
-    value: []
     $text: '2500'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_gatekeeper_of_hat_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  staticReuse:
-    $value: null
-    value: []
+  irreplacableBuff:
     $text: 'true'
-  targetType: SELF
+  blockActionUseSkill:
+    $text: 'true'
+  staticReuse:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '21105'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Lucky Girl
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1529'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1529'
 - '@id': '21106'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Lucky Boy
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1530'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1530'
 - '@id': '21107'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Dancing Lucky Kid
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1531'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1531'
 - '@id': '21108'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Monkey King
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1532'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1532'
 - '@id': '21109'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Uthanka
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1533'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1533'
 - '@id': '21110'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Bonus B
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1534'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1534'
 - '@id': '21111'
   '@toLevel': '1'
   '@name': Great Adventurer's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_headphone_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ResistAbnormalByCategory
-      amount:
-        $value: null
-        value: []
-        $text: '-10'
-      slot:
-        $value: null
-        value: []
-        $text: DEBUFF
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_headphone_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': ResistAbnormalByCategory
+      amount:
+        $text: '-10'
+      slot:
+        $text: DEBUFF
 - '@id': '21112'
   '@toLevel': '1'
   '@name': Brave Warrior's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_headphone_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_headphone_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': VampiricAttack
+      amount:
+        $text: '5'
+      chance:
+        $text: '30'
+    - '@name': PAtk
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
 - '@id': '21113'
   '@toLevel': '1'
   '@name': Great Wizard's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_headphone_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-5'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_headphone_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicMpCost
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '21114'
   '@toLevel': '1'
   '@name': Great Adventurer's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.Icon.br_spirit_skill_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ResistAbnormalByCategory
-      amount:
-        $value: null
-        value: []
-        $text: '-10'
-      slot:
-        $value: null
-        value: []
-        $text: DEBUFF
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.Icon.br_spirit_skill_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': ResistAbnormalByCategory
+      amount:
+        $text: '-10'
+      slot:
+        $text: DEBUFF
 - '@id': '21115'
   '@toLevel': '1'
   '@name': Brave Warrior's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.Icon.br_spirit_skill_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': PhysicalAttackSpeed
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.Icon.br_spirit_skill_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': VampiricAttack
+      amount:
+        $text: '5'
+      chance:
+        $text: '30'
+    - '@name': PAtk
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
 - '@id': '21116'
   '@toLevel': '1'
   '@name': Great Wizard's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.Icon.br_spirit_skill_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-5'
-      magicType:
-        $value: null
-        value: []
-        $text: '1'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.Icon.br_spirit_skill_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicMpCost
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
 - '@id': '21117'
   '@toLevel': '1'
   '@name': Great Adventurer's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.Icon.br_spirit_skill_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MpRegen
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.Icon.br_spirit_skill_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': HpRegen
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MpRegen
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
 - '@id': '21118'
   '@toLevel': '1'
   '@name': Brave Warrior's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.Icon.br_spirit_skill_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': CriticalRate
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.Icon.br_spirit_skill_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': CriticalRate
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
 - '@id': '21119'
   '@toLevel': '1'
   '@name': Great Wizard's Soul Power
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.Icon.br_spirit_skill_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicCriticalDamage
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.Icon.br_spirit_skill_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicCriticalRate
+      amount:
+        $text: '2'
+      mode:
+        $text: DIFF
+    - '@name': MagicCriticalDamage
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
 - '@id': '21120'
   '@toLevel': '1'
   '@name': Jack O'Lantern Card
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: BranchSys.icon.br_jack_ghost_i00
   castRange:
-    $value: null
-    value: []
     $text: '400'
   effectPoint:
-    $value: null
-    value: []
     $text: '-1'
   effectRange:
-    $value: null
-    value: []
     $text: '500'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_jack_ghost_i00
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
 - '@id': '21121'
   '@toLevel': '1'
   '@name': Rotten Jack O'Lantern Card
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: BranchSys.icon.br_rotten_jack_ghost_i00
   castRange:
-    $value: null
-    value: []
     $text: '400'
   effectPoint:
-    $value: null
-    value: []
     $text: '-1'
   effectRange:
-    $value: null
-    value: []
     $text: '500'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_rotten_jack_ghost_i00
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: ENEMY
+  targetType:
+    $text: ENEMY
+  affectScope:
+    $text: SINGLE
 - '@id': '21122'
   '@toLevel': '1'
   '@name': 'Skooldie''s Blessing: Protection of Darkness'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_scooldie_mask_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_scooldie_mask_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21123'
   '@toLevel': '1'
   '@name': 'Skooldie''s Blessing: Protection of Darkness'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_scooldie_mask_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_scooldie_mask_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21124'
   '@toLevel': '1'
   '@name': 'Skooldie''s Blessing: Protection of Darkness'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_scooldie_mask_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_scooldie_mask_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21125'
   '@toLevel': '1'
   '@name': 'Skooldie''s Blessing: Protection of Darkness'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_scooldie_mask_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_scooldie_mask_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21126'
   '@toLevel': '1'
   '@name': 'Skooldie''s Blessing: Protection of Darkness'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_scooldie_mask_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_scooldie_mask_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21127'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '7200000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': PAtk
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21128'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '7200000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': CriticalRate
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21129'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '7200000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': VampiricAttack
+      amount:
+        $text: '5'
+      chance:
+        $text: '30'
+    - '@name': Speed
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21130'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-5'
-      magicType:
-        $value: null
-        value: []
-        $text: '3'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '7200000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
+    - '@name': MagicMpCost
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': MagicMpCost
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': MagicMpCost
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '3'
 - '@id': '21131'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicCriticalRate
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '7200000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
+    - '@name': MagicCriticalRate
+      amount:
+        $text: '2'
+      mode:
+        $text: DIFF
 - '@id': '21132'
   '@toLevel': '1'
   '@name': Shadow Ability
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill5739
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
   abnormalType:
-    $value: null
-    value: []
     $text: STEALTH
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: STEALTH
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Speed
-      amount:
-        $value: null
-        value: []
-        $text: '-30'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '2500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill5739
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SilentMove
+    - '@name': Speed
+      amount:
+        $text: '-30'
+      mode:
+        $text: PER
 - '@id': '21133'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Zombie
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1535'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1535'
 - '@id': '21134'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Bluebird
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1536'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1536'
 - '@id': '21135'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Hatbird
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1537'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1537'
 - '@id': '21136'
   '@toLevel': '1'
   '@name': Golden Jack O'Lantern's Authority
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_golden_jack0_mask_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '600'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
   effectPoint:
-    $value: null
-    value: []
     $text: '486'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxMp
-      amount:
-        $value: null
-        value: []
-        $text: '40'
-      mode:
-        $value: null
-        value: []
-        $text: PER
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   hitTime:
-    $value: null
-    value: []
     $text: '3000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_golden_jack0_mask_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  hitCancelTime:
+    $text: '0'
+  irreplacableBuff:
+    $text: 'true'
+  affectRange:
+    $text: '1000'
+  blockActionUseSkill:
+    $text: 'true'
   trait:
-    $value: null
-    value: []
     $text: ETC
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': MaxCp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
 - '@id': '21137'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '600'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': PAtk
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21138'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '600'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': CriticalRate
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21139'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '600'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceAttribute
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      attribute:
-        $value: null
-        value: []
-        $text: DARK
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': VampiricAttack
+      amount:
+        $text: '5'
+      chance:
+        $text: '30'
+    - '@name': Speed
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
 - '@id': '21140'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '600'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicMpCost
-      amount:
-        $value: null
-        value: []
-        $text: '-5'
-      magicType:
-        $value: null
-        value: []
-        $text: '3'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': Speed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
+    - '@name': MagicMpCost
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': MagicMpCost
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': MagicMpCost
+      amount:
+        $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '3'
 - '@id': '21141'
   '@toLevel': '1'
   '@name': Blessing of Halloween
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill1528
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '600'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  attributeType:
-    $value: null
-    value: []
-    $text: HOLY
-  attributeValue:
-    $value: null
-    value: []
-    $text: '20'
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicCriticalRate
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill1528
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  attributeType:
+    $text: HOLY
+  attributeValue:
+    $text: '20'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MaxMp
+      amount:
+        $text: '40'
+      mode:
+        $text: PER
+    - '@name': DefenceAttribute
+      amount:
+        $text: '20'
+      attribute:
+        $text: DARK
+    - '@name': MagicCriticalRate
+      amount:
+        $text: '2'
+      mode:
+        $text: DIFF
 - '@id': '21142'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Guangong
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1551'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1551'
 - '@id': '21143'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Gwanseum Nyang Nyang
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1552'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1552'
 - '@id': '21144'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Blue Opera
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1553'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1553'
 - '@id': '21145'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Blue Opera
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1560'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1560'
 - '@id': '21146'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Red Opera
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1554'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1554'
 - '@id': '21147'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Opera
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1555'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1555'
 - '@id': '21148'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Miss Chipao
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1556'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1556'
 - '@id': '21149'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Nepal Snow
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1557'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1557'
 - '@id': '21150'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Round Ball Snow
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1558'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1558'
 - '@id': '21151'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Ladder Snow
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1559'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1559'
 - '@id': '21152'
   '@toLevel': '1'
   '@name': Chain Fireworks
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   icon:
-    $value: null
-    value: []
     $text: BranchSys.icon.br_rocket_cap_i00
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '300000'
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '21153'
   '@toLevel': '1'
   '@name': Blessed Body
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_party_hat_gold_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1200'
   abnormalType:
-    $value: null
-    value: []
     $text: MAX_HP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxHp
-      amount:
-        $value: null
-        value: []
-        $text: '25'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_party_hat_gold_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  staticReuse:
-    $value: null
-    value: []
+  irreplacableBuff:
     $text: 'true'
-  targetType: SELF
+  blockActionUseSkill:
+    $text: 'true'
+  staticReuse:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxHp
+      amount:
+        $text: '25'
+      mode:
+        $text: PER
 - '@id': '21154'
   '@toLevel': '1'
   '@name': Blessed Soul
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_party_hat_mask_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1200'
   abnormalType:
-    $value: null
-    value: []
     $text: MAX_MP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxMp
-      amount:
-        $value: null
-        value: []
-        $text: '25'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_party_hat_mask_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  staticReuse:
-    $value: null
-    value: []
+  irreplacableBuff:
     $text: 'true'
-  targetType: SELF
+  blockActionUseSkill:
+    $text: 'true'
+  staticReuse:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxMp
+      amount:
+        $text: '25'
+      mode:
+        $text: PER
 - '@id': '21155'
   '@toLevel': '1'
   '@name': Scent of Flavorful Cheese
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_bigrat_cap_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': CriticalRate
-      amount:
-        $value: null
-        value: []
-        $text: '20'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_bigrat_cap_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': PAtk
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': PhysicalDefence
+      amount:
+        $text: '30'
+      mode:
+        $text: PER
+    - '@name': PhysicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': CriticalDamage
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': CriticalRate
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
 - '@id': '21156'
   '@toLevel': '1'
   '@name': Scent of Sweet Cheese
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_goldrat_cap_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MagicCriticalRate
-      amount:
-        $value: null
-        value: []
-        $text: '2'
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_goldrat_cap_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MAtk
+      amount:
+        $text: '10'
+      mode:
+        $text: PER
+    - '@name': MagicalDefence
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicalAttackSpeed
+      amount:
+        $text: '20'
+      mode:
+        $text: PER
+    - '@name': MagicCriticalRate
+      amount:
+        $text: '2'
+      mode:
+        $text: DIFF
 - '@id': '21157'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Iken
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1539'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1539'
 - '@id': '21158'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Lanya
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1540'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1540'
 - '@id': '21159'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Gnosian
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1541'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1541'
 - '@id': '21160'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Orodriel
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1542'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1542'
 - '@id': '21161'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Lakinos
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1543'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1543'
 - '@id': '21162'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Mortia
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1544'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1544'
 - '@id': '21163'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Heintz
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1545'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1545'
 - '@id': '21164'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Meruril
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1546'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1546'
 - '@id': '21165'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Taman Zu Rapatui
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1547'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1547'
 - '@id': '21166'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Kaurin
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1548'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1548'
 - '@id': '21167'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Ahertbein
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1549'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1549'
 - '@id': '21168'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Naonin
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1550'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1550'
 - '@id': '21169'
   '@toLevel': '1'
   '@name': Transform Kadomas
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skilltransform3
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: TRANSFORM
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': CanTransform
-      transformId:
-        $value: null
-        value: []
-        $text: '20000'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Transformation
-      transformationId:
-        $value: null
-        value: []
-        $text: '20000'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skilltransform3
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  hitCancelTime:
+    $text: '0'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': CanTransform
+      transformId:
+        $text: '20000'
+  effects:
+    effect:
+    - '@name': Transformation
+      transformationId:
+        $text: '20000'
 - '@id': '21170'
   '@toLevel': '1'
   '@name': Blessed Soul
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys.icon.br_party_mask_purple_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '1200'
   abnormalType:
-    $value: null
-    value: []
     $text: MAX_MP_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': MaxMp
-      amount:
-        $value: null
-        value: []
-        $text: '25'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys.icon.br_party_mask_purple_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  staticReuse:
-    $value: null
-    value: []
+  irreplacableBuff:
     $text: 'true'
-  targetType: SELF
+  blockActionUseSkill:
+    $text: 'true'
+  staticReuse:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': MaxMp
+      amount:
+        $text: '25'
+      mode:
+        $text: PER
 - '@id': '21171'
   '@toLevel': '1'
   '@name': Ride Jet Bike
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skilltransform3
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: TRANSFORM
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': CanTransform
-      transformId:
-        $value: null
-        value: []
-        $text: '20001'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Transformation
-      transformationId:
-        $value: null
-        value: []
-        $text: '20001'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skilltransform3
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  targetType: SELF
+  hitCancelTime:
+    $text: '0'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': CanTransform
+      transformId:
+        $text: '20001'
+  effects:
+    effect:
+    - '@name': Transformation
+      transformationId:
+        $text: '20001'
 - '@id': '21172'
   '@toLevel': '1'
   '@name': Reinforced Authority - CON + 1 / STR + 1
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_stat_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_stat_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '180000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  hitTime:
+    $text: '1000'
+  isMagic:
+    $text: '4'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '240'
+    - '@name': OpNeedAgathion
 - '@id': '21173'
   '@toLevel': '1'
   '@name': Reinforced Authority - WIT + 1 / INT + 1
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_stat_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_stat_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '180000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  hitTime:
+    $text: '1000'
+  isMagic:
+    $text: '4'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '240'
+    - '@name': OpNeedAgathion
 - '@id': '21174'
   '@toLevel': '1'
   '@name': Reinforced Authority - WIT + 1 / MEN + 1
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_stat_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_stat_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '180000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  hitTime:
+    $text: '1000'
+  isMagic:
+    $text: '4'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '240'
+    - '@name': OpNeedAgathion
 - '@id': '21175'
   '@toLevel': '1'
   '@name': Reinforced Authority - CON + 1 / DEX + 1
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_stat_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
   abnormalType:
-    $value: null
-    value: []
     $text: BR_EVENT_BUF1
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_stat_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '180000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  hitTime:
+    $text: '1000'
+  isMagic:
+    $text: '4'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '240'
+    - '@name': OpNeedAgathion
 - '@id': '21176'
   '@toLevel': '1'
   '@name': Divine Protection - Holy
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_attr_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_attr_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
 - '@id': '21177'
   '@toLevel': '1'
   '@name': Divine Protection - Water
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_attr_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_attr_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
 - '@id': '21178'
   '@toLevel': '1'
   '@name': Divine Protection - Fire
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_attr_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_attr_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
 - '@id': '21179'
   '@toLevel': '1'
   '@name': Divine Protection - Wind
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_attr_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_attr_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
 - '@id': '21180'
   '@toLevel': '1'
   '@name': Divine Protection - Earth
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_attr_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_attr_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
 - '@id': '21181'
   '@toLevel': '1'
   '@name': Divine Protection - Dark
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_attr_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_attr_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
 - '@id': '21182'
   '@toLevel': '1'
   '@name': Blessing of Resistance - Hold
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_resist_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      HOLD:
-        $value: null
-        value: []
-        $text: '40'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_resist_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      HOLD:
+        $text: '40'
 - '@id': '21183'
   '@toLevel': '1'
   '@name': Blessing of Resistance - Paralysis
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_resist_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      PARALYZE:
-        $value: null
-        value: []
-        $text: '40'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_resist_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      PARALYZE:
+        $text: '40'
 - '@id': '21184'
   '@toLevel': '1'
   '@name': Blessing of Resistance - Sleep
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_resist_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      SLEEP:
-        $value: null
-        value: []
-        $text: '40'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_resist_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      SLEEP:
+        $text: '40'
 - '@id': '21185'
   '@toLevel': '1'
   '@name': Blessing of Resistance - Decrease Speed
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_resist_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_resist_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
 - '@id': '21186'
   '@toLevel': '1'
   '@name': Blessing of Resistance - Bleed
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_resist_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      BLEED:
-        $value: null
-        value: []
-        $text: '40'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_resist_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      BLEED:
+        $text: '40'
 - '@id': '21187'
   '@toLevel': '1'
   '@name': Blessing of Resistance - Stun
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_resist_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      SHOCK:
-        $value: null
-        value: []
-        $text: '40'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_resist_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
+  effects:
+    effect:
+    - '@name': DefenceTrait
+      SHOCK:
+        $text: '40'
 - '@id': '21188'
   '@toLevel': '1'
   '@name': 'Recovery Ability: HP'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_regen_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_regen_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
 - '@id': '21189'
   '@toLevel': '1'
   '@name': 'Recovery Ability: MP'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_regen_i00
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: BR_SOUL_AVATAR
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_regen_i00
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: T
-  targetType: NONE
+  magicCriticalRate:
+    $text: '5'
+  targetType:
+    $text: NONE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '2'
+    - '@name': OpNeedAgathion
 - '@id': '21190'
   '@toLevel': '1'
   '@name': Soul's Shield
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_soulavatar_active_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '10'
   abnormalType:
-    $value: null
-    value: []
     $text: PD_UP_SPECIAL
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: ULTIMATE_DEFENCE
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpNeedAgathion
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_soulavatar_active_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '1200000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  hitTime:
+    $text: '1000'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': OpAgathionEnergy
+      enegry:
+        $text: '500'
+    - '@name': OpNeedAgathion
 - '@id': '21191'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Phoenix
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '1574'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '1574'
 - '@id': '21192'
   '@toLevel': '1'
   '@name': Silent Move
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_fox_japan_cap_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '120'
   abnormalType:
-    $value: null
-    value: []
     $text: STEALTH
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: STEALTH
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Speed
-      amount:
-        $value: null
-        value: []
-        $text: '-40'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   hitTime:
-    $value: null
-    value: []
     $text: '2000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_fox_japan_cap_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '14400000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SilentMove
+    - '@name': Speed
+      amount:
+        $text: '-40'
+      mode:
+        $text: PER
 - '@id': '21193'
   '@toLevel': '1'
   '@name': Power of Guardian Deity
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_paiwan_cap_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '600'
   abnormalType:
-    $value: null
-    value: []
     $text: CRITICAL_DMG_UP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
-    $text: 'true'
-  hitTime:
-    $value: null
-    value: []
-    $text: '4000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_paiwan_cap_i00
-  irreplacableBuff:
-    $value: null
-    value: []
     $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '3600000'
-  specialLevel:
-    $value: null
-    value: []
-    $text: '-1'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
+  specialLevel:
+    $text: '-1'
+  irreplacableBuff:
+    $text: 'true'
+  blockActionUseSkill:
+    $text: 'true'
+  hitTime:
+    $text: '4000'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '21194'
   '@toLevel': '1'
   '@name': Release Agathion's Seal - Babayaga
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonAgathion
-      npcId:
-        $value: null
-        value: []
-        $text: '8626'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.etc_summon_aga_agit_i00
+  hitTime:
+    $text: '3000'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': SummonAgathion
+      npcId:
+        $text: '8626'
 - '@id': '21195'
   '@toLevel': '1'
   '@name': 'Blessed Child Transformation Skill: Trejuo'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skilltransform3
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: TRANSFORM
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': CanTransform
-      transformId:
-        $value: null
-        value: []
-        $text: '20002'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': VitalityPointsRate
-      amount:
-        $value: null
-        value: []
-        $text: '-1'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   hitTime:
-    $value: null
-    value: []
     $text: '500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skilltransform3
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '14400000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  staticReuse:
-    $value: null
-    value: []
+  hitCancelTime:
+    $text: '0'
+  irreplacableBuff:
     $text: 'true'
-  targetType: SELF
+  blockActionUseSkill:
+    $text: 'true'
+  staticReuse:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': CanTransform
+      transformId:
+        $text: '20002'
+  effects:
+    effect:
+    - '@name': Transformation
+      transformationId:
+        $text: '20002'
+    - '@name': VitalityPointsRate
+      amount:
+        $text: '-1'
 - '@id': '21196'
   '@toLevel': '1'
   '@name': 'Blessed Child Transformation Skill: Sujin'
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skilltransform3
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3600'
   abnormalType:
-    $value: null
-    value: []
     $text: TRANSFORM
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  blockActionUseSkill:
-    $value: null
-    value: []
-    $text: 'true'
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': CanTransform
-      transformId:
-        $value: null
-        value: []
-        $text: '20003'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': VitalityPointsRate
-      amount:
-        $value: null
-        value: []
-        $text: '-1'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   hitTime:
-    $value: null
-    value: []
     $text: '500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skilltransform3
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '14400000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  staticReuse:
-    $value: null
-    value: []
+  hitCancelTime:
+    $text: '0'
+  irreplacableBuff:
     $text: 'true'
-  targetType: SELF
+  blockActionUseSkill:
+    $text: 'true'
+  staticReuse:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': CanTransform
+      transformId:
+        $text: '20003'
+  effects:
+    effect:
+    - '@name': Transformation
+      transformationId:
+        $text: '20003'
+    - '@name': VitalityPointsRate
+      amount:
+        $text: '-1'
 - '@id': '21197'
   '@toLevel': '1'
   '@name': Induk's Buff
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  blockedInOlympiad:
-    $value: null
-    value: []
-    $text: 'true'
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': RemainHpPer
-      affectType:
-        $value: null
-        value: []
-        $text: CASTER
-      amount:
-        $value: null
-        value: []
-        $text: '30'
-      percentType:
-        $value: null
-        value: []
-        $text: LESS
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
   icon:
-    $value: null
-    value: []
     $text: BranchSys2.icon.br_pekingopera_mask_a_i00
+  blockedInOlympiad:
+    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '20976'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '1800000'
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  hitTime:
+    $text: '500'
   staticReuse:
-    $value: null
-    value: []
     $text: 'true'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': RemainMpPer
+      amount:
+        $text: '30'
+      percentType:
+        $text: LESS
+    - '@name': RemainHpPer
+      amount:
+        $text: '30'
+      percentType:
+        $text: LESS
+      affectType:
+        $text: CASTER
 - '@id': '21198'
   '@toLevel': '1'
   '@name': Silence of Loyalty
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_pekingopera_mask_b_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: MULTI_BUFF
   activateRate:
-    $value: null
-    value: []
     $text: '0'
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: PARTY
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
-  castRange:
-    $value: null
-    value: []
-    $text: '600'
   effectPoint:
-    $value: null
-    value: []
     $text: '486'
-  effectRange:
-    $value: null
-    value: []
-    $text: '600'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_pekingopera_mask_b_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '20976'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '1800000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  staticReuse:
-    $value: null
-    value: []
+  hitCancelTime:
+    $text: '0'
+  effectRange:
+    $text: '600'
+  irreplacableBuff:
     $text: 'true'
-  targetType: SELF
+  affectRange:
+    $text: '1000'
+  hitTime:
+    $text: '3000'
+  castRange:
+    $text: '600'
+  staticReuse:
+    $text: 'true'
   trait:
-    $value: null
-    value: []
     $text: ETC
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: PARTY
+  affectObject:
+    $text: FRIEND
 - '@id': '21199'
   '@toLevel': '1'
   '@name': Vitality of Courage
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: BranchSys2.icon.br_pekingopera_mask_c_i00
   abnormalLevel:
-    $value: null
-    value: []
     $text: '26'
   abnormalTime:
-    $value: null
-    value: []
     $text: '300'
   abnormalType:
-    $value: null
-    value: []
     $text: VP_KEEP
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
   blockedInOlympiad:
-    $value: null
-    value: []
     $text: 'true'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': VitalityPointsRate
-      amount:
-        $value: null
-        value: []
-        $text: '-100'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
   hitTime:
-    $value: null
-    value: []
     $text: '500'
-  icon:
-    $value: null
-    value: []
-    $text: BranchSys2.icon.br_pekingopera_mask_c_i00
-  irreplacableBuff:
-    $value: null
-    value: []
-    $text: 'true'
   isMagic:
-    $value: null
-    value: []
     $text: '4'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '20976'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
   magicLevel:
-    $value: null
-    value: []
     $text: '-1'
   operateType:
-    $value: null
-    value: []
     $text: A2
   reuseDelay:
-    $value: null
-    value: []
     $text: '1800000'
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-1'
-  staticReuse:
-    $value: null
-    value: []
+  hitCancelTime:
+    $text: '0'
+  irreplacableBuff:
     $text: 'true'
-  targetType: SELF
+  staticReuse:
+    $text: 'true'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': VitalityPointUp
+      value:
+      - $text: '20000'
+    - '@name': VitalityPointsRate
+      amount:
+        $text: '-100'

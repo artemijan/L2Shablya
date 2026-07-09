@@ -47,13 +47,11 @@ impl Message<SelectChar> for PlayerClient {
         self.set_status(ClientStatus::Entering);
         self.select_char(msg.char_slot);
         let char_info = self.try_get_char_by_slot_id(msg.char_slot)?;
-        self.send_packet(
-            CharSelected::new(
-                char_info,
-                self.try_get_session_key()?.get_play_session_id(),
-                game_time,
-            )?,
-        )
+        self.send_packet(CharSelected::new(
+            char_info,
+            self.try_get_session_key()?.get_play_session_id(),
+            game_time,
+        )?)
         .await?;
         Ok(())
     }
@@ -71,7 +69,7 @@ mod tests {
     use l2_core::traits::ServerConfig;
     use std::net::Ipv4Addr;
     use std::sync::Arc;
-    use test_utils::utils::{get_test_db, DBPool};
+    use test_utils::utils::{DBPool, get_test_db};
     use tokio::io::split;
 
     async fn prepare() -> (Arc<GameController>, DBPool, PlayerClient) {

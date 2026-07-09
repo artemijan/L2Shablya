@@ -1,463 +1,733 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '28142'
   '@toLevel': '10'
   '@name': Sayha's Talisman
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': AdditionalPotionMp
-      amount: {}
-      mode:
-        $value: null
-        value: []
-        $text: DIFF
   icon:
-    $value: null
-    value: []
     $text: icon.bm_sayhas_talisman
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': PhysicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '112'
+        - '@level': '2'
+          $text: '225'
+        - '@level': '3'
+          $text: '450'
+        - '@level': '4'
+          $text: '676'
+        - '@level': '5'
+          $text: '901'
+        - '@level': '6'
+          $text: '1126'
+        - '@level': '7'
+          $text: '1351'
+        - '@level': '8'
+          $text: '1576'
+        - '@level': '9'
+          $text: '1801'
+        - '@level': '10'
+          $text: '2027'
+      mode:
+        $text: DIFF
+    - '@name': MagicalDefence
+      amount:
+        value:
+        - '@level': '1'
+          $text: '74'
+        - '@level': '2'
+          $text: '147'
+        - '@level': '3'
+          $text: '294'
+        - '@level': '4'
+          $text: '441'
+        - '@level': '5'
+          $text: '589'
+        - '@level': '6'
+          $text: '736'
+        - '@level': '7'
+          $text: '833'
+        - '@level': '8'
+          $text: '1030'
+        - '@level': '9'
+          $text: '1178'
+        - '@level': '10'
+          $text: '1325'
+      mode:
+        $text: DIFF
+    - '@name': ExpModify
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '5'
+        - '@level': '5'
+          $text: '7'
+        - '@level': '6'
+          $text: '10'
+        - '@level': '7'
+          $text: '15'
+        - '@level': '8'
+          $text: '20'
+        - '@level': '9'
+          $text: '25'
+        - '@level': '10'
+          $text: '30'
+    - '@name': SpModify
+      amount:
+        value:
+        - '@level': '1'
+          $text: '1'
+        - '@level': '2'
+          $text: '2'
+        - '@level': '3'
+          $text: '3'
+        - '@level': '4'
+          $text: '5'
+        - '@level': '5'
+          $text: '7'
+        - '@level': '6'
+          $text: '10'
+        - '@level': '7'
+          $text: '15'
+        - '@level': '8'
+          $text: '20'
+        - '@level': '9'
+          $text: '25'
+        - '@level': '10'
+          $text: '30'
+    - '@name': AdditionalPotionCp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '0'
+        - '@level': '8'
+          $text: '0'
+        - '@level': '9'
+          $text: '5000'
+        - '@level': '10'
+          $text: '7000'
+      mode:
+        $text: DIFF
+    - '@name': AdditionalPotionHp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '0'
+        - '@level': '8'
+          $text: '0'
+        - '@level': '9'
+          $text: '5000'
+        - '@level': '10'
+          $text: '7000'
+      mode:
+        $text: DIFF
+    - '@name': AdditionalPotionMp
+      amount:
+        value:
+        - '@level': '1'
+          $text: '0'
+        - '@level': '2'
+          $text: '0'
+        - '@level': '3'
+          $text: '0'
+        - '@level': '4'
+          $text: '0'
+        - '@level': '5'
+          $text: '0'
+        - '@level': '6'
+          $text: '0'
+        - '@level': '7'
+          $text: '0'
+        - '@level': '8'
+          $text: '0'
+        - '@level': '9'
+          $text: '5000'
+        - '@level': '10'
+          $text: '7000'
+      mode:
+        $text: DIFF
 - '@id': '28143'
   '@toLevel': '4'
   '@name': Sayha's Trust
-  '@fromLevel': null
-  '@displayId': null
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': Reuse
-      amount: {}
-      magicType:
-        $value: null
-        value: []
-        $text: '22'
-      mode:
-        $value: null
-        value: []
-        $text: PER
   icon:
-    $value: null
-    value: []
     $text: icon.bm_sayhas_talisman
-  isMagic:
-    $value: null
-    value: []
-    $text: '3'
   operateType:
-    $value: null
-    value: []
     $text: P
-  targetType: SELF
+  targetType:
+    $text: SELF
+  isMagic:
+    $text: '3'
+  effects:
+    effect:
+    - '@name': PhysicalSkillPower
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+        - '@level': '4'
+          $text: '9'
+      mode:
+        $text: PER
+    - '@name': MagicalSkillPower
+      amount:
+        value:
+        - '@level': '1'
+          $text: '2'
+        - '@level': '2'
+          $text: '3'
+        - '@level': '3'
+          $text: '5'
+        - '@level': '4'
+          $text: '9'
+      mode:
+        $text: PER
+    - '@name': Reuse
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-2'
+        - '@level': '2'
+          $text: '-3'
+        - '@level': '3'
+          $text: '-5'
+        - '@level': '4'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '0'
+    - '@name': Reuse
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-2'
+        - '@level': '2'
+          $text: '-3'
+        - '@level': '3'
+          $text: '-5'
+        - '@level': '4'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '1'
+    - '@name': Reuse
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-2'
+        - '@level': '2'
+          $text: '-3'
+        - '@level': '3'
+          $text: '-5'
+        - '@level': '4'
+          $text: '-5'
+      mode:
+        $text: PER
+      magicType:
+        $text: '22'
 - '@id': '28144'
   '@toLevel': '4'
   '@name': Sayha's Protection
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.sayhas_talisman_g_Lv1
+    - '@level': '2'
+      $text: icon.sayhas_talisman_g_Lv2
+    - '@level': '3'
+      $text: icon.sayhas_talisman_g_Lv3
+    - '@level': '4'
+      $text: icon.sayhas_talisman_g_Lv4
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '45'
+  operateType:
+    $text: A2
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
+  hitTime:
     $text: '300'
+  coolTime:
+    $text: '300'
+  reuseDelay:
+    value:
+    - '@level': '1'
+      $text: '600000'
+    - '@level': '2'
+      $text: '420000'
+    - '@level': '3'
+      $text: '300000'
+    - '@level': '4'
+      $text: '180000'
+  staticReuse:
+    $text: 'true'
+  castRange:
+    $text: '900'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': DamageByAttack
-      amount: {}
+    - '@name': DamageByAttack
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-5'
+        - '@level': '2'
+          $text: '-7'
+        - '@level': '3'
+          $text: '-7'
+        - '@level': '4'
+          $text: '-10'
       type:
-        $value: null
-        value: []
+        $text: PK
+    - '@name': DamageByAttack
+      amount:
+        value:
+        - '@level': '1'
+          $text: '-5'
+        - '@level': '2'
+          $text: '-7'
+        - '@level': '3'
+          $text: '-7'
+        - '@level': '4'
+          $text: '-10'
+      type:
         $text: ENEMY_ALL
-  hitTime:
-    $value: null
-    value: []
-    $text: '300'
-  icon: {}
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay: {}
-  staticReuse:
-    $value: null
-    value: []
-    $text: 'true'
-  targetType: SELF
 - '@id': '28145'
   '@toLevel': '4'
   '@name': Sayha's Encouragement
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.sayhas_talisman_pve_Lv1
+    - '@level': '2'
+      $text: icon.sayhas_talisman_pve_Lv2
+    - '@level': '3'
+      $text: icon.sayhas_talisman_pve_Lv3
+    - '@level': '4'
+      $text: icon.sayhas_talisman_pve_Lv4
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
-  abnormalTime: {}
+  abnormalTime:
+    value:
+    - '@level': '1'
+      $text: '180'
+    - '@level': '2'
+      $text: '180'
+    - '@level': '3'
+      $text: '300'
+    - '@level': '4'
+      $text: '600'
+  operateType:
+    $text: A2
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
+  hitTime:
     $text: '300'
+  coolTime:
+    $text: '300'
+  reuseDelay:
+    value:
+    - '@level': '1'
+      $text: '600000'
+    - '@level': '2'
+      $text: '420000'
+    - '@level': '3'
+      $text: '300000'
+    - '@level': '4'
+      $text: '180000'
+  staticReuse:
+    $text: 'true'
+  castRange:
+    $text: '900'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': PvePhysicalSkillDamageBonus
-      amount: {}
+    - '@name': PveMagicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '8'
+        - '@level': '3'
+          $text: '8'
+        - '@level': '4'
+          $text: '10'
       mode:
-        $value: null
-        value: []
         $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '300'
-  icon: {}
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay: {}
-  staticReuse:
-    $value: null
-    value: []
-    $text: 'true'
-  targetType: SELF
+    - '@name': PvePhysicalAttackDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '8'
+        - '@level': '3'
+          $text: '8'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
+    - '@name': PvePhysicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '5'
+        - '@level': '2'
+          $text: '8'
+        - '@level': '3'
+          $text: '8'
+        - '@level': '4'
+          $text: '10'
+      mode:
+        $text: PER
 - '@id': '28146'
   '@toLevel': '4'
   '@name': Sayha's Anger
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    value:
+    - '@level': '1'
+      $text: icon.sayhas_talisman_pvp_Lv1
+    - '@level': '2'
+      $text: icon.sayhas_talisman_pvp_Lv2
+    - '@level': '3'
+      $text: icon.sayhas_talisman_pvp_Lv3
+    - '@level': '4'
+      $text: icon.sayhas_talisman_pvp_Lv4
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '45'
+  operateType:
+    $text: A2
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  coolTime:
-    $value: null
-    value: []
+  hitTime:
     $text: '300'
+  coolTime:
+    $text: '300'
+  reuseDelay:
+    value:
+    - '@level': '1'
+      $text: '600000'
+    - '@level': '2'
+      $text: '420000'
+    - '@level': '3'
+      $text: '300000'
+    - '@level': '4'
+      $text: '180000'
+  staticReuse:
+    $text: 'true'
+  castRange:
+    $text: '900'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': PvpPhysicalSkillDamageBonus
-      amount: {}
+    - '@name': PvpMagicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '8'
+        - '@level': '2'
+          $text: '8'
+        - '@level': '3'
+          $text: '12'
+        - '@level': '4'
+          $text: '15'
       mode:
-        $value: null
-        value: []
         $text: PER
-  hitTime:
-    $value: null
-    value: []
-    $text: '300'
-  icon: {}
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  reuseDelay: {}
-  staticReuse:
-    $value: null
-    value: []
-    $text: 'true'
-  targetType: SELF
+    - '@name': PvpPhysicalAttackDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '8'
+        - '@level': '2'
+          $text: '8'
+        - '@level': '3'
+          $text: '12'
+        - '@level': '4'
+          $text: '15'
+      mode:
+        $text: PER
+    - '@name': PvpPhysicalSkillDamageBonus
+      amount:
+        value:
+        - '@level': '1'
+          $text: '8'
+        - '@level': '2'
+          $text: '8'
+        - '@level': '3'
+          $text: '12'
+        - '@level': '4'
+          $text: '15'
+      mode:
+        $text: PER
 - '@id': '28147'
   '@toLevel': '3'
   '@name': Sayha's Support
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.bm_sayhas_talisman
+  operateType:
+    $text: A1
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  coolTime:
-    $value: null
-    value: []
+  hitTime:
     $text: '300'
+  coolTime:
+    $text: '300'
+  reuseDelay:
+    value:
+    - '@level': '1'
+      $text: '1800000'
+    - '@level': '2'
+      $text: '1200000'
+    - '@level': '3'
+      $text: '360000'
+  staticReuse:
+    $text: 'true'
   effectPoint:
-    $value: null
-    value: []
     $text: '10'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': CpHealPercent
-      power: {}
-  hitTime:
-    $value: null
-    value: []
-    $text: '300'
-  icon:
-    $value: null
-    value: []
-    $text: icon.bm_sayhas_talisman
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay: {}
-  staticReuse:
-    $value: null
-    value: []
-    $text: 'true'
-  targetType: SELF
+    - '@name': HealPercent
+      power:
+        value:
+        - '@level': '1'
+          $text: '20'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '30'
+    - '@name': ManaHealPercent
+      power:
+        value:
+        - '@level': '1'
+          $text: '20'
+        - '@level': '2'
+          $text: '20'
+        - '@level': '3'
+          $text: '30'
+    - '@name': CpHealPercent
+      power:
+        value:
+        - '@level': '1'
+          $text: '30'
+        - '@level': '2'
+          $text: '30'
+        - '@level': '3'
+          $text: '50'
 - '@id': '28148'
   '@toLevel': '1'
   '@name': Fortune Talisman Pack
-  '@fromLevel': null
-  '@displayId': null
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   operateType:
-    $value: null
-    value: []
     $text: A1
+  hitTime:
+    $text: '500'
+  coolTime:
+    $text: '500'
 - '@id': '28151'
   '@toLevel': '4'
   '@name': Halloween Blessing
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.event_halloween_pumpkin_i00
+  operateType:
+    $text: A1
+  isMagic:
+    $text: '4'
   castRange:
-    $value: null
-    value: []
     $text: '900'
   effectPoint:
-    $value: null
-    value: []
     $text: '1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.event_halloween_pumpkin_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
 - '@id': '28152'
   '@toLevel': '1'
   '@name': Halloween Blessing
-  '@fromLevel': null
-  '@displayId': null
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
   icon:
-    $value: null
-    value: []
     $text: icon.event_halloween_pumpkin_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '4'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  isMagic:
+    $text: '4'
+  effectPoint:
+    $text: '1'
 - '@id': '28153'
   '@toLevel': '1'
   '@name': Halloween Gift
-  '@fromLevel': null
-  '@displayId': null
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
   operateType:
-    $value: null
-    value: []
     $text: A1
+  hitTime:
+    $text: '500'
+  coolTime:
+    $text: '500'
 - '@id': '28154'
   '@toLevel': '1'
   '@name': Talisman - Abundance Pack
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': RestorationRandom
-      items:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          '@chance': '7.45'
-          item:
-            $value: null
-            value: []
-            '@count': '1'
-            '@id': '23838'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
   icon:
-    $value: null
-    value: []
     $text: icon.event_hero_treasure_box_i00
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '29077'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '5'
-  magicLevel:
-    $value: null
-    value: []
+  itemConsumeCount:
     $text: '1'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  hitTime:
+    $text: '500'
+  coolTime:
+    $text: '500'
+  magicCriticalRate:
+    $text: '5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': RestorationRandom
+      items:
+        item:
+        - '@chance': '7.45'
+          item:
+            '@id': '26418'
+            '@count': '1'
+        - '@chance': '5.25'
+          item:
+            '@id': '26419'
+            '@count': '1'
+        - '@chance': '4.25'
+          item:
+            '@id': '26420'
+            '@count': '1'
+        - '@chance': '3.25'
+          item:
+            '@id': '26421'
+            '@count': '1'
+        - '@chance': '7.45'
+          item:
+            '@id': '23833'
+            '@count': '1'
+        - '@chance': '7.45'
+          item:
+            '@id': '23835'
+            '@count': '1'
+        - '@chance': '7.45'
+          item:
+            '@id': '23834'
+            '@count': '1'
+        - '@chance': '7.45'
+          item:
+            '@id': '23836'
+            '@count': '1'
+        - '@chance': '7.45'
+          item:
+            '@id': '26338'
+            '@count': '1'
+        - '@chance': '5.25'
+          item:
+            '@id': '26339'
+            '@count': '1'
+        - '@chance': '4.25'
+          item:
+            '@id': '26340'
+            '@count': '1'
+        - '@chance': '3.25'
+          item:
+            '@id': '26341'
+            '@count': '1'
+        - '@chance': '7.45'
+          item:
+            '@id': '23839'
+            '@count': '1'
+        - '@chance': '7.45'
+          item:
+            '@id': '23837'
+            '@count': '1'
+        - '@chance': '7.45'
+          item:
+            '@id': '23840'
+            '@count': '1'
+        - '@chance': '7.45'
+          item:
+            '@id': '23838'
+            '@count': '1'
 - '@id': '28155'
   '@toLevel': '1'
   '@name': Wondrous Jewelry Box
-  '@fromLevel': null
-  '@displayId': null
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
   operateType:
-    $value: null
-    value: []
     $text: A1
+  hitTime:
+    $text: '500'
+  coolTime:
+    $text: '500'

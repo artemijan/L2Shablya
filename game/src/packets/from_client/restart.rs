@@ -46,7 +46,7 @@ impl Message<RequestRestart> for PlayerClient {
                 character::Model::update_char(&self.db_pool, &player.char_model).await?;
             (selected_slot, updated_model)
         };
-        
+
         self.with_char_by_slot_id(
             selected_slot,
             |_character| async move { Ok(updated_char_model) },

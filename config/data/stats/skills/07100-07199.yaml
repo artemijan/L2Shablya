@@ -1,1599 +1,1256 @@
+'@xmlns:xsi': http://www.w3.org/2001/XMLSchema-instance
+'@xsi:noNamespaceSchemaLocation': ../../xsd/skills.xsd
 skill:
 - '@id': '7100'
   '@toLevel': '1'
   '@name': Clan-exclusive Pet Stun
-  '@fromLevel': null
-  '@displayId': null
+  icon:
+    $text: icon.skill5168
+  operateType:
+    $text: A2
+  mpConsume:
+    $text: '5'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '1000'
+  effectPoint:
+    $text: '-700'
+  abnormalType:
+    $text: STUN
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '-5'
+  hitCancelTime:
+    $text: '0'
+  effectRange:
+    $text: '1100'
+  magicLevel:
+    $text: '85'
   abnormalLevel:
-    $value: null
-    value: []
     $text: '1'
   abnormalTime:
-    $value: null
-    value: []
     $text: '3'
-  abnormalType:
-    $value: null
-    value: []
-    $text: STUN
-  abnormalVisualEffect:
-    $value: null
-    value: []
-    $text: STUN
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': BlockActions
-      allowedSkills:
-        $value: null
-        value: []
-        $text: 10279;10517;10025;10776;11770;1904;11264;11093;13314;1912
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill5168
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  targetType: TARGET
   trait:
-    $value: null
-    value: []
     $text: SHOCK
+  abnormalVisualEffect:
+    $text: STUN
+  isDebuff:
+    $text: 'true'
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': BlockActions
+      allowedSkills:
+        $text: 10279;10517;10025;10776;11770;1904;11264;11093;13314;1912
 - '@id': '7101'
   '@toLevel': '1'
   '@name': Clan-exclusive Pet Aerial Thrust
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
+  icon:
+    $text: icon.skill11276
+  operateType:
+    $text: A2
+  mpConsume:
+    $text: '5'
+  castRange:
+    $text: '900'
+  hitTime:
+    $text: '1500'
+  isMagic:
     $text: '1'
-  abnormalResists:
-    $value: null
-    value: []
-    $text: STUN;TURN_FLEE
-  abnormalTime:
-    $value: null
-    value: []
-    $text: '3'
+  effectPoint:
+    $text: '-700'
   abnormalType:
-    $value: null
-    value: []
+    $text: AIRBIND
+  abnormalResists:
+    $text: STUN;TURN_FLEE
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '-5'
+  hitCancelTime:
+    $text: '0'
+  effectRange:
+    $text: '1100'
+  magicLevel:
+    $text: '85'
+  abnormalLevel:
+    $text: '1'
+  abnormalTime:
+    $text: '3'
+  trait:
     $text: AIRBIND
   abnormalVisualEffect:
-    $value: null
-    value: []
     $text: AIRBIND
+  isDebuff:
+    $text: 'true'
+  targetType:
+    $text: TARGET
   affectScope:
-    $value: null
-    value: []
     $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  castRange:
-    $value: null
-    value: []
-    $text: '900'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-700'
-  effectRange:
-    $value: null
-    value: []
-    $text: '1100'
   effects:
-    $value: null
-    value: []
     effect:
-      $value: null
-      value: []
-      '@name': DefenceTrait
-      AIRBIND:
-        $value: null
-        value: []
-        $text: '100'
-      CHANGEBODY:
-        $value: null
-        value: []
-        $text: '100'
-      DERANGEMENT:
-        $value: null
-        value: []
-        $text: '100'
+    - '@name': AirBind
+    - '@name': BlockActions
+    - '@name': DefenceTrait
       HOLD:
-        $value: null
-        value: []
-        $text: '100'
-      KNOCKBACK:
-        $value: null
-        value: []
-        $text: '100'
-      KNOCKDOWN:
-        $value: null
-        value: []
-        $text: '100'
-      SHOCK:
-        $value: null
-        value: []
         $text: '100'
       SLEEP:
-        $value: null
-        value: []
         $text: '100'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11276
-  isDebuff:
-    $value: null
-    value: []
-    $text: 'true'
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '5'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  targetType: TARGET
-  trait:
-    $value: null
-    value: []
-    $text: AIRBIND
+      DERANGEMENT:
+        $text: '100'
+      CHANGEBODY:
+        $text: '100'
+      SHOCK:
+        $text: '100'
+      AIRBIND:
+        $text: '100'
+      KNOCKBACK:
+        $text: '100'
+      KNOCKDOWN:
+        $text: '100'
 - '@id': '7102'
   '@toLevel': '1'
   '@name': Summon Clan Pet
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpPledge
-      level:
-        $value: null
-        value: []
-        $text: '5'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonPet
-  hitTime:
-    $value: null
-    value: []
-    $text: '5000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
+  operateType:
+    $text: A1
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  hitTime:
+    $text: '5000'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': CanSummonPet
+    - '@name': OpPledge
+      level:
+        $text: '5'
+  effects:
+    effect:
+    - '@name': SummonPet
 - '@id': '7103'
   '@toLevel': '1'
   '@name': Helping Tree CP Recovery Range
-  '@fromLevel': null
-  '@displayId': null
-  affectLimit:
-    $value: null
-    value: []
-    $text: 5-12
-  affectObject:
-    $value: null
-    value: []
-    $text: FRIEND
-  affectRange:
-    $value: null
-    value: []
-    $text: '1000'
-  affectScope:
-    $value: null
-    value: []
-    $text: RANGE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '635'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0'
-  hitTime:
-    $value: null
-    value: []
-    $text: '300'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  hitTime:
+    $text: '300'
+  effectPoint:
+    $text: '635'
+  magicCriticalRate:
+    $text: '-5'
+  hitCancelTime:
+    $text: '0'
+  magicLevel:
+    $text: '85'
+  affectRange:
+    $text: '1000'
+  affectLimit:
+    $text: 5-12
+  isMagic:
+    $text: '1'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: RANGE
+  affectObject:
+    $text: FRIEND
 - '@id': '7104'
   '@toLevel': '1'
   '@name': Pa'agrio's Hand
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.skill11775
+  operateType:
+    $text: A1
   castRange:
-    $value: null
-    value: []
     $text: '100'
+  hitTime:
+    $text: '1000'
   coolTime:
-    $value: null
-    value: []
     $text: '500'
   effectPoint:
-    $value: null
-    value: []
     $text: '-1'
-  effectRange:
-    $value: null
-    value: []
-    $text: '400'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1000'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill11775
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
+  effectRange:
+    $text: '400'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
+  isMagic:
+    $text: '2'
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: TARGET
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
 - '@id': '7105'
   '@toLevel': '1'
   '@name': Incubation Possible
-  '@fromLevel': null
-  '@displayId': null
-  abnormalResists:
-    $value: null
-    value: []
-    $text: TURN_FLEE;KNOCKDOWN;DEPORT;SILENCE;PARALYZE;ABSORB;DISARM;SILENCE_PHYSICAL;SILENCE_ALL;CHANGEBODY;TURN_STONE;DERANGEMENT;AIRBIND;SLEEP;OBLIVION;MIRAGE;MIRAGE_TRAP;ROOT_MAGICALLY;ROOT_PHYSICALLY;STUN;PUBLIC_SLOT
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
   castRange:
-    $value: null
-    value: []
     $text: '100'
+  effectPoint:
+    $text: '-1'
+  abnormalResists:
+    $text: TURN_FLEE;KNOCKDOWN;DEPORT;SILENCE;PARALYZE;ABSORB;DISARM;SILENCE_PHYSICAL;SILENCE_ALL;CHANGEBODY;TURN_STONE;DERANGEMENT;AIRBIND;SLEEP;OBLIVION;MIRAGE;MIRAGE_TRAP;ROOT_MAGICALLY;ROOT_PHYSICALLY;STUN;PUBLIC_SLOT
+  magicCriticalRate:
+    $text: '-5'
+  effectRange:
+    $text: '700'
+  magicLevel:
+    $text: '1'
+  reuseDelay:
+    $text: '2000'
+  targetType:
+    $text: TARGET
+  affectScope:
+    $text: SINGLE
   conditions:
-    $value: null
-    value: []
     condition:
-      $value: null
-      value: []
       '@name': OpTargetNpc
       npcIds:
-        $value: null
-        value: []
         item:
-          $value: null
-          value: []
-          $text: '19450'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-1'
-  effectRange:
-    $value: null
-    value: []
-    $text: '700'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '2000'
-  targetType: TARGET
+        - $text: '19257'
+        - $text: '19258'
+        - $text: '19449'
+        - $text: '19450'
 - '@id': '7106'
   '@toLevel': '1'
   '@name': Optimal Temperature Incubation Success
-  '@fromLevel': null
-  '@displayId': null
-  abnormalResists:
-    $value: null
-    value: []
-    $text: TURN_FLEE;KNOCKDOWN;DEPORT;SILENCE;PARALYZE;ABSORB;DISARM;SILENCE_PHYSICAL;SILENCE_ALL;CHANGEBODY;TURN_STONE;DERANGEMENT;AIRBIND;SLEEP;OBLIVION;MIRAGE;MIRAGE_TRAP;ROOT_MAGICALLY;ROOT_PHYSICALLY;STUN;PUBLIC_SLOT
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpTargetNpc
-      npcIds:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: '19450'
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
   coolTime:
-    $value: null
-    value: []
     $text: '800'
   effectPoint:
-    $value: null
-    value: []
     $text: '-1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
+  abnormalResists:
+    $text: TURN_FLEE;KNOCKDOWN;DEPORT;SILENCE;PARALYZE;ABSORB;DISARM;SILENCE_PHYSICAL;SILENCE_ALL;CHANGEBODY;TURN_STONE;DERANGEMENT;AIRBIND;SLEEP;OBLIVION;MIRAGE;MIRAGE_TRAP;ROOT_MAGICALLY;ROOT_PHYSICALLY;STUN;PUBLIC_SLOT
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpTargetNpc
+      npcIds:
+        item:
+        - $text: '19257'
+        - $text: '19258'
+        - $text: '19449'
+        - $text: '19450'
 - '@id': '7107'
   '@toLevel': '1'
   '@name': Incubation Success
-  '@fromLevel': null
-  '@displayId': null
-  abnormalResists:
-    $value: null
-    value: []
-    $text: TURN_FLEE;KNOCKDOWN;DEPORT;SILENCE;PARALYZE;ABSORB;DISARM;SILENCE_PHYSICAL;SILENCE_ALL;CHANGEBODY;TURN_STONE;DERANGEMENT;AIRBIND;SLEEP;OBLIVION;MIRAGE;MIRAGE_TRAP;ROOT_MAGICALLY;ROOT_PHYSICALLY;STUN;PUBLIC_SLOT
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpTargetNpc
-      npcIds:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: '19450'
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
   coolTime:
-    $value: null
-    value: []
     $text: '800'
   effectPoint:
-    $value: null
-    value: []
     $text: '-1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
+  abnormalResists:
+    $text: TURN_FLEE;KNOCKDOWN;DEPORT;SILENCE;PARALYZE;ABSORB;DISARM;SILENCE_PHYSICAL;SILENCE_ALL;CHANGEBODY;TURN_STONE;DERANGEMENT;AIRBIND;SLEEP;OBLIVION;MIRAGE;MIRAGE_TRAP;ROOT_MAGICALLY;ROOT_PHYSICALLY;STUN;PUBLIC_SLOT
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpTargetNpc
+      npcIds:
+        item:
+        - $text: '19257'
+        - $text: '19258'
+        - $text: '19449'
+        - $text: '19450'
 - '@id': '7108'
   '@toLevel': '1'
   '@name': Incubation Failure
-  '@fromLevel': null
-  '@displayId': null
-  abnormalResists:
-    $value: null
-    value: []
-    $text: TURN_FLEE;KNOCKDOWN;DEPORT;SILENCE;PARALYZE;ABSORB;DISARM;SILENCE_PHYSICAL;SILENCE_ALL;CHANGEBODY;TURN_STONE;DERANGEMENT;AIRBIND;SLEEP;OBLIVION;MIRAGE;MIRAGE_TRAP;ROOT_MAGICALLY;ROOT_PHYSICALLY;STUN;PUBLIC_SLOT
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpTargetNpc
-      npcIds:
-        $value: null
-        value: []
-        item:
-          $value: null
-          value: []
-          $text: '19450'
+  icon:
+    $text: icon.skill0000
+  operateType:
+    $text: A1
   coolTime:
-    $value: null
-    value: []
     $text: '800'
   effectPoint:
-    $value: null
-    value: []
     $text: '-1'
-  icon:
-    $value: null
-    value: []
-    $text: icon.skill0000
+  abnormalResists:
+    $text: TURN_FLEE;KNOCKDOWN;DEPORT;SILENCE;PARALYZE;ABSORB;DISARM;SILENCE_PHYSICAL;SILENCE_ALL;CHANGEBODY;TURN_STONE;DERANGEMENT;AIRBIND;SLEEP;OBLIVION;MIRAGE;MIRAGE_TRAP;ROOT_MAGICALLY;ROOT_PHYSICALLY;STUN;PUBLIC_SLOT
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '1'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
   reuseDelay:
-    $value: null
-    value: []
     $text: '2000'
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+      '@name': OpTargetNpc
+      npcIds:
+        item:
+        - $text: '19257'
+        - $text: '19258'
+        - $text: '19449'
+        - $text: '19450'
 - '@id': '7109'
   '@toLevel': '1'
   '@name': Summon Bratty Angma
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpPledge
-      level:
-        $value: null
-        value: []
-        $text: '5'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonNpc
-      npcCount:
-        $value: null
-        value: []
-        $text: '1'
-      npcId:
-        $value: null
-        value: []
-        $text: '19288'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0028
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeId:
-    $value: null
-    value: []
-    $text: '35650'
+  operateType:
+    $text: A1
+  hitTime:
+    $text: '3000'
+  coolTime:
+    $text: '500'
+  reuseDelay:
+    $text: '10000'
+  effectPoint:
+    $text: '100'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '10000'
-  targetType: SELF
+  isMagic:
+    $text: '1'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  itemConsumeId:
+    $text: '35650'
+  itemConsumeCount:
+    $text: '1'
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '76'
+      maxLevel:
+        $text: '84'
+      affectType:
+        $text: CASTER
+    - '@name': OpCanNotUseAirship
+    - '@name': OpCheckClassList
+      classIds:
+        item:
+        - $text: GLADIATOR
+        - $text: WARLORD
+        - $text: PALADIN
+        - $text: DARK_AVENGER
+        - $text: TREASURE_HUNTER
+        - $text: HAWKEYE
+        - $text: SORCERER
+        - $text: NECROMANCER
+        - $text: WARLOCK
+        - $text: BISHOP
+        - $text: PROPHET
+        - $text: TEMPLE_KNIGHT
+        - $text: SWORDSINGER
+        - $text: PLAINS_WALKER
+        - $text: SILVER_RANGER
+        - $text: SPELLSINGER
+        - $text: ELEMENTAL_SUMMONER
+        - $text: ELDER
+        - $text: SHILLIEN_KNIGHT
+        - $text: BLADEDANCER
+        - $text: ABYSS_WALKER
+        - $text: PHANTOM_RANGER
+        - $text: SPELLHOWLER
+        - $text: PHANTOM_SUMMONER
+        - $text: SHILLIEN_ELDER
+        - $text: DESTROYER
+        - $text: TYRANT
+        - $text: OVERLORD
+        - $text: WARCRYER
+        - $text: BOUNTY_HUNTER
+        - $text: WARSMITH
+        - $text: BERSERKER
+        - $text: MALE_SOULBREAKER
+        - $text: FEMALE_SOULBREAKER
+        - $text: ARBALESTER
+        - $text: INSPECTOR
+        - $text: DUELIST
+        - $text: DREADNOUGHT
+        - $text: PHOENIX_KNIGHT
+        - $text: HELL_KNIGHT
+        - $text: ADVENTURER
+        - $text: SAGITTARIUS
+        - $text: ARCHMAGE
+        - $text: SOULTAKER
+        - $text: ARCANA_LORD
+        - $text: CARDINAL
+        - $text: HIEROPHANT
+        - $text: EVA_TEMPLAR
+        - $text: SWORD_MUSE
+        - $text: WIND_RIDER
+        - $text: MOONLIGHT_SENTINEL
+        - $text: MYSTIC_MUSE
+        - $text: ELEMENTAL_MASTER
+        - $text: EVA_SAINT
+        - $text: SHILLIEN_TEMPLAR
+        - $text: SPECTRAL_DANCER
+        - $text: GHOST_HUNTER
+        - $text: GHOST_SENTINEL
+        - $text: STORM_SCREAMER
+        - $text: SPECTRAL_MASTER
+        - $text: SHILLIEN_SAINT
+        - $text: TITAN
+        - $text: GRAND_KHAVATARI
+        - $text: DOMINATOR
+        - $text: DOOMCRYER
+        - $text: FORTUNE_SEEKER
+        - $text: MAESTRO
+        - $text: DOOMBRINGER
+        - $text: MALE_SOUL_HOUND
+        - $text: FEMALE_SOUL_HOUND
+        - $text: TRICKSTER
+        - $text: JUDICATOR
+        - $text: SIGEL_KNIGHT
+        - $text: TYRR_WARRIOR
+        - $text: OTHELL_ROGUE
+        - $text: YUL_ARCHER
+        - $text: FEOH_WIZARD
+        - $text: ISS_ENCHANTER
+        - $text: WYNN_SUMMONER
+        - $text: AEORE_HEALER
+      affectType:
+        $text: CASTER
+      isWithin:
+        $text: 'true'
+    - '@name': OpPledge
+      level:
+        $text: '5'
+  effects:
+    effect:
+    - '@name': SummonNpc
+      npcId:
+        $text: '19288'
+      npcCount:
+        $text: '1'
 - '@id': '7110'
   '@toLevel': '1'
   '@name': Summon Bratty Angma
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpPledge
-      level:
-        $value: null
-        value: []
-        $text: '5'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '100'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0028
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeId:
-    $value: null
-    value: []
-    $text: '35651'
+  operateType:
+    $text: A1
+  hitTime:
+    $text: '3000'
+  coolTime:
+    $text: '500'
+  reuseDelay:
+    $text: '10000'
+  effectPoint:
+    $text: '100'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '10000'
-  targetType: SELF
+  isMagic:
+    $text: '1'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  itemConsumeId:
+    $text: '35651'
+  itemConsumeCount:
+    $text: '1'
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '85'
+      maxLevel:
+        $text: '89'
+      affectType:
+        $text: CASTER
+    - '@name': OpCanNotUseAirship
+    - '@name': OpCheckClassList
+      classIds:
+        item:
+        - $text: GLADIATOR
+        - $text: WARLORD
+        - $text: PALADIN
+        - $text: DARK_AVENGER
+        - $text: TREASURE_HUNTER
+        - $text: HAWKEYE
+        - $text: SORCERER
+        - $text: NECROMANCER
+        - $text: WARLOCK
+        - $text: BISHOP
+        - $text: PROPHET
+        - $text: TEMPLE_KNIGHT
+        - $text: SWORDSINGER
+        - $text: PLAINS_WALKER
+        - $text: SILVER_RANGER
+        - $text: SPELLSINGER
+        - $text: ELEMENTAL_SUMMONER
+        - $text: ELDER
+        - $text: SHILLIEN_KNIGHT
+        - $text: BLADEDANCER
+        - $text: ABYSS_WALKER
+        - $text: PHANTOM_RANGER
+        - $text: SPELLHOWLER
+        - $text: PHANTOM_SUMMONER
+        - $text: SHILLIEN_ELDER
+        - $text: DESTROYER
+        - $text: TYRANT
+        - $text: OVERLORD
+        - $text: WARCRYER
+        - $text: BOUNTY_HUNTER
+        - $text: WARSMITH
+        - $text: BERSERKER
+        - $text: MALE_SOULBREAKER
+        - $text: FEMALE_SOULBREAKER
+        - $text: ARBALESTER
+        - $text: INSPECTOR
+        - $text: DUELIST
+        - $text: DREADNOUGHT
+        - $text: PHOENIX_KNIGHT
+        - $text: HELL_KNIGHT
+        - $text: ADVENTURER
+        - $text: SAGITTARIUS
+        - $text: ARCHMAGE
+        - $text: SOULTAKER
+        - $text: ARCANA_LORD
+        - $text: CARDINAL
+        - $text: HIEROPHANT
+        - $text: EVA_TEMPLAR
+        - $text: SWORD_MUSE
+        - $text: WIND_RIDER
+        - $text: MOONLIGHT_SENTINEL
+        - $text: MYSTIC_MUSE
+        - $text: ELEMENTAL_MASTER
+        - $text: EVA_SAINT
+        - $text: SHILLIEN_TEMPLAR
+        - $text: SPECTRAL_DANCER
+        - $text: GHOST_HUNTER
+        - $text: GHOST_SENTINEL
+        - $text: STORM_SCREAMER
+        - $text: SPECTRAL_MASTER
+        - $text: SHILLIEN_SAINT
+        - $text: TITAN
+        - $text: GRAND_KHAVATARI
+        - $text: DOMINATOR
+        - $text: DOOMCRYER
+        - $text: FORTUNE_SEEKER
+        - $text: MAESTRO
+        - $text: DOOMBRINGER
+        - $text: MALE_SOUL_HOUND
+        - $text: FEMALE_SOUL_HOUND
+        - $text: TRICKSTER
+        - $text: JUDICATOR
+        - $text: SIGEL_KNIGHT
+        - $text: TYRR_WARRIOR
+        - $text: OTHELL_ROGUE
+        - $text: YUL_ARCHER
+        - $text: FEOH_WIZARD
+        - $text: ISS_ENCHANTER
+        - $text: WYNN_SUMMONER
+        - $text: AEORE_HEALER
+      affectType:
+        $text: CASTER
+      isWithin:
+        $text: 'true'
+    - '@name': OpPledge
+      level:
+        $text: '5'
 - '@id': '7111'
   '@toLevel': '1'
   '@name': Summon Bratty Angma
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpPledge
-      level:
-        $value: null
-        value: []
-        $text: '5'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonNpc
-      npcCount:
-        $value: null
-        value: []
-        $text: '1'
-      npcId:
-        $value: null
-        value: []
-        $text: '19289'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0028
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
+  operateType:
+    $text: A1
+  hitTime:
+    $text: '3000'
+  coolTime:
+    $text: '500'
+  reuseDelay:
+    $text: '10000'
+  effectPoint:
+    $text: '100'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '10000'
-  targetType: SELF
+  isMagic:
+    $text: '1'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '90'
+      maxLevel:
+        $text: '94'
+      affectType:
+        $text: CASTER
+    - '@name': OpCanNotUseAirship
+    - '@name': OpCheckClassList
+      classIds:
+        item:
+        - $text: GLADIATOR
+        - $text: WARLORD
+        - $text: PALADIN
+        - $text: DARK_AVENGER
+        - $text: TREASURE_HUNTER
+        - $text: HAWKEYE
+        - $text: SORCERER
+        - $text: NECROMANCER
+        - $text: WARLOCK
+        - $text: BISHOP
+        - $text: PROPHET
+        - $text: TEMPLE_KNIGHT
+        - $text: SWORDSINGER
+        - $text: PLAINS_WALKER
+        - $text: SILVER_RANGER
+        - $text: SPELLSINGER
+        - $text: ELEMENTAL_SUMMONER
+        - $text: ELDER
+        - $text: SHILLIEN_KNIGHT
+        - $text: BLADEDANCER
+        - $text: ABYSS_WALKER
+        - $text: PHANTOM_RANGER
+        - $text: SPELLHOWLER
+        - $text: PHANTOM_SUMMONER
+        - $text: SHILLIEN_ELDER
+        - $text: DESTROYER
+        - $text: TYRANT
+        - $text: OVERLORD
+        - $text: WARCRYER
+        - $text: BOUNTY_HUNTER
+        - $text: WARSMITH
+        - $text: BERSERKER
+        - $text: MALE_SOULBREAKER
+        - $text: FEMALE_SOULBREAKER
+        - $text: ARBALESTER
+        - $text: INSPECTOR
+        - $text: DUELIST
+        - $text: DREADNOUGHT
+        - $text: PHOENIX_KNIGHT
+        - $text: HELL_KNIGHT
+        - $text: ADVENTURER
+        - $text: SAGITTARIUS
+        - $text: ARCHMAGE
+        - $text: SOULTAKER
+        - $text: ARCANA_LORD
+        - $text: CARDINAL
+        - $text: HIEROPHANT
+        - $text: EVA_TEMPLAR
+        - $text: SWORD_MUSE
+        - $text: WIND_RIDER
+        - $text: MOONLIGHT_SENTINEL
+        - $text: MYSTIC_MUSE
+        - $text: ELEMENTAL_MASTER
+        - $text: EVA_SAINT
+        - $text: SHILLIEN_TEMPLAR
+        - $text: SPECTRAL_DANCER
+        - $text: GHOST_HUNTER
+        - $text: GHOST_SENTINEL
+        - $text: STORM_SCREAMER
+        - $text: SPECTRAL_MASTER
+        - $text: SHILLIEN_SAINT
+        - $text: TITAN
+        - $text: GRAND_KHAVATARI
+        - $text: DOMINATOR
+        - $text: DOOMCRYER
+        - $text: FORTUNE_SEEKER
+        - $text: MAESTRO
+        - $text: DOOMBRINGER
+        - $text: MALE_SOUL_HOUND
+        - $text: FEMALE_SOUL_HOUND
+        - $text: TRICKSTER
+        - $text: JUDICATOR
+        - $text: SIGEL_KNIGHT
+        - $text: TYRR_WARRIOR
+        - $text: OTHELL_ROGUE
+        - $text: YUL_ARCHER
+        - $text: FEOH_WIZARD
+        - $text: ISS_ENCHANTER
+        - $text: WYNN_SUMMONER
+        - $text: AEORE_HEALER
+      affectType:
+        $text: CASTER
+      isWithin:
+        $text: 'true'
+    - '@name': OpPledge
+      level:
+        $text: '5'
+  effects:
+    effect:
+    - '@name': SummonNpc
+      npcId:
+        $text: '19289'
+      npcCount:
+        $text: '1'
 - '@id': '7112'
   '@toLevel': '1'
   '@name': Summon Bratty Angma
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpPledge
-      level:
-        $value: null
-        value: []
-        $text: '5'
-  coolTime:
-    $value: null
-    value: []
-    $text: '500'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SummonNpc
-      npcCount:
-        $value: null
-        value: []
-        $text: '1'
-      npcId:
-        $value: null
-        value: []
-        $text: '19290'
-  hitTime:
-    $value: null
-    value: []
-    $text: '3000'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0028
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeId:
-    $value: null
-    value: []
-    $text: '35652'
+  operateType:
+    $text: A1
+  hitTime:
+    $text: '3000'
+  coolTime:
+    $text: '500'
+  reuseDelay:
+    $text: '10000'
+  effectPoint:
+    $text: '100'
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  reuseDelay:
-    $value: null
-    value: []
-    $text: '10000'
-  targetType: SELF
+  isMagic:
+    $text: '1'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  itemConsumeId:
+    $text: '35652'
+  itemConsumeCount:
+    $text: '1'
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '95'
+    - '@name': OpCanNotUseAirship
+    - '@name': OpCheckClassList
+      classIds:
+        item:
+        - $text: GLADIATOR
+        - $text: WARLORD
+        - $text: PALADIN
+        - $text: DARK_AVENGER
+        - $text: TREASURE_HUNTER
+        - $text: HAWKEYE
+        - $text: SORCERER
+        - $text: NECROMANCER
+        - $text: WARLOCK
+        - $text: BISHOP
+        - $text: PROPHET
+        - $text: TEMPLE_KNIGHT
+        - $text: SWORDSINGER
+        - $text: PLAINS_WALKER
+        - $text: SILVER_RANGER
+        - $text: SPELLSINGER
+        - $text: ELEMENTAL_SUMMONER
+        - $text: ELDER
+        - $text: SHILLIEN_KNIGHT
+        - $text: BLADEDANCER
+        - $text: ABYSS_WALKER
+        - $text: PHANTOM_RANGER
+        - $text: SPELLHOWLER
+        - $text: PHANTOM_SUMMONER
+        - $text: SHILLIEN_ELDER
+        - $text: DESTROYER
+        - $text: TYRANT
+        - $text: OVERLORD
+        - $text: WARCRYER
+        - $text: BOUNTY_HUNTER
+        - $text: WARSMITH
+        - $text: BERSERKER
+        - $text: MALE_SOULBREAKER
+        - $text: FEMALE_SOULBREAKER
+        - $text: ARBALESTER
+        - $text: INSPECTOR
+        - $text: DUELIST
+        - $text: DREADNOUGHT
+        - $text: PHOENIX_KNIGHT
+        - $text: HELL_KNIGHT
+        - $text: ADVENTURER
+        - $text: SAGITTARIUS
+        - $text: ARCHMAGE
+        - $text: SOULTAKER
+        - $text: ARCANA_LORD
+        - $text: CARDINAL
+        - $text: HIEROPHANT
+        - $text: EVA_TEMPLAR
+        - $text: SWORD_MUSE
+        - $text: WIND_RIDER
+        - $text: MOONLIGHT_SENTINEL
+        - $text: MYSTIC_MUSE
+        - $text: ELEMENTAL_MASTER
+        - $text: EVA_SAINT
+        - $text: SHILLIEN_TEMPLAR
+        - $text: SPECTRAL_DANCER
+        - $text: GHOST_HUNTER
+        - $text: GHOST_SENTINEL
+        - $text: STORM_SCREAMER
+        - $text: SPECTRAL_MASTER
+        - $text: SHILLIEN_SAINT
+        - $text: TITAN
+        - $text: GRAND_KHAVATARI
+        - $text: DOMINATOR
+        - $text: DOOMCRYER
+        - $text: FORTUNE_SEEKER
+        - $text: MAESTRO
+        - $text: DOOMBRINGER
+        - $text: MALE_SOUL_HOUND
+        - $text: FEMALE_SOUL_HOUND
+        - $text: TRICKSTER
+        - $text: JUDICATOR
+        - $text: SIGEL_KNIGHT
+        - $text: TYRR_WARRIOR
+        - $text: OTHELL_ROGUE
+        - $text: YUL_ARCHER
+        - $text: FEOH_WIZARD
+        - $text: ISS_ENCHANTER
+        - $text: WYNN_SUMMONER
+        - $text: AEORE_HEALER
+      affectType:
+        $text: CASTER
+      isWithin:
+        $text: 'true'
+    - '@name': OpPledge
+      level:
+        $text: '5'
+  effects:
+    effect:
+    - '@name': SummonNpc
+      npcId:
+        $text: '19290'
+      npcCount:
+        $text: '1'
 - '@id': '7113'
   '@toLevel': '1'
   '@name': Pet Invincibility Effect
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime:
-    $value: null
-    value: []
-    $text: '5'
-  abnormalType:
-    $value: null
-    value: []
-    $text: INVINCIBILITY
-  abnormalVisualEffect:
-    $value: null
-    value: []
-    $text: INVINCIBILITY
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  effectPoint:
-    $value: null
-    value: []
-    $text: '-100'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': ResistAbnormalByCategory
-      amount:
-        $value: null
-        value: []
-        $text: '-100'
-      slot:
-        $value: null
-        value: []
-        $text: DEBUFF
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0442
-  isMagic:
-    $value: null
-    value: []
-    $text: '1'
+  operateType:
+    $text: A2
+  mpConsume:
+    $text: '78'
+  hitTime:
+    $text: '500'
+  effectPoint:
+    $text: '-100'
+  abnormalType:
+    $text: INVINCIBILITY
+  basicProperty:
+    $text: NONE
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  mpConsume:
-    $value: null
-    value: []
-    $text: '78'
-  operateType:
-    $value: null
-    value: []
-    $text: A2
-  targetType: SELF
+  abnormalLevel:
+    $text: '1'
+  abnormalTime:
+    $text: '5'
+  abnormalVisualEffect:
+    $text: INVINCIBILITY
+  isMagic:
+    $text: '1'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  effects:
+    effect:
+    - '@name': DamageBlock
+      type:
+        $text: BLOCK_HP
+    - '@name': DamageBlock
+      type:
+        $text: BLOCK_MP
+    - '@name': DebuffBlock
+    - '@name': ResistDispelByCategory
+      amount:
+        $text: '-100'
+      slot:
+        $text: ALL
+    - '@name': ResistAbnormalByCategory
+      amount:
+        $text: '-100'
+      slot:
+        $text: DEBUFF
 - '@id': '7114'
   '@toLevel': '1'
   '@name': 'Spellbook: Clan Flag'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpSkill
-      hasLearned:
-        $value: null
-        value: []
-        $text: 'false'
-      skillId:
-        $value: null
-        value: []
-        $text: '15094'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SetSkill
-      skillId:
-        $value: null
-        value: []
-        $text: '15094'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  itemConsumeCount:
-    $value: null
-    value: []
-    $text: '1'
-  itemConsumeId:
-    $value: null
-    value: []
-    $text: '34895'
+  operateType:
+    $text: A1
   magicCriticalRate:
-    $value: null
-    value: []
     $text: '-5'
   magicLevel:
-    $value: null
-    value: []
     $text: '85'
-  operateType:
-    $value: null
-    value: []
-    $text: A1
-  targetType: SELF
+  isMagic:
+    $text: '2'
+  hitTime:
+    $text: '1500'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  itemConsumeId:
+    $text: '34895'
+  itemConsumeCount:
+    $text: '1'
+  conditions:
+    condition:
+    - '@name': OpMainjob
+    - '@name': OpSocialClass
+      socialClass:
+        $text: '8'
+    - '@name': OpSkill
+      skillId:
+        $text: '15094'
+      skillLevel:
+        $text: '1'
+      hasLearned:
+        $text: 'false'
+  effects:
+    effect:
+    - '@name': SetSkill
+      skillId:
+        $text: '15094'
+      skillLevel:
+        $text: '1'
 - '@id': '7115'
   '@toLevel': '1'
   '@name': Energy of Chaos
-  '@fromLevel': null
-  '@displayId': null
-  abnormalLevel:
-    $value: null
-    value: []
-    $text: '1'
-  abnormalTime:
-    $value: null
-    value: []
-    $text: '600'
-  abnormalType:
-    $value: null
-    value: []
-    $text: CURIOUS_HOUSE
-  abnormalVisualEffect:
-    $value: null
-    value: []
-    $text: CURIOUS_HOUSE
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  basicProperty:
-    $value: null
-    value: []
-    $text: NONE
-  canBeDispelled:
-    $value: null
-    value: []
-    $text: 'false'
-  effectPoint:
-    $value: null
-    value: []
-    $text: '1'
-  hitTime:
-    $value: null
-    value: []
-    $text: '500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0810
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '85'
+  abnormalTime:
+    $text: '600'
+  abnormalVisualEffect:
+    $text: CURIOUS_HOUSE
+  canBeDispelled:
+    $text: 'false'
   operateType:
-    $value: null
-    value: []
     $text: A2
+  effectPoint:
+    $text: '1'
+  abnormalType:
+    $text: CURIOUS_HOUSE
+  basicProperty:
+    $text: NONE
+  magicCriticalRate:
+    $text: '-5'
   specialLevel:
-    $value: null
-    value: []
     $text: '-2'
-  targetType: SELF
+  magicLevel:
+    $text: '85'
+  abnormalLevel:
+    $text: '1'
+  isMagic:
+    $text: '2'
+  hitTime:
+    $text: '500'
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
 - '@id': '7116'
   '@toLevel': '1'
   '@name': 'Spellbook: Air Bike'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpSkill
-      hasLearned:
-        $value: null
-        value: []
-        $text: 'false'
-      skillId:
-        $value: null
-        value: []
-        $text: '19115'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SetSkill
-      skillId:
-        $value: null
-        value: []
-        $text: '19115'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0.5'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '36952'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1500'
+  hitCancelTime:
+    $text: '0.5'
+  magicLevel:
+    $text: '99'
+  isMagic:
+    $text: '2'
+  magicCriticalRate:
+    $text: '-5'
+  conditions:
+    condition:
+    - '@name': OpMainjob
+    - '@name': CheckLevel
+      minLevel:
+        $text: '99'
+    - '@name': OpSkill
+      skillId:
+        $text: '19115'
+      skillLevel:
+        $text: '1'
+      hasLearned:
+        $text: 'false'
+  effects:
+    effect:
+    - '@name': SetSkill
+      skillId:
+        $text: '19115'
+      skillLevel:
+        $text: '1'
 - '@id': '7117'
   '@toLevel': '1'
   '@name': 'Spellbook: Hell Hound'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpSkill
-      hasLearned:
-        $value: null
-        value: []
-        $text: 'false'
-      skillId:
-        $value: null
-        value: []
-        $text: '8906'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SetSkill
-      skillId:
-        $value: null
-        value: []
-        $text: '8906'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0.5'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '47148'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1500'
+  hitCancelTime:
+    $text: '0.5'
+  magicLevel:
+    $text: '99'
+  isMagic:
+    $text: '2'
+  magicCriticalRate:
+    $text: '-5'
+  conditions:
+    condition:
+    - '@name': OpMainjob
+    - '@name': CheckLevel
+      minLevel:
+        $text: '99'
+    - '@name': OpSkill
+      skillId:
+        $text: '8906'
+      skillLevel:
+        $text: '1'
+      hasLearned:
+        $text: 'false'
+  effects:
+    effect:
+    - '@name': SetSkill
+      skillId:
+        $text: '8906'
+      skillLevel:
+        $text: '1'
 - '@id': '7118'
   '@toLevel': '1'
   '@name': 'Spellbook: Pegasus'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpSkill
-      hasLearned:
-        $value: null
-        value: []
-        $text: 'false'
-      skillId:
-        $value: null
-        value: []
-        $text: '8907'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SetSkill
-      skillId:
-        $value: null
-        value: []
-        $text: '8907'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0.5'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '47150'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1500'
+  hitCancelTime:
+    $text: '0.5'
+  magicLevel:
+    $text: '99'
+  isMagic:
+    $text: '2'
+  magicCriticalRate:
+    $text: '-5'
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '99'
+    - '@name': OpSkill
+      skillId:
+        $text: '8907'
+      skillLevel:
+        $text: '1'
+      hasLearned:
+        $text: 'false'
+  effects:
+    effect:
+    - '@name': SetSkill
+      skillId:
+        $text: '8907'
+      skillLevel:
+        $text: '1'
 - '@id': '7119'
   '@toLevel': '1'
   '@name': 'Spellbook: Wing Hound'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpSkill
-      hasLearned:
-        $value: null
-        value: []
-        $text: 'false'
-      skillId:
-        $value: null
-        value: []
-        $text: '8908'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SetSkill
-      skillId:
-        $value: null
-        value: []
-        $text: '8908'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0.5'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '47152'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1500'
+  hitCancelTime:
+    $text: '0.5'
+  magicLevel:
+    $text: '99'
+  isMagic:
+    $text: '2'
+  magicCriticalRate:
+    $text: '-5'
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '99'
+    - '@name': OpSkill
+      skillId:
+        $text: '8908'
+      skillLevel:
+        $text: '1'
+      hasLearned:
+        $text: 'false'
+  effects:
+    effect:
+    - '@name': SetSkill
+      skillId:
+        $text: '8908'
+      skillLevel:
+        $text: '1'
 - '@id': '7120'
   '@toLevel': '1'
   '@name': 'Spellbook: War Horse'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpSkill
-      hasLearned:
-        $value: null
-        value: []
-        $text: 'false'
-      skillId:
-        $value: null
-        value: []
-        $text: '8909'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SetSkill
-      skillId:
-        $value: null
-        value: []
-        $text: '8909'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0.5'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '47149'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1500'
+  hitCancelTime:
+    $text: '0.5'
+  magicLevel:
+    $text: '99'
+  isMagic:
+    $text: '2'
+  magicCriticalRate:
+    $text: '-5'
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '99'
+    - '@name': OpSkill
+      skillId:
+        $text: '8909'
+      skillLevel:
+        $text: '1'
+      hasLearned:
+        $text: 'false'
+  effects:
+    effect:
+    - '@name': SetSkill
+      skillId:
+        $text: '8909'
+      skillLevel:
+        $text: '1'
 - '@id': '7121'
   '@toLevel': '1'
   '@name': 'Spellbook: Griffin'
-  '@fromLevel': null
-  '@displayId': null
-  affectScope:
-    $value: null
-    value: []
-    $text: SINGLE
-  conditions:
-    $value: null
-    value: []
-    condition:
-      $value: null
-      value: []
-      '@name': OpSkill
-      hasLearned:
-        $value: null
-        value: []
-        $text: 'false'
-      skillId:
-        $value: null
-        value: []
-        $text: '8910'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  effects:
-    $value: null
-    value: []
-    effect:
-      $value: null
-      value: []
-      '@name': SetSkill
-      skillId:
-        $value: null
-        value: []
-        $text: '8910'
-      skillLevel:
-        $value: null
-        value: []
-        $text: '1'
-  hitCancelTime:
-    $value: null
-    value: []
-    $text: '0.5'
-  hitTime:
-    $value: null
-    value: []
-    $text: '1500'
   icon:
-    $value: null
-    value: []
     $text: icon.skill0000
-  isMagic:
-    $value: null
-    value: []
-    $text: '2'
   itemConsumeCount:
-    $value: null
-    value: []
     $text: '1'
   itemConsumeId:
-    $value: null
-    value: []
     $text: '47151'
-  magicCriticalRate:
-    $value: null
-    value: []
-    $text: '-5'
-  magicLevel:
-    $value: null
-    value: []
-    $text: '99'
   operateType:
-    $value: null
-    value: []
     $text: A1
-  targetType: SELF
+  targetType:
+    $text: SELF
+  affectScope:
+    $text: SINGLE
+  hitTime:
+    $text: '1500'
+  hitCancelTime:
+    $text: '0.5'
+  magicLevel:
+    $text: '99'
+  isMagic:
+    $text: '2'
+  magicCriticalRate:
+    $text: '-5'
+  conditions:
+    condition:
+    - '@name': CheckLevel
+      minLevel:
+        $text: '99'
+    - '@name': OpSkill
+      skillId:
+        $text: '8910'
+      skillLevel:
+        $text: '1'
+      hasLearned:
+        $text: 'false'
+  effects:
+    effect:
+    - '@name': SetSkill
+      skillId:
+        $text: '8910'
+      skillLevel:
+        $text: '1'
