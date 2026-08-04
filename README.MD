@@ -2,9 +2,9 @@
 
 ![Shablya](shablya.svg)
 
-# Archive. Not supported any more.
+# Archive. Not supported any more, in favor of: https://github.com/artemijan/BattleCrab/tree/main
 
-## I decided to move forward with different infrastructure for the Rust implementation of lineage 2 server. It was bad architectural decision to use Actor system. I am concidering to move to BEVY ECS (Entity Component System), I already ported 70% of the Java functionality. I will put the link to a new repo shortly.
+## I decided to move forward with different infrastructure for the Rust implementation of lineage 2 server. It was bad architectural decision to use Actor system. I am concidering to move to BEVY ECS (Entity Component System).
 
 *Inspired by the swift, light, and deadly Kozak weapon, L2Shablya embodies precision and speed in every line of code.*
 
